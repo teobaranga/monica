@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.teobaranga.monica",
+    "sha256_cert_fingerprints":
+    ["45:E8:E4:ED:62:8F:C2:B8:CF:BF:B3:3F:D2:32:64:C7:63:A8:6A:4F:0F:C0:20:30:2D:4E:AA:B8:B7:69:06:6F"]
+  }
+}]
