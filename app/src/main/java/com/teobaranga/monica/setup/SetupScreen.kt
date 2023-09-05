@@ -27,7 +27,10 @@ import com.teobaranga.monica.R
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
 @Composable
-fun SetupScreen() {
+fun SetupScreen(
+    uiState: UiState,
+    onSignIn: () -> Unit,
+) {
     MonicaBackground {
         Column(
             modifier = Modifier
@@ -58,9 +61,9 @@ fun SetupScreen() {
                     .fillMaxWidth()
                     .padding(top = 12.dp)
                     .padding(horizontal = 20.dp),
-                value = "",
+                value = uiState.serverAddress,
                 onValueChange = {
-
+                    uiState.serverAddress = it
                 },
                 singleLine = true,
                 label = {
@@ -72,9 +75,9 @@ fun SetupScreen() {
                     .fillMaxWidth()
                     .padding(top = 12.dp)
                     .padding(horizontal = 20.dp),
-                value = "",
+                value = uiState.clientId,
                 onValueChange = {
-
+                    uiState.clientId = it
                 },
                 singleLine = true,
                 label = {
@@ -86,9 +89,9 @@ fun SetupScreen() {
                     .fillMaxWidth()
                     .padding(top = 12.dp)
                     .padding(horizontal = 20.dp),
-                value = "",
+                value = uiState.clientSecret,
                 onValueChange = {
-
+                    uiState.clientSecret = it
                 },
                 label = {
                     Text(text = "Client Secret")
@@ -99,8 +102,7 @@ fun SetupScreen() {
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
                     .padding(top = 12.dp, bottom = 20.dp),
-                onClick = {
-                },
+                onClick = onSignIn,
                 content = {
                     Text(
                         text = "Sign In"
@@ -123,6 +125,9 @@ fun SetupScreen() {
 @Composable
 fun PreviewSetupScreen() {
     MonicaTheme {
-        SetupScreen()
+        SetupScreen(
+            uiState = UiState(),
+            onSignIn = { },
+        )
     }
 }
