@@ -6,6 +6,7 @@ ksp = "1.9.10-1.0.13"
 browser = "1.6.0"
 core-ktx = "1.10.1"
 junit = "4.13.2"
+kotlinx-coroutines-test = "1.7.3"
 retrofit = "2.9.0"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
@@ -19,6 +20,7 @@ core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }

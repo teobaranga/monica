@@ -1,5 +1,6 @@
 package com.teobaranga.monica.setup
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.listSaver
@@ -13,6 +14,10 @@ class UiState {
     var clientId by mutableStateOf(TextFieldValue())
 
     var clientSecret by mutableStateOf(TextFieldValue())
+
+    val isSignInEnabled by derivedStateOf {
+        serverAddress.text.isNotBlank() && clientId.text.isNotBlank() && clientSecret.text.isNotBlank()
+    }
 
     companion object {
         val Saver = listSaver<UiState, Any>(

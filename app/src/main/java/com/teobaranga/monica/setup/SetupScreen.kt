@@ -103,6 +103,7 @@ fun SetupScreen(
                     .padding(horizontal = 20.dp)
                     .padding(top = 12.dp, bottom = 20.dp),
                 onClick = onSignIn,
+                enabled = uiState.isSignInEnabled,
                 content = {
                     Text(
                         text = "Sign In"
