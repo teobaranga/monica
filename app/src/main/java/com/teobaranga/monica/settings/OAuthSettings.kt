@@ -7,11 +7,13 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 private val SERVER_ADDRESS = stringPreferencesKey("serverAddress")
 private val CLIENT_ID = stringPreferencesKey("clientId")
 private val CLIENT_SECRET = stringPreferencesKey("clientSecret")
+private val AUTHORIZATION_CODE = stringPreferencesKey("authorizationCode")
 
 data class OAuthSettings(
     val serverAddress: String?,
     val clientId: String?,
     val clientSecret: String?,
+    val authorizationCode: String?,
 )
 
 fun Preferences.getOAuthSettings(): OAuthSettings {
@@ -19,6 +21,7 @@ fun Preferences.getOAuthSettings(): OAuthSettings {
         serverAddress = this[SERVER_ADDRESS],
         clientId = this[CLIENT_ID],
         clientSecret = this[CLIENT_SECRET],
+        authorizationCode = this[AUTHORIZATION_CODE],
     )
 }
 
@@ -34,6 +37,10 @@ class MutableOAuthSettingsScope(private val preferences: MutablePreferences) {
 
     fun setClientSecret(clientSecret: String) {
         preferences[CLIENT_SECRET] = clientSecret
+    }
+
+    fun setAuthorizationCode(authorizationCode: String) {
+        preferences[AUTHORIZATION_CODE] = authorizationCode
     }
 }
 
