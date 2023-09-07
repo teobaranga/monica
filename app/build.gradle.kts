@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.browser)
     implementation(libs.datastore.preferences)
     implementation(libs.retrofit)
+    implementation(libs.timber)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.test.ext.junit)
