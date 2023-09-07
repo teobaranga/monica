@@ -2,10 +2,12 @@ package com.teobaranga.monica.setup
 
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.SavedStateHandle
+import com.teobaranga.monica.TestDispatcher
 import com.teobaranga.monica.data.PARAM_CLIENT_ID
 import com.teobaranga.monica.data.PARAM_REDIRECT_URI
 import com.teobaranga.monica.data.PARAM_RESPONSE_TYPE
 import com.teobaranga.monica.data.REDIRECT_URI
+import com.teobaranga.monica.testDataStore
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
@@ -20,7 +22,9 @@ class SetupViewModelTest {
 
     private val savedStateHandle = SavedStateHandle()
 
-    private val ioDispatcher = UnconfinedTestDispatcher()
+    private val dispatcher = TestDispatcher()
+
+    private val dataStore by testDataStore()
 
     @Test
     fun `Given non-http scheme, When sign-in, Then errors out`() = runTest(UnconfinedTestDispatcher()) {
@@ -93,7 +97,8 @@ class SetupViewModelTest {
     private fun getViewModel(): SetupViewModel {
         return SetupViewModel(
             savedStateHandle = savedStateHandle,
-            ioDispatcher = ioDispatcher,
+            dispatcher = dispatcher,
+            dataStore = dataStore,
         )
     }
 }

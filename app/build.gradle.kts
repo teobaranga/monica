@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.browser)
+    implementation(libs.datastore.preferences)
     implementation(libs.retrofit)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
