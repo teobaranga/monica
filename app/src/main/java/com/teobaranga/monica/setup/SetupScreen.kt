@@ -1,6 +1,9 @@
 package com.teobaranga.monica.setup
 
+import android.content.Intent
 import android.content.res.Configuration
+import androidx.activity.ComponentActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,15 +19,59 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import androidx.core.util.Consumer
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.ramcosta.composedestinations.annotation.Destination
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.R
+import com.teobaranga.monica.data.PARAM_CODE
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import kotlinx.coroutines.flow.collectLatest
+
+@Destination
+@Composable
+fun Setup() {
+    val context = LocalContext.current
+    val viewModel = hiltViewModel<SetupViewModel>()
+    val uiState = viewModel.uiState
+
+    LaunchedEffect(Unit) {
+        viewModel.setupUri
+            .collectLatest { url ->
+                val intent = CustomTabsIntent.Builder()
+                    .setShowTitle(true)
+                    .build()
+                intent.launchUrl(context, url.toUri())
+            }
+    }
+
+    DisposableEffect(Unit) {
+        val componentActivity = context as ComponentActivity
+        val listener = Consumer<Intent> { intent ->
+            val code = intent.data?.getQueryParameter(PARAM_CODE)
+            viewModel.onAuthorizationCode(code)
+        }
+        componentActivity.addOnNewIntentListener(listener)
+        onDispose { 
+            componentActivity.removeOnNewIntentListener(listener)
+        }
+    }
+
+    SetupScreen(
+        uiState = uiState,
+        onSignIn = viewModel::onSignIn,
+    )
+}
 
 @Composable
 fun SetupScreen(
