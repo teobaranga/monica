@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import timber.log.Timber
 import javax.inject.Inject
 
 @OptIn(SavedStateHandleSaveableApi::class)
@@ -79,5 +80,13 @@ class SetupViewModel @Inject constructor(
                 .toString()
             _setupUri.emit(url)
         }
+    }
+
+    fun onAuthorizationCode(code: String?) {
+        if (code == null) {
+            Timber.w("Received null authorization code")
+            return
+        }
+        Timber.d("Authorization code: $code")
     }
 }
