@@ -42,6 +42,10 @@ class MutableOAuthSettingsScope(private val preferences: MutablePreferences) {
     fun setAuthorizationCode(authorizationCode: String) {
         preferences[AUTHORIZATION_CODE] = authorizationCode
     }
+
+    fun removeAuthorizationCode() {
+        preferences.remove(AUTHORIZATION_CODE)
+    }
 }
 
 

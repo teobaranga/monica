@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
+import com.teobaranga.monica.auth.AuthorizationRepository
 import com.teobaranga.monica.data.PARAM_CLIENT_ID
 import com.teobaranga.monica.data.PARAM_REDIRECT_URI
 import com.teobaranga.monica.data.PARAM_RESPONSE_TYPE
@@ -32,7 +33,10 @@ class SetupViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val dispatcher: Dispatcher,
     private val dataStore: DataStore<Preferences>,
+    authorizationRepository: AuthorizationRepository,
 ) : ViewModel() {
+
+    val isLoggedIn = authorizationRepository.isLoggedIn
 
     val uiState by savedStateHandle.saveable(saver = UiState.Saver) {
         UiState()
@@ -88,5 +92,12 @@ class SetupViewModel @Inject constructor(
             return
         }
         Timber.d("Authorization code: $code")
+        viewModelScope.launch(dispatcher.io) {
+            dataStore.edit { preferences ->
+                preferences.oAuthSettings {
+                    setAuthorizationCode(code)
+                }
+            }
+        }
     }
 }

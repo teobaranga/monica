@@ -21,6 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -32,18 +34,34 @@ import androidx.core.net.toUri
 import androidx.core.util.Consumer
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.MonicaBackground
+import com.teobaranga.monica.NavGraphs
 import com.teobaranga.monica.R
 import com.teobaranga.monica.data.PARAM_CODE
+import com.teobaranga.monica.destinations.SetupDestination
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.collectLatest
 
 @Destination
 @Composable
-fun Setup() {
+fun Setup(
+    navigator: DestinationsNavigator,
+) {
     val context = LocalContext.current
     val viewModel = hiltViewModel<SetupViewModel>()
     val uiState = viewModel.uiState
+
+    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
+    LaunchedEffect(isLoggedIn) {
+        if (isLoggedIn == true) {
+            navigator.navigate(NavGraphs.root.startRoute.route) {
+                popUpTo(SetupDestination.route) {
+                    inclusive = true
+                }
+            }
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.setupUri
