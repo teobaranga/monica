@@ -5,10 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
-import com.teobaranga.monica.destinations.SetupDestination
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,10 +21,14 @@ class MainActivity : ComponentActivity() {
             MonicaTheme(
                 dynamicColor = false,
             ) {
-                DestinationsNavHost(
-                    navGraph = NavGraphs.root,
-                    startRoute = SetupDestination,
-                )
+                val viewModel = hiltViewModel<MainViewModel>()
+                val startDestination = viewModel.startDestination
+                if (startDestination != null) {
+                    DestinationsNavHost(
+                        navGraph = NavGraphs.root,
+                        startRoute = startDestination,
+                    )
+                }
             }
         }
     }
