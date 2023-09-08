@@ -41,6 +41,7 @@ import com.teobaranga.monica.R
 import com.teobaranga.monica.data.PARAM_CODE
 import com.teobaranga.monica.destinations.SetupDestination
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.util.compose.keyboardAsState
 import kotlinx.coroutines.flow.collectLatest
 
 @Destination
@@ -97,10 +98,20 @@ fun SetupScreen(
     onSignIn: () -> Unit,
 ) {
     MonicaBackground {
+        val scrollState = rememberScrollState()
+
+        // Scroll to bottom to keep the main button visible when the IME is open
+        val keyboardState by keyboardAsState()
+        LaunchedEffect(keyboardState) {
+            if (keyboardState) {
+                scrollState.animateScrollTo(Int.MAX_VALUE)
+            }
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
                 .systemBarsPadding()
                 .imePadding(),
         ) {
