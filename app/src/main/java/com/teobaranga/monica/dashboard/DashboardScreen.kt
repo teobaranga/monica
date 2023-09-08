@@ -70,7 +70,7 @@ fun DashboardScreen(
             Button(
                 onClick = onClearAuthorization,
             ) {
-                Text(text = "Clear Authorization")
+                Text(text = "Sign out")
             }
         }
     }

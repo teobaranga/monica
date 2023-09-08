@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -81,7 +82,7 @@ fun Setup(
             viewModel.onAuthorizationCode(code)
         }
         componentActivity.addOnNewIntentListener(listener)
-        onDispose { 
+        onDispose {
             componentActivity.removeOnNewIntentListener(listener)
         }
     }
@@ -139,7 +140,7 @@ fun SetupScreen(
                     .padding(horizontal = 20.dp),
                 value = uiState.serverAddress,
                 onValueChange = {
-                    uiState.serverAddress = it
+                    uiState.onServerAddressChanged(it)
                 },
                 singleLine = true,
                 label = {
@@ -153,7 +154,7 @@ fun SetupScreen(
                     .padding(horizontal = 20.dp),
                 value = uiState.clientId,
                 onValueChange = {
-                    uiState.clientId = it
+                    uiState.onClientIdChanged(it)
                 },
                 singleLine = true,
                 label = {
@@ -167,12 +168,24 @@ fun SetupScreen(
                     .padding(horizontal = 20.dp),
                 value = uiState.clientSecret,
                 onValueChange = {
-                    uiState.clientSecret = it
+                    uiState.onClientSecretChanged(it)
                 },
                 label = {
                     Text(text = "Client Secret")
                 },
             )
+            uiState.error?.let {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 12.dp),
+                    text = when (it) {
+                        UiState.Error.ConfigurationError -> "Please check your configuration"
+                    },
+                    color = Color.Red,
+                )
+            }
             Button(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.auth.AuthorizationRepository
-import com.teobaranga.monica.settings.oAuthSettings
+import com.teobaranga.monica.settings.tokenStorage
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,9 +23,10 @@ class DashboardViewModel @Inject constructor(
 
     fun onClearAuthorization() {
         viewModelScope.launch(dispatcher.io) {
+            // TODO Revoke current access token
             dataStore.edit { preferences ->
-                preferences.oAuthSettings {
-                    removeAuthorizationCode()
+                preferences.tokenStorage {
+                    clear()
                 }
             }
         }

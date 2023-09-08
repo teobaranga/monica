@@ -10,6 +10,9 @@ datastore = "1.0.0"
 hilt-navigation-compose = "1.0.0"
 junit = "4.13.2"
 kotlinx-coroutines-test = "1.7.3"
+moshi = "1.15.0"
+moshi-converter = "2.9.0"
+okhttp = "4.11.0"
 retrofit = "2.9.0"
 timber = "5.0.1"
 androidx-test-ext-junit = "1.1.5"
@@ -29,6 +32,10 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.r
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshi-converter" }
+moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }

@@ -33,7 +33,7 @@ class SetupViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val dispatcher: Dispatcher,
     private val dataStore: DataStore<Preferences>,
-    authorizationRepository: AuthorizationRepository,
+    private val authorizationRepository: AuthorizationRepository,
 ) : ViewModel() {
 
     val isLoggedIn = authorizationRepository.isLoggedIn
@@ -51,13 +51,13 @@ class SetupViewModel @Inject constructor(
             val oAuthSettings = preferences.getOAuthSettings()
             withContext(dispatcher.main) {
                 oAuthSettings.serverAddress?.let {
-                    uiState.serverAddress = TextFieldValue(it)
+                    uiState.onServerAddressChanged(TextFieldValue(it))
                 }
                 oAuthSettings.clientId?.let {
-                    uiState.clientId = TextFieldValue(it)
+                    uiState.onClientIdChanged(TextFieldValue(it))
                 }
                 oAuthSettings.clientSecret?.let {
-                    uiState.clientSecret = TextFieldValue(it)
+                    uiState.onClientSecretChanged(TextFieldValue(it))
                 }
             }
         }
@@ -93,10 +93,12 @@ class SetupViewModel @Inject constructor(
         }
         Timber.d("Authorization code: $code")
         viewModelScope.launch(dispatcher.io) {
-            dataStore.edit { preferences ->
-                preferences.oAuthSettings {
-                    setAuthorizationCode(code)
-                }
+            val oAuthSettings = dataStore.data.first().getOAuthSettings()
+            val clientId = requireNotNull(oAuthSettings.clientId)
+            val clientSecret = requireNotNull(oAuthSettings.clientSecret)
+            val result = authorizationRepository.signIn(clientId, clientSecret, code)
+            if (!result) {
+                uiState.error = UiState.Error.ConfigurationError
             }
         }
     }

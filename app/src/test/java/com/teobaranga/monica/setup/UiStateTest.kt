@@ -23,15 +23,15 @@ class UiStateTest {
 
         assertFalse(uiState.isSignInEnabled)
 
-        uiState.serverAddress = TextFieldValue("http://test.com")
+        uiState.onServerAddressChanged(TextFieldValue("http://test.com"))
 
         assertFalse(uiState.isSignInEnabled)
 
-        uiState.clientId = TextFieldValue("2")
+        uiState.onClientIdChanged(TextFieldValue("2"))
 
         assertFalse(uiState.isSignInEnabled)
 
-        uiState.clientSecret = TextFieldValue("abc123")
+        uiState.onClientSecretChanged(TextFieldValue("abc123"))
 
         assertTrue(uiState.isSignInEnabled)
     }

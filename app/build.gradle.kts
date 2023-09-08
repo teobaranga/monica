@@ -60,21 +60,35 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+
     implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
+
     implementation(libs.browser)
+
     implementation(libs.compose.destinations.core)
     ksp(libs.compose.destinations.ksp)
+
     implementation(libs.datastore.preferences)
-    implementation(libs.hilt.navigation.compose)
+
+    implementation(libs.moshi)
+    implementation(libs.moshi.converter)
+    ksp(libs.moshi.kotlin.codegen)
+
     implementation(libs.retrofit)
+    debugImplementation(libs.okhttp.logging.interceptor)
+
     implementation(libs.timber)
+
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
+
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 }

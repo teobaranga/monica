@@ -3,6 +3,7 @@ package com.teobaranga.monica.setup
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.SavedStateHandle
 import com.teobaranga.monica.TestDispatcher
+import com.teobaranga.monica.auth.FakeAuthorizationRepository
 import com.teobaranga.monica.data.PARAM_CLIENT_ID
 import com.teobaranga.monica.data.PARAM_REDIRECT_URI
 import com.teobaranga.monica.data.PARAM_RESPONSE_TYPE
@@ -26,6 +27,8 @@ class SetupViewModelTest {
 
     private val dataStore by testDataStore()
 
+    private val authorizationRepository = FakeAuthorizationRepository()
+
     @Test
     fun `Given non-http scheme, When sign-in, Then errors out`() = runTest(UnconfinedTestDispatcher()) {
         val address = "blah"
@@ -38,8 +41,8 @@ class SetupViewModelTest {
             viewModel.setupUri.toList(urls)
         }
 
-        viewModel.uiState.serverAddress = TextFieldValue(address)
-        viewModel.uiState.clientId = TextFieldValue(clientId)
+        viewModel.uiState.onServerAddressChanged(TextFieldValue(address))
+        viewModel.uiState.onClientIdChanged(TextFieldValue(clientId))
 
         viewModel.onSignIn()
 
@@ -58,8 +61,8 @@ class SetupViewModelTest {
             viewModel.setupUri.toList(urls)
         }
 
-        viewModel.uiState.serverAddress = TextFieldValue(address)
-        viewModel.uiState.clientId = TextFieldValue(clientId)
+        viewModel.uiState.onServerAddressChanged(TextFieldValue(address))
+        viewModel.uiState.onClientIdChanged(TextFieldValue(clientId))
 
         viewModel.onSignIn()
 
@@ -82,8 +85,8 @@ class SetupViewModelTest {
             viewModel.setupUri.toList(urls)
         }
 
-        viewModel.uiState.serverAddress = TextFieldValue(address)
-        viewModel.uiState.clientId = TextFieldValue(clientId)
+        viewModel.uiState.onServerAddressChanged(TextFieldValue(address))
+        viewModel.uiState.onClientIdChanged(TextFieldValue(clientId))
 
         viewModel.onSignIn()
 
@@ -99,6 +102,7 @@ class SetupViewModelTest {
             savedStateHandle = savedStateHandle,
             dispatcher = dispatcher,
             dataStore = dataStore,
+            authorizationRepository = authorizationRepository,
         )
     }
 }

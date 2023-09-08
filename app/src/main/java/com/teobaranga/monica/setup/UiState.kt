@@ -9,14 +9,44 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 class UiState {
 
+    sealed interface Error {
+        data object ConfigurationError: Error
+    }
+
     var serverAddress by mutableStateOf(TextFieldValue())
+        private set
 
     var clientId by mutableStateOf(TextFieldValue())
+        private set
 
     var clientSecret by mutableStateOf(TextFieldValue())
+        private set
 
     val isSignInEnabled by derivedStateOf {
         serverAddress.text.isNotBlank() && clientId.text.isNotBlank() && clientSecret.text.isNotBlank()
+    }
+
+    var error: Error? by mutableStateOf(null)
+
+    fun onServerAddressChanged(serverAddress: TextFieldValue) {
+        if (this.serverAddress.text != serverAddress.text) {
+            error = null
+        }
+        this.serverAddress = serverAddress
+    }
+
+    fun onClientIdChanged(clientId: TextFieldValue) {
+        if (this.clientId.text != clientId.text) {
+            error = null
+        }
+        this.clientId = clientId
+    }
+
+    fun onClientSecretChanged(clientSecret: TextFieldValue) {
+        if (this.clientSecret.text != clientSecret.text) {
+            error = null
+        }
+        this.clientSecret = clientSecret
     }
 
     companion object {
