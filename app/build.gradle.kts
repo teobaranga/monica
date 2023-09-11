@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.datastore.preferences)
 
     implementation(libs.moshi)
+    implementation(libs.moshi.adapters)
     implementation(libs.moshi.converter)
     ksp(libs.moshi.kotlin.codegen)
 

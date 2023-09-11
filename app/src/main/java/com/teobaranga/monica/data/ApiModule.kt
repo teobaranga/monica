@@ -2,6 +2,9 @@ package com.teobaranga.monica.data
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
+import com.teobaranga.monica.data.user.UserApi
 import com.teobaranga.monica.settings.getOAuthSettings
 import dagger.Module
 import dagger.Provides
@@ -14,6 +17,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.Date
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -28,9 +32,10 @@ object ApiModule {
 
     private var currentRetrofit: Instance? = null
 
-    private class Instance(
+    private data class Instance(
         val retrofit: Retrofit,
         val monicaApi: MonicaApi? = null,
+        val userApi: UserApi? = null,
     )
 
     @Provides
@@ -55,10 +60,13 @@ object ApiModule {
                 }
             }
             .build()
+        val moshi = Moshi.Builder()
+            .add(Date::class.java, Rfc3339DateJsonAdapter())
+            .build()
         val retrofit = Retrofit.Builder()
             .client(client)
             .baseUrl(baseUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 
         currentRetrofit = Instance(retrofit)
@@ -71,8 +79,18 @@ object ApiModule {
         var monicaApi = currentRetrofit?.monicaApi
         if (monicaApi == null) {
             monicaApi = requireNotNull(retrofit.create(MonicaApi::class.java))
-            currentRetrofit = Instance(retrofit, monicaApi)
+            currentRetrofit = currentRetrofit?.copy(monicaApi = monicaApi)
         }
         return monicaApi
+    }
+
+    @Provides
+    fun provideUserApi(retrofit: Retrofit): UserApi {
+        var userApi = currentRetrofit?.userApi
+        if (userApi == null) {
+            userApi = requireNotNull(retrofit.create(UserApi::class.java))
+            currentRetrofit = currentRetrofit?.copy(userApi = userApi)
+        }
+        return userApi
     }
 }
