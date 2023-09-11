@@ -22,6 +22,7 @@ activity-compose = "1.8.0-alpha07"
 compose-bom = "2023.08.00"
 
 [libraries]
+androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 compose-destinations-core = { group = "io.github.raamcosta.compose-destinations", name = "core", version.ref = "compose-destinations" }
 compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations", name = "ksp", version.ref = "compose-destinations" }

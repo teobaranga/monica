@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.androidx.compose.material.icons)
 
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
