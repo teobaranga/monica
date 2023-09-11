@@ -1,7 +1,6 @@
 package com.teobaranga.monica.setup
 
 import android.content.Intent
-import android.content.res.Configuration
 import androidx.activity.ComponentActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
@@ -28,8 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.core.util.Consumer
@@ -41,6 +38,7 @@ import com.teobaranga.monica.NavGraphs
 import com.teobaranga.monica.R
 import com.teobaranga.monica.data.PARAM_CODE
 import com.teobaranga.monica.destinations.SetupDestination
+import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.keyboardAsState
 import kotlinx.coroutines.flow.collectLatest
@@ -203,15 +201,7 @@ fun SetupScreen(
     }
 }
 
-@Preview(
-    device = Devices.PIXEL_4_XL,
-    showBackground = true,
-)
-@Preview(
-    device = Devices.PIXEL_4_XL,
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
+@PreviewPixel4
 @Composable
 fun PreviewSetupScreen() {
     MonicaTheme {
