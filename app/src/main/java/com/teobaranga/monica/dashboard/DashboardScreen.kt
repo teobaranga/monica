@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +31,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.destinations.DashboardDestination
 import com.teobaranga.monica.destinations.SetupDestination
+import com.teobaranga.monica.home.HomeSearchBar
 import com.teobaranga.monica.home.HomeTab
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
@@ -63,6 +66,7 @@ fun Dashboard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     onClearAuthorization: () -> Unit,
@@ -93,14 +97,17 @@ fun DashboardScreen(
                     )
                 }
             }
-        }
+        },
     ) { contentPadding ->
-        Column(
+        HomeSearchBar(
             modifier = Modifier
                 .padding(contentPadding),
+        )
+        Column(
+            modifier = Modifier
+                .padding(contentPadding)
+                .padding(top = SearchBarDefaults.InputFieldHeight),
         ) {
-            Text(text = "Dashboard")
-
             Button(
                 onClick = onClearAuthorization,
             ) {
