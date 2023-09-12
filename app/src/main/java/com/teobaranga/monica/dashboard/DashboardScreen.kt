@@ -19,7 +19,6 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.teobaranga.monica.MonicaBackground
-import com.teobaranga.monica.home.HomeSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
@@ -33,6 +32,7 @@ fun Dashboard() {
             // TODO: shimmer
             Box(modifier = Modifier.fillMaxSize())
         }
+
         else -> {
             DashboardScreen(
                 uiState = uiState,
@@ -52,7 +52,9 @@ fun DashboardScreen(
         modifier = Modifier
             .zIndex(1f),
     ) {
-        HomeSearchBar()
+        DashboardSearchBar(
+            userInfo = uiState.userInfo,
+        )
     }
     Column(
         modifier = Modifier
@@ -63,7 +65,7 @@ fun DashboardScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 24.dp, bottom = 24.dp),
-            text = "Welcome,\n${uiState.userName}",
+            text = "Welcome,\n${uiState.userInfo.name}",
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
         )
@@ -82,7 +84,11 @@ private fun PreviewDashboardScreen() {
         MonicaBackground {
             DashboardScreen(
                 uiState = DashboardUiState(
-                    userName = "Teo",
+                    userInfo = DashboardUiState.UserInfo(
+                        name = "Teo",
+                        initials = "TB",
+                        avatarColor = "#709512",
+                    ),
                 ),
                 onClearAuthorization = { },
             )

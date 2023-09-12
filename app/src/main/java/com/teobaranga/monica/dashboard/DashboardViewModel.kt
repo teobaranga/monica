@@ -32,7 +32,13 @@ class DashboardViewModel @Inject constructor(
                 .collectLatest { me ->
                     if (me != null) {
                         withContext(dispatcher.main) {
-                            uiState = DashboardUiState(me.firstName)
+                            uiState = DashboardUiState(
+                                userInfo = DashboardUiState.UserInfo(
+                                    name = me.firstName,
+                                    initials = me.initials,
+                                    avatarColor = me.avatarColor,
+                                )
+                            )
                         }
                     }
                 }

@@ -26,6 +26,9 @@ class UserRepository @Inject constructor(
                 val body = requireNotNull(meResponse.body())
                 val me = Me(
                     firstName = body.data.firstName,
+                    initials = body.data.contact.initials,
+                    avatarUrl = body.data.contact.info.avatar.url,
+                    avatarColor = body.data.contact.info.avatar.color,
                 )
                 _me.emit(me)
             }

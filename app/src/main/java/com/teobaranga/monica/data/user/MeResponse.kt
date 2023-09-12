@@ -2,6 +2,7 @@ package com.teobaranga.monica.data.user
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.teobaranga.monica.data.contact.Contact
 import java.util.Date
 
 @JsonClass(generateAdapter = true)
@@ -13,6 +14,8 @@ data class MeResponse(
     data class Data(
         @Json(name = "first_name")
         val firstName: String,
+        @Json(name = "me_contact")
+        val contact: Contact,
         @Json(name = "updated_at")
         val updatedAt: Date,
     )
