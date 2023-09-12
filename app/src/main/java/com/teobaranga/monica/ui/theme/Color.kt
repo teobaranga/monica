@@ -10,8 +10,13 @@ val Primary80 = Color(0xFF94CCFF)
 val Primary90 = Color(0xFFCDE5FF)
 val Primary100 = Color(0xFFFFFFFF)
 
+val Secondary10 = Color(0xFF0D1D2A)
+val Secondary20 = Color(0xFF233240)
+val Secondary30 = Color(0xFF394857)
 val Secondary40 = Color(0xFF51606F)
 val Secondary80 = Color(0xFFB9C8DA)
+val Secondary90 = Color(0xFFD4E4F6)
+val Secondary100 = Color.White
 
 val Tertiary40 = Color(0xFF67587A)
 val Tertiary80 = Color(0xFFD2BFE7)
