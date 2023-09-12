@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
@@ -64,13 +65,15 @@ fun HomeScreen(
             )
         },
     ) { contentPadding ->
-        DestinationsNavHost(
-            modifier = Modifier
-                .padding(contentPadding),
-            navGraph = NavGraphs.rootHome,
-            engine = engine,
-            navController = navController,
-        )
+        if (!LocalInspectionMode.current) {
+            DestinationsNavHost(
+                modifier = Modifier
+                    .padding(contentPadding),
+                navGraph = NavGraphs.rootHome,
+                engine = engine,
+                navController = navController,
+            )
+        }
     }
 }
 
