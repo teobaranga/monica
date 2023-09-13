@@ -6,6 +6,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -54,9 +55,11 @@ class ContactRepository @Inject constructor(
         }
     }
 
-    fun getContact(id: Int): Flow<Contact?> {
-        return _contacts.mapLatest {
-            it[id]
-        }
+    fun getContact(id: Int): Flow<Contact> {
+        return _contacts
+            .mapLatest {
+                it[id]
+            }
+            .filterNotNull()
     }
 }

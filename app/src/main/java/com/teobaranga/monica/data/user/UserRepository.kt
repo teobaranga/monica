@@ -25,6 +25,7 @@ class UserRepository @Inject constructor(
             if (meResponse.isSuccessful) {
                 val body = requireNotNull(meResponse.body())
                 val me = Me(
+                    id = body.data.contact.id,
                     firstName = body.data.firstName,
                     initials = body.data.contact.initials,
                     avatarUrl = body.data.contact.info.avatar.url,

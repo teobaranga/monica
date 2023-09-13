@@ -82,6 +82,7 @@ private fun PreviewDashboardScreen() {
                         name = "Teo",
                         initials = "TB",
                         avatarColor = "#709512",
+                        avatarData = null,
                     ),
                 ),
                 onClearAuthorization = { },

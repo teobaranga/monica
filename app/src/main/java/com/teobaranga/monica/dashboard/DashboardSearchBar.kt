@@ -1,13 +1,10 @@
 package com.teobaranga.monica.dashboard
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DockedSearchBar
@@ -17,11 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.pointer.pointerInput
@@ -30,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.core.graphics.toColorInt
 import com.teobaranga.monica.MonicaBackground
+import com.teobaranga.monica.ui.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.keyboardAsState
 
@@ -74,15 +71,21 @@ fun DashboardSearchBar(
                 )
             },
             trailingIcon = {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(CircleShape)
-                        .background(Color(userInfo.avatarColor.toColorInt())),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(text = userInfo.initials)
+                val userAvatar = remember(userInfo) {
+                    if (userInfo.avatarData != null) {
+                        UserAvatar.Photo(
+                            data = userInfo.avatarData,
+                        )
+                    } else {
+                        UserAvatar.Initials(
+                            initials = userInfo.initials,
+                            color = Color(userInfo.avatarColor.toColorInt()),
+                        )
+                    }
                 }
+                UserAvatar(
+                    userAvatar = userAvatar,
+                )
             },
             placeholder = {
                 Text(text = "Search")
@@ -104,6 +107,7 @@ private fun PreviewDashboardSearchBar() {
                         name = "Teo",
                         initials = "TB",
                         avatarColor = "#709512",
+                        avatarData = null,
                     )
                 )
             }

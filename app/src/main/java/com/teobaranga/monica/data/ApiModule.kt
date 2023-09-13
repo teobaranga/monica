@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.teobaranga.monica.data.contact.ContactApi
+import com.teobaranga.monica.data.photo.PhotoApi
 import com.teobaranga.monica.data.user.UserApi
 import com.teobaranga.monica.settings.getOAuthSettings
 import dagger.Module
@@ -38,6 +39,7 @@ object ApiModule {
         val monicaApi: MonicaApi? = null,
         val userApi: UserApi? = null,
         val contactApi: ContactApi? = null,
+        val photoApi: PhotoApi? = null,
     )
 
     @Provides
@@ -104,5 +106,15 @@ object ApiModule {
             currentRetrofit = currentRetrofit?.copy(contactApi = contactApi)
         }
         return contactApi
+    }
+
+    @Provides
+    fun providePhotoApi(retrofit: Retrofit): PhotoApi {
+        var photoApi = currentRetrofit?.photoApi
+        if (photoApi == null) {
+            photoApi = requireNotNull(retrofit.create(PhotoApi::class.java))
+            currentRetrofit = currentRetrofit?.copy(photoApi = photoApi)
+        }
+        return photoApi
     }
 }

@@ -9,19 +9,25 @@ import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.data.user.UserRepository
+import com.teobaranga.monica.domain.contact.GetContactAvatar
 import com.teobaranga.monica.settings.tokenStorage
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val dispatcher: Dispatcher,
     private val dataStore: DataStore<Preferences>,
     private val userRepository: UserRepository,
+    private val getContactAvatar: GetContactAvatar,
 ) : ViewModel() {
 
     var uiState by mutableStateOf<DashboardUiState?>(null)
@@ -29,16 +35,24 @@ class DashboardViewModel @Inject constructor(
     init {
         viewModelScope.launch(dispatcher.io) {
             userRepository.me
-                .collectLatest { me ->
-                    if (me != null) {
-                        withContext(dispatcher.main) {
-                            uiState = DashboardUiState(
-                                userInfo = DashboardUiState.UserInfo(
-                                    name = me.firstName,
-                                    initials = me.initials,
-                                    avatarColor = me.avatarColor,
-                                )
+                .filterNotNull()
+                .flatMapLatest { me ->
+                    withContext(dispatcher.main) {
+                        uiState = DashboardUiState(
+                            userInfo = DashboardUiState.UserInfo(
+                                name = me.firstName,
+                                initials = me.initials,
+                                avatarColor = me.avatarColor,
+                                avatarData = null,
                             )
+                        )
+                    }
+                    getContactAvatar(me.id)
+                }
+                .collectLatest { photo ->
+                    withContext(dispatcher.main) {
+                        uiState = uiState?.run {
+                            copy(userInfo = userInfo.copy(avatarData = photo.data))
                         }
                     }
                 }
