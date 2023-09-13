@@ -1,26 +1,14 @@
 package com.teobaranga.monica.data.contact
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-
-@JsonClass(generateAdapter = true)
 data class Contact(
-    @Json(name = "initials")
+    val id: Int,
+    val firstName: String,
+    val lastName: String?,
     val initials: String,
-    @Json(name = "information")
-    val info: Information,
+    val avatar: Avatar,
 ) {
-    @JsonClass(generateAdapter = true)
-    data class Information(
-        @Json(name = "avatar")
-        val avatar: Avatar,
-    ) {
-        @JsonClass(generateAdapter = true)
-        data class Avatar(
-            @Json(name = "url")
-            val url: String?,
-            @Json(name = "default_avatar_color")
-            val color: String,
-        )
-    }
+    data class Avatar(
+        val url: String?,
+        val color: String,
+    )
 }
