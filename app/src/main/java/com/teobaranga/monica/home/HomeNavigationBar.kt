@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.navigation.NavController
 import com.ramcosta.composedestinations.navigation.navigate
+import com.teobaranga.monica.NavGraphs
 import com.teobaranga.monica.appCurrentDestinationAsState
 import com.teobaranga.monica.destinations.Destination
 import com.teobaranga.monica.startAppDestination
@@ -29,6 +30,11 @@ fun HomeNavigationBar(
                 onClick = {
                     navController.navigate(homeTab.destination) {
                         launchSingleTop = true
+                        restoreState = true
+                        // make the dashboard screen the last one before exiting
+                        popUpTo(NavGraphs.rootDashboard.startRoute.route) {
+                            saveState = true
+                        }
                     }
                 },
                 label = {
