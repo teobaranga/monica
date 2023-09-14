@@ -12,10 +12,12 @@ data class MeResponse(
 ) {
     @JsonClass(generateAdapter = true)
     data class Data(
+        @Json(name = "id")
+        val id: Int,
         @Json(name = "first_name")
         val firstName: String,
         @Json(name = "me_contact")
-        val contact: ContactResponse,
+        val contact: ContactResponse?,
         @Json(name = "updated_at")
         val updatedAt: Date,
     )

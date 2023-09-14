@@ -1,9 +1,14 @@
 package com.teobaranga.monica.data.user
 
+import java.nio.ByteBuffer
+
 data class Me(
-    val id: Int,
     val firstName: String,
-    val initials: String,
-    val avatarUrl: String?,
-    val avatarColor: String,
-)
+    val contact: Contact?,
+) {
+    data class Contact(
+        val initials: String,
+        val avatarColor: String,
+        val avatarData: ByteBuffer?,
+    )
+}

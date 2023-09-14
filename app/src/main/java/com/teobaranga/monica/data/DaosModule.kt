@@ -17,6 +17,8 @@
 package com.teobaranga.monica.data
 
 import com.teobaranga.monica.data.contact.ContactDao
+import com.teobaranga.monica.data.photo.PhotoDao
+import com.teobaranga.monica.data.user.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,5 +28,11 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object DaosModule {
     @Provides
+    fun providesUserDao(database: MonicaDatabase): UserDao = database.userDao()
+
+    @Provides
     fun providesContactDao(database: MonicaDatabase): ContactDao = database.contactDao()
+
+    @Provides
+    fun providesPhotoDao(database: MonicaDatabase): PhotoDao = database.photoDao()
 }

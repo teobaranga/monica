@@ -4,31 +4,22 @@ import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
-import okio.ByteString.Companion.decodeBase64
 import timber.log.Timber
-import java.util.Collections
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
 class PhotoRepository @Inject constructor(
     private val dispatcher: Dispatcher,
     private val photoApi: PhotoApi,
+    private val photoDao: PhotoDao,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
-    private val photosMap = Collections.synchronizedMap(mutableMapOf<Int, List<Photo>>())
-
-    private val _contactPhotos = MutableSharedFlow<Map<Int, List<Photo>>>(replay = 1)
-
-    fun getPhotos(contactId: Int): Flow<List<Photo>> {
+    fun getPhotos(contactId: Int): Flow<List<PhotoEntity>> {
         scope.launch(dispatcher.io) {
             val photosResponse = photoApi.getPhotos(contactId)
                 .onFailure {
@@ -36,20 +27,16 @@ class PhotoRepository @Inject constructor(
                 }
                 .getOrNull() ?: return@launch
             val photoList = photosResponse.data
-                .mapNotNull {
-                    val data = it.data.split(',')[1].decodeBase64()?.asByteBuffer() ?: return@mapNotNull null
-                    Photo(
+                .map {
+                    PhotoEntity(
+                        id = it.id,
                         fileName = it.fileName,
-                        data = data
+                        data = it.data.split(',').last(),
+                        contactId = it.contact.id,
                     )
                 }
-            synchronized(photosMap) {
-                photosMap[contactId] = photoList
-            }
-            _contactPhotos.emit(photosMap)
+            photoDao.upsertPhotos(photoList)
         }
-        return _contactPhotos.mapLatest {
-            it[contactId] ?: emptyList()
-        }
+        return photoDao.getPhotos(contactId)
     }
 }
