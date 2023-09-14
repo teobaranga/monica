@@ -47,14 +47,18 @@ class UserRepository @Inject constructor(
         scope.launch(dispatcher.io) {
             val meResponse = userApi.getMe().getOrNull()
             if (meResponse != null) {
+                val contactId = meResponse.data.contact?.id
+                if (contactId != null) {
+                    contactRepository.syncContact(contactId)
+                }
+
                 val me = MeEntity(
                     id = meResponse.data.id,
                     firstName = meResponse.data.firstName,
-                    contactId = meResponse.data.contact?.id,
+                    contactId = contactId,
                 )
                 userDao.upsertMe(me)
             }
-            contactRepository.syncContacts()
         }
     }
 }

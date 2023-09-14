@@ -29,24 +29,26 @@ class ContactRepository @Inject constructor(
         }
         needsSync = false
         scope.launch(dispatcher.io) {
-            val contactsResponse = contactApi.getContacts()
+            val multipleContactsResponse = contactApi.getContacts()
                 .onFailure {
                     Timber.w("Error while loading contacts: %s", this)
                 }
                 .getOrNull() ?: return@launch
-            val contacts = contactsResponse.data
-                .map {
-                    syncPhotos(it.id)
-                    ContactEntity(
-                        id = it.id,
-                        firstName = it.firstName,
-                        lastName = it.lastName,
-                        initials = it.initials,
-                        avatarUrl = it.info.avatar.url,
-                        avatarColor = it.info.avatar.color,
-                    )
-                }
+            val contacts = multipleContactsResponse.data
+                .map(::mapContactResponse)
             contactDao.upsertContacts(contacts)
+        }
+    }
+
+    fun syncContact(contactId: Int) {
+        scope.launch(dispatcher.io) {
+            val singleContactResponse = contactApi.getContact(contactId)
+                .onFailure {
+                    Timber.w("Error while loading contact %d: %s", contactId, this)
+                }
+                .getOrNull() ?: return@launch
+            val contact = mapContactResponse(singleContactResponse.data)
+            contactDao.upsertContacts(listOf(contact))
         }
     }
 
@@ -60,5 +62,17 @@ class ContactRepository @Inject constructor(
 
     private fun syncPhotos(contactId: Int) {
         photoRepository.syncPhotos(contactId)
+    }
+    
+    private fun mapContactResponse(contactResponse: ContactResponse): ContactEntity {
+        syncPhotos(contactResponse.id)
+        return ContactEntity(
+            id = contactResponse.id,
+            firstName = contactResponse.firstName,
+            lastName = contactResponse.lastName,
+            initials = contactResponse.initials,
+            avatarUrl = contactResponse.info.avatar.url,
+            avatarColor = contactResponse.info.avatar.color,
+        )
     }
 }
