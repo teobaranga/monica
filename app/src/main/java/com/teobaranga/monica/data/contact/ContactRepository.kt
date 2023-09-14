@@ -4,26 +4,20 @@ import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
 class ContactRepository @Inject constructor(
     private val dispatcher: Dispatcher,
     private val contactApi: ContactApi,
+    private val contactDao: ContactDao,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
-
-    private val _contacts = MutableSharedFlow<Map<Int, Contact>>(replay = 1)
 
     init {
         scope.launch(dispatcher.io) {
@@ -32,35 +26,26 @@ class ContactRepository @Inject constructor(
                     Timber.w("Error while loading contacts: %s", this)
                 }
                 .getOrNull() ?: return@launch
-            val contactsMap = contactsResponse.data
+            val contacts = contactsResponse.data
                 .map {
-                    Contact(
+                    ContactEntity(
                         id = it.id,
                         firstName = it.firstName,
                         lastName = it.lastName,
                         initials = it.initials,
-                        avatar = Contact.Avatar(
-                            url = it.info.avatar.url,
-                            color = it.info.avatar.color,
-                        ),
+                        avatarUrl = it.info.avatar.url,
+                        avatarColor = it.info.avatar.color,
                     )
                 }
-                .associateBy { it.id }
-            _contacts.emit(contactsMap)
+            contactDao.upsertContacts(contacts)
         }
     }
 
-    fun getContacts(): Flow<List<Contact>> {
-        return _contacts.mapLatest {
-            it.values.toList()
-        }
+    fun getContacts(): Flow<List<ContactEntity>> {
+        return contactDao.getContacts()
     }
 
-    fun getContact(id: Int): Flow<Contact> {
-        return _contacts
-            .mapLatest {
-                it[id]
-            }
-            .filterNotNull()
+    fun getContact(id: Int): Flow<ContactEntity> {
+        return contactDao.getContact(id)
     }
 }

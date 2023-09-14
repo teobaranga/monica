@@ -21,6 +21,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+            arg("room.incremental", "true")
+        }
     }
 
     buildTypes {
@@ -82,6 +87,10 @@ dependencies {
 
     implementation(libs.retrofit)
     debugImplementation(libs.okhttp.logging.interceptor)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
     implementation(libs.sandwich)
 

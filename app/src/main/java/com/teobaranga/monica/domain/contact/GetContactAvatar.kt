@@ -25,7 +25,7 @@ class MonicaGetContactAvatar @Inject constructor(
         ) { contact, photos ->
             photos
                 .find {
-                    it.fileName in contact.avatar.url.orEmpty()
+                    it.fileName in contact.avatarUrl.orEmpty()
                 }
         }.filterNotNull()
     }
