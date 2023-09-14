@@ -1,6 +1,7 @@
 package com.teobaranga.monica.data.user
 
 import com.skydoves.sandwich.getOrNull
+import com.teobaranga.monica.data.contact.ContactRepository
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,6 +19,7 @@ class UserRepository @Inject constructor(
     private val dispatcher: Dispatcher,
     private val userApi: UserApi,
     private val userDao: UserDao,
+    private val contactRepository: ContactRepository,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
@@ -26,7 +28,7 @@ class UserRepository @Inject constructor(
         .mapLatest { meFullDetails ->
             val contact = meFullDetails.contact?.let { contact ->
                 val avatar = meFullDetails.photos
-                    .firstOrNull {  photo ->
+                    .firstOrNull { photo ->
                         photo.fileName in contact.avatarUrl.orEmpty()
                     }
                 Me.Contact(
@@ -52,6 +54,7 @@ class UserRepository @Inject constructor(
                 )
                 userDao.upsertMe(me)
             }
+            contactRepository.syncContacts()
         }
     }
 }

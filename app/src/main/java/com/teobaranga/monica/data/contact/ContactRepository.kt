@@ -2,6 +2,7 @@ package com.teobaranga.monica.data.contact
 
 import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.data.photo.PhotoRepository
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -16,10 +17,17 @@ class ContactRepository @Inject constructor(
     private val dispatcher: Dispatcher,
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
+    private val photoRepository: PhotoRepository,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
-    init {
+    private var needsSync: Boolean = true
+
+    fun syncContacts() {
+        if (!needsSync) {
+            return
+        }
+        needsSync = false
         scope.launch(dispatcher.io) {
             val contactsResponse = contactApi.getContacts()
                 .onFailure {
@@ -28,6 +36,7 @@ class ContactRepository @Inject constructor(
                 .getOrNull() ?: return@launch
             val contacts = contactsResponse.data
                 .map {
+                    syncPhotos(it.id)
                     ContactEntity(
                         id = it.id,
                         firstName = it.firstName,
@@ -47,5 +56,9 @@ class ContactRepository @Inject constructor(
 
     fun getContact(id: Int): Flow<ContactEntity> {
         return contactDao.getContact(id)
+    }
+
+    private fun syncPhotos(contactId: Int) {
+        photoRepository.syncPhotos(contactId)
     }
 }

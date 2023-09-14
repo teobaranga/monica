@@ -5,7 +5,6 @@ import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -19,7 +18,7 @@ class PhotoRepository @Inject constructor(
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
-    fun getPhotos(contactId: Int): Flow<List<PhotoEntity>> {
+    fun syncPhotos(contactId: Int) {
         scope.launch(dispatcher.io) {
             val photosResponse = photoApi.getPhotos(contactId)
                 .onFailure {
@@ -37,6 +36,5 @@ class PhotoRepository @Inject constructor(
                 }
             photoDao.upsertPhotos(photoList)
         }
-        return photoDao.getPhotos(contactId)
     }
 }
