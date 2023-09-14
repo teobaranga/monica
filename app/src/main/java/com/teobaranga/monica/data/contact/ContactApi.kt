@@ -1,10 +1,10 @@
 package com.teobaranga.monica.data.contact
 
-import retrofit2.Response
+import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.GET
 
 interface ContactApi {
 
     @GET("api/contacts")
-    suspend fun getContacts(): Response<ContactsResponse>
+    suspend fun getContacts(): ApiResponse<ContactsResponse>
 }

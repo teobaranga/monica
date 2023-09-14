@@ -1,5 +1,6 @@
 package com.teobaranga.monica.data.user
 
+import com.skydoves.sandwich.getOrNull
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -21,15 +22,14 @@ class UserRepository @Inject constructor(
 
     init {
         scope.launch(dispatcher.io) {
-            val meResponse = userApi.getMe()
-            if (meResponse.isSuccessful) {
-                val body = requireNotNull(meResponse.body())
+            val meResponse = userApi.getMe().getOrNull()
+            if (meResponse != null) {
                 val me = Me(
-                    id = body.data.contact.id,
-                    firstName = body.data.firstName,
-                    initials = body.data.contact.initials,
-                    avatarUrl = body.data.contact.info.avatar.url,
-                    avatarColor = body.data.contact.info.avatar.color,
+                    id = meResponse.data.contact.id,
+                    firstName = meResponse.data.firstName,
+                    initials = meResponse.data.contact.initials,
+                    avatarUrl = meResponse.data.contact.info.avatar.url,
+                    avatarColor = meResponse.data.contact.info.avatar.color,
                 )
                 _me.emit(me)
             }

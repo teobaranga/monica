@@ -83,6 +83,8 @@ dependencies {
     implementation(libs.retrofit)
     debugImplementation(libs.okhttp.logging.interceptor)
 
+    implementation(libs.sandwich)
+
     implementation(libs.timber)
 
     testImplementation(libs.junit)

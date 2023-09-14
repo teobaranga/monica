@@ -1,5 +1,7 @@
 package com.teobaranga.monica.data.contact
 
+import com.skydoves.sandwich.getOrNull
+import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,12 +28,11 @@ class ContactRepository @Inject constructor(
     init {
         scope.launch(dispatcher.io) {
             val contactsResponse = contactApi.getContacts()
-            if (!contactsResponse.isSuccessful) {
-                Timber.w("Error while loading contacts: %s", contactsResponse.errorBody())
-                return@launch
-            }
-            val contacts = requireNotNull(contactsResponse.body())
-            val contactsMap = contacts.data
+                .onFailure {
+                    Timber.w("Error while loading contacts: %s", this)
+                }
+                .getOrNull() ?: return@launch
+            val contactsMap = contactsResponse.data
                 .map {
                     Contact(
                         id = it.id,

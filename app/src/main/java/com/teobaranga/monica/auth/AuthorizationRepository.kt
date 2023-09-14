@@ -3,6 +3,8 @@ package com.teobaranga.monica.auth
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import com.skydoves.sandwich.getOrNull
+import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.data.MonicaApi
 import com.teobaranga.monica.data.TokenRequest
 import com.teobaranga.monica.settings.getTokenStorage
@@ -16,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
@@ -51,19 +54,18 @@ class MonicaAuthorizationRepository @Inject constructor(
     }
 
     override suspend fun signIn(clientId: String, clientSecret: String, authorizationCode: String): Boolean {
-        val response = monicaApi.get().getAccessToken(TokenRequest(clientId, clientSecret, authorizationCode))
-        return if (response.isSuccessful) {
-            val tokenResponse = requireNotNull(response.body())
-            dataStore.edit { preferences ->
-                preferences.tokenStorage {
-                    setAuthorizationCode(authorizationCode)
-                    setAccessToken(tokenResponse.accessToken)
-                    setRefreshToken(tokenResponse.refreshToken)
-                }
+        val tokenResponse = monicaApi.get().getAccessToken(TokenRequest(clientId, clientSecret, authorizationCode))
+            .onFailure {
+                Timber.w("Failed to get access token: %s", this)
             }
-            true
-        } else {
-            false
+            .getOrNull() ?: return false
+        dataStore.edit { preferences ->
+            preferences.tokenStorage {
+                setAuthorizationCode(authorizationCode)
+                setAccessToken(tokenResponse.accessToken)
+                setRefreshToken(tokenResponse.refreshToken)
+            }
         }
+        return true
     }
 }

@@ -1,5 +1,7 @@
 package com.teobaranga.monica.data.photo
 
+import com.skydoves.sandwich.getOrNull
+import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,12 +31,11 @@ class PhotoRepository @Inject constructor(
     fun getPhotos(contactId: Int): Flow<List<Photo>> {
         scope.launch(dispatcher.io) {
             val photosResponse = photoApi.getPhotos(contactId)
-            if (!photosResponse.isSuccessful) {
-                Timber.w("Error while loading photos for contact %d: %s", contactId, photosResponse.errorBody())
-                return@launch
-            }
-            val photos = requireNotNull(photosResponse.body())
-            val photoList = photos.data
+                .onFailure {
+                    Timber.w("Error while loading photos for contact %d: %s", contactId, this)
+                }
+                .getOrNull() ?: return@launch
+            val photoList = photosResponse.data
                 .mapNotNull {
                     val data = it.data.split(',')[1].decodeBase64()?.asByteBuffer() ?: return@mapNotNull null
                     Photo(

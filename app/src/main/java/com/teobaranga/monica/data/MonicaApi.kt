@@ -1,8 +1,8 @@
 package com.teobaranga.monica.data
 
+import com.skydoves.sandwich.ApiResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import retrofit2.Response
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -46,5 +46,5 @@ interface MonicaApi {
 
     @FormUrlEncoded
     @POST("oauth/token")
-    suspend fun getAccessToken(@FieldMap tokenRequest: TokenRequest): Response<TokenResponse>
+    suspend fun getAccessToken(@FieldMap tokenRequest: TokenRequest): ApiResponse<TokenResponse>
 }

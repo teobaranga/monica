@@ -2,6 +2,7 @@ package com.teobaranga.monica.data
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.teobaranga.monica.data.contact.ContactApi
@@ -71,6 +72,7 @@ object ApiModule {
             .client(client)
             .baseUrl(baseUrl)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .build()
 
         currentRetrofit = Instance(retrofit)
