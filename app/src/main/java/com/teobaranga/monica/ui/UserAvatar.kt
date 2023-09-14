@@ -40,6 +40,7 @@ fun UserAvatar(
             .clickable(onClick = onClick),
         model = ImageRequest.Builder(LocalContext.current)
             .data(userAvatar.data)
+            .memoryCacheKey("avatar")
             .crossfade(true)
             .build(),
         contentDescription = null,
