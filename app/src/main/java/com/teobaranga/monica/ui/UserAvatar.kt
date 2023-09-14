@@ -1,6 +1,7 @@
 package com.teobaranga.monica.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -10,47 +11,48 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import androidx.core.graphics.toColorInt
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
+import coil.request.ImageRequest
 import java.nio.ByteBuffer
 
-sealed interface UserAvatar {
-    data class Initials(
-        val initials: String,
-        val color: Color,
-    ) : UserAvatar
-
-    data class Photo(
-        val data: ByteBuffer,
-    ) : UserAvatar
-}
+data class UserAvatar(
+    val initials: String,
+    val color: String,
+    val data: ByteBuffer?,
+)
 
 @Composable
 fun UserAvatar(
     modifier: Modifier = Modifier,
     userAvatar: UserAvatar,
+    onClick: () -> Unit,
 ) {
-    when (userAvatar) {
-        is UserAvatar.Initials -> {
+    SubcomposeAsyncImage(
+        modifier = modifier
+            .size(32.dp)
+            .clip(CircleShape)
+            .background(Color(userAvatar.color.toColorInt()))
+            .clickable(onClick = onClick),
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(userAvatar.data)
+            .crossfade(true)
+            .build(),
+        contentDescription = null,
+    ) {
+        val state = painter.state
+        if (state is AsyncImagePainter.State.Success) {
+            SubcomposeAsyncImageContent()
+        } else {
             Box(
-                modifier = modifier
-                    .size(32.dp)
-                    .clip(CircleShape)
-                    .background(userAvatar.color),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(text = userAvatar.initials)
             }
-        }
-
-        is UserAvatar.Photo -> {
-            AsyncImage(
-                modifier = modifier
-                    .size(32.dp)
-                    .clip(CircleShape),
-                model = userAvatar.data,
-                contentDescription = null,
-            )
         }
     }
 }

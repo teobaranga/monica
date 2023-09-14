@@ -1,14 +1,12 @@
 package com.teobaranga.monica.dashboard
 
-import java.nio.ByteBuffer
+import com.teobaranga.monica.ui.UserAvatar
 
 data class DashboardUiState(
     val userInfo: UserInfo,
+    val avatar: UserAvatar,
 ) {
     data class UserInfo(
         val name: String,
-        val initials: String,
-        val avatarColor: String,
-        val avatarData: ByteBuffer?,
     )
 }

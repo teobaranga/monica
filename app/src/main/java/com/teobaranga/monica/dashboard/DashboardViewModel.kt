@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.domain.contact.GetContactAvatar
 import com.teobaranga.monica.settings.tokenStorage
+import com.teobaranga.monica.ui.UserAvatar
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,10 +42,12 @@ class DashboardViewModel @Inject constructor(
                         uiState = DashboardUiState(
                             userInfo = DashboardUiState.UserInfo(
                                 name = me.firstName,
+                            ),
+                            avatar = UserAvatar(
                                 initials = me.initials,
-                                avatarColor = me.avatarColor,
-                                avatarData = null,
-                            )
+                                color = me.avatarColor,
+                                data = null,
+                            ),
                         )
                     }
                     getContactAvatar(me.id)
@@ -52,7 +55,7 @@ class DashboardViewModel @Inject constructor(
                 .collectLatest { photo ->
                     withContext(dispatcher.main) {
                         uiState = uiState?.run {
-                            copy(userInfo = userInfo.copy(avatarData = photo.data))
+                            copy(avatar = avatar.copy(data = photo.data))
                         }
                     }
                 }

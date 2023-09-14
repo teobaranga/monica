@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.ui.PreviewPixel4
+import com.teobaranga.monica.ui.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
 @DashboardNavGraph(start = true)
@@ -48,7 +49,7 @@ fun DashboardScreen(
     onClearAuthorization: () -> Unit,
 ) {
     DashboardSearchBar(
-        userInfo = uiState.userInfo,
+        userAvatar = uiState.avatar,
     )
     Column(
         modifier = Modifier
@@ -80,9 +81,11 @@ private fun PreviewDashboardScreen() {
                 uiState = DashboardUiState(
                     userInfo = DashboardUiState.UserInfo(
                         name = "Teo",
+                    ),
+                    avatar = UserAvatar(
                         initials = "TB",
-                        avatarColor = "#709512",
-                        avatarData = null,
+                        color = "#709512",
+                        data = null,
                     ),
                 ),
                 onClearAuthorization = { },
