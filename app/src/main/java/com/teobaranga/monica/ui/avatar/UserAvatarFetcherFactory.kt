@@ -7,32 +7,40 @@ import coil.fetch.FetchResult
 import coil.fetch.Fetcher
 import coil.fetch.SourceResult
 import coil.request.Options
-import com.teobaranga.monica.data.photo.PhotoRepository
+import com.teobaranga.monica.data.contact.ContactRepository
 import kotlinx.coroutines.flow.first
 import okio.Buffer
 import okio.ByteString.Companion.decodeBase64
 import javax.inject.Inject
 
 class UserAvatarFetcherFactory @Inject constructor(
-    private val photoRepository: PhotoRepository,
+    private val contactRepository: ContactRepository,
 ) : Fetcher.Factory<UserAvatar> {
 
     /**
      * Fetcher implementation similar to `ByteBufferFetcher` where the data is fetched from our Room database.
      */
     private class UserAvatarFetcher(
-        private val photoRepository: PhotoRepository,
+        private val contactRepository: ContactRepository,
         private val data: UserAvatar,
         private val options: Options,
     ): Fetcher {
         override suspend fun fetch(): FetchResult? {
-            // TODO fetch the actual avatar rather than just getting the first picture
-            val photo = photoRepository.getPhotos(data.contactId)
+            val contactPhotos = contactRepository.getContactPhotos(data.contactId)
                 .first {
-                    it.isNotEmpty()
-                }.first()
+                    it.avatarUrl == null || it.photos.isNotEmpty()
+                }
 
-            val byteBuffer = photo.data?.decodeBase64()?.asByteBuffer() ?: return null
+            if (contactPhotos.avatarUrl == null || contactPhotos.photos.isEmpty()) {
+                return null
+            }
+
+            val avatar = contactPhotos.photos
+                .first {
+                    it.fileName in contactPhotos.avatarUrl
+                }
+
+            val byteBuffer = avatar.data?.decodeBase64()?.asByteBuffer() ?: return null
 
             val source = try {
                 Buffer().apply {
@@ -55,6 +63,6 @@ class UserAvatarFetcherFactory @Inject constructor(
     }
 
     override fun create(data: UserAvatar, options: Options, imageLoader: ImageLoader): Fetcher {
-        return UserAvatarFetcher(photoRepository, data, options)
+        return UserAvatarFetcher(contactRepository, data, options)
     }
 }

@@ -102,6 +102,7 @@ private fun PreviewDashboardSearchBar() {
                         contactId = 0,
                         initials = "TB",
                         color = "#709512",
+                        avatarUrl = null,
                     ),
                     onAvatarClick = { },
                 )

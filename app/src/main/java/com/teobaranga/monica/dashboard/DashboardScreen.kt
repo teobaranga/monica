@@ -113,6 +113,7 @@ private fun PreviewDashboardScreen() {
                         contactId = 0,
                         initials = "TB",
                         color = "#709512",
+                        avatarUrl = null,
                     ),
                 ),
                 recentContactsUiState = RecentContactsUiState(
@@ -121,11 +122,13 @@ private fun PreviewDashboardScreen() {
                             contactId = 1,
                             initials = "AB",
                             color = "#709512",
+                            avatarUrl = null,
                         ),
                         UserAvatar(
                             contactId = 2,
                             initials = "CD",
                             color = "#709512",
+                            avatarUrl = null,
                         ),
                     )
                 ),

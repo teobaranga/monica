@@ -23,6 +23,7 @@ data class UserAvatar(
     val contactId: Int,
     val initials: String,
     val color: String,
+    val avatarUrl: String?,
 )
 
 @Composable
@@ -39,7 +40,10 @@ fun UserAvatar(
             .clickable(onClick = onClick),
         model = ImageRequest.Builder(LocalContext.current)
             .data(userAvatar)
-            .memoryCacheKey(userAvatar.contactId.toString())
+            .memoryCacheKey(userAvatar.avatarUrl)
+            .diskCacheKey(userAvatar.avatarUrl)
+            // Refresh the image when the avatar changes
+            .setParameter("avatarUrl", userAvatar.avatarUrl)
             .crossfade(true)
             .build(),
         contentDescription = null,

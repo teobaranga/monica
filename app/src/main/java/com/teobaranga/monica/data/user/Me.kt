@@ -8,5 +8,6 @@ data class Me(
         val id: Int,
         val initials: String,
         val avatarColor: String,
+        val avatarUrl: String?,
     )
 }

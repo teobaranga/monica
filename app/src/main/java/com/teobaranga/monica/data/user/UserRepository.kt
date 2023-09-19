@@ -30,6 +30,7 @@ class UserRepository @Inject constructor(
                     id = contact.id,
                     initials = contact.initials,
                     avatarColor = contact.avatarColor,
+                    avatarUrl = contact.avatarUrl,
                 )
             }
             Me(

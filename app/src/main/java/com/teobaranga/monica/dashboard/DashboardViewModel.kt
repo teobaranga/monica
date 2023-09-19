@@ -38,12 +38,14 @@ class DashboardViewModel @Inject constructor(
                             contactId = me.contact.id,
                             initials = me.contact.initials,
                             color = me.contact.avatarColor,
+                            avatarUrl = me.contact.avatarUrl,
                         )
                     } else {
                         UserAvatar(
                             contactId = -1,
                             initials = me.firstName.take(2).uppercase(),
                             color = "#709512",
+                            avatarUrl = null,
                         )
                     }
                     withContext(dispatcher.main) {
@@ -65,6 +67,7 @@ class DashboardViewModel @Inject constructor(
                                 contactId = it.id,
                                 initials = it.initials,
                                 color = it.avatarColor,
+                                avatarUrl = it.avatarUrl,
                             )
                         }
                     withContext(dispatcher.main) {
