@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,9 +42,16 @@ fun DashboardSearchBar(
         modifier = Modifier
             .zIndex(1f)
             .fillMaxSize()
-            .pointerInput(Unit) {
-                detectTapGestures {
-                    shouldBeActive = false
+            //noinspection UnnecessaryComposedModifier because state is read and must update the modifier
+            .composed {
+                if (shouldBeActive) {
+                    pointerInput(Unit) {
+                        detectTapGestures {
+                            shouldBeActive = false
+                        }
+                    }
+                } else {
+                    Modifier
                 }
             },
     ) {
