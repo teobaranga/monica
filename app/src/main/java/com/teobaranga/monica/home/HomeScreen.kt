@@ -22,6 +22,7 @@ import com.teobaranga.monica.destinations.DashboardDestination
 import com.teobaranga.monica.destinations.SetupDestination
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import kotlinx.coroutines.flow.collectLatest
 
 @RootNavGraph(start = true)
 @Destination
@@ -40,6 +41,13 @@ fun Home(
                 }
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.navigation
+            .collectLatest {
+                navigator.navigate(it)
+            }
     }
 
     if (isLoggedIn == true) {

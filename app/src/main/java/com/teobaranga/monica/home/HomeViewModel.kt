@@ -8,7 +8,10 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     authorizationRepository: AuthorizationRepository,
+    homeNavigationManager: HomeNavigationManager,
 ) : ViewModel() {
 
     val isLoggedIn = authorizationRepository.isLoggedIn
+
+    val navigation = homeNavigationManager.navigation
 }

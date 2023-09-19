@@ -5,19 +5,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.teobaranga.monica.MonicaBackground
+import com.teobaranga.monica.destinations.AccountDestination
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
@@ -36,7 +35,9 @@ fun Dashboard() {
         else -> {
             DashboardScreen(
                 uiState = uiState,
-                onClearAuthorization = viewModel::onClearAuthorization,
+                onAvatarClick = {
+                    viewModel.navigateTo(AccountDestination)
+                },
             )
         }
     }
@@ -46,10 +47,11 @@ fun Dashboard() {
 @Composable
 fun DashboardScreen(
     uiState: DashboardUiState,
-    onClearAuthorization: () -> Unit,
+    onAvatarClick: () -> Unit,
 ) {
     DashboardSearchBar(
         userAvatar = uiState.avatar,
+        onAvatarClick = onAvatarClick,
     )
     Column(
         modifier = Modifier
@@ -58,17 +60,12 @@ fun DashboardScreen(
     ) {
         Text(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 24.dp, bottom = 24.dp),
-            text = "Welcome,\n${uiState.userInfo.name}",
+                .padding(horizontal = 32.dp)
+                .padding(top = 24.dp, bottom = 32.dp),
+            text = "Welcome, ${uiState.userInfo.name}",
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
         )
-        Button(
-            onClick = onClearAuthorization,
-        ) {
-            Text(text = "Sign out")
-        }
     }
 }
 
@@ -88,7 +85,7 @@ private fun PreviewDashboardScreen() {
                         data = null,
                     ),
                 ),
-                onClearAuthorization = { },
+                onAvatarClick = { },
             )
         }
     }

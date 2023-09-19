@@ -32,6 +32,7 @@ import com.teobaranga.monica.util.compose.keyboardAsState
 fun DashboardSearchBar(
     modifier: Modifier = Modifier,
     userAvatar: UserAvatar,
+    onAvatarClick: () -> Unit,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     var shouldBeActive by rememberSaveable { mutableStateOf(false) }
@@ -70,13 +71,11 @@ fun DashboardSearchBar(
             trailingIcon = {
                 UserAvatar(
                     userAvatar = userAvatar,
-                    onClick = {
-                        // TODO display user dialog
-                    },
+                    onClick = onAvatarClick,
                 )
             },
             placeholder = {
-                Text(text = "Search")
+                Text(text = "Search something")
             }
         ) {
             // TODO: display results
@@ -96,6 +95,7 @@ private fun PreviewDashboardSearchBar() {
                         color = "#709512",
                         data = null,
                     ),
+                    onAvatarClick = { },
                 )
             }
         }
