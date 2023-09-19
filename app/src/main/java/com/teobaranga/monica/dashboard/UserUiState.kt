@@ -1,8 +1,8 @@
 package com.teobaranga.monica.dashboard
 
-import com.teobaranga.monica.ui.UserAvatar
+import com.teobaranga.monica.ui.avatar.UserAvatar
 
-data class DashboardUiState(
+data class UserUiState(
     val userInfo: UserInfo,
     val avatar: UserAvatar,
 ) {

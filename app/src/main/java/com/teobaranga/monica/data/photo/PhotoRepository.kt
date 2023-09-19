@@ -5,6 +5,7 @@ import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -36,5 +37,10 @@ class PhotoRepository @Inject constructor(
                 }
             photoDao.upsertPhotos(photoList)
         }
+    }
+
+    fun getPhotos(contactId: Int): Flow<List<PhotoEntity>> {
+        syncPhotos(contactId)
+        return photoDao.getPhotos(contactId)
     }
 }

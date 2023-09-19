@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.teobaranga.monica.MonicaBackground
-import com.teobaranga.monica.ui.UserAvatar
+import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.keyboardAsState
 
@@ -99,9 +99,9 @@ private fun PreviewDashboardSearchBar() {
             Box {
                 DashboardSearchBar(
                     userAvatar = UserAvatar(
+                        contactId = 0,
                         initials = "TB",
                         color = "#709512",
-                        data = null,
                     ),
                     onAvatarClick = { },
                 )

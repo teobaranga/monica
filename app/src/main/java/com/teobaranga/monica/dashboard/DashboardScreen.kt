@@ -1,10 +1,15 @@
 package com.teobaranga.monica.dashboard
 
 import DashboardNavGraph
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarDefaults
@@ -18,7 +23,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.destinations.AccountDestination
 import com.teobaranga.monica.ui.PreviewPixel4
-import com.teobaranga.monica.ui.UserAvatar
+import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
 @DashboardNavGraph(start = true)
@@ -26,46 +31,71 @@ import com.teobaranga.monica.ui.theme.MonicaTheme
 @Composable
 fun Dashboard() {
     val viewModel = hiltViewModel<DashboardViewModel>()
-    when (val uiState = viewModel.uiState) {
-        null -> {
-            // TODO: shimmer
-            Box(modifier = Modifier.fillMaxSize())
-        }
-
-        else -> {
-            DashboardScreen(
-                uiState = uiState,
-                onAvatarClick = {
-                    viewModel.navigateTo(AccountDestination)
-                },
-            )
-        }
-    }
+    DashboardScreen(
+        userUiState = viewModel.userUiState,
+        recentContactsUiState = viewModel.recentContactsUiState,
+        onAvatarClick = {
+            viewModel.navigateTo(AccountDestination)
+        },
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
-    uiState: DashboardUiState,
+    userUiState: UserUiState?,
+    recentContactsUiState: RecentContactsUiState?,
     onAvatarClick: () -> Unit,
 ) {
-    DashboardSearchBar(
-        userAvatar = uiState.avatar,
-        onAvatarClick = onAvatarClick,
-    )
+    if (userUiState != null) {
+        DashboardSearchBar(
+            userAvatar = userUiState.avatar,
+            onAvatarClick = onAvatarClick,
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = SearchBarDefaults.InputFieldHeight),
     ) {
-        Text(
-            modifier = Modifier
-                .padding(horizontal = 32.dp)
-                .padding(top = 24.dp, bottom = 32.dp),
-            text = "Welcome, ${uiState.userInfo.name}",
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center,
-        )
+        if (userUiState != null) {
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = 32.dp)
+                    .padding(top = 24.dp, bottom = 32.dp),
+                text = "Welcome, ${userUiState.userInfo.name}",
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
+            )
+        }
+
+        if (recentContactsUiState != null) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
+                text = "Recent contacts",
+                style = MaterialTheme.typography.titleSmall,
+            )
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(horizontal = 20.dp)
+            ) {
+                items(recentContactsUiState.contacts) {
+                    UserAvatar(
+                        modifier = Modifier
+                            .size(72.dp),
+                        userAvatar = it,
+                        onClick = {
+                            // TODO: launch contact screen
+                        },
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -75,15 +105,29 @@ private fun PreviewDashboardScreen() {
     MonicaTheme {
         MonicaBackground {
             DashboardScreen(
-                uiState = DashboardUiState(
-                    userInfo = DashboardUiState.UserInfo(
+                userUiState = UserUiState(
+                    userInfo = UserUiState.UserInfo(
                         name = "Teo",
                     ),
                     avatar = UserAvatar(
+                        contactId = 0,
                         initials = "TB",
                         color = "#709512",
-                        data = null,
                     ),
+                ),
+                recentContactsUiState = RecentContactsUiState(
+                    contacts = listOf(
+                        UserAvatar(
+                            contactId = 1,
+                            initials = "AB",
+                            color = "#709512",
+                        ),
+                        UserAvatar(
+                            contactId = 2,
+                            initials = "CD",
+                            color = "#709512",
+                        ),
+                    )
                 ),
                 onAvatarClick = { },
             )

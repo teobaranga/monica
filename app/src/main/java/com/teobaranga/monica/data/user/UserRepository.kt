@@ -9,7 +9,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
-import okio.ByteString.Companion.decodeBase64
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,14 +26,10 @@ class UserRepository @Inject constructor(
         .filterNotNull()
         .mapLatest { meFullDetails ->
             val contact = meFullDetails.contact?.let { contact ->
-                val avatar = meFullDetails.photos
-                    .firstOrNull { photo ->
-                        photo.fileName in contact.avatarUrl.orEmpty()
-                    }
                 Me.Contact(
+                    id = contact.id,
                     initials = contact.initials,
                     avatarColor = contact.avatarColor,
-                    avatarData = avatar?.data?.decodeBase64()?.asByteBuffer(),
                 )
             }
             Me(

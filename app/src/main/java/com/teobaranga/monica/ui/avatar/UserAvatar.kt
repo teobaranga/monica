@@ -1,4 +1,4 @@
-package com.teobaranga.monica.ui
+package com.teobaranga.monica.ui.avatar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,12 +18,11 @@ import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import coil.request.ImageRequest
-import java.nio.ByteBuffer
 
 data class UserAvatar(
+    val contactId: Int,
     val initials: String,
     val color: String,
-    val data: ByteBuffer?,
 )
 
 @Composable
@@ -39,8 +38,8 @@ fun UserAvatar(
             .background(Color(userAvatar.color.toColorInt()))
             .clickable(onClick = onClick),
         model = ImageRequest.Builder(LocalContext.current)
-            .data(userAvatar.data)
-            .memoryCacheKey("avatar")
+            .data(userAvatar)
+            .memoryCacheKey(userAvatar.contactId.toString())
             .crossfade(true)
             .build(),
         contentDescription = null,
