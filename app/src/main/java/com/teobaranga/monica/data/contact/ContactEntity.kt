@@ -2,6 +2,7 @@ package com.teobaranga.monica.data.contact
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.ZonedDateTime
 
 @Entity(tableName = "contacts")
 data class ContactEntity(
@@ -12,4 +13,5 @@ data class ContactEntity(
     val initials: String,
     val avatarUrl: String?,
     val avatarColor: String,
+    val updated: ZonedDateTime?,
 )

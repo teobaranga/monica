@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
+import com.teobaranga.monica.data.adapter.ZonedDateTimeAdapter
 import com.teobaranga.monica.data.contact.ContactApi
 import com.teobaranga.monica.data.photo.PhotoApi
 import com.teobaranga.monica.data.user.UserApi
@@ -20,7 +20,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.Date
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -44,8 +44,18 @@ object ApiModule {
     )
 
     @Provides
+    @Singleton
+    fun provideMoshiConverterFactory(): MoshiConverterFactory {
+        val moshi = Moshi.Builder()
+            .add(ZonedDateTimeAdapter())
+            .build()
+        return MoshiConverterFactory.create(moshi)
+    }
+
+    @Provides
     fun provideRetrofit(
         interceptors: Set<@JvmSuppressWildcards Interceptor>,
+        moshiConverterFactory: MoshiConverterFactory,
         dataStore: DataStore<Preferences>,
     ): Retrofit {
         val baseUrl = runBlocking {
@@ -65,13 +75,10 @@ object ApiModule {
                 }
             }
             .build()
-        val moshi = Moshi.Builder()
-            .add(Date::class.java, Rfc3339DateJsonAdapter())
-            .build()
         val retrofit = Retrofit.Builder()
             .client(client)
             .baseUrl(baseUrl)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(moshiConverterFactory)
             .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .build()
 

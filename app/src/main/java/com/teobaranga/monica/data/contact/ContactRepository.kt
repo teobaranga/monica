@@ -4,6 +4,7 @@ import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.data.photo.ContactPhotos
 import com.teobaranga.monica.data.photo.PhotoRepository
+import com.teobaranga.monica.database.OrderBy
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -24,7 +25,7 @@ class ContactRepository @Inject constructor(
 
     private var needsSync: Boolean = true
 
-    fun syncContacts() {
+    private fun syncContacts() {
         if (!needsSync) {
             return
         }
@@ -53,8 +54,9 @@ class ContactRepository @Inject constructor(
         }
     }
 
-    fun getContacts(): Flow<List<ContactEntity>> {
-        return contactDao.getContacts()
+    fun getContacts(orderBy: OrderBy? = null): Flow<List<ContactEntity>> {
+        syncContacts()
+        return contactDao.getContacts(orderBy = orderBy?.let { OrderBy(it.columnName, it.isAscending) })
     }
 
     fun getContact(id: Int): Flow<ContactEntity> {
@@ -78,6 +80,20 @@ class ContactRepository @Inject constructor(
             initials = contactResponse.initials,
             avatarUrl = contactResponse.info.avatar.url,
             avatarColor = contactResponse.info.avatar.color,
+            updated = contactResponse.updated,
         )
+    }
+
+    sealed interface OrderBy {
+
+        val columnName: String
+
+        val isAscending: Boolean
+
+        data class Updated(
+            override val isAscending: Boolean,
+        ) : OrderBy {
+            override val columnName = "datetime(updated)"
+        }
     }
 }

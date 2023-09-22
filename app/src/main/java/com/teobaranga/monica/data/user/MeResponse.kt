@@ -3,7 +3,7 @@ package com.teobaranga.monica.data.user
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.teobaranga.monica.data.contact.ContactResponse
-import java.util.Date
+import java.time.ZonedDateTime
 
 @JsonClass(generateAdapter = true)
 data class MeResponse(
@@ -19,6 +19,6 @@ data class MeResponse(
         @Json(name = "me_contact")
         val contact: ContactResponse?,
         @Json(name = "updated_at")
-        val updatedAt: Date,
+        val updatedAt: ZonedDateTime,
     )
 }

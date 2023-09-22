@@ -59,7 +59,7 @@ class DashboardViewModel @Inject constructor(
                 }
         }
         viewModelScope.launch(dispatcher.io) {
-            contactRepository.getContacts()
+            contactRepository.getContacts(orderBy = ContactRepository.OrderBy.Updated(isAscending = false))
                 .collectLatest {
                     val userAvatars = it.take(10)
                         .map {
