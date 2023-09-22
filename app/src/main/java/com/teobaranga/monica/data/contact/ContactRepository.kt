@@ -25,13 +25,24 @@ class ContactRepository @Inject constructor(
 
     private var needsSync: Boolean = true
 
-    private fun syncContacts() {
+    private fun syncContacts(orderBy: OrderBy? = null) {
         if (!needsSync) {
             return
         }
         needsSync = false
         scope.launch(dispatcher.io) {
-            val multipleContactsResponse = contactApi.getContacts()
+            val sort = when (orderBy) {
+                is OrderBy.Updated -> {
+                    buildString {
+                        if (!orderBy.isAscending) {
+                            append("-")
+                        }
+                        append("updated_at")
+                    }
+                }
+                null -> null
+            }
+            val multipleContactsResponse = contactApi.getContacts(sort = sort)
                 .onFailure {
                     Timber.w("Error while loading contacts: %s", this)
                 }
