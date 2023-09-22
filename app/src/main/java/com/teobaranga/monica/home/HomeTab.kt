@@ -5,29 +5,27 @@ import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
-import com.teobaranga.monica.destinations.ContactsDestination
-import com.teobaranga.monica.destinations.DashboardDestination
-import com.teobaranga.monica.destinations.JournalDestination
+import com.teobaranga.monica.NavGraph
+import com.teobaranga.monica.NavGraphs
 
 enum class HomeTab(
     val icon: ImageVector,
     val label: String,
-    val destination: DirectionDestinationSpec,
+    val destination: NavGraph,
 ) {
     DASHBOARD(
         icon = Icons.Default.Dashboard,
         label = "Dashboard",
-        destination = DashboardDestination,
+        destination = NavGraphs.rootDashboard,
     ),
     CONTACTS(
         icon = Icons.Default.Groups,
         label = "Contacts",
-        destination = ContactsDestination,
+        destination = NavGraphs.rootContacts,
     ),
     JOURNAL(
         icon = Icons.Default.MenuBook,
         label = "Journal",
-        destination = JournalDestination,
+        destination = NavGraphs.rootJournal,
     ),
 }
