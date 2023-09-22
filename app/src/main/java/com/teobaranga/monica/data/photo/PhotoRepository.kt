@@ -19,11 +19,17 @@ class PhotoRepository @Inject constructor(
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
-    fun syncPhotos(contactId: Int) {
+    private var needsSync: Boolean = true
+
+    fun syncPhotos() {
+        if (!needsSync) {
+            return
+        }
+        needsSync = false
         scope.launch(dispatcher.io) {
-            val photosResponse = photoApi.getPhotos(contactId)
+            val photosResponse = photoApi.getPhotos()
                 .onFailure {
-                    Timber.w("Error while loading photos for contact %d: %s", contactId, this)
+                    Timber.e("Error while loading photos: %s", this)
                 }
                 .getOrNull() ?: return@launch
             val photoList = photosResponse.data
@@ -40,7 +46,7 @@ class PhotoRepository @Inject constructor(
     }
 
     fun getPhotos(contactId: Int): Flow<List<PhotoEntity>> {
-        syncPhotos(contactId)
+        syncPhotos()
         return photoDao.getPhotos(contactId)
     }
 }

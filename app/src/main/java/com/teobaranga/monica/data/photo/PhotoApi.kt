@@ -7,6 +7,9 @@ import retrofit2.http.Path
 
 interface PhotoApi {
 
+    @GET("api/photos")
+    suspend fun getPhotos(): ApiResponse<ContactPhotosResponse>
+
     @GET("api/contacts/{id}/photos")
     suspend fun getPhotos(@Path("id") id: Int): ApiResponse<ContactPhotosResponse>
 }

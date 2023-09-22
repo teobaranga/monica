@@ -91,12 +91,12 @@ class ContactRepository @Inject constructor(
         return contactDao.getContactPhotos(contactId)
     }
 
-    private fun syncPhotos(contactId: Int) {
-        photoRepository.syncPhotos(contactId)
+    private fun syncPhotos() {
+        photoRepository.syncPhotos()
     }
 
     private fun mapContactResponse(contactResponse: ContactResponse): ContactEntity {
-        syncPhotos(contactResponse.id)
+        syncPhotos()
         return ContactEntity(
             id = contactResponse.id,
             firstName = contactResponse.firstName,
