@@ -9,6 +9,7 @@ interface ContactApi {
 
     @GET("api/contacts")
     suspend fun getContacts(
+        @Query("page") page: Int? = null,
         @Query("sort") sort: String? = null,
     ): ApiResponse<MultipleContactsResponse>
 

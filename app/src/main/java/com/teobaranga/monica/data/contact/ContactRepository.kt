@@ -40,16 +40,29 @@ class ContactRepository @Inject constructor(
                         append("updated_at")
                     }
                 }
+
                 null -> null
             }
-            val multipleContactsResponse = contactApi.getContacts(sort = sort)
-                .onFailure {
-                    Timber.w("Error while loading contacts: %s", this)
+
+            var nextPage: Int? = 1
+            while (nextPage != null) {
+                val multipleContactsResponse = contactApi.getContacts(page = nextPage, sort = sort)
+                    .onFailure {
+                        Timber.w("Error while loading contacts: %s", this)
+                    }
+                    .getOrNull() ?: return@launch
+                val contacts = multipleContactsResponse.data
+                    .map(::mapContactResponse)
+                contactDao.upsertContacts(contacts)
+
+                multipleContactsResponse.meta.run {
+                    if (currentPage != lastPage) {
+                        nextPage = currentPage + 1
+                    } else {
+                        nextPage = null
+                    }
                 }
-                .getOrNull() ?: return@launch
-            val contacts = multipleContactsResponse.data
-                .map(::mapContactResponse)
-            contactDao.upsertContacts(contacts)
+            }
         }
     }
 
@@ -81,7 +94,7 @@ class ContactRepository @Inject constructor(
     private fun syncPhotos(contactId: Int) {
         photoRepository.syncPhotos(contactId)
     }
-    
+
     private fun mapContactResponse(contactResponse: ContactResponse): ContactEntity {
         syncPhotos(contactResponse.id)
         return ContactEntity(
