@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.data.contact.ContactRepository
+import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -35,7 +36,13 @@ class ContactsViewModel @Inject constructor(
                                         append(" ")
                                         append(it.lastName)
                                     }
-                                }
+                                },
+                                userAvatar = UserAvatar(
+                                    contactId = it.id,
+                                    initials = it.initials,
+                                    color = it.avatarColor,
+                                    avatarUrl = it.avatarUrl,
+                                ),
                             )
                         }
                     withContext(dispatcher.main) {
