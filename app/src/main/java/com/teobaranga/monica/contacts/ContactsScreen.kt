@@ -22,6 +22,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -40,29 +42,32 @@ import com.teobaranga.monica.ui.theme.MonicaTheme
 @Composable
 fun Contacts() {
     val viewModel = hiltViewModel<ContactsViewModel>()
-    val uiState = viewModel.uiState
-    val userAvatar = viewModel.userAvatar
-    if (userAvatar == null || uiState == null) {
-        // TODO: shimmer
-        Box(modifier = Modifier.fillMaxSize())
-    } else {
-        ContactsScreen(
-            userAvatar = userAvatar,
-            uiState = uiState,
-            onContactSelected = {
-                // TODO
-            },
-            onAvatarClick = {
-                // TODO
-            },
-        )
+    val uiState by viewModel.uiState.collectAsState()
+    val userAvatar by viewModel.userAvatar.collectAsState()
+    when (userAvatar) {
+        null -> {
+            // TODO: shimmer
+            Box(modifier = Modifier.fillMaxSize())
+        }
+        else -> {
+            ContactsScreen(
+                userAvatar = userAvatar,
+                uiState = uiState,
+                onContactSelected = {
+                    // TODO
+                },
+                onAvatarClick = {
+                    // TODO
+                },
+            )
+        }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactsScreen(
-    userAvatar: UserAvatar,
+    userAvatar: UserAvatar?,
     uiState: ContactsUiState,
     onAvatarClick: () -> Unit,
     onContactSelected: (Int) -> Unit,
@@ -72,14 +77,16 @@ fun ContactsScreen(
         0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
         1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
     )
-    DashboardSearchBar(
-        modifier = Modifier
-            .background(Brush.verticalGradient(colorStops = colors))
-            .statusBarsPadding()
-            .padding(top = 16.dp, bottom = 20.dp),
-        userAvatar = userAvatar,
-        onAvatarClick = onAvatarClick,
-    )
+    if (userAvatar != null) {
+        DashboardSearchBar(
+            modifier = Modifier
+                .background(Brush.verticalGradient(colorStops = colors))
+                .statusBarsPadding()
+                .padding(top = 16.dp, bottom = 20.dp),
+            userAvatar = userAvatar,
+            onAvatarClick = onAvatarClick,
+        )
+    }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

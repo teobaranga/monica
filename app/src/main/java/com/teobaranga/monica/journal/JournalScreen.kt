@@ -20,6 +20,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -32,14 +34,17 @@ import com.teobaranga.monica.ui.plus
 @Composable
 fun Journal() {
     val viewModel = hiltViewModel<JournalViewModel>()
-    val uiState = viewModel.uiState
-    if (uiState == null) {
-        // TODO: shimmer
-        Box(modifier = Modifier.fillMaxSize())
-    } else {
-        JournalScreen(
-            uiState = uiState,
-        )
+    val uiState by viewModel.uiState.collectAsState()
+    when (val uiState = uiState) {
+        null -> {
+            // TODO: shimmer
+            Box(modifier = Modifier.fillMaxSize())
+        }
+        else -> {
+            JournalScreen(
+                uiState = uiState,
+            )
+        }
     }
 }
 

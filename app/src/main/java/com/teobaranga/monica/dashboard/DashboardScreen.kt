@@ -16,6 +16,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,9 +34,11 @@ import com.teobaranga.monica.ui.theme.MonicaTheme
 @Composable
 fun Dashboard() {
     val viewModel = hiltViewModel<DashboardViewModel>()
+    val userUiState by viewModel.userUiState.collectAsState()
+    val recentContactsUiState by viewModel.recentContactsUiState.collectAsState()
     DashboardScreen(
-        userUiState = viewModel.userUiState,
-        recentContactsUiState = viewModel.recentContactsUiState,
+        userUiState = userUiState,
+        recentContactsUiState = recentContactsUiState,
         onAvatarClick = {
             viewModel.navigateTo(AccountDestination)
         },

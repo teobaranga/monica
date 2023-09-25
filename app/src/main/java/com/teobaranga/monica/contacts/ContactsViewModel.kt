@@ -1,64 +1,53 @@
 package com.teobaranga.monica.contacts
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.data.user.UserRepository
-import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.user.userAvatar
-import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
-    private val dispatcher: Dispatcher,
-    private val userRepository: UserRepository,
-    private val contactRepository: ContactRepository,
+    userRepository: UserRepository,
+    contactRepository: ContactRepository,
 ) : ViewModel() {
 
-    var userAvatar by mutableStateOf<UserAvatar?>(null)
-
-    var uiState by mutableStateOf<ContactsUiState?>(null)
-
-    init {
-        viewModelScope.launch(dispatcher.io) {
-            userRepository.me
-                .mapLatest { me ->
-                    me.contact?.userAvatar ?: me.userAvatar
-                }
-                .flowOn(dispatcher.main)
-                .collectLatest { avatar ->
-                    userAvatar = avatar
-                }
+    val userAvatar = userRepository.me
+        .mapLatest { me ->
+            me.contact?.userAvatar ?: me.userAvatar
         }
-        viewModelScope.launch(dispatcher.io) {
-            contactRepository.getContacts()
-                .mapLatest { contacts ->
-                    contacts
-                        .map { contact ->
-                            ContactsUiState.Contact(
-                                id = contact.id,
-                                name = contact.completeName,
-                                userAvatar = contact.userAvatar,
-                            )
-                        }
-                }
-                .flowOn(dispatcher.main)
-                .collectLatest { contacts ->
-                    uiState = ContactsUiState(
-                        contacts = contacts,
+        .stateIn(
+            scope = viewModelScope,
+            initialValue = null,
+            started = SharingStarted.WhileSubscribed(5_000),
+        )
+
+    val uiState = contactRepository.getContacts()
+        .mapLatest { contacts ->
+            val contacts = contacts
+                .map { contact ->
+                    ContactsUiState.Contact(
+                        id = contact.id,
+                        name = contact.completeName,
+                        userAvatar = contact.userAvatar,
                     )
                 }
+            ContactsUiState(
+                contacts = contacts,
+            )
         }
-    }
+        .stateIn(
+            scope = viewModelScope,
+            initialValue = ContactsUiState(
+                contacts = emptyList(),
+            ),
+            started = SharingStarted.WhileSubscribed(5_000),
+        )
 }
