@@ -6,6 +6,7 @@ import coil.ImageLoaderFactory
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Provider
 
 @HiltAndroidApp
 class MonicaApp : Application(), ImageLoaderFactory {
@@ -14,7 +15,7 @@ class MonicaApp : Application(), ImageLoaderFactory {
     lateinit var timberTrees: Set<@JvmSuppressWildcards Timber.Tree>
 
     @Inject
-    lateinit var imageLoader: ImageLoader
+    lateinit var imageLoader: Provider<ImageLoader>
 
     override fun onCreate() {
         super.onCreate()
@@ -23,6 +24,6 @@ class MonicaApp : Application(), ImageLoaderFactory {
     }
 
     override fun newImageLoader(): ImageLoader {
-        return imageLoader
+        return imageLoader.get()
     }
 }
