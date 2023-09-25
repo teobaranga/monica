@@ -65,7 +65,11 @@ class SetupViewModel @Inject constructor(
 
     fun onSignIn() {
         viewModelScope.launch(dispatcher.io) {
-            val baseUrl = "${uiState.serverAddress.text}/oauth/authorize".toHttpUrlOrNull() ?: return@launch
+            val serverAddress = uiState.serverAddress.text.toHttpUrlOrNull() ?: return@launch
+            val baseUrl = serverAddress.newBuilder()
+                .addPathSegment("oauth")
+                .addPathSegment("authorize")
+                .build()
 
             dataStore.edit { preferences ->
                 preferences.oAuthSettings {
