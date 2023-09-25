@@ -13,7 +13,7 @@ class UiState {
         data object ConfigurationError: Error
     }
 
-    var serverAddress by mutableStateOf(TextFieldValue())
+    var serverAddress by mutableStateOf(TextFieldValue("https://app.monicahq.com"))
         private set
 
     var clientId by mutableStateOf(TextFieldValue())
