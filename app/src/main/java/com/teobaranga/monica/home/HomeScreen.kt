@@ -19,7 +19,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.NavGraphs
-import com.teobaranga.monica.destinations.DashboardDestination
+import com.teobaranga.monica.destinations.HomeDestination
 import com.teobaranga.monica.destinations.SetupDestination
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
@@ -37,7 +37,7 @@ fun Home(
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn == false) {
             navigator.navigate(SetupDestination) {
-                popUpTo(DashboardDestination.route) {
+                popUpTo(HomeDestination.route) {
                     inclusive = true
                 }
             }
