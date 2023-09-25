@@ -111,6 +111,7 @@ class ContactRepository @Inject constructor(
             id = contactResponse.id,
             firstName = contactResponse.firstName,
             lastName = contactResponse.lastName,
+            completeName = contactResponse.completeName,
             initials = contactResponse.initials,
             avatarUrl = contactResponse.info.avatar.url,
             avatarColor = contactResponse.info.avatar.color,

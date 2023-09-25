@@ -11,11 +11,14 @@ import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.user.userAvatar
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
     private val dispatcher: Dispatcher,
@@ -23,42 +26,38 @@ class ContactsViewModel @Inject constructor(
     private val contactRepository: ContactRepository,
 ) : ViewModel() {
 
-    var userUiState by mutableStateOf<UserAvatar?>(null)
+    var userAvatar by mutableStateOf<UserAvatar?>(null)
 
     var uiState by mutableStateOf<ContactsUiState?>(null)
 
     init {
         viewModelScope.launch(dispatcher.io) {
             userRepository.me
-                .collectLatest { me ->
-                    val avatar = me.contact?.userAvatar ?: me.userAvatar
-                    withContext(dispatcher.main) {
-                        userUiState = avatar
-                    }
+                .mapLatest { me ->
+                    me.contact?.userAvatar ?: me.userAvatar
+                }
+                .flowOn(dispatcher.main)
+                .collectLatest { avatar ->
+                    userAvatar = avatar
                 }
         }
         viewModelScope.launch(dispatcher.io) {
             contactRepository.getContacts()
-                .collectLatest {
-                    val contacts = it
+                .mapLatest { contacts ->
+                    contacts
                         .map { contact ->
                             ContactsUiState.Contact(
                                 id = contact.id,
-                                name = buildString {
-                                    append(contact.firstName)
-                                    if (contact.lastName != null) {
-                                        append(" ")
-                                        append(contact.lastName)
-                                    }
-                                },
+                                name = contact.completeName,
                                 userAvatar = contact.userAvatar,
                             )
                         }
-                    withContext(dispatcher.main) {
-                        uiState = ContactsUiState(
-                            contacts = contacts,
-                        )
-                    }
+                }
+                .flowOn(dispatcher.main)
+                .collectLatest { contacts ->
+                    uiState = ContactsUiState(
+                        contacts = contacts,
+                    )
                 }
         }
     }

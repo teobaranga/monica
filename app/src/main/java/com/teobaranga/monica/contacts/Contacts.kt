@@ -41,7 +41,7 @@ import com.teobaranga.monica.ui.theme.MonicaTheme
 fun Contacts() {
     val viewModel = hiltViewModel<ContactsViewModel>()
     val uiState = viewModel.uiState
-    val userAvatar = viewModel.userUiState
+    val userAvatar = viewModel.userAvatar
     if (userAvatar == null || uiState == null) {
         // TODO: shimmer
         Box(modifier = Modifier.fillMaxSize())

@@ -11,6 +11,7 @@ data class ContactEntity(
     val id: Int,
     val firstName: String,
     val lastName: String?,
+    val completeName: String,
     val initials: String,
     val avatarUrl: String?,
     val avatarColor: String,
@@ -22,6 +23,7 @@ fun ContactEntity.toExternalModel(): Contact {
         id = id,
         firstName = firstName,
         lastName = lastName,
+        completeName = completeName,
         initials = run {
             if (initials.length >= 2) {
                 initials

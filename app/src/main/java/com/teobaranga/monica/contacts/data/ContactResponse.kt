@@ -12,6 +12,8 @@ data class ContactResponse(
     val firstName: String,
     @Json(name = "last_name")
     val lastName: String?,
+    @Json(name = "complete_name")
+    val completeName: String,
     @Json(name = "initials")
     val initials: String,
     @Json(name = "information")
