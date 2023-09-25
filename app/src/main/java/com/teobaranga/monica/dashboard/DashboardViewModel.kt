@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.data.contact.ContactRepository
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.destinations.DirectionDestination
+import com.teobaranga.monica.domain.user.GetUserAvatarUseCase
 import com.teobaranga.monica.home.HomeNavigationManager
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.util.coroutines.Dispatcher
@@ -23,6 +24,7 @@ class DashboardViewModel @Inject constructor(
     private val homeNavigationManager: HomeNavigationManager,
     private val userRepository: UserRepository,
     private val contactRepository: ContactRepository,
+    private val getUserAvatarUseCase: GetUserAvatarUseCase,
 ) : ViewModel() {
 
     var userUiState by mutableStateOf<UserUiState?>(null)
@@ -33,21 +35,7 @@ class DashboardViewModel @Inject constructor(
         viewModelScope.launch(dispatcher.io) {
             userRepository.me
                 .collectLatest { me ->
-                    val avatar = if (me.contact != null) {
-                        UserAvatar(
-                            contactId = me.contact.id,
-                            initials = me.contact.initials,
-                            color = me.contact.avatarColor,
-                            avatarUrl = me.contact.avatarUrl,
-                        )
-                    } else {
-                        UserAvatar(
-                            contactId = -1,
-                            initials = me.firstName.take(2).uppercase(),
-                            color = "#709512",
-                            avatarUrl = null,
-                        )
-                    }
+                    val avatar = getUserAvatarUseCase(me)
                     withContext(dispatcher.main) {
                         userUiState = UserUiState(
                             userInfo = UserUiState.UserInfo(

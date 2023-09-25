@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.data.contact.ContactRepository
+import com.teobaranga.monica.data.user.UserRepository
+import com.teobaranga.monica.domain.user.GetUserAvatarUseCase
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,12 +19,25 @@ import javax.inject.Inject
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
     private val dispatcher: Dispatcher,
+    private val userRepository: UserRepository,
     private val contactRepository: ContactRepository,
+    private val getUserAvatarUseCase: GetUserAvatarUseCase,
 ) : ViewModel() {
+
+    var userUiState by mutableStateOf<UserAvatar?>(null)
 
     var uiState by mutableStateOf<ContactsUiState?>(null)
 
     init {
+        viewModelScope.launch(dispatcher.io) {
+            userRepository.me
+                .collectLatest { me ->
+                    val avatar = getUserAvatarUseCase(me)
+                    withContext(dispatcher.main) {
+                        userUiState = avatar
+                    }
+                }
+        }
         viewModelScope.launch(dispatcher.io) {
             contactRepository.getContacts()
                 .collectLatest {

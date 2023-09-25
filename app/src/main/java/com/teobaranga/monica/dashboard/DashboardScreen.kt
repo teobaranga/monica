@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,6 +50,9 @@ fun DashboardScreen(
 ) {
     if (userUiState != null) {
         DashboardSearchBar(
+            modifier = Modifier
+                .statusBarsPadding()
+                .padding(top = 16.dp),
             userAvatar = userUiState.avatar,
             onAvatarClick = onAvatarClick,
         )
@@ -56,7 +60,7 @@ fun DashboardScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = SearchBarDefaults.InputFieldHeight),
+            .padding(top = SearchBarDefaults.InputFieldHeight + 16.dp),
     ) {
         if (userUiState != null) {
             Text(

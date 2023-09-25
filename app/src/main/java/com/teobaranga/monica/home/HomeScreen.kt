@@ -1,6 +1,7 @@
 package com.teobaranga.monica.home
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -72,6 +73,7 @@ fun HomeScreen(
                 navController = navController,
             )
         },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
     ) { contentPadding ->
         if (!LocalInspectionMode.current) {
             DestinationsNavHost(

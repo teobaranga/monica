@@ -1,27 +1,38 @@
 package com.teobaranga.monica.contacts
 
 import ContactsNavGraph
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.teobaranga.monica.MonicaBackground
+import com.teobaranga.monica.dashboard.DashboardSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
 @ContactsNavGraph(start = true)
@@ -29,37 +40,55 @@ import com.teobaranga.monica.ui.theme.MonicaTheme
 @Composable
 fun Contacts() {
     val viewModel = hiltViewModel<ContactsViewModel>()
-    when (val uiState = viewModel.uiState) {
-        null -> {
-            // TODO: shimmer
-            Box(modifier = Modifier.fillMaxSize())
-        }
-
-        else -> {
-            ContactsScreen(
-                uiState = uiState,
-                onContactSelected = {
-                    // TODO
-                },
-            )
-        }
+    val uiState = viewModel.uiState
+    val userAvatar = viewModel.userUiState
+    if (userAvatar == null || uiState == null) {
+        // TODO: shimmer
+        Box(modifier = Modifier.fillMaxSize())
+    } else {
+        ContactsScreen(
+            userAvatar = userAvatar,
+            uiState = uiState,
+            onContactSelected = {
+                // TODO
+            },
+            onAvatarClick = {
+                // TODO
+            },
+        )
     }
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-    )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactsScreen(
+    userAvatar: UserAvatar,
     uiState: ContactsUiState,
+    onAvatarClick: () -> Unit,
     onContactSelected: (Int) -> Unit,
 ) {
+    val colors = arrayOf(
+        0.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
+        0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
+        1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
+    )
+    DashboardSearchBar(
+        modifier = Modifier
+            .background(Brush.verticalGradient(colorStops = colors))
+            .statusBarsPadding()
+            .padding(top = 16.dp, bottom = 20.dp),
+        userAvatar = userAvatar,
+        onAvatarClick = onAvatarClick,
+    )
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(vertical = 20.dp),
+        contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
+            top = SearchBarDefaults.InputFieldHeight + 36.dp,
+            bottom = 20.dp,
+        ),
     ) {
         items(
             items = uiState.contacts,
@@ -98,6 +127,12 @@ private fun PreviewContactsScreen() {
     MonicaTheme {
         MonicaBackground {
             ContactsScreen(
+                userAvatar = UserAvatar(
+                    contactId = 1,
+                    initials = "TB",
+                    color = "#FF0000",
+                    avatarUrl = null,
+                ),
                 uiState = ContactsUiState(
                     contacts = listOf(
                         ContactsUiState.Contact(
@@ -123,6 +158,7 @@ private fun PreviewContactsScreen() {
                     )
                 ),
                 onContactSelected = { },
+                onAvatarClick = { },
             )
         }
     }
