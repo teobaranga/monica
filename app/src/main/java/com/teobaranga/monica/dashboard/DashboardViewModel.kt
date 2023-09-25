@@ -10,15 +10,17 @@ import com.teobaranga.monica.contacts.userAvatar
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.destinations.DirectionDestination
 import com.teobaranga.monica.home.HomeNavigationManager
-import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.user.userAvatar
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val dispatcher: Dispatcher,
@@ -34,35 +36,34 @@ class DashboardViewModel @Inject constructor(
     init {
         viewModelScope.launch(dispatcher.io) {
             userRepository.me
-                .collectLatest { me ->
+                .mapLatest { me ->
                     val avatar = me.contact?.userAvatar ?: me.userAvatar
-                    withContext(dispatcher.main) {
-                        userUiState = UserUiState(
-                            userInfo = UserUiState.UserInfo(
-                                name = me.firstName,
-                            ),
-                            avatar = avatar,
-                        )
-                    }
+                    UserUiState(
+                        userInfo = UserUiState.UserInfo(
+                            name = me.firstName,
+                        ),
+                        avatar = avatar,
+                    )
+                }
+                .flowOn(dispatcher.main)
+                .collectLatest { uiState ->
+                    userUiState = uiState
                 }
         }
         viewModelScope.launch(dispatcher.io) {
             contactRepository.getContacts(orderBy = ContactRepository.OrderBy.Updated(isAscending = false))
-                .collectLatest {
-                    val userAvatars = it.take(10)
-                        .map {
-                            UserAvatar(
-                                contactId = it.id,
-                                initials = it.initials,
-                                color = it.avatarColor,
-                                avatarUrl = it.avatarUrl,
-                            )
+                .mapLatest { contacts ->
+                    val avatars = contacts.take(10)
+                        .map { contact ->
+                            contact.userAvatar
                         }
-                    withContext(dispatcher.main) {
-                        recentContactsUiState = RecentContactsUiState(
-                            contacts = userAvatars,
-                        )
-                    }
+                    RecentContactsUiState(
+                        contacts = avatars,
+                    )
+                }
+                .flowOn(dispatcher.main)
+                .collectLatest { uiState ->
+                    recentContactsUiState = uiState
                 }
         }
     }
