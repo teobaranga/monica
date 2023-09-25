@@ -7,7 +7,7 @@ import coil.fetch.FetchResult
 import coil.fetch.Fetcher
 import coil.fetch.SourceResult
 import coil.request.Options
-import com.teobaranga.monica.data.contact.ContactRepository
+import com.teobaranga.monica.contacts.data.ContactRepository
 import kotlinx.coroutines.flow.first
 import okio.Buffer
 import okio.ByteString.Companion.decodeBase64

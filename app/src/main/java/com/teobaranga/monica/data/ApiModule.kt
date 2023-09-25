@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.teobaranga.monica.data.adapter.ZonedDateTimeAdapter
-import com.teobaranga.monica.data.contact.ContactApi
+import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.data.photo.PhotoApi
 import com.teobaranga.monica.data.user.UserApi
 import com.teobaranga.monica.settings.getOAuthSettings

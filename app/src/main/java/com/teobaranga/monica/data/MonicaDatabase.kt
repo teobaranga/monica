@@ -3,8 +3,8 @@ package com.teobaranga.monica.data
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.teobaranga.monica.data.contact.ContactDao
-import com.teobaranga.monica.data.contact.ContactEntity
+import com.teobaranga.monica.contacts.data.ContactDao
+import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.data.photo.PhotoDao
 import com.teobaranga.monica.data.photo.PhotoEntity
 import com.teobaranga.monica.data.user.MeEntity

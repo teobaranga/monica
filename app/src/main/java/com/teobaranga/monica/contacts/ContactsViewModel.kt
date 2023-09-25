@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teobaranga.monica.data.contact.ContactRepository
+import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.data.user.UserRepository
-import com.teobaranga.monica.domain.user.GetUserAvatarUseCase
 import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.user.userAvatar
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -21,7 +21,6 @@ class ContactsViewModel @Inject constructor(
     private val dispatcher: Dispatcher,
     private val userRepository: UserRepository,
     private val contactRepository: ContactRepository,
-    private val getUserAvatarUseCase: GetUserAvatarUseCase,
 ) : ViewModel() {
 
     var userUiState by mutableStateOf<UserAvatar?>(null)
@@ -32,7 +31,7 @@ class ContactsViewModel @Inject constructor(
         viewModelScope.launch(dispatcher.io) {
             userRepository.me
                 .collectLatest { me ->
-                    val avatar = getUserAvatarUseCase(me)
+                    val avatar = me.contact?.userAvatar ?: me.userAvatar
                     withContext(dispatcher.main) {
                         userUiState = avatar
                     }
@@ -42,22 +41,17 @@ class ContactsViewModel @Inject constructor(
             contactRepository.getContacts()
                 .collectLatest {
                     val contacts = it
-                        .map {
+                        .map { contact ->
                             ContactsUiState.Contact(
-                                id = it.id,
+                                id = contact.id,
                                 name = buildString {
-                                    append(it.firstName)
-                                    if (it.lastName != null) {
+                                    append(contact.firstName)
+                                    if (contact.lastName != null) {
                                         append(" ")
-                                        append(it.lastName)
+                                        append(contact.lastName)
                                     }
                                 },
-                                userAvatar = UserAvatar(
-                                    contactId = it.id,
-                                    initials = it.initials,
-                                    color = it.avatarColor,
-                                    avatarUrl = it.avatarUrl,
-                                ),
+                                userAvatar = contact.userAvatar,
                             )
                         }
                     withContext(dispatcher.main) {

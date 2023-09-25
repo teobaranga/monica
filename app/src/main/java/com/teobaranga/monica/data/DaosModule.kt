@@ -16,7 +16,7 @@
 
 package com.teobaranga.monica.data
 
-import com.teobaranga.monica.data.contact.ContactDao
+import com.teobaranga.monica.contacts.data.ContactDao
 import com.teobaranga.monica.data.photo.PhotoDao
 import com.teobaranga.monica.data.user.UserDao
 import dagger.Module

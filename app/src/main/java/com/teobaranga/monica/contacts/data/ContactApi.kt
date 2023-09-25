@@ -1,4 +1,4 @@
-package com.teobaranga.monica.data.contact
+package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.GET

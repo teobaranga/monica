@@ -2,7 +2,7 @@ package com.teobaranga.monica.data.user
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.teobaranga.monica.data.contact.ContactResponse
+import com.teobaranga.monica.contacts.data.ContactResponse
 import java.time.ZonedDateTime
 
 @JsonClass(generateAdapter = true)

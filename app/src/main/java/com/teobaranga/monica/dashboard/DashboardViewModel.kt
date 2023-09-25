@@ -5,12 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teobaranga.monica.data.contact.ContactRepository
+import com.teobaranga.monica.contacts.data.ContactRepository
+import com.teobaranga.monica.contacts.userAvatar
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.destinations.DirectionDestination
-import com.teobaranga.monica.domain.user.GetUserAvatarUseCase
 import com.teobaranga.monica.home.HomeNavigationManager
 import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.user.userAvatar
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -24,7 +25,6 @@ class DashboardViewModel @Inject constructor(
     private val homeNavigationManager: HomeNavigationManager,
     private val userRepository: UserRepository,
     private val contactRepository: ContactRepository,
-    private val getUserAvatarUseCase: GetUserAvatarUseCase,
 ) : ViewModel() {
 
     var userUiState by mutableStateOf<UserUiState?>(null)
@@ -35,7 +35,7 @@ class DashboardViewModel @Inject constructor(
         viewModelScope.launch(dispatcher.io) {
             userRepository.me
                 .collectLatest { me ->
-                    val avatar = getUserAvatarUseCase(me)
+                    val avatar = me.contact?.userAvatar ?: me.userAvatar
                     withContext(dispatcher.main) {
                         userUiState = UserUiState(
                             userInfo = UserUiState.UserInfo(

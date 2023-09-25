@@ -1,4 +1,4 @@
-package com.teobaranga.monica.data.contact
+package com.teobaranga.monica.contacts.data
 
 import androidx.room.Dao
 import androidx.room.Query

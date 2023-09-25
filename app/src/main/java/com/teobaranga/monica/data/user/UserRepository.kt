@@ -1,7 +1,8 @@
 package com.teobaranga.monica.data.user
 
 import com.skydoves.sandwich.getOrNull
-import com.teobaranga.monica.data.contact.ContactRepository
+import com.teobaranga.monica.contacts.data.ContactRepository
+import com.teobaranga.monica.contacts.data.toExternalModel
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,17 +26,9 @@ class UserRepository @Inject constructor(
     val me = userDao.getMe()
         .filterNotNull()
         .mapLatest { meFullDetails ->
-            val contact = meFullDetails.contact?.let { contact ->
-                Me.Contact(
-                    id = contact.id,
-                    initials = contact.initials,
-                    avatarColor = contact.avatarColor,
-                    avatarUrl = contact.avatarUrl,
-                )
-            }
             Me(
                 firstName = meFullDetails.info.firstName,
-                contact = contact,
+                contact = meFullDetails.contact?.toExternalModel(),
             )
         }
 

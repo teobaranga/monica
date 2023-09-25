@@ -1,12 +1,8 @@
-package com.teobaranga.monica.data.contact
+package com.teobaranga.monica.contacts.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import java.time.ZonedDateTime
 
-@Entity(tableName = "contacts")
-data class ContactEntity(
-    @PrimaryKey
+data class Contact(
     val id: Int,
     val firstName: String,
     val lastName: String?,

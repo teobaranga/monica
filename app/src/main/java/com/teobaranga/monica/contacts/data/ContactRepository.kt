@@ -1,19 +1,23 @@
-package com.teobaranga.monica.data.contact
+package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.contacts.model.Contact
 import com.teobaranga.monica.data.photo.ContactPhotos
 import com.teobaranga.monica.data.photo.PhotoRepository
 import com.teobaranga.monica.database.OrderBy
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
 class ContactRepository @Inject constructor(
     private val dispatcher: Dispatcher,
@@ -78,9 +82,15 @@ class ContactRepository @Inject constructor(
         }
     }
 
-    fun getContacts(orderBy: OrderBy? = null): Flow<List<ContactEntity>> {
+    fun getContacts(orderBy: OrderBy? = null): Flow<List<Contact>> {
         syncContacts()
         return contactDao.getContacts(orderBy = orderBy?.let { OrderBy(it.columnName, it.isAscending) })
+            .mapLatest { contacts ->
+                contacts
+                    .map {
+                        it.toExternalModel()
+                    }
+            }
     }
 
     fun getContact(id: Int): Flow<ContactEntity> {

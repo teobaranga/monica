@@ -1,7 +1,7 @@
 package com.teobaranga.monica.data.photo
 
 import com.skydoves.sandwich.ApiResponse
-import com.teobaranga.monica.data.contact.ContactPhotosResponse
+import com.teobaranga.monica.contacts.data.ContactPhotosResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 
