@@ -4,10 +4,12 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
-import com.teobaranga.monica.data.adapter.ZonedDateTimeAdapter
 import com.teobaranga.monica.contacts.data.ContactApi
+import com.teobaranga.monica.data.adapter.UuidAdapter
+import com.teobaranga.monica.data.adapter.ZonedDateTimeAdapter
 import com.teobaranga.monica.data.photo.PhotoApi
 import com.teobaranga.monica.data.user.UserApi
+import com.teobaranga.monica.journal.data.JournalApi
 import com.teobaranga.monica.settings.getOAuthSettings
 import dagger.Module
 import dagger.Provides
@@ -41,6 +43,7 @@ object ApiModule {
         val userApi: UserApi? = null,
         val contactApi: ContactApi? = null,
         val photoApi: PhotoApi? = null,
+        val journalApi: JournalApi? = null,
     )
 
     @Provides
@@ -48,6 +51,7 @@ object ApiModule {
     fun provideMoshiConverterFactory(): MoshiConverterFactory {
         val moshi = Moshi.Builder()
             .add(ZonedDateTimeAdapter())
+            .add(UuidAdapter())
             .build()
         return MoshiConverterFactory.create(moshi)
     }
@@ -125,5 +129,15 @@ object ApiModule {
             currentRetrofit = currentRetrofit?.copy(photoApi = photoApi)
         }
         return photoApi
+    }
+
+    @Provides
+    fun provideJournalApi(retrofit: Retrofit): JournalApi {
+        var journalApi = currentRetrofit?.journalApi
+        if (journalApi == null) {
+            journalApi = requireNotNull(retrofit.create(JournalApi::class.java))
+            currentRetrofit = currentRetrofit?.copy(journalApi = journalApi)
+        }
+        return journalApi
     }
 }

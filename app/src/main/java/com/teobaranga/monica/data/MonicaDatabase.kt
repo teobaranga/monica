@@ -10,6 +10,8 @@ import com.teobaranga.monica.data.photo.PhotoEntity
 import com.teobaranga.monica.data.user.MeEntity
 import com.teobaranga.monica.data.user.UserDao
 import com.teobaranga.monica.database.adapter.ZonedDateTimeAdapter
+import com.teobaranga.monica.journal.database.JournalDao
+import com.teobaranga.monica.journal.database.JournalEntryEntity
 
 @Database(
     version = 1,
@@ -18,6 +20,7 @@ import com.teobaranga.monica.database.adapter.ZonedDateTimeAdapter
         MeEntity::class,
         ContactEntity::class,
         PhotoEntity::class,
+        JournalEntryEntity::class,
     ],
 )
 @TypeConverters(
@@ -27,4 +30,5 @@ abstract class MonicaDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun contactDao(): ContactDao
     abstract fun photoDao(): PhotoDao
+    abstract fun journalDao(): JournalDao
 }

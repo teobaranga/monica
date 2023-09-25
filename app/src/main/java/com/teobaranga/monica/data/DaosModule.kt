@@ -19,6 +19,7 @@ package com.teobaranga.monica.data
 import com.teobaranga.monica.contacts.data.ContactDao
 import com.teobaranga.monica.data.photo.PhotoDao
 import com.teobaranga.monica.data.user.UserDao
+import com.teobaranga.monica.journal.database.JournalDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,4 +36,7 @@ object DaosModule {
 
     @Provides
     fun providesPhotoDao(database: MonicaDatabase): PhotoDao = database.photoDao()
+
+    @Provides
+    fun providesJournalDao(database: MonicaDatabase): JournalDao = database.journalDao()
 }
