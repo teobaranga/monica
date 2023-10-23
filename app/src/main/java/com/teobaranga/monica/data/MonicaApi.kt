@@ -1,5 +1,6 @@
 package com.teobaranga.monica.data
 
+import androidx.annotation.Keep
 import com.skydoves.sandwich.ApiResponse
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -24,6 +25,7 @@ data class TokenResponse(
     val refreshToken: String,
 )
 
+@Keep
 class TokenRequest(
     clientId: String,
     clientSecret: String,
