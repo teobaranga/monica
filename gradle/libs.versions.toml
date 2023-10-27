@@ -23,7 +23,7 @@ androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 lifecycle = "2.6.2"
 activity-compose = "1.8.0-rc01"
-compose-bom = "2023.09.02"
+compose-bom = "2023.10.01"
 
 [libraries]
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
