@@ -92,6 +92,9 @@ dependencies {
     implementation(libs.moshi.converter)
     ksp(libs.moshi.kotlin.codegen)
 
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.compose)
+
     implementation(libs.retrofit)
     debugImplementation(libs.okhttp.logging.interceptor)
 
