@@ -103,6 +103,7 @@ dependencies {
     ksp(libs.room.compiler)
 
     implementation(libs.sandwich)
+    implementation(libs.sandwich.retrofit)
 
     implementation(libs.timber)
 

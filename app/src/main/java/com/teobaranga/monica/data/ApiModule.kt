@@ -2,7 +2,7 @@ package com.teobaranga.monica.data
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
+import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.data.adapter.UuidAdapter
