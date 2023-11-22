@@ -16,6 +16,12 @@ interface PhotoDao {
     )
     fun getPhotos(contactId: Int): Flow<List<PhotoEntity>>
 
+    @Query("SELECT id FROM photos")
+    fun getPhotoIds(): Flow<List<Int>>
+
     @Upsert
     suspend fun upsertPhotos(entities: List<PhotoEntity>)
+
+    @Query("DELETE FROM photos WHERE id in (:entityIds)")
+    suspend fun delete(entityIds: List<Int>)
 }

@@ -1,0 +1,66 @@
+package com.teobaranga.monica.data.photo
+
+import com.skydoves.sandwich.getOrNull
+import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.contacts.data.ContactPhotosResponse
+import com.teobaranga.monica.data.sync.Synchronizer
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class PhotoSynchronizer @Inject constructor(
+    private val photoApi: PhotoApi,
+    private val photoDao: PhotoDao,
+) : Synchronizer {
+
+    val syncState = MutableStateFlow(Synchronizer.State.IDLE)
+
+    override suspend fun sync() {
+        syncState.value = Synchronizer.State.REFRESHING
+
+        // Keep track of removed photos, start with the full database first
+        val removedIds = photoDao.getPhotoIds().first().toMutableSet()
+
+        var nextPage: Int? = 1
+        while (nextPage != null) {
+            val photosResponse = photoApi.getPhotos(page = nextPage)
+                .onFailure {
+                    Timber.w("Error while loading photos: %s", this)
+                }
+                .getOrNull() ?: break
+            val photoEntities = photosResponse.data
+                .map {
+                    it.toEntity()
+                }
+
+            photoDao.upsertPhotos(photoEntities)
+
+            photosResponse.meta.run {
+                nextPage = if (currentPage != lastPage) {
+                    currentPage + 1
+                } else {
+                    null
+                }
+            }
+
+            // Reduce the list of entries to be removed based on the entries previously inserted
+            removedIds -= photoEntities.map { it.id }.toSet()
+        }
+
+        photoDao.delete(removedIds.toList())
+
+        syncState.value = Synchronizer.State.IDLE
+    }
+
+    private fun ContactPhotosResponse.Photo.toEntity(): PhotoEntity {
+        return PhotoEntity(
+            id = id,
+            fileName = fileName,
+            data = data.split(',').last(),
+            contactId = contact.id,
+        )
+    }
+}
