@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ImageLoaderModule {
+internal object ImageLoaderModule {
 
     @Provides
     @Singleton

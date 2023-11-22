@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarDefaults
@@ -28,35 +30,48 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.teobaranga.monica.MonicaBackground
+import com.teobaranga.monica.contacts.model.Contact
 import com.teobaranga.monica.dashboard.DashboardSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import kotlinx.coroutines.flow.flowOf
 
 @ContactsNavGraph(start = true)
 @Destination
 @Composable
 fun Contacts() {
     val viewModel = hiltViewModel<ContactsViewModel>()
-    val uiState by viewModel.uiState.collectAsState()
     val userAvatar by viewModel.userAvatar.collectAsState()
+    val lazyItems = viewModel.items.collectAsLazyPagingItems()
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
     when (userAvatar) {
         null -> {
             // TODO: shimmer
             Box(modifier = Modifier.fillMaxSize())
         }
+
         else -> {
             ContactsScreen(
                 userAvatar = userAvatar,
-                uiState = uiState,
-                onContactSelected = {
+                onAvatarClick = {
                     // TODO
                 },
-                onAvatarClick = {
+                lazyItems = lazyItems,
+                isRefreshing = isRefreshing,
+                onRefresh = {
+                    viewModel.refresh()
+                },
+                onContactSelected = {
                     // TODO
                 },
             )
@@ -64,12 +79,14 @@ fun Contacts() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun ContactsScreen(
     userAvatar: UserAvatar?,
-    uiState: ContactsUiState,
     onAvatarClick: () -> Unit,
+    lazyItems: LazyPagingItems<Contact>,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     onContactSelected: (Int) -> Unit,
 ) {
     val colors = arrayOf(
@@ -87,6 +104,24 @@ fun ContactsScreen(
             onAvatarClick = onAvatarClick,
         )
     }
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = onRefresh,
+    )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .padding(top = SearchBarDefaults.InputFieldHeight + 20.dp)
+            .zIndex(2f)
+    ) {
+        PullRefreshIndicator(
+            modifier = Modifier
+                .align(Alignment.TopCenter),
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+        )
+    }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -97,32 +132,49 @@ fun ContactsScreen(
             bottom = 20.dp,
         ),
     ) {
-        items(
-            items = uiState.contacts,
-            key = { it.id },
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        onContactSelected(it.id)
-                    }
-                    .padding(horizontal = 20.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                UserAvatar(
-                    modifier = Modifier
-                        .size(48.dp),
-                    userAvatar = it.userAvatar,
-                    onClick = {
-                        onContactSelected(it.id)
+        when (lazyItems.loadState.refresh) {
+            is LoadState.Error -> {
+                // TODO
+            }
+
+            is LoadState.Loading,
+            is LoadState.NotLoading,
+            -> {
+                items(
+                    count = lazyItems.itemCount,
+                    key = {
+                        val contact = lazyItems[it]
+                        contact?.id ?: Int.MIN_VALUE
                     },
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(start = 12.dp),
-                    text = it.name,
-                )
+                ) {
+                    val contact = lazyItems[it]
+                    if (contact != null) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    onContactSelected(contact.id)
+                                }
+                                .padding(horizontal = 20.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            UserAvatar(
+                                modifier = Modifier
+                                    .size(48.dp),
+                                userAvatar = contact.userAvatar,
+                                onClick = {
+                                    onContactSelected(contact.id)
+                                },
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 12.dp),
+                                text = contact.completeName,
+                            )
+                        }
+
+                    }
+                }
             }
         }
     }
@@ -133,6 +185,32 @@ fun ContactsScreen(
 private fun PreviewContactsScreen() {
     MonicaTheme {
         MonicaBackground {
+            val lazyItems = flowOf(
+                PagingData.from(
+                    listOf(
+                        Contact(
+                            id = 1,
+                            firstName = "Alice",
+                            lastName = null,
+                            completeName = "Alice",
+                            initials = "A",
+                            avatarUrl = null,
+                            avatarColor = "#FF0000",
+                            updated = null,
+                        ),
+                        Contact(
+                            id = 2,
+                            firstName = "Bob",
+                            lastName = null,
+                            completeName = "Bob",
+                            initials = "B",
+                            avatarUrl = null,
+                            avatarColor = "#00FF00",
+                            updated = null,
+                        ),
+                    )
+                )
+            )
             ContactsScreen(
                 userAvatar = UserAvatar(
                     contactId = 1,
@@ -140,32 +218,11 @@ private fun PreviewContactsScreen() {
                     color = "#FF0000",
                     avatarUrl = null,
                 ),
-                uiState = ContactsUiState(
-                    contacts = listOf(
-                        ContactsUiState.Contact(
-                            id = 1,
-                            name = "Alice",
-                            userAvatar = UserAvatar(
-                                contactId = 1,
-                                initials = "A",
-                                color = "#FF0000",
-                                avatarUrl = null,
-                            ),
-                        ),
-                        ContactsUiState.Contact(
-                            id = 2,
-                            name = "Bob",
-                            userAvatar = UserAvatar(
-                                contactId = 2,
-                                initials = "B",
-                                color = "#00FF00",
-                                avatarUrl = null,
-                            ),
-                        ),
-                    )
-                ),
-                onContactSelected = { },
                 onAvatarClick = { },
+                lazyItems = lazyItems.collectAsLazyPagingItems(),
+                isRefreshing = false,
+                onRefresh = { },
+                onContactSelected = { },
             )
         }
     }

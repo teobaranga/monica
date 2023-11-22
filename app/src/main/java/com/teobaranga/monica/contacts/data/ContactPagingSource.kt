@@ -1,12 +1,10 @@
-package com.teobaranga.monica.journal.data
+package com.teobaranga.monica.contacts.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.teobaranga.monica.contacts.model.Contact
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.database.OrderBy
-import com.teobaranga.monica.journal.database.JournalDao
-import com.teobaranga.monica.journal.database.toExternalModel
-import com.teobaranga.monica.journal.model.JournalEntry
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -21,19 +19,19 @@ import kotlinx.coroutines.launch
 
 private const val STARTING_KEY = 0
 
-internal class JournalPagingSource @AssistedInject constructor(
+internal class ContactPagingSource @AssistedInject constructor(
     dispatcher: Dispatcher,
-    private val journalDao: JournalDao,
-    private val journalSynchronizer: JournalSynchronizer,
+    private val contactDao: ContactDao,
+    private val contactSynchronizer: ContactSynchronizer,
     @Assisted
-    private val orderBy: JournalRepository.OrderBy,
-) : PagingSource<Int, JournalEntry>() {
+    private val orderBy: ContactRepository.OrderBy,
+) : PagingSource<Int, Contact>() {
 
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
     init {
         scope.launch {
-            journalSynchronizer.syncState
+            contactSynchronizer.syncState
                 .reduce { prev, new ->
                     if (prev == Synchronizer.State.REFRESHING && new == Synchronizer.State.IDLE) {
                         scope.cancel()
@@ -44,7 +42,7 @@ internal class JournalPagingSource @AssistedInject constructor(
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, JournalEntry> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Contact> {
         // Start paging with the STARTING_KEY if this is the first load
         val start = params.key ?: STARTING_KEY
 
@@ -58,20 +56,20 @@ internal class JournalPagingSource @AssistedInject constructor(
         )
     }
 
-    override fun getRefreshKey(state: PagingState<Int, JournalEntry>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Contact>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
 
-    private suspend fun getEntries(start: Int, params: LoadParams<Int>): List<JournalEntry> {
-        return journalDao.getJournalEntries(
+    private suspend fun getEntries(start: Int, params: LoadParams<Int>): List<Contact> {
+        return contactDao.getContacts(
             orderBy = with(orderBy) { OrderBy(columnName, isAscending) },
             limit = params.loadSize,
             offset = start * params.loadSize,
-        ).map { journalEntryEntities ->
-            journalEntryEntities.map {
+        ).map { contactEntities ->
+            contactEntities.map {
                 it.toExternalModel()
             }
         }.first()
@@ -80,6 +78,6 @@ internal class JournalPagingSource @AssistedInject constructor(
 
     @AssistedFactory
     internal interface Factory {
-        fun create(orderBy: JournalRepository.OrderBy): JournalPagingSource
+        fun create(orderBy: ContactRepository.OrderBy): ContactPagingSource
     }
 }

@@ -13,7 +13,7 @@ import okio.Buffer
 import okio.ByteString.Companion.decodeBase64
 import javax.inject.Inject
 
-class UserAvatarFetcherFactory @Inject constructor(
+internal class UserAvatarFetcherFactory @Inject constructor(
     private val contactRepository: ContactRepository,
 ) : Fetcher.Factory<UserAvatar> {
 
@@ -24,7 +24,7 @@ class UserAvatarFetcherFactory @Inject constructor(
         private val contactRepository: ContactRepository,
         private val data: UserAvatar,
         private val options: Options,
-    ): Fetcher {
+    ) : Fetcher {
         override suspend fun fetch(): FetchResult? {
             val contactPhotos = contactRepository.getContactPhotos(data.contactId)
                 .first {

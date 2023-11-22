@@ -2,73 +2,27 @@ package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
-import com.teobaranga.monica.contacts.model.Contact
 import com.teobaranga.monica.data.photo.ContactPhotos
 import com.teobaranga.monica.data.photo.PhotoRepository
-import com.teobaranga.monica.database.OrderBy
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Provider
 import javax.inject.Singleton
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
-class ContactRepository @Inject constructor(
+internal class ContactRepository @Inject constructor(
     private val dispatcher: Dispatcher,
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
+    private val pagingSource: Provider<ContactPagingSource.Factory>,
     private val photoRepository: PhotoRepository,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
-
-    private var needsSync: Boolean = true
-
-    private fun syncContacts(orderBy: OrderBy? = null) {
-        if (!needsSync) {
-            return
-        }
-        needsSync = false
-        scope.launch(dispatcher.io) {
-            val sort = when (orderBy) {
-                is OrderBy.Updated -> {
-                    buildString {
-                        if (!orderBy.isAscending) {
-                            append("-")
-                        }
-                        append("updated_at")
-                    }
-                }
-
-                null -> null
-            }
-
-            var nextPage: Int? = 1
-            while (nextPage != null) {
-                val multipleContactsResponse = contactApi.getContacts(page = nextPage, sort = sort)
-                    .onFailure {
-                        Timber.w("Error while loading contacts: %s", this)
-                    }
-                    .getOrNull() ?: return@launch
-                val contacts = multipleContactsResponse.data
-                    .map(::mapContactResponse)
-                contactDao.upsertContacts(contacts)
-
-                multipleContactsResponse.meta.run {
-                    if (currentPage != lastPage) {
-                        nextPage = currentPage + 1
-                    } else {
-                        nextPage = null
-                    }
-                }
-            }
-        }
-    }
 
     fun syncContact(contactId: Int) {
         scope.launch(dispatcher.io) {
@@ -82,15 +36,8 @@ class ContactRepository @Inject constructor(
         }
     }
 
-    fun getContacts(orderBy: OrderBy? = null): Flow<List<Contact>> {
-        syncContacts()
-        return contactDao.getContacts(orderBy = orderBy?.let { OrderBy(it.columnName, it.isAscending) })
-            .mapLatest { contacts ->
-                contacts
-                    .map {
-                        it.toExternalModel()
-                    }
-            }
+    fun getContacts(orderBy: OrderBy): ContactPagingSource {
+        return pagingSource.get().create(orderBy)
     }
 
     fun getContact(id: Int): Flow<ContactEntity> {
@@ -124,6 +71,12 @@ class ContactRepository @Inject constructor(
         val columnName: String
 
         val isAscending: Boolean
+
+        data class Name(
+            override val isAscending: Boolean,
+        ) : OrderBy {
+            override val columnName = "completeName"
+        }
 
         data class Updated(
             override val isAscending: Boolean,

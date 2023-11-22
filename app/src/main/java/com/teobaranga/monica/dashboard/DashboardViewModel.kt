@@ -2,6 +2,9 @@ package com.teobaranga.monica.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.userAvatar
 import com.teobaranga.monica.data.user.UserRepository
@@ -15,9 +18,11 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+private const val PAGE_SIZE = 10
+
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class DashboardViewModel @Inject constructor(
+internal class DashboardViewModel @Inject constructor(
     private val homeNavigationManager: HomeNavigationManager,
     userRepository: UserRepository,
     contactRepository: ContactRepository,
@@ -39,23 +44,21 @@ class DashboardViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
         )
 
-    val recentContactsUiState = contactRepository.getContacts(
-        orderBy = ContactRepository.OrderBy.Updated(isAscending = false),
-    )
-        .mapLatest { contacts ->
-            val avatars = contacts.take(10)
-                .map { contact ->
-                    contact.userAvatar
-                }
-            RecentContactsUiState(
-                contacts = avatars,
+    val recentContacts = Pager(
+        // Limit to *only* PAGE_SIZE results
+        config = PagingConfig(
+            pageSize = PAGE_SIZE,
+            prefetchDistance = 0,
+            initialLoadSize = PAGE_SIZE,
+        ),
+        pagingSourceFactory = {
+            contactRepository.getContacts(
+                orderBy = ContactRepository.OrderBy.Updated(isAscending = false),
             )
-        }
-        .stateIn(
-            scope = viewModelScope,
-            initialValue = null,
-            started = SharingStarted.WhileSubscribed(5_000),
-        )
+        },
+    )
+        .flow
+        .cachedIn(viewModelScope)
 
     fun navigateTo(destination: DirectionDestination) {
         homeNavigationManager.navigateTo(destination)

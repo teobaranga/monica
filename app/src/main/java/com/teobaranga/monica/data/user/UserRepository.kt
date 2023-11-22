@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
-class UserRepository @Inject constructor(
+internal class UserRepository @Inject constructor(
     private val dispatcher: Dispatcher,
     private val userApi: UserApi,
     private val userDao: UserDao,

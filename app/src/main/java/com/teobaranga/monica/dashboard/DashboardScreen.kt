@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarDefaults
@@ -22,12 +21,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.teobaranga.monica.MonicaBackground
+import com.teobaranga.monica.contacts.model.Contact
+import com.teobaranga.monica.contacts.userAvatar
 import com.teobaranga.monica.destinations.AccountDestination
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import kotlinx.coroutines.flow.flowOf
 
 @DashboardNavGraph(start = true)
 @Destination
@@ -35,10 +41,10 @@ import com.teobaranga.monica.ui.theme.MonicaTheme
 fun Dashboard() {
     val viewModel = hiltViewModel<DashboardViewModel>()
     val userUiState by viewModel.userUiState.collectAsState()
-    val recentContactsUiState by viewModel.recentContactsUiState.collectAsState()
+    val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
     DashboardScreen(
         userUiState = userUiState,
-        recentContactsUiState = recentContactsUiState,
+        recentContacts = recentContacts,
         onAvatarClick = {
             viewModel.navigateTo(AccountDestination)
         },
@@ -49,7 +55,7 @@ fun Dashboard() {
 @Composable
 fun DashboardScreen(
     userUiState: UserUiState?,
-    recentContactsUiState: RecentContactsUiState?,
+    recentContacts: LazyPagingItems<Contact>,
     onAvatarClick: () -> Unit,
 ) {
     if (userUiState != null) {
@@ -64,6 +70,7 @@ fun DashboardScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .statusBarsPadding()
             .padding(top = SearchBarDefaults.InputFieldHeight + 16.dp),
     ) {
         if (userUiState != null) {
@@ -77,30 +84,47 @@ fun DashboardScreen(
             )
         }
 
-        if (recentContactsUiState != null) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
-                text = "Recent contacts",
-                style = MaterialTheme.typography.titleSmall,
-            )
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(horizontal = 20.dp)
-            ) {
-                items(recentContactsUiState.contacts) {
-                    UserAvatar(
-                        modifier = Modifier
-                            .size(72.dp),
-                        userAvatar = it,
-                        onClick = {
-                            // TODO: launch contact screen
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            text = "Recent contacts",
+            style = MaterialTheme.typography.titleSmall,
+        )
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = 20.dp)
+        ) {
+            when (recentContacts.loadState.refresh) {
+                is LoadState.Error -> {
+                    // TODO
+                }
+
+                is LoadState.Loading,
+                is LoadState.NotLoading,
+                -> {
+                    items(
+                        count = recentContacts.itemCount,
+                        key = {
+                            val contact = recentContacts[it]
+                            contact?.id ?: Int.MIN_VALUE
                         },
-                    )
+                    ) {
+                        val contact = recentContacts[it]
+                        if (contact != null) {
+                            UserAvatar(
+                                modifier = Modifier
+                                    .size(72.dp),
+                                userAvatar = contact.userAvatar,
+                                onClick = {
+                                    // TODO: launch contact screen
+                                },
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -112,6 +136,32 @@ fun DashboardScreen(
 private fun PreviewDashboardScreen() {
     MonicaTheme {
         MonicaBackground {
+            val recentContacts = flowOf(
+                PagingData.from(
+                    listOf(
+                        Contact(
+                            id = 1,
+                            firstName = "Alice",
+                            lastName = "B",
+                            completeName = "Alice B",
+                            initials = "AB",
+                            avatarUrl = null,
+                            avatarColor = "#709512",
+                            updated = null,
+                        ),
+                        Contact(
+                            id = 2,
+                            firstName = "Charlie",
+                            lastName = "D",
+                            completeName = "Charlie D",
+                            initials = "CD",
+                            avatarUrl = null,
+                            avatarColor = "#709512",
+                            updated = null,
+                        ),
+                    )
+                )
+            )
             DashboardScreen(
                 userUiState = UserUiState(
                     userInfo = UserUiState.UserInfo(
@@ -124,22 +174,7 @@ private fun PreviewDashboardScreen() {
                         avatarUrl = null,
                     ),
                 ),
-                recentContactsUiState = RecentContactsUiState(
-                    contacts = listOf(
-                        UserAvatar(
-                            contactId = 1,
-                            initials = "AB",
-                            color = "#709512",
-                            avatarUrl = null,
-                        ),
-                        UserAvatar(
-                            contactId = 2,
-                            initials = "CD",
-                            color = "#709512",
-                            avatarUrl = null,
-                        ),
-                    )
-                ),
+                recentContacts = recentContacts.collectAsLazyPagingItems(),
                 onAvatarClick = { },
             )
         }

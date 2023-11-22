@@ -14,12 +14,24 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class ContactDao {
 
-    fun getContacts(orderBy: OrderBy? = null): Flow<List<ContactEntity>> {
+    fun getContacts(
+        orderBy: OrderBy? = null,
+        limit: Int? = null,
+        offset: Int? = null,
+    ): Flow<List<ContactEntity>> {
         val query = buildString {
             append("SELECT * FROM contacts")
             if (orderBy != null) {
                 append(" ")
                 append("ORDER BY ${orderBy.columnName} ${if (orderBy.isAscending) "ASC" else "DESC"}")
+            }
+            if (limit != null) {
+                append(" ")
+                append("LIMIT $limit")
+            }
+            if (offset != null) {
+                append(" ")
+                append("OFFSET $offset")
             }
         }
         return getContacts(SimpleSQLiteQuery(query))
@@ -27,6 +39,9 @@ abstract class ContactDao {
 
     @RawQuery(observedEntities = [ContactEntity::class])
     protected abstract fun getContacts(query: SupportSQLiteQuery): Flow<List<ContactEntity>>
+
+    @Query("SELECT id FROM contacts")
+    abstract fun getContactIds(): Flow<List<Int>>
 
     @Query(
         value = """
@@ -42,4 +57,7 @@ abstract class ContactDao {
 
     @Upsert
     abstract suspend fun upsertContacts(entities: List<ContactEntity>)
+
+    @Query("DELETE FROM contacts WHERE id in (:entityIds)")
+    abstract suspend fun delete(entityIds: List<Int>)
 }
