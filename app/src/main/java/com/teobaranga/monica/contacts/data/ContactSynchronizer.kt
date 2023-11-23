@@ -15,7 +15,7 @@ class ContactSynchronizer @Inject constructor(
     private val contactDao: ContactDao,
 ): Synchronizer {
 
-    val syncState = MutableStateFlow(Synchronizer.State.IDLE)
+    override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
     override suspend fun sync() {
         syncState.value = Synchronizer.State.REFRESHING

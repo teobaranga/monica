@@ -16,7 +16,7 @@ class PhotoSynchronizer @Inject constructor(
     private val photoDao: PhotoDao,
 ) : Synchronizer {
 
-    val syncState = MutableStateFlow(Synchronizer.State.IDLE)
+    override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
     override suspend fun sync() {
         syncState.value = Synchronizer.State.REFRESHING

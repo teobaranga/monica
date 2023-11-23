@@ -17,7 +17,7 @@ class JournalSynchronizer @Inject constructor(
     private val journalDao: JournalDao,
 ): Synchronizer {
 
-    val syncState = MutableStateFlow(Synchronizer.State.IDLE)
+    override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
     override suspend fun sync() {
         syncState.value = Synchronizer.State.REFRESHING
