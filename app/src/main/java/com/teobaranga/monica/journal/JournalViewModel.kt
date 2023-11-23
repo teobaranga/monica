@@ -42,7 +42,11 @@ internal class JournalViewModel @Inject constructor(
         )
 
     val items = Pager(
-        config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
+        config = PagingConfig(
+            pageSize = PAGE_SIZE,
+            enablePlaceholders = false,
+            initialLoadSize = PAGE_SIZE,
+        ),
         pagingSourceFactory = {
             journalRepository.getJournalEntries(
                 orderBy = JournalRepository.OrderBy.Date(isAscending = false),
