@@ -51,7 +51,7 @@ internal class ContactPagingSource @AssistedInject constructor(
         return LoadResult.Page(
             data = entries,
             // Make sure we don't try to load items behind the STARTING_KEY
-            prevKey = if (start == 0) null else start - 1,
+            prevKey = if (start == STARTING_KEY) null else start - 1,
             nextKey = if (entries.isEmpty()) null else start + 1,
         )
     }

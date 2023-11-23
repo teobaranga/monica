@@ -41,7 +41,11 @@ internal class ContactsViewModel @Inject constructor(
         )
 
     val items = Pager(
-        config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
+        config = PagingConfig(
+            pageSize = PAGE_SIZE,
+            enablePlaceholders = false,
+            initialLoadSize = PAGE_SIZE,
+        ),
         pagingSourceFactory = {
             contactRepository.getContacts(
                 orderBy = ContactRepository.OrderBy.Name(isAscending = true),

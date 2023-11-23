@@ -3,7 +3,6 @@ package com.teobaranga.monica.contacts
 import ContactsNavGraph
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -126,9 +125,8 @@ fun ContactsScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
-            top = SearchBarDefaults.InputFieldHeight + 36.dp,
+            top = SearchBarDefaults.InputFieldHeight + 30.dp,
             bottom = 20.dp,
         ),
     ) {
@@ -149,34 +147,48 @@ fun ContactsScreen(
                 ) {
                     val contact = lazyItems[it]
                     if (contact != null) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    onContactSelected(contact.id)
-                                }
-                                .padding(horizontal = 20.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            UserAvatar(
-                                modifier = Modifier
-                                    .size(48.dp),
-                                userAvatar = contact.userAvatar,
-                                onClick = {
-                                    onContactSelected(contact.id)
-                                },
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .padding(start = 12.dp),
-                                text = contact.completeName,
-                            )
-                        }
-
+                        ContactItem(
+                            contact = contact,
+                            onContactSelected = onContactSelected,
+                        )
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ContactItem(
+    contact: Contact,
+    onContactSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable {
+                onContactSelected(contact.id)
+            }
+            .padding(
+                horizontal = 20.dp,
+                vertical = 6.dp,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        UserAvatar(
+            modifier = Modifier
+                .size(48.dp),
+            userAvatar = contact.userAvatar,
+            onClick = {
+                onContactSelected(contact.id)
+            },
+        )
+        Text(
+            modifier = Modifier
+                .padding(start = 12.dp),
+            text = contact.completeName,
+        )
     }
 }
 
