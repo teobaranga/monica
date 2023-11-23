@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -53,29 +54,20 @@ fun Contacts() {
     val userAvatar by viewModel.userAvatar.collectAsState()
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
-    when (userAvatar) {
-        null -> {
-            // TODO: shimmer
-            Box(modifier = Modifier.fillMaxSize())
-        }
-
-        else -> {
-            ContactsScreen(
-                userAvatar = userAvatar,
-                onAvatarClick = {
-                    // TODO
-                },
-                lazyItems = lazyItems,
-                isRefreshing = isRefreshing,
-                onRefresh = {
-                    viewModel.refresh()
-                },
-                onContactSelected = {
-                    // TODO
-                },
-            )
-        }
-    }
+    ContactsScreen(
+        userAvatar = userAvatar,
+        onAvatarClick = {
+            // TODO
+        },
+        lazyItems = lazyItems,
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            viewModel.refresh()
+        },
+        onContactSelected = {
+            // TODO
+        },
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
@@ -121,36 +113,42 @@ fun ContactsScreen(
             state = pullRefreshState,
         )
     }
-    LazyColumn(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
-            top = SearchBarDefaults.InputFieldHeight + 30.dp,
-            bottom = 20.dp,
-        ),
+            .pullRefresh(pullRefreshState),
     ) {
-        when (lazyItems.loadState.refresh) {
-            is LoadState.Error -> {
-                // TODO
-            }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+            contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
+                top = SearchBarDefaults.InputFieldHeight + 30.dp,
+                bottom = 20.dp,
+            ),
+        ) {
+            when (lazyItems.loadState.refresh) {
+                is LoadState.Error -> {
+                    // TODO
+                }
 
-            is LoadState.Loading,
-            is LoadState.NotLoading,
-            -> {
-                items(
-                    count = lazyItems.itemCount,
-                    key = {
+                is LoadState.Loading,
+                is LoadState.NotLoading,
+                -> {
+                    items(
+                        count = lazyItems.itemCount,
+                        key = {
+                            val contact = lazyItems[it]
+                            contact?.id ?: Int.MIN_VALUE
+                        },
+                    ) {
                         val contact = lazyItems[it]
-                        contact?.id ?: Int.MIN_VALUE
-                    },
-                ) {
-                    val contact = lazyItems[it]
-                    if (contact != null) {
-                        ContactItem(
-                            contact = contact,
-                            onContactSelected = onContactSelected,
-                        )
+                        if (contact != null) {
+                            ContactItem(
+                                contact = contact,
+                                onContactSelected = onContactSelected,
+                            )
+                        }
                     }
                 }
             }
