@@ -26,7 +26,7 @@ fun HomeNavigationBar(
     ) {
         for (homeTab in HomeTab.entries) {
             NavigationBarItem(
-                selected = currentDestination?.startAppDestination == homeTab.destination.startAppDestination,
+                selected = homeTab.destination.destinations.contains(currentDestination?.startAppDestination),
                 onClick = {
                     navController.navigate(homeTab.destination) {
                         launchSingleTop = true
