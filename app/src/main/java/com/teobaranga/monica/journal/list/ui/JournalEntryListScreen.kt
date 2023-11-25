@@ -1,4 +1,4 @@
-package com.teobaranga.monica.journal.ui
+package com.teobaranga.monica.journal.list.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,10 +13,14 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.runtime.Composable
@@ -38,14 +42,19 @@ import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
 import java.time.ZonedDateTime
 
+private val fabHeight = 56.dp
+private val fabPadding = 20.dp
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun JournalScreen(
+fun JournalEntryListScreen(
     userAvatar: UserAvatar?,
     onAvatarClick: () -> Unit,
     lazyItems: LazyPagingItems<JournalEntry>,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
+    onEntryClick: (id: Int) -> Unit,
+    onEntryAdd: () -> Unit,
 ) {
     val colors = arrayOf(
         0.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
@@ -92,7 +101,7 @@ fun JournalScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
                 top = SearchBarDefaults.InputFieldHeight + 36.dp,
-                bottom = 20.dp,
+                bottom = 20.dp + fabHeight + fabPadding,
             ),
         ) {
             when (lazyItems.loadState.refresh) {
@@ -114,13 +123,24 @@ fun JournalScreen(
                         if (journalEntry != null) {
                             JournalItem(
                                 modifier = Modifier
-                                    .padding(horizontal = 20.dp),
+                                    .padding(horizontal = fabPadding),
                                 journalEntry = journalEntry,
+                                onClick = {
+                                    onEntryClick(journalEntry.id)
+                                },
                             )
                         }
                     }
                 }
             }
+        }
+        FloatingActionButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(20.dp),
+            onClick = onEntryAdd,
+        ) {
+            Icon(Icons.Filled.Add, "Add a new entry")
         }
     }
 }
@@ -149,7 +169,7 @@ private fun PreviewJournalScreen() {
                 )
             )
         )
-        JournalScreen(
+        JournalEntryListScreen(
             userAvatar = UserAvatar(
                 contactId = 1,
                 initials = "TB",
@@ -160,6 +180,8 @@ private fun PreviewJournalScreen() {
             lazyItems = journalItems.collectAsLazyPagingItems(),
             isRefreshing = false,
             onRefresh = { },
+            onEntryClick = { },
+            onEntryAdd = { },
         )
     }
 }

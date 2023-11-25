@@ -1,4 +1,4 @@
-package com.teobaranga.monica.journal.ui
+package com.teobaranga.monica.journal.list.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,14 +22,13 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun JournalItem(
     journalEntry: JournalEntry,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth(),
-        onClick = {
-            // TODO
-        },
+        onClick = onClick,
     ) {
         Column(
             modifier = Modifier
@@ -75,6 +74,7 @@ fun PreviewJournalItem() {
                 created = ZonedDateTime.now(),
                 updated = ZonedDateTime.now(),
             ),
+            onClick = { },
         )
     }
 }

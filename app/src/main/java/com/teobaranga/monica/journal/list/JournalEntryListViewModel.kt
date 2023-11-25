@@ -1,4 +1,4 @@
-package com.teobaranga.monica.journal
+package com.teobaranga.monica.journal.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,7 +24,7 @@ private const val PAGE_SIZE = 15
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-internal class JournalViewModel @Inject constructor(
+internal class JournalEntryListViewModel @Inject constructor(
     private val dispatcher: Dispatcher,
     userRepository: UserRepository,
     private val journalRepository: JournalRepository,
