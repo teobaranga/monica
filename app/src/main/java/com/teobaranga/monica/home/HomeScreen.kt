@@ -1,7 +1,9 @@
 package com.teobaranga.monica.home
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -61,6 +63,7 @@ fun Home(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HomeScreen(
 ) {
@@ -78,7 +81,9 @@ fun HomeScreen(
         if (!LocalInspectionMode.current) {
             DestinationsNavHost(
                 modifier = Modifier
-                    .padding(contentPadding),
+                    .fillMaxSize()
+                    .padding(contentPadding)
+                    .consumeWindowInsets(contentPadding),
                 navGraph = NavGraphs.rootHome,
                 engine = engine,
                 navController = navController,
