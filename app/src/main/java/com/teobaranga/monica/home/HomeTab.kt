@@ -1,9 +1,9 @@
 package com.teobaranga.monica.home
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Groups
-import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.teobaranga.monica.NavGraph
 import com.teobaranga.monica.NavGraphs
@@ -24,7 +24,7 @@ enum class HomeTab(
         destination = NavGraphs.rootContacts,
     ),
     JOURNAL(
-        icon = Icons.Default.MenuBook,
+        icon = Icons.AutoMirrored.Filled.MenuBook,
         label = "Journal",
         destination = NavGraphs.rootJournal,
     ),
