@@ -1,6 +1,6 @@
 [versions]
 agp = "8.2.2"
-hilt = "2.50"
+hilt = "2.51"
 kotlin = "1.9.22"
 ksp = "1.9.22-1.0.17"
 browser = "1.7.0"
