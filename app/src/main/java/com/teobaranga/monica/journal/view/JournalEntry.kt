@@ -8,9 +8,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.spec.DestinationStyle
@@ -25,7 +25,7 @@ fun JournalEntry(
     entryId: Int? = null,
 ) {
     val viewModel = hiltViewModel<JournalEntryViewModel>()
-    val entry by viewModel.entry.collectAsState(null)
+    val entry by viewModel.entry.collectAsStateWithLifecycle()
     JournalEntryScreen(
         entry = entry,
     )
