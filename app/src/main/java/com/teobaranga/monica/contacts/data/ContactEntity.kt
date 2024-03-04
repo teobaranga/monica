@@ -2,7 +2,7 @@ package com.teobaranga.monica.contacts.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.teobaranga.monica.contacts.model.Contact
+import com.teobaranga.monica.contacts.list.model.Contact
 import java.time.ZonedDateTime
 
 @Entity(tableName = "contacts")

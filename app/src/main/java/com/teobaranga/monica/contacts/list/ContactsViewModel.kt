@@ -1,4 +1,4 @@
-package com.teobaranga.monica.contacts
+package com.teobaranga.monica.contacts.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

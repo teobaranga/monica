@@ -1,4 +1,4 @@
-package com.teobaranga.monica.contacts
+package com.teobaranga.monica.contacts.list
 
 import ContactsNavGraph
 import androidx.compose.foundation.background
@@ -38,7 +38,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.teobaranga.monica.MonicaBackground
-import com.teobaranga.monica.contacts.model.Contact
+import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.dashboard.DashboardSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar

@@ -7,7 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.data.ContactSynchronizer
-import com.teobaranga.monica.contacts.userAvatar
+import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.data.photo.PhotoSynchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.destinations.DirectionDestination
