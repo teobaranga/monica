@@ -37,9 +37,11 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.dashboard.DashboardSearchBar
+import com.teobaranga.monica.destinations.ContactDetailDestination
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.plus
@@ -49,7 +51,9 @@ import kotlinx.coroutines.flow.flowOf
 @ContactsNavGraph(start = true)
 @Destination
 @Composable
-fun Contacts() {
+fun Contacts(
+    navigator: DestinationsNavigator,
+) {
     val viewModel = hiltViewModel<ContactsViewModel>()
     val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
@@ -64,15 +68,15 @@ fun Contacts() {
         onRefresh = {
             viewModel.refresh()
         },
-        onContactSelected = {
-            // TODO
+        onContactSelected = { contactId ->
+            navigator.navigate(ContactDetailDestination(contactId))
         },
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun ContactsScreen(
+private fun ContactsScreen(
     userAvatar: UserAvatar?,
     onAvatarClick: () -> Unit,
     lazyItems: LazyPagingItems<Contact>,
