@@ -1,6 +1,6 @@
-package com.teobaranga.monica.contacts
+package com.teobaranga.monica.contacts.list
 
-import com.teobaranga.monica.contacts.model.Contact
+import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.avatar.UserAvatar
 
 val Contact.userAvatar: UserAvatar
