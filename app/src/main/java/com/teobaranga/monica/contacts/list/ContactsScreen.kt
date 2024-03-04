@@ -24,7 +24,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +31,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -51,9 +51,9 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 fun Contacts() {
     val viewModel = hiltViewModel<ContactsViewModel>()
-    val userAvatar by viewModel.userAvatar.collectAsState()
+    val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
-    val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     ContactsScreen(
         userAvatar = userAvatar,
         onAvatarClick = {
