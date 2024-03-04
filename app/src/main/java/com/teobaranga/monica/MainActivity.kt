@@ -22,7 +22,11 @@ import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
-@OptIn(ExperimentalMaterialNavigationApi::class, ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
+@OptIn(
+    ExperimentalMaterialNavigationApi::class,
+    ExperimentalAnimationApi::class,
+    ExperimentalMaterialApi::class,
+)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
