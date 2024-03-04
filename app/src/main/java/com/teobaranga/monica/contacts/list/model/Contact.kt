@@ -1,4 +1,4 @@
-package com.teobaranga.monica.contacts.model
+package com.teobaranga.monica.contacts.list.model
 
 import java.time.ZonedDateTime
 
