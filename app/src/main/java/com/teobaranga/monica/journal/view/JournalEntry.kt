@@ -24,7 +24,11 @@ import com.teobaranga.monica.journal.view.ui.JournalEntryScreen
 fun JournalEntry(
     entryId: Int? = null,
 ) {
-    val viewModel = hiltViewModel<JournalEntryViewModel>()
+    val viewModel = hiltViewModel<JournalEntryViewModel, JournalEntryViewModel.Factory>(
+        creationCallback = { factory ->
+            factory.create(entryId)
+        },
+    )
     val entry by viewModel.entry.collectAsStateWithLifecycle()
     JournalEntryScreen(
         entry = entry,
