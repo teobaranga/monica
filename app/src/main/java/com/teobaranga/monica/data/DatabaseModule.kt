@@ -16,7 +16,7 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun providesMonicaDatabase(@ApplicationContext context: Context): MonicaDatabase {
-        return Room.databaseBuilder(context, MonicaDatabase::class.java, "nia-database")
+        return Room.databaseBuilder(context, MonicaDatabase::class.java, "monica")
             .build()
     }
 }
