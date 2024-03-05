@@ -2,10 +2,12 @@ package com.teobaranga.monica.contacts.detail
 
 import ContactsNavGraph
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,8 +24,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
+import com.teobaranga.monica.contacts.detail.ui.ContactInfoPersonalSection
+import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
+import com.teobaranga.monica.contacts.detail.ui.ContactInfoWorkSection
 import com.teobaranga.monica.contacts.detail.ui.fullNameItem
-import com.teobaranga.monica.contacts.detail.ui.infoSectionTabsItem
+import com.teobaranga.monica.contacts.detail.ui.infoSectionTabs
 import com.teobaranga.monica.contacts.detail.ui.userAvatarItem
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
@@ -61,7 +67,7 @@ fun ContactDetail(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun ContactDetailScreen(
     contactDetail: ContactDetail,
@@ -85,6 +91,9 @@ private fun ContactDetailScreen(
             )
         },
     ) { contentPadding ->
+        val pagerState = rememberPagerState(
+            pageCount = { contactDetail.infoSections.size },
+        )
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -94,7 +103,10 @@ private fun ContactDetailScreen(
         ) {
             userAvatarItem(contactDetail.userAvatar)
             fullNameItem(contactDetail.fullName)
-            infoSectionTabsItem(contactDetail.tabs)
+            infoSectionTabs(
+                pagerState = pagerState,
+                infoSections = contactDetail.infoSections,
+            )
         }
     }
 }
@@ -112,11 +124,11 @@ private fun PreviewContactDetailScreen() {
                     color = "#709512",
                     avatarUrl = null,
                 ),
-                tabs = listOf(
-                    "Personal",
-                    "Contact",
-                    "Work",
-                    "Relationships",
+                infoSections = listOf(
+                    ContactInfoPersonalSection(birthday = null),
+                    ContactInfoContactSection,
+                    ContactInfoWorkSection,
+                    ContactInfoRelationshipsSection,
                 ),
             ),
             onBack = { },

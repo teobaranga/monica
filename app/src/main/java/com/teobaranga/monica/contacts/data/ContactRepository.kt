@@ -55,8 +55,19 @@ internal class ContactRepository @Inject constructor(
             initials = contactResponse.initials,
             avatarUrl = contactResponse.info.avatar.url,
             avatarColor = contactResponse.info.avatar.color,
+            birthdate = contactResponse.info.dates?.birthdate?.toBirthday(),
             updated = contactResponse.updated,
         )
+    }
+
+    private fun ContactResponse.Information.Dates.Birthdate.toBirthday(): ContactEntity.Birthdate? {
+        return date?.let { date ->
+            ContactEntity.Birthdate(
+                isAgeBased = isAgeBased ?: false,
+                isYearUnknown = isYearUnknown ?: false,
+                date = date,
+            )
+        }
     }
 
     sealed interface OrderBy {

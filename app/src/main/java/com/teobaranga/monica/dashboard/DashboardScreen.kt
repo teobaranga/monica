@@ -26,10 +26,12 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.destinations.AccountDestination
+import com.teobaranga.monica.destinations.ContactDetailDestination
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
@@ -38,7 +40,9 @@ import kotlinx.coroutines.flow.flowOf
 @DashboardNavGraph(start = true)
 @Destination
 @Composable
-fun Dashboard() {
+fun Dashboard(
+    navigator: DestinationsNavigator,
+) {
     val viewModel = hiltViewModel<DashboardViewModel>()
     val userUiState by viewModel.userUiState.collectAsStateWithLifecycle()
     val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
@@ -48,6 +52,9 @@ fun Dashboard() {
         onAvatarClick = {
             viewModel.navigateTo(AccountDestination)
         },
+        onContactSelected = { contactId ->
+            navigator.navigate(ContactDetailDestination(contactId))
+        }
     )
 }
 
@@ -57,6 +64,7 @@ fun DashboardScreen(
     userUiState: UserUiState?,
     recentContacts: LazyPagingItems<Contact>,
     onAvatarClick: () -> Unit,
+    onContactSelected: (contactId: Int) -> Unit,
 ) {
     if (userUiState != null) {
         DashboardSearchBar(
@@ -112,15 +120,15 @@ fun DashboardScreen(
                             val contact = recentContacts[it]
                             contact?.id ?: Int.MIN_VALUE
                         },
-                    ) {
-                        val contact = recentContacts[it]
+                    ) { contactId ->
+                        val contact = recentContacts[contactId]
                         if (contact != null) {
                             UserAvatar(
                                 modifier = Modifier
                                     .size(72.dp),
                                 userAvatar = contact.userAvatar,
                                 onClick = {
-                                    // TODO: launch contact screen
+                                    onContactSelected(contact.id)
                                 },
                             )
                         }
@@ -176,6 +184,7 @@ private fun PreviewDashboardScreen() {
                 ),
                 recentContacts = recentContacts.collectAsLazyPagingItems(),
                 onAvatarClick = { },
+                onContactSelected = { },
             )
         }
     }
