@@ -55,6 +55,7 @@ class ContactSynchronizer @Inject constructor(
     }
     
     private fun ContactResponse.toEntity(): ContactEntity {
+        // TODO this is duplicated mapping - figure out if really necessary
         return ContactEntity(
             id = id,
             firstName = firstName,
@@ -63,7 +64,18 @@ class ContactSynchronizer @Inject constructor(
             initials = initials,
             avatarUrl = info.avatar.url,
             avatarColor = info.avatar.color,
+            birthdate = info.dates?.birthdate?.toBirthday(),
             updated = updated,
         )
+    }
+
+    private fun ContactResponse.Information.Dates.Birthdate.toBirthday(): ContactEntity.Birthdate? {
+        return date?.let { date ->
+            ContactEntity.Birthdate(
+                isAgeBased = isAgeBased ?: false,
+                isYearUnknown = isYearUnknown ?: false,
+                date = date,
+            )
+        }
     }
 }

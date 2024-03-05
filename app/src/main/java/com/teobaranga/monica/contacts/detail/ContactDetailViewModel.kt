@@ -3,6 +3,10 @@ package com.teobaranga.monica.contacts.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.contacts.data.ContactRepository
+import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
+import com.teobaranga.monica.contacts.detail.ui.ContactInfoPersonalSection
+import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
+import com.teobaranga.monica.contacts.detail.ui.ContactInfoWorkSection
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -31,11 +35,11 @@ internal class ContactDetailViewModel @AssistedInject constructor(
                     color = contact.avatarColor,
                     avatarUrl = contact.avatarUrl,
                 ),
-                tabs = listOf(
-                    "Personal",
-                    "Contact",
-                    "Work",
-                    "Relationships",
+                infoSections = listOf(
+                    ContactInfoPersonalSection(contact.birthdate?.toBirthday()),
+                    ContactInfoContactSection,
+                    ContactInfoWorkSection,
+                    ContactInfoRelationshipsSection,
                 ),
             )
         }
