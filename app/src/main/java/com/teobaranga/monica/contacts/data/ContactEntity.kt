@@ -1,5 +1,6 @@
 package com.teobaranga.monica.contacts.data
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.teobaranga.monica.contacts.list.model.Contact
@@ -15,8 +16,16 @@ data class ContactEntity(
     val initials: String,
     val avatarUrl: String?,
     val avatarColor: String,
+    @Embedded(prefix = "birthdate_")
+    val birthdate: Birthdate?,
     val updated: ZonedDateTime?,
-)
+) {
+    data class Birthdate(
+        val isAgeBased: Boolean,
+        val isYearUnknown: Boolean,
+        val date: ZonedDateTime,
+    )
+}
 
 fun ContactEntity.toExternalModel(): Contact {
     return Contact(
