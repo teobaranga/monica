@@ -12,6 +12,7 @@ import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.ui.avatar.UserAvatar
@@ -80,7 +81,10 @@ fun LazyListScope.infoSectionTabs(
     }
     item {
         HorizontalPager(
-            state = pagerState
+            modifier = Modifier
+                .fillParentMaxHeight(),
+            state = pagerState,
+            verticalAlignment = Alignment.Top,
         ) { page ->
             infoSections[page].Content(modifier = Modifier)
         }

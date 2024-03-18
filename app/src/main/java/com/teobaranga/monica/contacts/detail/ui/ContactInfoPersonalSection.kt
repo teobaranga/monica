@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cake
+import androidx.compose.material.icons.outlined.Cake
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,8 +43,9 @@ private fun BirthdayItem(birthday: ContactDetail.Birthday) {
         Row {
             Icon(
                 modifier = Modifier
-                    .offset(y = (-4).dp),
-                imageVector = Icons.Default.Cake,
+                    .offset(y = (-4).dp)
+                    .padding(start = 12.dp),
+                imageVector = Icons.Outlined.Cake,
                 contentDescription = null,
             )
             Text(
@@ -55,6 +56,8 @@ private fun BirthdayItem(birthday: ContactDetail.Birthday) {
             )
         }
         Text(
+            modifier = Modifier
+                .padding(top = 2.dp),
             text = when (birthday) {
                 is ContactDetail.Birthday.AgeBased -> {
                     "This person is around ${birthday.age} years old"
