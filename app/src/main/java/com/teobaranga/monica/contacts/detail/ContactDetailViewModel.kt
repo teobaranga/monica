@@ -3,6 +3,7 @@ package com.teobaranga.monica.contacts.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.contacts.data.ContactRepository
+import com.teobaranga.monica.contacts.detail.ui.ContactInfoActivitiesSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoPersonalSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
@@ -36,6 +37,7 @@ internal class ContactDetailViewModel @AssistedInject constructor(
                     avatarUrl = contact.avatarUrl,
                 ),
                 infoSections = listOf(
+                    ContactInfoActivitiesSection(contactId),
                     ContactInfoPersonalSection(contact.birthdate?.toBirthday()),
                     ContactInfoContactSection,
                     ContactInfoWorkSection,

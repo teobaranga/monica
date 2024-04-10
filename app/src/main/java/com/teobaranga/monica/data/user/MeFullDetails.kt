@@ -9,7 +9,7 @@ data class MeFullDetails(
     val info: MeEntity,
     @Relation(
         parentColumn = "contactId",
-        entityColumn = "id",
+        entityColumn = "contactId",
     )
     val contact: ContactEntity?,
 )

@@ -40,24 +40,27 @@ abstract class ContactDao {
     @RawQuery(observedEntities = [ContactEntity::class])
     protected abstract fun getContacts(query: SupportSQLiteQuery): Flow<List<ContactEntity>>
 
-    @Query("SELECT id FROM contacts")
+    @Query("SELECT * FROM contacts WHERE contactId in (:entityIds)")
+    abstract fun getContacts(entityIds: List<Int>): Flow<List<ContactEntity>>
+
+    @Query("SELECT contactId FROM contacts")
     abstract fun getContactIds(): Flow<List<Int>>
 
     @Query(
         value = """
         SELECT * FROM contacts
-        WHERE id = :id
+        WHERE contactId = :id
     """,
     )
     abstract fun getContact(id: Int): Flow<ContactEntity>
 
     @Transaction
-    @Query("SELECT id, avatarUrl FROM contacts WHERE id = :contactId")
+    @Query("SELECT contactId, avatarUrl FROM contacts WHERE contactId = :contactId")
     abstract fun getContactPhotos(contactId: Int): Flow<ContactPhotos>
 
     @Upsert
     abstract suspend fun upsertContacts(entities: List<ContactEntity>)
 
-    @Query("DELETE FROM contacts WHERE id in (:entityIds)")
+    @Query("DELETE FROM contacts WHERE contactId in (:entityIds)")
     abstract suspend fun delete(entityIds: List<Int>)
 }
