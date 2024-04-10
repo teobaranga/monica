@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 @Entity(tableName = "contacts")
 data class ContactEntity(
     @PrimaryKey
-    val id: Int,
+    val contactId: Int,
     val firstName: String,
     val lastName: String?,
     val completeName: String,
@@ -29,7 +29,7 @@ data class ContactEntity(
 
 fun ContactEntity.toExternalModel(): Contact {
     return Contact(
-        id = id,
+        id = contactId,
         firstName = firstName,
         lastName = lastName,
         completeName = completeName,

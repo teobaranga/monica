@@ -46,7 +46,7 @@ class ContactSynchronizer @Inject constructor(
             }
 
             // Reduce the list of entries to be removed based on the entries previously inserted
-            removedIds -= contactEntities.map { it.id }.toSet()
+            removedIds -= contactEntities.map { it.contactId }.toSet()
         }
 
         contactDao.delete(removedIds.toList())
@@ -57,7 +57,7 @@ class ContactSynchronizer @Inject constructor(
     private fun ContactResponse.toEntity(): ContactEntity {
         // TODO this is duplicated mapping - figure out if really necessary
         return ContactEntity(
-            id = id,
+            contactId = id,
             firstName = firstName,
             lastName = lastName,
             completeName = completeName,

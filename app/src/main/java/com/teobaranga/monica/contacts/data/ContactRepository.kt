@@ -2,6 +2,8 @@ package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.activities.data.ContactActivitiesDao
+import com.teobaranga.monica.activities.data.ContactActivityEntity
 import com.teobaranga.monica.data.photo.ContactPhotos
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +20,7 @@ internal class ContactRepository @Inject constructor(
     private val dispatcher: Dispatcher,
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
+    private val contactActivitiesDao: ContactActivitiesDao,
     private val pagingSource: Provider<ContactPagingSource.Factory>,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
@@ -38,6 +41,10 @@ internal class ContactRepository @Inject constructor(
         return pagingSource.get().create(orderBy)
     }
 
+    fun getContacts(ids: List<Int>): Flow<List<ContactEntity>> {
+        return contactDao.getContacts(ids)
+    }
+
     fun getContact(id: Int): Flow<ContactEntity> {
         return contactDao.getContact(id)
     }
@@ -46,9 +53,13 @@ internal class ContactRepository @Inject constructor(
         return contactDao.getContactPhotos(contactId)
     }
 
+    fun getContactActivities(contactId: Int): Flow<List<ContactActivityEntity>> {
+        return contactActivitiesDao.getContactActivities(contactId)
+    }
+
     private fun mapContactResponse(contactResponse: ContactResponse): ContactEntity {
         return ContactEntity(
-            id = contactResponse.id,
+            contactId = contactResponse.id,
             firstName = contactResponse.firstName,
             lastName = contactResponse.lastName,
             completeName = contactResponse.completeName,
