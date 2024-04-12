@@ -4,9 +4,11 @@ import ContactsNavGraph
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -34,6 +36,7 @@ import com.teobaranga.monica.contacts.detail.ui.userAvatarItem
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.util.compose.nestedScrollParentFirst
 
 @ContactsNavGraph
 @Destination
@@ -74,7 +77,6 @@ private fun ContactDetailScreen(
     onBack: () -> Unit,
 ) {
     Scaffold(
-        modifier = Modifier,
         topBar = {
             TopAppBar(
                 title = { },
@@ -94,19 +96,29 @@ private fun ContactDetailScreen(
         val pagerState = rememberPagerState(
             pageCount = { contactDetail.infoSections.size },
         )
-        LazyColumn(
+        //noinspection UnusedBoxWithConstraintsScope - actually used through multiple context receivers
+        BoxWithConstraints(
             modifier = Modifier
-                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(contentPadding),
-            horizontalAlignment = Alignment.CenterHorizontally,
+                .fillMaxSize()
+                .padding(contentPadding)
         ) {
-            userAvatarItem(contactDetail.userAvatar)
-            fullNameItem(contactDetail.fullName)
-            infoSectionTabs(
-                pagerState = pagerState,
-                infoSections = contactDetail.infoSections,
-            )
+            val state = rememberLazyListState()
+            LazyColumn(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .fillMaxSize()
+                    .nestedScrollParentFirst(state),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                state = state,
+            ) {
+                userAvatarItem(contactDetail.userAvatar)
+                fullNameItem(contactDetail.fullName)
+                infoSectionTabs(
+                    pagerState = pagerState,
+                    infoSections = contactDetail.infoSections,
+                )
+            }
         }
     }
 }

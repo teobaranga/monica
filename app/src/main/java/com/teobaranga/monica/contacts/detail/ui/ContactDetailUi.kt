@@ -1,6 +1,8 @@
 package com.teobaranga.monica.contacts.detail.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
@@ -25,7 +27,6 @@ fun LazyListScope.userAvatarItem(userAvatar: UserAvatar) {
     ) {
         UserAvatar(
             modifier = Modifier
-                .padding(top = 28.dp)
                 .size(128.dp),
             userAvatar = userAvatar,
             onClick = {
@@ -42,23 +43,22 @@ fun LazyListScope.fullNameItem(fullName: String) {
     ) {
         Text(
             modifier = Modifier
-                .padding(top = 28.dp),
+                .padding(vertical = 28.dp),
             text = fullName,
             style = MaterialTheme.typography.headlineMedium,
         )
     }
 }
 
+context(BoxWithConstraintsScope)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 fun LazyListScope.infoSectionTabs(
     pagerState: PagerState,
     infoSections: List<ContactInfoSection>,
 ) {
-    item {
+    stickyHeader {
         val coroutineScope = rememberCoroutineScope()
         PrimaryScrollableTabRow(
-            modifier = Modifier
-                .padding(top = 28.dp),
             selectedTabIndex = pagerState.currentPage,
         ) {
             infoSections.forEachIndexed { index, infoSection ->
@@ -82,7 +82,8 @@ fun LazyListScope.infoSectionTabs(
     item {
         HorizontalPager(
             modifier = Modifier
-                .fillParentMaxHeight(),
+                // Make height just big enough to prevent scrolling behind the TabRow
+                .height(maxHeight - TabRowHeight),
             state = pagerState,
             verticalAlignment = Alignment.Top,
         ) { page ->
@@ -90,3 +91,6 @@ fun LazyListScope.infoSectionTabs(
         }
     }
 }
+
+// In sync with PrimaryNavigationTabTokens.ContainerHeight
+private val TabRowHeight = 48.dp
