@@ -42,15 +42,13 @@ fun keyboardAsState(): State<Boolean> {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JournalEntryScreen(entry: JournalEntry?, modifier: Modifier = Modifier) {
+fun JournalEntryScreen(entry: JournalEntry?, onBack: () -> Unit, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopAppBar(
                 navigationIcon = {
                     IconButton(
-                        onClick = {
-
-                        },
+                        onClick = onBack,
                     ) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
                     }
@@ -136,6 +134,7 @@ private fun PreviewJournalEntryScreen() {
                 created = OffsetDateTime.now(),
                 updated = OffsetDateTime.now(),
             ),
+            onBack = { },
         )
     }
 }
