@@ -3,7 +3,7 @@ package com.teobaranga.monica.journal.data
 import com.teobaranga.monica.database.OrderBy
 import com.teobaranga.monica.journal.database.JournalDao
 import com.teobaranga.monica.journal.database.toExternalModel
-import com.teobaranga.monica.journal.model.JournalEntry
+import com.teobaranga.monica.journal.model.JournalEntryUiState
 import com.teobaranga.monica.paging.RoomPagingSource
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.assisted.Assisted
@@ -18,12 +18,12 @@ internal class JournalPagingSource @AssistedInject constructor(
     private val journalDao: JournalDao,
     @Assisted
     private val orderBy: JournalRepository.OrderBy,
-) : RoomPagingSource<JournalEntry>(
+) : RoomPagingSource<JournalEntryUiState>(
     dispatcher = dispatcher,
     synchronizer = journalSynchronizer,
 ) {
 
-    override suspend fun getEntries(start: Int, params: LoadParams<Int>): List<JournalEntry> {
+    override suspend fun getEntries(start: Int, params: LoadParams<Int>): List<JournalEntryUiState> {
         return journalDao.getJournalEntries(
             orderBy = with(orderBy) { OrderBy(columnName, isAscending) },
             limit = params.loadSize,

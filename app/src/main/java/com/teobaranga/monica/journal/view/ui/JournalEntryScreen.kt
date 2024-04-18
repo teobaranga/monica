@@ -1,15 +1,13 @@
 package com.teobaranga.monica.journal.view.ui
 
-import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -17,32 +15,23 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.teobaranga.monica.journal.model.JournalEntry
+import com.teobaranga.monica.journal.model.JournalEntryUiState
 import com.teobaranga.monica.ui.PreviewPixel4
+import com.teobaranga.monica.ui.text.MonicaTextField
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.OffsetDateTime
 
-@Composable
-fun keyboardAsState(): State<Boolean> {
-    val isImeVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
-    return rememberUpdatedState(isImeVisible)
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JournalEntryScreen(entry: JournalEntry?, onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun JournalEntryScreen(entry: JournalEntryUiState, onBack: () -> Unit, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -75,40 +64,32 @@ fun JournalEntryScreen(entry: JournalEntry?, onBack: () -> Unit, modifier: Modif
                 .consumeWindowInsets(paddingValues)
                 .imePadding(),
         ) {
-            OutlinedTextField(
+            MonicaTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                value = entry?.title.orEmpty(),
-                onValueChange = {
-                    // TODO
-                },
+                state = entry.title,
                 textStyle = MaterialTheme.typography.bodyMedium,
                 placeholder = {
                     Text(
                         text = "Title",
                     )
                 },
-                maxLines = 1,
+                lineLimits = TextFieldLineLimits.SingleLine,
                 shape = StartVerticalLineShape,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    autoCorrectEnabled = true,
+                    keyboardType = KeyboardType.Text,
+                ),
             )
-            val scrollState = rememberScrollState()
-            val keyb by keyboardAsState()
-            LaunchedEffect(keyb) {
-                if (keyb) {
-                    scrollState.scrollBy(20f)
-                }
-            }
-            OutlinedTextField(
+
+            MonicaTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(16.dp)
-                    .verticalScroll(scrollState),
-                value = entry?.post.orEmpty(),
-                onValueChange = {
-                    // TODO
-                },
+                    .padding(16.dp),
+                state = entry.post,
                 textStyle = MaterialTheme.typography.bodyMedium,
                 placeholder = {
                     Text(
@@ -116,6 +97,11 @@ fun JournalEntryScreen(entry: JournalEntry?, onBack: () -> Unit, modifier: Modif
                     )
                 },
                 shape = StartVerticalLineShape,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    autoCorrectEnabled = true,
+                    keyboardType = KeyboardType.Text,
+                ),
             )
         }
     }
@@ -126,7 +112,7 @@ fun JournalEntryScreen(entry: JournalEntry?, onBack: () -> Unit, modifier: Modif
 private fun PreviewJournalEntryScreen() {
     MonicaTheme {
         JournalEntryScreen(
-            entry = JournalEntry(
+            entry = JournalEntryUiState(
                 id = 1,
                 title = null,
                 post = "Hello World!",

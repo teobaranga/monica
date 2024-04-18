@@ -2,7 +2,7 @@ package com.teobaranga.monica.journal.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.teobaranga.monica.journal.model.JournalEntry
+import com.teobaranga.monica.journal.model.JournalEntryUiState
 import java.time.OffsetDateTime
 import java.util.UUID
 
@@ -19,8 +19,8 @@ data class JournalEntryEntity(
     val updated: OffsetDateTime,
 )
 
-fun JournalEntryEntity.toExternalModel(): JournalEntry {
-    return JournalEntry(
+fun JournalEntryEntity.toExternalModel(): JournalEntryUiState {
+    return JournalEntryUiState(
         id = id,
         title = title,
         post = post,

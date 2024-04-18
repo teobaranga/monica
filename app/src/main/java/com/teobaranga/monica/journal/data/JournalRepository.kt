@@ -2,7 +2,7 @@ package com.teobaranga.monica.journal.data
 
 import com.teobaranga.monica.journal.database.JournalDao
 import com.teobaranga.monica.journal.database.toExternalModel
-import com.teobaranga.monica.journal.model.JournalEntry
+import com.teobaranga.monica.journal.model.JournalEntryUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
@@ -20,7 +20,7 @@ internal class JournalRepository @Inject constructor(
         return pagingSource.get().create(orderBy)
     }
 
-    fun getJournalEntry(id: Int): Flow<JournalEntry> {
+    fun getJournalEntry(id: Int): Flow<JournalEntryUiState> {
         return journalDao.getJournalEntry(id)
             .mapLatest {
                 it.toExternalModel()
