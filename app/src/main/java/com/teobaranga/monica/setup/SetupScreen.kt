@@ -46,9 +46,8 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Destination<RootGraph>
 @Composable
-fun Setup(navigator: DestinationsNavigator) {
+fun Setup(navigator: DestinationsNavigator, viewModel: SetupViewModel = hiltViewModel()) {
     val context = LocalContext.current
-    val viewModel = hiltViewModel<SetupViewModel>()
     val uiState = viewModel.uiState
 
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
@@ -91,8 +90,10 @@ fun Setup(navigator: DestinationsNavigator) {
 }
 
 @Composable
-fun SetupScreen(uiState: UiState, onSignIn: () -> Unit) {
-    MonicaBackground {
+fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Modifier) {
+    MonicaBackground(
+        modifier = modifier,
+    ) {
         val scrollState = rememberScrollState()
 
         // Scroll to bottom to keep the main button visible when the IME is open
@@ -199,7 +200,7 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit) {
 
 @PreviewPixel4
 @Composable
-fun PreviewSetupScreen() {
+private fun PreviewSetupScreen() {
     MonicaTheme {
         SetupScreen(
             uiState = UiState(),

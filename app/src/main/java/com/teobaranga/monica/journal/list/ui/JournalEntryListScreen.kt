@@ -53,26 +53,8 @@ fun JournalEntryListScreen(
     onRefresh: () -> Unit,
     onEntryClick: (id: Int) -> Unit,
     onEntryAdd: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val colors = arrayOf(
-        0.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
-        0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
-        1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
-    )
-    MonicaSearchBar(
-        modifier = Modifier
-            .background(Brush.verticalGradient(colorStops = colors))
-            .statusBarsPadding()
-            .padding(top = 16.dp, bottom = 20.dp),
-        userAvatar = {
-            if (userAvatar != null) {
-                UserAvatar(
-                    userAvatar = userAvatar,
-                    onClick = onAvatarClick,
-                )
-            }
-        },
-    )
     val pullRefreshState = rememberPullToRefreshState()
     if (pullRefreshState.isRefreshing) {
         LaunchedEffect(Unit) {
@@ -85,10 +67,29 @@ fun JournalEntryListScreen(
         }
     }
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .nestedScroll(pullRefreshState.nestedScrollConnection),
     ) {
+        val colors = arrayOf(
+            0.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
+            0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
+            1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
+        )
+        MonicaSearchBar(
+            modifier = Modifier
+                .background(Brush.verticalGradient(colorStops = colors))
+                .statusBarsPadding()
+                .padding(top = 16.dp, bottom = 20.dp),
+            userAvatar = {
+                if (userAvatar != null) {
+                    UserAvatar(
+                        userAvatar = userAvatar,
+                        onClick = onAvatarClick,
+                    )
+                }
+            },
+        )
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

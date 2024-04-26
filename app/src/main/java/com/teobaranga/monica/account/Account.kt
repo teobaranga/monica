@@ -22,8 +22,7 @@ import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
 @Composable
-fun Account(onDismissRequest: () -> Unit) {
-    val viewModel = hiltViewModel<AccountViewModel>()
+fun Account(viewModel: AccountViewModel = hiltViewModel(), onDismissRequest: () -> Unit) {
     AccountScreen(
         onClearAuthorization = viewModel::onClearAuthorization,
         onDismissRequest = onDismissRequest,
@@ -59,7 +58,7 @@ private fun AccountScreen(onClearAuthorization: () -> Unit, onDismissRequest: ()
 
 @PreviewPixel4
 @Composable
-fun PreviewAccountScreen() {
+private fun PreviewAccountScreen() {
     MonicaTheme {
         Column(
             modifier = Modifier

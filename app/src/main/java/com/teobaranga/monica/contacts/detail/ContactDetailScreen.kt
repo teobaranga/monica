@@ -2,7 +2,6 @@ package com.teobaranga.monica.contacts.detail
 
 import ContactsNavGraph
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,12 +39,15 @@ import com.teobaranga.monica.util.compose.nestedScrollParentFirst
 
 @Destination<ContactsNavGraph>
 @Composable
-fun ContactDetail(navigator: DestinationsNavigator, contactId: Int) {
-    val viewModel = hiltViewModel<ContactDetailViewModel, ContactDetailViewModel.Factory>(
+internal fun ContactDetail(
+    navigator: DestinationsNavigator,
+    contactId: Int,
+    viewModel: ContactDetailViewModel = hiltViewModel<ContactDetailViewModel, ContactDetailViewModel.Factory>(
         creationCallback = { factory: ContactDetailViewModel.Factory ->
             factory.create(contactId)
         },
-    )
+    ),
+) {
     val contactDetail by viewModel.contact.collectAsStateWithLifecycle()
     Crossfade(
         targetState = contactDetail,
@@ -66,7 +68,7 @@ fun ContactDetail(navigator: DestinationsNavigator, contactId: Int) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ContactDetailScreen(contactDetail: ContactDetail, onBack: () -> Unit) {
     Scaffold(

@@ -2,6 +2,7 @@ package com.teobaranga.monica.dashboard
 
 import DashboardNavGraph
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,8 +44,7 @@ import kotlinx.coroutines.flow.flowOf
 
 @Destination<DashboardNavGraph>(start = true)
 @Composable
-fun Dashboard(navigator: DestinationsNavigator) {
-    val viewModel = hiltViewModel<DashboardViewModel>()
+internal fun Dashboard(navigator: DestinationsNavigator, viewModel: DashboardViewModel = hiltViewModel()) {
     val userUiState by viewModel.userUiState.collectAsStateWithLifecycle()
     val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
     var shouldShowAccount by remember { mutableStateOf(false) }
@@ -74,76 +74,82 @@ fun DashboardScreen(
     recentContacts: LazyPagingItems<Contact>,
     onAvatarClick: () -> Unit,
     onContactSelected: (contactId: Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    MonicaSearchBar(
-        modifier = Modifier
-            .statusBarsPadding()
-            .padding(top = 16.dp),
-        userAvatar = {
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+    ) {
+        MonicaSearchBar(
+            modifier = Modifier
+                .statusBarsPadding()
+                .padding(top = 16.dp),
+            userAvatar = {
+                if (userUiState != null) {
+                    UserAvatar(
+                        userAvatar = userUiState.avatar,
+                        onClick = onAvatarClick,
+                    )
+                }
+            },
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(top = SearchBarDefaults.InputFieldHeight + 16.dp),
+        ) {
             if (userUiState != null) {
-                UserAvatar(
-                    userAvatar = userUiState.avatar,
-                    onClick = onAvatarClick,
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 32.dp)
+                        .padding(top = 24.dp, bottom = 32.dp),
+                    text = "Welcome, ${userUiState.userInfo.name}",
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
                 )
             }
-        },
-    )
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .padding(top = SearchBarDefaults.InputFieldHeight + 16.dp),
-    ) {
-        if (userUiState != null) {
+
             Text(
                 modifier = Modifier
-                    .padding(horizontal = 32.dp)
-                    .padding(top = 24.dp, bottom = 32.dp),
-                text = "Welcome, ${userUiState.userInfo.name}",
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
+                text = "Recent contacts",
+                style = MaterialTheme.typography.titleSmall,
             )
-        }
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(horizontal = 20.dp),
+            ) {
+                when (recentContacts.loadState.refresh) {
+                    is LoadState.Error -> {
+                        // TODO
+                    }
 
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            text = "Recent contacts",
-            style = MaterialTheme.typography.titleSmall,
-        )
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(horizontal = 20.dp),
-        ) {
-            when (recentContacts.loadState.refresh) {
-                is LoadState.Error -> {
-                    // TODO
-                }
-
-                is LoadState.Loading,
-                is LoadState.NotLoading,
-                -> {
-                    items(
-                        count = recentContacts.itemCount,
-                        key = {
-                            val contact = recentContacts[it]
-                            contact?.id ?: Int.MIN_VALUE
-                        },
-                    ) { contactId ->
-                        val contact = recentContacts[contactId]
-                        if (contact != null) {
-                            UserAvatar(
-                                modifier = Modifier
-                                    .size(72.dp),
-                                userAvatar = contact.userAvatar,
-                                onClick = {
-                                    onContactSelected(contact.id)
-                                },
-                            )
+                    is LoadState.Loading,
+                    is LoadState.NotLoading,
+                    -> {
+                        items(
+                            count = recentContacts.itemCount,
+                            key = {
+                                val contact = recentContacts[it]
+                                contact?.id ?: Int.MIN_VALUE
+                            },
+                        ) { contactId ->
+                            val contact = recentContacts[contactId]
+                            if (contact != null) {
+                                UserAvatar(
+                                    modifier = Modifier
+                                        .size(72.dp),
+                                    userAvatar = contact.userAvatar,
+                                    onClick = {
+                                        onContactSelected(contact.id)
+                                    },
+                                )
+                            }
                         }
                     }
                 }

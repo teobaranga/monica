@@ -20,12 +20,14 @@ import com.teobaranga.monica.journal.view.ui.JournalEntryScreen
     style = JournalEntryTransitions::class,
 )
 @Composable
-fun JournalEntry(entryId: Int? = null) {
-    val viewModel = hiltViewModel<JournalEntryViewModel, JournalEntryViewModel.Factory>(
+internal fun JournalEntry(
+    entryId: Int? = null,
+    viewModel: JournalEntryViewModel = hiltViewModel<JournalEntryViewModel, JournalEntryViewModel.Factory>(
         creationCallback = { factory ->
             factory.create(entryId)
         },
-    )
+    ),
+) {
     val entry by viewModel.entry.collectAsStateWithLifecycle()
     JournalEntryScreen(
         entry = entry,

@@ -29,7 +29,7 @@ data class UserAvatar(
 )
 
 @Composable
-fun UserAvatar(modifier: Modifier = Modifier, userAvatar: UserAvatar, onClick: () -> Unit) {
+fun UserAvatar(userAvatar: UserAvatar, onClick: () -> Unit, modifier: Modifier = Modifier) {
     SubcomposeAsyncImage(
         modifier = modifier
             .size(32.dp)

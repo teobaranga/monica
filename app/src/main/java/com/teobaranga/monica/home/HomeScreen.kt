@@ -1,7 +1,6 @@
 package com.teobaranga.monica.home
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,9 +28,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Destination<RootGraph>(start = true)
 @Composable
-fun Home(navigator: DestinationsNavigator) {
-    val viewModel = hiltViewModel<HomeViewModel>()
-
+fun Home(navigator: DestinationsNavigator, modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn == false) {
@@ -44,14 +41,15 @@ fun Home(navigator: DestinationsNavigator) {
     }
 
     LaunchedEffect(Unit) {
-        viewModel.navigation
-            .collectLatest {
-                navigator.navigate(it)
-            }
+        viewModel.navigation.collectLatest {
+            navigator.navigate(it)
+        }
     }
 
     if (isLoggedIn == true) {
-        HomeScreen()
+        HomeScreen(
+            modifier = modifier,
+        )
     } else {
         // TODO Replace with Loading screen
         Box(
@@ -60,13 +58,12 @@ fun Home(navigator: DestinationsNavigator) {
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(modifier: Modifier = Modifier) {
     val engine = rememberNavHostEngine()
     val navController = engine.rememberNavController()
     Scaffold(
-        modifier = Modifier,
+        modifier = modifier,
         bottomBar = {
             HomeNavigationBar(
                 navController = navController,
