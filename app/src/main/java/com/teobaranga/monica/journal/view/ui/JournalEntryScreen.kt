@@ -19,9 +19,9 @@ import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.ZonedDateTime
 
 @Composable
-fun JournalEntryScreen(entry: JournalEntry?) {
+fun JournalEntryScreen(entry: JournalEntry?, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()

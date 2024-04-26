@@ -133,6 +133,8 @@ dependencies {
 
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+
+    ktlintRuleset(libs.compose.rules.ktlint)
 }
 
 ktlint {

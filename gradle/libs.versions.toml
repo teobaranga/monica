@@ -7,6 +7,7 @@ ktlint = "12.1.0"
 browser = "1.8.0"
 coil = "2.6.0"
 compose-destinations = "2.1.0-beta01"
+compose-rules-ktlint = "0.3.18"
 core-ktx = "1.13.0"
 datastore = "1.1.0"
 desugar-jdk-libs = "2.0.4"
@@ -69,6 +70,7 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-rules-ktlint = { group = "io.nlopez.compose.rules", name = "ktlint", version.ref = "compose-rules-ktlint" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

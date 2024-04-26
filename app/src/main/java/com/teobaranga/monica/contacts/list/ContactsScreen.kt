@@ -49,8 +49,7 @@ import kotlinx.coroutines.flow.flowOf
 
 @Destination<ContactsNavGraph>(start = true)
 @Composable
-fun Contacts(navigator: DestinationsNavigator) {
-    val viewModel = hiltViewModel<ContactsViewModel>()
+internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewModel = hiltViewModel()) {
     val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
@@ -80,25 +79,6 @@ private fun ContactsScreen(
     onRefresh: () -> Unit,
     onContactSelected: (Int) -> Unit,
 ) {
-    val colors = arrayOf(
-        0.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
-        0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
-        1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
-    )
-    MonicaSearchBar(
-        modifier = Modifier
-            .background(Brush.verticalGradient(colorStops = colors))
-            .statusBarsPadding()
-            .padding(top = 16.dp, bottom = 20.dp),
-        userAvatar = {
-            if (userAvatar != null) {
-                UserAvatar(
-                    userAvatar = userAvatar,
-                    onClick = onAvatarClick,
-                )
-            }
-        },
-    )
     val pullRefreshState = rememberPullToRefreshState()
     if (pullRefreshState.isRefreshing) {
         LaunchedEffect(Unit) {
@@ -115,6 +95,25 @@ private fun ContactsScreen(
             .fillMaxSize()
             .nestedScroll(pullRefreshState.nestedScrollConnection),
     ) {
+        val colors = arrayOf(
+            0.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
+            0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
+            1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
+        )
+        MonicaSearchBar(
+            modifier = Modifier
+                .background(Brush.verticalGradient(colorStops = colors))
+                .statusBarsPadding()
+                .padding(top = 16.dp, bottom = 20.dp),
+            userAvatar = {
+                if (userAvatar != null) {
+                    UserAvatar(
+                        userAvatar = userAvatar,
+                        onClick = onAvatarClick,
+                    )
+                }
+            },
+        )
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

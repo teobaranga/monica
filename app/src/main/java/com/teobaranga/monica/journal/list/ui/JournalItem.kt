@@ -51,7 +51,7 @@ fun JournalItem(journalEntry: JournalEntry, onClick: () -> Unit, modifier: Modif
 
 @PreviewPixel4
 @Composable
-fun PreviewJournalItem() {
+private fun PreviewJournalItem() {
     MonicaTheme {
         JournalItem(
             modifier = Modifier

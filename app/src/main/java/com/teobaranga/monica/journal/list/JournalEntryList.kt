@@ -13,8 +13,10 @@ import com.teobaranga.monica.journal.list.ui.JournalEntryListScreen
 
 @Destination<JournalNavGraph>(start = true)
 @Composable
-fun JournalEntryList(navigator: DestinationsNavigator) {
-    val viewModel = hiltViewModel<JournalEntryListViewModel>()
+internal fun JournalEntryList(
+    navigator: DestinationsNavigator,
+    viewModel: JournalEntryListViewModel = hiltViewModel(),
+) {
     val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
