@@ -3,7 +3,6 @@ package com.teobaranga.monica.journal.view.ui
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,7 +25,10 @@ fun JournalEntryTopAppBar(
             IconButton(
                 onClick = onBack,
             ) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                )
             }
         },
         title = {
@@ -38,16 +40,16 @@ fun JournalEntryTopAppBar(
 
                 },
             ) {
-                Icon(Icons.Filled.Check, "Add a new entry")
-            }
-            OverflowMenu {
-                DropdownMenuItem(
-                    text = {
-                        Text("Delete")
-                    },
-                    onClick = onDelete,
+                Icon(
+                    imageVector = Icons.Filled.Check,
+                    contentDescription = "Save",
                 )
             }
-        }
+            OverflowMenu {
+                JournalEntryDeleteMenuItem(
+                    onDelete = onDelete,
+                )
+            }
+        },
     )
 }
