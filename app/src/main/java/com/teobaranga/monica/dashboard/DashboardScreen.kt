@@ -16,6 +16,9 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -26,10 +29,10 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.generated.destinations.AccountDestination
 import com.ramcosta.composedestinations.generated.destinations.ContactDetailDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.MonicaBackground
+import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.ui.MonicaSearchBar
@@ -46,16 +49,24 @@ fun Dashboard(
     val viewModel = hiltViewModel<DashboardViewModel>()
     val userUiState by viewModel.userUiState.collectAsStateWithLifecycle()
     val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
+    var shouldShowAccount by remember { mutableStateOf(false) }
     DashboardScreen(
         userUiState = userUiState,
         recentContacts = recentContacts,
         onAvatarClick = {
-            viewModel.navigateTo(AccountDestination)
+            shouldShowAccount = true
         },
         onContactSelected = { contactId ->
             navigator.navigate(ContactDetailDestination(contactId))
         }
     )
+    if (shouldShowAccount) {
+        Account(
+            onDismissRequest = {
+                shouldShowAccount = false
+            },
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

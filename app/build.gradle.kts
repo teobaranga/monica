@@ -99,7 +99,6 @@ dependencies {
     implementation(libs.coil)
 
     implementation(libs.compose.destinations.core)
-    implementation(libs.compose.destinations.bottom.sheet)
     ksp(libs.compose.destinations.ksp)
 
     implementation(libs.datastore.preferences)

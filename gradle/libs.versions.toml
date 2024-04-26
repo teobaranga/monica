@@ -31,7 +31,6 @@ androidx-compose-material-icons = { group = "androidx.compose.material", name = 
 browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 compose-destinations-core = { group = "io.github.raamcosta.compose-destinations", name = "core", version.ref = "compose-destinations" }
-compose-destinations-bottom-sheet = { group = "io.github.raamcosta.compose-destinations", name = "bottom-sheet", version.ref = "compose-destinations" }
 compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations", name = "ksp", version.ref = "compose-destinations" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
