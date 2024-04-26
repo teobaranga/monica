@@ -7,12 +7,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.generated.destinations.JournalEntryDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.teobaranga.monica.destinations.JournalEntryDestination
 import com.teobaranga.monica.journal.list.ui.JournalEntryListScreen
 
-@JournalNavGraph(start = true)
-@Destination
+@Destination<JournalNavGraph>(start = true)
 @Composable
 fun JournalEntryList(
     navigator: DestinationsNavigator,

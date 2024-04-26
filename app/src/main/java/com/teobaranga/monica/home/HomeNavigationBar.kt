@@ -9,26 +9,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.navigation.NavController
-import com.ramcosta.composedestinations.navigation.navigate
-import com.teobaranga.monica.NavGraphs
-import com.teobaranga.monica.appCurrentDestinationAsState
-import com.teobaranga.monica.destinations.Destination
-import com.teobaranga.monica.startAppDestination
+import com.ramcosta.composedestinations.generated.NavGraphs
+import com.ramcosta.composedestinations.spec.DestinationSpec
+import com.ramcosta.composedestinations.utils.currentDestinationAsState
+import com.ramcosta.composedestinations.utils.startDestination
 
 @Composable
 fun HomeNavigationBar(
     modifier: Modifier = Modifier,
     navController: NavController,
 ) {
-    val currentDestination: Destination? by navController.appCurrentDestinationAsState()
+    val currentDestination: DestinationSpec? by navController.currentDestinationAsState()
     NavigationBar(
         modifier = modifier,
     ) {
         for (homeTab in HomeTab.entries) {
             NavigationBarItem(
-                selected = homeTab.destination.destinations.contains(currentDestination?.startAppDestination),
+                selected = homeTab.destination.destinations.contains(currentDestination?.startDestination),
                 onClick = {
-                    navController.navigate(homeTab.destination) {
+                    navController.navigate(homeTab.destination.route) {
                         launchSingleTop = true
                         restoreState = true
                         // make the dashboard screen the last one before exiting

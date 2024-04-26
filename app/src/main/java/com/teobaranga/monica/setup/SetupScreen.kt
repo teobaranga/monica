@@ -32,18 +32,19 @@ import androidx.core.util.Consumer
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.NavGraphs
+import com.ramcosta.composedestinations.generated.destinations.SetupDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.MonicaBackground
-import com.teobaranga.monica.NavGraphs
 import com.teobaranga.monica.R
 import com.teobaranga.monica.data.PARAM_CODE
-import com.teobaranga.monica.destinations.SetupDestination
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.keyboardAsState
 import kotlinx.coroutines.flow.collectLatest
 
-@Destination
+@Destination<RootGraph>
 @Composable
 fun Setup(
     navigator: DestinationsNavigator,

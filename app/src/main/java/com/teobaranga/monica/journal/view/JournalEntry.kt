@@ -16,8 +16,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.teobaranga.monica.journal.view.ui.JournalEntryScreen
 
-@JournalNavGraph
-@Destination(
+@Destination<JournalNavGraph>(
     style = JournalEntryTransitions::class,
 )
 @Composable
@@ -35,13 +34,13 @@ fun JournalEntry(
     )
 }
 
-object JournalEntryTransitions : DestinationStyle.Animated {
+object JournalEntryTransitions : DestinationStyle.Animated() {
 
-    override fun AnimatedContentTransitionScope<NavBackStackEntry>.enterTransition(): EnterTransition {
-        return fadeIn(animationSpec = tween(300))
+    override val enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?) = {
+        fadeIn(animationSpec = tween(300))
     }
 
-    override fun AnimatedContentTransitionScope<NavBackStackEntry>.exitTransition(): ExitTransition {
-        return fadeOut(animationSpec = tween(300))
+    override val exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?) = {
+        fadeOut(animationSpec = tween(300))
     }
 }

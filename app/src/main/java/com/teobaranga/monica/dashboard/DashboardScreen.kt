@@ -26,20 +26,19 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.generated.destinations.AccountDestination
+import com.ramcosta.composedestinations.generated.destinations.ContactDetailDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.contacts.list.userAvatar
-import com.teobaranga.monica.destinations.AccountDestination
-import com.teobaranga.monica.destinations.ContactDetailDestination
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
 
-@DashboardNavGraph(start = true)
-@Destination
+@Destination<DashboardNavGraph>(start = true)
 @Composable
 fun Dashboard(
     navigator: DestinationsNavigator,
