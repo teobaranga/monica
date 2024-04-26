@@ -9,9 +9,7 @@ import retrofit2.http.Query
 interface PhotoApi {
 
     @GET("api/photos")
-    suspend fun getPhotos(
-        @Query("page") page: Int? = null,
-    ): ApiResponse<ContactPhotosResponse>
+    suspend fun getPhotos(@Query("page") page: Int? = null): ApiResponse<ContactPhotosResponse>
 
     @GET("api/contacts/{id}/photos")
     suspend fun getPhotos(@Path("id") id: Int): ApiResponse<ContactPhotosResponse>

@@ -43,9 +43,7 @@ import kotlinx.coroutines.flow.flowOf
 
 @Destination<DashboardNavGraph>(start = true)
 @Composable
-fun Dashboard(
-    navigator: DestinationsNavigator,
-) {
+fun Dashboard(navigator: DestinationsNavigator) {
     val viewModel = hiltViewModel<DashboardViewModel>()
     val userUiState by viewModel.userUiState.collectAsStateWithLifecycle()
     val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
@@ -58,7 +56,7 @@ fun Dashboard(
         },
         onContactSelected = { contactId ->
             navigator.navigate(ContactDetailDestination(contactId))
-        }
+        },
     )
     if (shouldShowAccount) {
         Account(
@@ -119,7 +117,7 @@ fun DashboardScreen(
                 .fillMaxWidth()
                 .padding(top = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(horizontal = 20.dp)
+            contentPadding = PaddingValues(horizontal = 20.dp),
         ) {
             when (recentContacts.loadState.refresh) {
                 is LoadState.Error -> {
@@ -182,8 +180,8 @@ private fun PreviewDashboardScreen() {
                             avatarColor = "#709512",
                             updated = null,
                         ),
-                    )
-                )
+                    ),
+                ),
             )
             DashboardScreen(
                 userUiState = UserUiState(

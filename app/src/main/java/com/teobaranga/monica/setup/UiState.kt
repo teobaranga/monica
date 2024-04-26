@@ -10,7 +10,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 class UiState {
 
     sealed interface Error {
-        data object ConfigurationError: Error
+        data object ConfigurationError : Error
     }
 
     var serverAddress by mutableStateOf(TextFieldValue("https://app.monicahq.com"))
@@ -81,7 +81,7 @@ class UiState {
                         this.clientSecret = clientSecret
                     }
                 }
-            }
+            },
         )
     }
 }

@@ -46,9 +46,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Destination<RootGraph>
 @Composable
-fun Setup(
-    navigator: DestinationsNavigator,
-) {
+fun Setup(navigator: DestinationsNavigator) {
     val context = LocalContext.current
     val viewModel = hiltViewModel<SetupViewModel>()
     val uiState = viewModel.uiState
@@ -93,10 +91,7 @@ fun Setup(
 }
 
 @Composable
-fun SetupScreen(
-    uiState: UiState,
-    onSignIn: () -> Unit,
-) {
+fun SetupScreen(uiState: UiState, onSignIn: () -> Unit) {
     MonicaBackground {
         val scrollState = rememberScrollState()
 
@@ -194,9 +189,9 @@ fun SetupScreen(
                 enabled = uiState.isSignInEnabled,
                 content = {
                     Text(
-                        text = "Sign In"
+                        text = "Sign In",
                     )
-                }
+                },
             )
         }
     }

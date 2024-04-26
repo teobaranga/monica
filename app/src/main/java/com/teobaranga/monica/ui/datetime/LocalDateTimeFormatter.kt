@@ -17,10 +17,14 @@ val LocalMonthDayFormatter = staticCompositionLocalOf<DateTimeFormatter> {
 
 fun getDefaultMonthDayFormatter(locale: Locale): DateTimeFormatter {
     val format = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
-        /* dateStyle = */ FormatStyle.MEDIUM,
-        /* timeStyle = */ null,
-        /* chrono = */ Chronology.ofLocale(locale),
-        /* locale = */ locale,
+        /* dateStyle = */
+        FormatStyle.MEDIUM,
+        /* timeStyle = */
+        null,
+        /* chrono = */
+        Chronology.ofLocale(locale),
+        /* locale = */
+        locale,
     ).filterNot {
         // Remove year
         val lowercaseChar = it.lowercaseChar()

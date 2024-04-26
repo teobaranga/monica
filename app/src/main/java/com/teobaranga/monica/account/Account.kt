@@ -22,9 +22,7 @@ import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
 @Composable
-fun Account(
-    onDismissRequest: () -> Unit,
-) {
+fun Account(onDismissRequest: () -> Unit) {
     val viewModel = hiltViewModel<AccountViewModel>()
     AccountScreen(
         onClearAuthorization = viewModel::onClearAuthorization,
@@ -34,10 +32,7 @@ fun Account(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AccountScreen(
-    onClearAuthorization: () -> Unit,
-    onDismissRequest: () -> Unit,
-) {
+private fun AccountScreen(onClearAuthorization: () -> Unit, onDismissRequest: () -> Unit) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
     ) {

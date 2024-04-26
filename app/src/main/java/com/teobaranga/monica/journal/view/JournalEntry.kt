@@ -20,9 +20,7 @@ import com.teobaranga.monica.journal.view.ui.JournalEntryScreen
     style = JournalEntryTransitions::class,
 )
 @Composable
-fun JournalEntry(
-    entryId: Int? = null,
-) {
+fun JournalEntry(entryId: Int? = null) {
     val viewModel = hiltViewModel<JournalEntryViewModel, JournalEntryViewModel.Factory>(
         creationCallback = { factory ->
             factory.create(entryId)

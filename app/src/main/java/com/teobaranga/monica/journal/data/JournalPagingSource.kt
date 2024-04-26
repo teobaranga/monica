@@ -35,7 +35,6 @@ internal class JournalPagingSource @AssistedInject constructor(
         }.first()
     }
 
-
     @AssistedFactory
     internal interface Factory {
         fun create(orderBy: JournalRepository.OrderBy): JournalPagingSource

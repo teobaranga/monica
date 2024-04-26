@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 class FakeAuthorizationRepository : AuthorizationRepository {
 
-    private var _isLoggedIn : Boolean? = null
+    private var _isLoggedIn: Boolean? = null
 
     override val isLoggedIn: StateFlow<Boolean?>
         get() = MutableStateFlow(_isLoggedIn)

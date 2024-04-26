@@ -32,7 +32,6 @@ internal class ContactPagingSource @AssistedInject constructor(
         }.first()
     }
 
-
     @AssistedFactory
     internal interface Factory {
         fun create(orderBy: ContactRepository.OrderBy): ContactPagingSource

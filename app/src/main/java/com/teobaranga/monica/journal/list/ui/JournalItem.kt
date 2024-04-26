@@ -20,11 +20,7 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JournalItem(
-    journalEntry: JournalEntry,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun JournalItem(journalEntry: JournalEntry, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth(),
@@ -69,7 +65,8 @@ fun PreviewJournalItem() {
                             | dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                             | Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
                             | mollit anim id est laborum.
-                            | """.trimMargin(),
+                            | 
+                """.trimMargin(),
                 date = ZonedDateTime.now(),
                 created = ZonedDateTime.now(),
                 updated = ZonedDateTime.now(),

@@ -15,7 +15,7 @@ import javax.inject.Singleton
 class JournalSynchronizer @Inject constructor(
     private val journalApi: JournalApi,
     private val journalDao: JournalDao,
-): Synchronizer {
+) : Synchronizer {
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
@@ -55,7 +55,7 @@ class JournalSynchronizer @Inject constructor(
 
         syncState.value = Synchronizer.State.IDLE
     }
-    
+
     private fun JournalEntryResponse.toEntity(): JournalEntryEntity {
         return JournalEntryEntity(
             id = id,
