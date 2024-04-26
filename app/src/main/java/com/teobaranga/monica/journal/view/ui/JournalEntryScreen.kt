@@ -8,16 +8,9 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -29,33 +22,10 @@ import com.teobaranga.monica.ui.text.MonicaTextField
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.OffsetDateTime
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JournalEntryScreen(entry: JournalEntryUiState, onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun JournalEntryScreen(entry: JournalEntryUiState, topBar: @Composable () -> Unit, modifier: Modifier = Modifier) {
     Scaffold(
-        topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(
-                        onClick = onBack,
-                    ) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
-                    }
-                },
-                title = {
-                    Text("Journal Entry")
-                },
-                actions = {
-                    IconButton(
-                        onClick = {
-
-                        },
-                    ) {
-                        Icon(Icons.Filled.Check, "Add a new entry")
-                    }
-                }
-            )
-        },
+        topBar = topBar,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
     ) { paddingValues ->
         Column(
@@ -120,7 +90,12 @@ private fun PreviewJournalEntryScreen() {
                 created = OffsetDateTime.now(),
                 updated = OffsetDateTime.now(),
             ),
-            onBack = { },
+            topBar = {
+                JournalEntryTopAppBar(
+                    onBack = { },
+                    onDelete = { },
+                )
+            },
         )
     }
 }
