@@ -1,4 +1,5 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -29,12 +30,23 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            val localProperties = gradleLocalProperties(rootDir, providers)
+            storeFile = file("release.jks")
+            storePassword = localProperties["RELEASE_STORE_PASSWORD"] as String?
+            keyAlias = localProperties["RELEASE_KEY_ALIAS"] as String?
+            keyPassword = localProperties["RELEASE_KEY_PASSWORD"] as String?
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
         }
         release {
             isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
