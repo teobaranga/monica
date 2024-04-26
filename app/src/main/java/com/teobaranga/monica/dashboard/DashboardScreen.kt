@@ -32,6 +32,7 @@ import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.destinations.AccountDestination
 import com.teobaranga.monica.destinations.ContactDetailDestination
+import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
@@ -66,15 +67,19 @@ fun DashboardScreen(
     onAvatarClick: () -> Unit,
     onContactSelected: (contactId: Int) -> Unit,
 ) {
-    if (userUiState != null) {
-        DashboardSearchBar(
-            modifier = Modifier
-                .statusBarsPadding()
-                .padding(top = 16.dp),
-            userAvatar = userUiState.avatar,
-            onAvatarClick = onAvatarClick,
-        )
-    }
+    MonicaSearchBar(
+        modifier = Modifier
+            .statusBarsPadding()
+            .padding(top = 16.dp),
+        userAvatar = {
+            if (userUiState != null) {
+                UserAvatar(
+                    userAvatar = userUiState.avatar,
+                    onClick = onAvatarClick,
+                )
+            }
+        },
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()

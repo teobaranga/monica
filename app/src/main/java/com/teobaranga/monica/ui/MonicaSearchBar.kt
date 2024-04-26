@@ -1,4 +1,4 @@
-package com.teobaranga.monica.dashboard
+package com.teobaranga.monica.ui
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -30,10 +30,9 @@ import com.teobaranga.monica.util.compose.keyboardAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardSearchBar(
+fun MonicaSearchBar(
+    userAvatar: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    userAvatar: UserAvatar,
-    onAvatarClick: () -> Unit,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     var shouldBeActive by rememberSaveable { mutableStateOf(false) }
@@ -77,10 +76,7 @@ fun DashboardSearchBar(
                 )
             },
             trailingIcon = {
-                UserAvatar(
-                    userAvatar = userAvatar,
-                    onClick = onAvatarClick,
-                )
+                userAvatar()
             },
             placeholder = {
                 Text(text = "Search something")
@@ -97,14 +93,18 @@ private fun PreviewDashboardSearchBar() {
     MonicaTheme {
         MonicaBackground {
             Box {
-                DashboardSearchBar(
-                    userAvatar = UserAvatar(
-                        contactId = 0,
-                        initials = "TB",
-                        color = "#709512",
-                        avatarUrl = null,
-                    ),
-                    onAvatarClick = { },
+                MonicaSearchBar(
+                    userAvatar = {
+                        UserAvatar(
+                            userAvatar = UserAvatar(
+                                contactId = 0,
+                                initials = "TB",
+                                color = "#709512",
+                                avatarUrl = null,
+                            ),
+                            onClick = { },
+                        )
+                    },
                 )
             }
         }
