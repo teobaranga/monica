@@ -2,9 +2,10 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     alias(libs.plugins.androidApplication)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -132,4 +133,9 @@ dependencies {
 
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+}
+
+ktlint {
+    android = true
+    version = "1.2.1"
 }
