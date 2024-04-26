@@ -40,7 +40,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.contacts.list.model.Contact
-import com.teobaranga.monica.dashboard.DashboardSearchBar
+import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.destinations.ContactDetailDestination
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
@@ -89,16 +89,20 @@ private fun ContactsScreen(
         0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
         1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
     )
-    if (userAvatar != null) {
-        DashboardSearchBar(
-            modifier = Modifier
-                .background(Brush.verticalGradient(colorStops = colors))
-                .statusBarsPadding()
-                .padding(top = 16.dp, bottom = 20.dp),
-            userAvatar = userAvatar,
-            onAvatarClick = onAvatarClick,
-        )
-    }
+    MonicaSearchBar(
+        modifier = Modifier
+            .background(Brush.verticalGradient(colorStops = colors))
+            .statusBarsPadding()
+            .padding(top = 16.dp, bottom = 20.dp),
+        userAvatar = {
+            if (userAvatar != null) {
+                UserAvatar(
+                    userAvatar = userAvatar,
+                    onClick = onAvatarClick,
+                )
+            }
+        },
+    )
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = onRefresh,
