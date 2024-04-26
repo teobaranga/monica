@@ -67,10 +67,7 @@ data class ContactInfoActivitiesSection(
 }
 
 @Composable
-private fun ContactActivity(
-    activity: ContactActivity,
-    modifier: Modifier = Modifier,
-) {
+private fun ContactActivity(activity: ContactActivity, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth(),
@@ -106,7 +103,7 @@ private fun PreviewContactActivity() {
                 description = "It was fun",
                 date = "Today",
                 participants = emptyList(),
-            )
+            ),
         )
     }
 }

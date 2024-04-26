@@ -19,10 +19,7 @@ import com.teobaranga.monica.ui.theme.LocalBackgroundTheme
  * @param content The background content.
  */
 @Composable
-fun MonicaBackground(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
+fun MonicaBackground(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     val color = LocalBackgroundTheme.current.color
     val tonalElevation = LocalBackgroundTheme.current.tonalElevation
     Surface(

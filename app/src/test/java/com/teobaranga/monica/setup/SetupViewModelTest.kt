@@ -68,8 +68,11 @@ class SetupViewModelTest {
 
         val redirectUri = URLEncoder.encode(REDIRECT_URI, "UTF-8")
         assertEquals(
-            "$address/oauth/authorize?$PARAM_CLIENT_ID=$clientId&$PARAM_RESPONSE_TYPE=code&$PARAM_REDIRECT_URI=$redirectUri",
-            urls[0]
+            "$address/oauth/authorize?" +
+                "$PARAM_CLIENT_ID=$clientId&" +
+                "$PARAM_RESPONSE_TYPE=code&" +
+                "$PARAM_REDIRECT_URI=$redirectUri",
+            urls[0],
         )
     }
 
@@ -92,8 +95,11 @@ class SetupViewModelTest {
 
         val redirectUri = URLEncoder.encode(REDIRECT_URI, "UTF-8")
         assertEquals(
-            "$address/oauth/authorize?$PARAM_CLIENT_ID=$clientId&$PARAM_RESPONSE_TYPE=code&$PARAM_REDIRECT_URI=$redirectUri",
-            urls[0]
+            "$address/oauth/authorize?" +
+                "$PARAM_CLIENT_ID=$clientId&" +
+                "$PARAM_RESPONSE_TYPE=code&" +
+                "$PARAM_REDIRECT_URI=$redirectUri",
+            urls[0],
         )
     }
 

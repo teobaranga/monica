@@ -52,10 +52,7 @@ fun LazyListScope.fullNameItem(fullName: String) {
 
 context(BoxWithConstraintsScope)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
-fun LazyListScope.infoSectionTabs(
-    pagerState: PagerState,
-    infoSections: List<ContactInfoSection>,
-) {
+fun LazyListScope.infoSectionTabs(pagerState: PagerState, infoSections: List<ContactInfoSection>) {
     stickyHeader {
         val coroutineScope = rememberCoroutineScope()
         PrimaryScrollableTabRow(
@@ -72,7 +69,7 @@ fun LazyListScope.infoSectionTabs(
                     text = {
                         Text(
                             text = infoSection.title,
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                     },
                 )

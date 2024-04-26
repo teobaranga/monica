@@ -15,9 +15,7 @@ data class ContactActivity(
     val participants: List<Contact>,
 )
 
-fun ContactActivityEntity.toExternalModel(
-    participants: List<ContactEntity>,
-): ContactActivity {
+fun ContactActivityEntity.toExternalModel(participants: List<ContactEntity>): ContactActivity {
     return ContactActivity(
         id = activityId,
         title = title,

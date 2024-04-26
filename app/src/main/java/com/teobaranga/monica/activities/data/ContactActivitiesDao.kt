@@ -21,7 +21,7 @@ abstract class ContactActivitiesDao {
         INNER JOIN contacts ON contacts.contactId = contact_activity_cross_refs.contactId
         WHERE contacts.contactId = :contactId
         ORDER BY date(date) DESC
-        """
+        """,
     )
     @RewriteQueriesToDropUnusedColumns
     abstract fun getContactActivities(contactId: Int): Flow<List<ContactActivityEntity>>

@@ -15,10 +15,7 @@ import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import com.ramcosta.composedestinations.utils.startDestination
 
 @Composable
-fun HomeNavigationBar(
-    modifier: Modifier = Modifier,
-    navController: NavController,
-) {
+fun HomeNavigationBar(modifier: Modifier = Modifier, navController: NavController) {
     val currentDestination: DestinationSpec? by navController.currentDestinationAsState()
     NavigationBar(
         modifier = modifier,

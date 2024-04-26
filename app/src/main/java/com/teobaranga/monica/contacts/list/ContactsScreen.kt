@@ -49,9 +49,7 @@ import kotlinx.coroutines.flow.flowOf
 
 @Destination<ContactsNavGraph>(start = true)
 @Composable
-fun Contacts(
-    navigator: DestinationsNavigator,
-) {
+fun Contacts(navigator: DestinationsNavigator) {
     val viewModel = hiltViewModel<ContactsViewModel>()
     val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
@@ -163,11 +161,7 @@ private fun ContactsScreen(
 }
 
 @Composable
-private fun ContactItem(
-    contact: Contact,
-    onContactSelected: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun ContactItem(contact: Contact, onContactSelected: (Int) -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -224,8 +218,8 @@ private fun PreviewContactsScreen() {
                             avatarColor = "#00FF00",
                             updated = null,
                         ),
-                    )
-                )
+                    ),
+                ),
             )
             ContactsScreen(
                 userAvatar = UserAvatar(

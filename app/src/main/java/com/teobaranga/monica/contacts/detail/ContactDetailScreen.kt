@@ -40,10 +40,7 @@ import com.teobaranga.monica.util.compose.nestedScrollParentFirst
 
 @Destination<ContactsNavGraph>
 @Composable
-fun ContactDetail(
-    navigator: DestinationsNavigator,
-    contactId: Int,
-) {
+fun ContactDetail(navigator: DestinationsNavigator, contactId: Int) {
     val viewModel = hiltViewModel<ContactDetailViewModel, ContactDetailViewModel.Factory>(
         creationCallback = { factory: ContactDetailViewModel.Factory ->
             factory.create(contactId)
@@ -71,10 +68,7 @@ fun ContactDetail(
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-private fun ContactDetailScreen(
-    contactDetail: ContactDetail,
-    onBack: () -> Unit,
-) {
+private fun ContactDetailScreen(contactDetail: ContactDetail, onBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -100,7 +94,7 @@ private fun ContactDetailScreen(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
-                .padding(contentPadding)
+                .padding(contentPadding),
         ) {
             val state = rememberLazyListState()
             LazyColumn(

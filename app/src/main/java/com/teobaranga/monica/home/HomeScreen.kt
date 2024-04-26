@@ -29,9 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Destination<RootGraph>(start = true)
 @Composable
-fun Home(
-    navigator: DestinationsNavigator,
-) {
+fun Home(navigator: DestinationsNavigator) {
     val viewModel = hiltViewModel<HomeViewModel>()
 
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
@@ -64,8 +62,7 @@ fun Home(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun HomeScreen(
-) {
+fun HomeScreen() {
     val engine = rememberNavHostEngine()
     val navController = engine.rememberNavController()
     Scaffold(

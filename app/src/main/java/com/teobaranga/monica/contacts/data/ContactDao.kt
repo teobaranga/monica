@@ -14,11 +14,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class ContactDao {
 
-    fun getContacts(
-        orderBy: OrderBy? = null,
-        limit: Int? = null,
-        offset: Int? = null,
-    ): Flow<List<ContactEntity>> {
+    fun getContacts(orderBy: OrderBy? = null, limit: Int? = null, offset: Int? = null): Flow<List<ContactEntity>> {
         val query = buildString {
             append("SELECT * FROM contacts")
             if (orderBy != null) {

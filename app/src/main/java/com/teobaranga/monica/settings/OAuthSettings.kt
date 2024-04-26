@@ -37,7 +37,6 @@ class MutableOAuthSettingsScope(private val preferences: MutablePreferences) {
     }
 }
 
-
 inline fun MutablePreferences.oAuthSettings(block: MutableOAuthSettingsScope.() -> Unit) {
     val scope = MutableOAuthSettingsScope(this)
     block(scope)

@@ -43,7 +43,6 @@ class MutableTokenStorageScope(private val preferences: MutablePreferences) {
     }
 }
 
-
 inline fun MutablePreferences.tokenStorage(block: MutableTokenStorageScope.() -> Unit) {
     val scope = MutableTokenStorageScope(this)
     block(scope)

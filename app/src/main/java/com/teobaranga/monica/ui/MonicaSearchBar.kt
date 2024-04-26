@@ -30,10 +30,7 @@ import com.teobaranga.monica.util.compose.keyboardAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MonicaSearchBar(
-    userAvatar: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun MonicaSearchBar(userAvatar: @Composable () -> Unit, modifier: Modifier = Modifier) {
     var query by rememberSaveable { mutableStateOf("") }
     var shouldBeActive by rememberSaveable { mutableStateOf(false) }
     val isImeVisible by keyboardAsState()
@@ -80,7 +77,7 @@ fun MonicaSearchBar(
             },
             placeholder = {
                 Text(text = "Search something")
-            }
+            },
         ) {
             // TODO: display results
         }

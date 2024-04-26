@@ -13,7 +13,7 @@ import javax.inject.Singleton
 class ContactSynchronizer @Inject constructor(
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
-): Synchronizer {
+) : Synchronizer {
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
@@ -53,7 +53,7 @@ class ContactSynchronizer @Inject constructor(
 
         syncState.value = Synchronizer.State.IDLE
     }
-    
+
     private fun ContactResponse.toEntity(): ContactEntity {
         // TODO this is duplicated mapping - figure out if really necessary
         return ContactEntity(
