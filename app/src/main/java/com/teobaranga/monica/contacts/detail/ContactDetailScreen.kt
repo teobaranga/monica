@@ -38,8 +38,7 @@ import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.nestedScrollParentFirst
 
-@ContactsNavGraph
-@Destination
+@Destination<ContactsNavGraph>
 @Composable
 fun ContactDetail(
     navigator: DestinationsNavigator,

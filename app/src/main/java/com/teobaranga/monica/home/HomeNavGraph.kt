@@ -1,6 +1,6 @@
-import com.ramcosta.composedestinations.annotation.NavGraph
+import com.ramcosta.composedestinations.annotation.NavHostGraph
 
-@NavGraph(route = "root_home")
+@NavHostGraph(route = "root_home")
 annotation class HomeNavGraph(
     val start: Boolean = false,
 )

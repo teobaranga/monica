@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.data.ContactSynchronizer
 import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.data.photo.PhotoSynchronizer
 import com.teobaranga.monica.data.user.UserRepository
-import com.teobaranga.monica.destinations.DirectionDestination
 import com.teobaranga.monica.home.HomeNavigationManager
 import com.teobaranga.monica.user.userAvatar
 import com.teobaranga.monica.util.coroutines.Dispatcher
@@ -67,7 +67,7 @@ internal class DashboardViewModel @Inject constructor(
         .flow
         .cachedIn(viewModelScope)
 
-    fun navigateTo(destination: DirectionDestination) {
+    fun navigateTo(destination: DirectionDestinationSpec) {
         homeNavigationManager.navigateTo(destination)
     }
 

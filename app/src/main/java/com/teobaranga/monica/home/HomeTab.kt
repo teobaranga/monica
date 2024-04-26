@@ -5,13 +5,13 @@ import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.teobaranga.monica.NavGraph
-import com.teobaranga.monica.NavGraphs
+import com.ramcosta.composedestinations.generated.NavGraphs
+import com.ramcosta.composedestinations.spec.NavGraphSpec
 
 enum class HomeTab(
     val icon: ImageVector,
     val label: String,
-    val destination: NavGraph,
+    val destination: NavGraphSpec,
 ) {
     DASHBOARD(
         icon = Icons.Default.Dashboard,
