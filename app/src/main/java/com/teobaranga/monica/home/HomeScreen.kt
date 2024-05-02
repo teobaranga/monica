@@ -33,7 +33,7 @@ fun Home(navigator: DestinationsNavigator, modifier: Modifier = Modifier, viewMo
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn == false) {
             navigator.navigate(SetupDestination) {
-                popUpTo(HomeDestination.route) {
+                popUpTo(HomeDestination) {
                     inclusive = true
                 }
             }
