@@ -53,8 +53,8 @@ fun Setup(navigator: DestinationsNavigator, viewModel: SetupViewModel = hiltView
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn == true) {
-            navigator.navigate(NavGraphs.root.startRoute.route) {
-                popUpTo(SetupDestination.route) {
+            navigator.navigate(NavGraphs.root) {
+                popUpTo(SetupDestination) {
                     inclusive = true
                 }
             }
