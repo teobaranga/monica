@@ -4,7 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.teobaranga.monica.contacts.list.model.Contact
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 
 @Entity(tableName = "contacts")
 data class ContactEntity(
@@ -18,12 +18,12 @@ data class ContactEntity(
     val avatarColor: String,
     @Embedded(prefix = "birthdate_")
     val birthdate: Birthdate?,
-    val updated: ZonedDateTime?,
+    val updated: OffsetDateTime?,
 ) {
     data class Birthdate(
         val isAgeBased: Boolean,
         val isYearUnknown: Boolean,
-        val date: ZonedDateTime,
+        val date: OffsetDateTime,
     )
 }
 

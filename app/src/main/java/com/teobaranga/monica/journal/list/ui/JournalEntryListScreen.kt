@@ -38,7 +38,7 @@ import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 
 private val fabHeight = 56.dp
 private val fabPadding = 20.dp
@@ -166,9 +166,9 @@ private fun PreviewJournalScreen() {
                             | mollit anim id est laborum.
                             | 
                         """.trimMargin(),
-                        date = ZonedDateTime.now(),
-                        created = ZonedDateTime.now(),
-                        updated = ZonedDateTime.now(),
+                        date = OffsetDateTime.now(),
+                        created = OffsetDateTime.now(),
+                        updated = OffsetDateTime.now(),
                     ),
                 ),
             ),

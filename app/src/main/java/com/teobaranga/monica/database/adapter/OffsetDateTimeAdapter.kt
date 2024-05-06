@@ -1,21 +1,21 @@
 package com.teobaranga.monica.database.adapter
 
 import androidx.room.TypeConverter
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 
-object ZonedDateTimeAdapter {
+object OffsetDateTimeAdapter {
 
     @TypeConverter
     @JvmStatic
-    fun toZonedDateTime(value: String?): ZonedDateTime? {
+    fun toOffsetDateTime(value: String?): OffsetDateTime? {
         return value?.let {
-            ZonedDateTime.parse(value)
+            OffsetDateTime.parse(value)
         }
     }
 
     @TypeConverter
     @JvmStatic
-    fun fromZonedDateTime(date: ZonedDateTime?): String? {
+    fun fromOffsetDateTime(date: OffsetDateTime?): String? {
         return date?.toString()
     }
 }
