@@ -1,6 +1,6 @@
 package com.teobaranga.monica.journal.data
 
-import com.skydoves.sandwich.getOrNull
+import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.journal.database.JournalDao
@@ -31,7 +31,10 @@ class JournalSynchronizer @Inject constructor(
                 .onFailure {
                     Timber.w("Error while loading journal: %s", this)
                 }
-                .getOrNull() ?: break
+                .getOrElse {
+                    syncState.value = Synchronizer.State.IDLE
+                    return
+                }
             val journalEntries = journalEntriesResponse.data
                 .map {
                     it.toEntity()

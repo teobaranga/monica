@@ -1,6 +1,6 @@
 package com.teobaranga.monica.data.photo
 
-import com.skydoves.sandwich.getOrNull
+import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.contacts.data.ContactPhotosResponse
 import com.teobaranga.monica.data.sync.Synchronizer
@@ -30,7 +30,10 @@ class PhotoSynchronizer @Inject constructor(
                 .onFailure {
                     Timber.w("Error while loading photos: %s", this)
                 }
-                .getOrNull() ?: break
+                .getOrElse {
+                    syncState.value = Synchronizer.State.IDLE
+                    return
+                }
             val photoEntities = photosResponse.data
                 .map {
                     it.toEntity()

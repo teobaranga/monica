@@ -1,6 +1,6 @@
 package com.teobaranga.monica.contacts.data
 
-import com.skydoves.sandwich.getOrNull
+import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.data.sync.Synchronizer
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +29,10 @@ class ContactSynchronizer @Inject constructor(
                 .onFailure {
                     Timber.w("Error while loading contacts: %s", this)
                 }
-                .getOrNull() ?: break
+                .getOrElse {
+                    syncState.value = Synchronizer.State.IDLE
+                    return
+                }
             val contactEntities = contactsResponse.data
                 .map {
                     it.toEntity()
