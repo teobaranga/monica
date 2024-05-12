@@ -4,6 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.teobaranga.monica.contacts.data.ContactResponse
 import com.teobaranga.monica.data.common.MetaResponse
+import java.time.LocalDate
 
 @JsonClass(generateAdapter = true)
 data class ContactActivitiesResponse(
@@ -21,7 +22,7 @@ data class ContactActivitiesResponse(
         @Json(name = "description")
         val description: String?,
         @Json(name = "happened_at")
-        val happenedAt: String,
+        val happenedAt: LocalDate,
         @Json(name = "attendees")
         val attendees: Attendees,
     ) {

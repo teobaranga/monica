@@ -1,15 +1,20 @@
 package com.teobaranga.monica.contacts.detail.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -19,8 +24,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.monica.contacts.detail.activities.ContactActivitiesViewModel
 import com.teobaranga.monica.contacts.detail.activities.ContactActivity
+import com.teobaranga.monica.ui.datetime.LocalDateFormatter
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.thenIf
+import java.time.LocalDate
 
 data class ContactInfoActivitiesSection(
     private val contactId: Int,
@@ -58,7 +65,6 @@ data class ContactInfoActivitiesSection(
                         modifier = Modifier
                             .padding(horizontal = 24.dp)
                             .padding(vertical = 24.dp),
-                        color = MaterialTheme.colorScheme.tertiary,
                     )
                 }
             }
@@ -87,6 +93,24 @@ private fun ContactActivity(activity: ContactActivity, modifier: Modifier = Modi
                 overflow = TextOverflow.Ellipsis,
             )
         }
+        Row(
+            modifier = Modifier
+                .padding(top = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            val localDateFormatter = LocalDateFormatter.current
+            Icon(
+                imageVector = Icons.Outlined.CalendarMonth,
+                tint = MaterialTheme.colorScheme.secondary,
+                contentDescription = null,
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 8.dp),
+                text = localDateFormatter.format(activity.date),
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
     }
 }
 
@@ -101,7 +125,7 @@ private fun PreviewContactActivity() {
                 id = 1,
                 title = "Poker Night",
                 description = "It was fun",
-                date = "Today",
+                date = LocalDate.now(),
                 participants = emptyList(),
             ),
         )

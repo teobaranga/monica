@@ -5,13 +5,14 @@ import com.teobaranga.monica.activities.data.ContactActivityEntity
 import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.contacts.data.toExternalModel
 import com.teobaranga.monica.contacts.list.model.Contact
+import java.time.LocalDate
 
 @Immutable
 data class ContactActivity(
     val id: Int,
     val title: String,
     val description: String?,
-    val date: String,
+    val date: LocalDate,
     val participants: List<Contact>,
 )
 
