@@ -6,7 +6,7 @@ import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.data.adapter.UuidAdapter
-import com.teobaranga.monica.data.adapter.ZonedDateTimeAdapter
+import com.teobaranga.monica.data.adapter.OffsetDateTimeAdapter
 import com.teobaranga.monica.data.photo.PhotoApi
 import com.teobaranga.monica.data.user.UserApi
 import com.teobaranga.monica.journal.data.JournalApi
@@ -50,7 +50,7 @@ object ApiModule {
     @Singleton
     fun provideMoshiConverterFactory(): MoshiConverterFactory {
         val moshi = Moshi.Builder()
-            .add(ZonedDateTimeAdapter())
+            .add(OffsetDateTimeAdapter())
             .add(UuidAdapter())
             .build()
         return MoshiConverterFactory.create(moshi)

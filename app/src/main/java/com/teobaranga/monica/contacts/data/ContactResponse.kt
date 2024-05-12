@@ -2,7 +2,7 @@ package com.teobaranga.monica.contacts.data
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 
 @JsonClass(generateAdapter = true)
 data class ContactResponse(
@@ -25,7 +25,7 @@ data class ContactResponse(
     @Json(name = "information")
     val info: Information,
     @Json(name = "updated_at")
-    val updated: ZonedDateTime?,
+    val updated: OffsetDateTime?,
 ) {
     @JsonClass(generateAdapter = true)
     data class Information(
@@ -54,7 +54,7 @@ data class ContactResponse(
                 @Json(name = "is_year_unknown")
                 val isYearUnknown: Boolean?,
                 @Json(name = "date")
-                val date: ZonedDateTime?,
+                val date: OffsetDateTime?,
             )
         }
     }

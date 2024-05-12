@@ -3,7 +3,7 @@ package com.teobaranga.monica.journal.data
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.teobaranga.monica.data.common.AccountResponse
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 import java.util.UUID
 
 @JsonClass(generateAdapter = true)
@@ -19,9 +19,9 @@ data class JournalEntryResponse(
     @Json(name = "post")
     val post: String,
     @Json(name = "date")
-    val date: ZonedDateTime,
+    val date: OffsetDateTime,
     @Json(name = "created_at")
-    val created: ZonedDateTime,
+    val created: OffsetDateTime,
     @Json(name = "updated_at")
-    val updated: ZonedDateTime,
+    val updated: OffsetDateTime,
 )

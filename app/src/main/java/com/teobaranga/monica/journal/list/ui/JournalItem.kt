@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.journal.model.JournalEntry
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,9 +67,9 @@ private fun PreviewJournalItem() {
                             | mollit anim id est laborum.
                             | 
                 """.trimMargin(),
-                date = ZonedDateTime.now(),
-                created = ZonedDateTime.now(),
-                updated = ZonedDateTime.now(),
+                date = OffsetDateTime.now(),
+                created = OffsetDateTime.now(),
+                updated = OffsetDateTime.now(),
             ),
             onClick = { },
         )

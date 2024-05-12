@@ -5,7 +5,7 @@ import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoSection
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import java.time.MonthDay
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 
 @Immutable
@@ -17,14 +17,14 @@ data class ContactDetail(
     sealed interface Birthday {
         data class AgeBased(val age: Int) : Birthday
         data class UnknownYear(val monthDay: MonthDay) : Birthday
-        data class Full(val date: ZonedDateTime, val age: Int) : Birthday
+        data class Full(val date: OffsetDateTime, val age: Int) : Birthday
     }
 }
 
 fun ContactEntity.Birthdate.toBirthday(): ContactDetail.Birthday {
     return when {
         isAgeBased -> {
-            val age = ChronoUnit.YEARS.between(date, ZonedDateTime.now())
+            val age = ChronoUnit.YEARS.between(date, OffsetDateTime.now())
             ContactDetail.Birthday.AgeBased(age.toInt())
         }
 
@@ -34,7 +34,7 @@ fun ContactEntity.Birthdate.toBirthday(): ContactDetail.Birthday {
         }
 
         else -> {
-            val age = ChronoUnit.YEARS.between(date, ZonedDateTime.now())
+            val age = ChronoUnit.YEARS.between(date, OffsetDateTime.now())
             ContactDetail.Birthday.Full(date, age.toInt())
         }
     }

@@ -1,6 +1,6 @@
 package com.teobaranga.monica.contacts.list.model
 
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 
 data class Contact(
     val id: Int,
@@ -10,5 +10,5 @@ data class Contact(
     val initials: String,
     val avatarUrl: String?,
     val avatarColor: String,
-    val updated: ZonedDateTime?,
+    val updated: OffsetDateTime?,
 )
