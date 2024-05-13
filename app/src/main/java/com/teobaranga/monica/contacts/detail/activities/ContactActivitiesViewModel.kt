@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel(assistedFactory = ContactActivitiesViewModel.Factory::class)
@@ -28,16 +29,19 @@ internal class ContactActivitiesViewModel @AssistedInject constructor(
 
     val contactActivities = contactRepository.getContactActivities(contactId)
         .mapLatest { contactActivities ->
-            contactActivities
+            val activities = contactActivities
                 .map { contactActivityEntity ->
-                    val participants = contactRepository.getContacts(emptyList()).first()
+                    val participants = withContext(dispatcher.io) {
+                        contactRepository.getContacts(emptyList()).first()
+                    }
                     contactActivityEntity.toExternalModel(participants)
                 }
+            ContactActivitiesUiState.Loaded(activities)
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = emptyList(),
+            initialValue = ContactActivitiesUiState.Loading,
         )
 
     init {
