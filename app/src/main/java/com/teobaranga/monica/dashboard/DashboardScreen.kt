@@ -47,9 +47,9 @@ import kotlinx.coroutines.flow.flowOf
 internal fun Dashboard(navigator: DestinationsNavigator, viewModel: DashboardViewModel = hiltViewModel()) {
     val userUiState by viewModel.userUiState.collectAsStateWithLifecycle()
     val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
-    var shouldShowAccount by remember { mutableStateOf(false) }
     DashboardScreen(
         searchBar = {
+            var shouldShowAccount by remember { mutableStateOf(false) }
             MonicaSearchBar(
                 modifier = Modifier
                     .statusBarsPadding()
@@ -66,6 +66,13 @@ internal fun Dashboard(navigator: DestinationsNavigator, viewModel: DashboardVie
                     }
                 },
             )
+            if (shouldShowAccount) {
+                Account(
+                    onDismissRequest = {
+                        shouldShowAccount = false
+                    },
+                )
+            }
         },
         userUiState = userUiState,
         recentContacts = recentContacts,
@@ -73,18 +80,11 @@ internal fun Dashboard(navigator: DestinationsNavigator, viewModel: DashboardVie
             navigator.navigate(ContactDetailDestination(contactId))
         },
     )
-    if (shouldShowAccount) {
-        Account(
-            onDismissRequest = {
-                shouldShowAccount = false
-            },
-        )
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen(
+private fun DashboardScreen(
     searchBar: @Composable () -> Unit,
     userUiState: UserUiState?,
     recentContacts: LazyPagingItems<Contact>,

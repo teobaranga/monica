@@ -24,6 +24,9 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -39,6 +42,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.generated.destinations.ContactDetailDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.MonicaBackground
+import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
@@ -50,13 +54,40 @@ import kotlinx.coroutines.flow.flowOf
 @Destination<ContactsNavGraph>(start = true)
 @Composable
 internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewModel = hiltViewModel()) {
-    val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     ContactsScreen(
-        userAvatar = userAvatar,
-        onAvatarClick = {
-            // TODO
+        searchBar = {
+            var shouldShowAccount by remember { mutableStateOf(false) }
+            val colors = arrayOf(
+                0.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
+                0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
+                1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
+            )
+            MonicaSearchBar(
+                modifier = Modifier
+                    .background(Brush.verticalGradient(colorStops = colors))
+                    .statusBarsPadding()
+                    .padding(top = 16.dp, bottom = 20.dp),
+                userAvatar = {
+                    val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
+                    userAvatar?.let {
+                        UserAvatar(
+                            userAvatar = it,
+                            onClick = {
+                                shouldShowAccount = true
+                            },
+                        )
+                    }
+                },
+            )
+            if (shouldShowAccount) {
+                Account(
+                    onDismissRequest = {
+                        shouldShowAccount = false
+                    },
+                )
+            }
         },
         lazyItems = lazyItems,
         isRefreshing = isRefreshing,
@@ -72,8 +103,7 @@ internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewM
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ContactsScreen(
-    userAvatar: UserAvatar?,
-    onAvatarClick: () -> Unit,
+    searchBar: @Composable () -> Unit,
     lazyItems: LazyPagingItems<Contact>,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
@@ -95,25 +125,7 @@ private fun ContactsScreen(
             .fillMaxSize()
             .nestedScroll(pullRefreshState.nestedScrollConnection),
     ) {
-        val colors = arrayOf(
-            0.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
-            0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
-            1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
-        )
-        MonicaSearchBar(
-            modifier = Modifier
-                .background(Brush.verticalGradient(colorStops = colors))
-                .statusBarsPadding()
-                .padding(top = 16.dp, bottom = 20.dp),
-            userAvatar = {
-                if (userAvatar != null) {
-                    UserAvatar(
-                        userAvatar = userAvatar,
-                        onClick = onAvatarClick,
-                    )
-                }
-            },
-        )
+        searchBar()
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -221,13 +233,7 @@ private fun PreviewContactsScreen() {
                 ),
             )
             ContactsScreen(
-                userAvatar = UserAvatar(
-                    contactId = 1,
-                    initials = "TB",
-                    color = "#FF0000",
-                    avatarUrl = null,
-                ),
-                onAvatarClick = { },
+                searchBar = { },
                 lazyItems = lazyItems.collectAsLazyPagingItems(),
                 isRefreshing = false,
                 onRefresh = { },
