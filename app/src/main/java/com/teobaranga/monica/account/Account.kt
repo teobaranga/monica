@@ -3,6 +3,7 @@ package com.teobaranga.monica.account
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,12 +34,14 @@ fun Account(viewModel: AccountViewModel = hiltViewModel(), onDismissRequest: () 
 @Composable
 private fun AccountScreen(onClearAuthorization: () -> Unit, onDismissRequest: () -> Unit) {
     ModalBottomSheet(
+        modifier = Modifier
+            .statusBarsPadding(),
         onDismissRequest = onDismissRequest,
+        windowInsets = WindowInsets(0, 0, 0, 0),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .statusBarsPadding()
                 .padding(horizontal = 20.dp)
                 .clip(ShapeDefaults.Large)
                 .background(MaterialTheme.colorScheme.background),

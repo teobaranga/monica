@@ -1,6 +1,6 @@
 package com.teobaranga.monica.activities.data
 
-import com.skydoves.sandwich.getOrNull
+import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.data.sync.Synchronizer
@@ -34,7 +34,10 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
                 .onFailure {
                     Timber.w("Error while loading contact activities: %s", this)
                 }
-                .getOrNull() ?: break
+                .getOrElse {
+                    syncState.value = Synchronizer.State.IDLE
+                    return
+                }
             val contactActivityEntities = contactActivitiesResponse.data
                 .map {
                     it.toEntity()

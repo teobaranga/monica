@@ -47,32 +47,47 @@ import kotlinx.coroutines.flow.flowOf
 internal fun Dashboard(navigator: DestinationsNavigator, viewModel: DashboardViewModel = hiltViewModel()) {
     val userUiState by viewModel.userUiState.collectAsStateWithLifecycle()
     val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
-    var shouldShowAccount by remember { mutableStateOf(false) }
     DashboardScreen(
+        searchBar = {
+            var shouldShowAccount by remember { mutableStateOf(false) }
+            MonicaSearchBar(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .padding(top = 16.dp),
+                userAvatar = {
+                    val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
+                    userAvatar?.let {
+                        UserAvatar(
+                            userAvatar = it,
+                            onClick = {
+                                shouldShowAccount = true
+                            },
+                        )
+                    }
+                },
+            )
+            if (shouldShowAccount) {
+                Account(
+                    onDismissRequest = {
+                        shouldShowAccount = false
+                    },
+                )
+            }
+        },
         userUiState = userUiState,
         recentContacts = recentContacts,
-        onAvatarClick = {
-            shouldShowAccount = true
-        },
         onContactSelected = { contactId ->
             navigator.navigate(ContactDetailDestination(contactId))
         },
     )
-    if (shouldShowAccount) {
-        Account(
-            onDismissRequest = {
-                shouldShowAccount = false
-            },
-        )
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen(
+private fun DashboardScreen(
+    searchBar: @Composable () -> Unit,
     userUiState: UserUiState?,
     recentContacts: LazyPagingItems<Contact>,
-    onAvatarClick: () -> Unit,
     onContactSelected: (contactId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -80,76 +95,80 @@ fun DashboardScreen(
         modifier = modifier
             .fillMaxSize(),
     ) {
-        MonicaSearchBar(
-            modifier = Modifier
-                .statusBarsPadding()
-                .padding(top = 16.dp),
-            userAvatar = {
-                if (userUiState != null) {
-                    UserAvatar(
-                        userAvatar = userUiState.avatar,
-                        onClick = onAvatarClick,
-                    )
-                }
-            },
-        )
+        searchBar()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .statusBarsPadding()
                 .padding(top = SearchBarDefaults.InputFieldHeight + 16.dp),
         ) {
-            if (userUiState != null) {
-                Text(
-                    modifier = Modifier
-                        .padding(horizontal = 32.dp)
-                        .padding(top = 24.dp, bottom = 32.dp),
-                    text = "Welcome, ${userUiState.userInfo.name}",
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                )
-            }
-
             Text(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
-                text = "Recent contacts",
-                style = MaterialTheme.typography.titleSmall,
+                    .padding(horizontal = 32.dp)
+                    .padding(top = 24.dp, bottom = 32.dp),
+                text = "Welcome, ${userUiState?.userInfo?.name ?: "..."}",
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
             )
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(horizontal = 20.dp),
-            ) {
-                when (recentContacts.loadState.refresh) {
-                    is LoadState.Error -> {
-                        // TODO
-                    }
 
-                    is LoadState.Loading,
-                    is LoadState.NotLoading,
-                    -> {
-                        items(
-                            count = recentContacts.itemCount,
-                            key = {
-                                val contact = recentContacts[it]
-                                contact?.id ?: Int.MIN_VALUE
-                            },
-                        ) { contactId ->
-                            val contact = recentContacts[contactId]
-                            if (contact != null) {
-                                UserAvatar(
-                                    modifier = Modifier
-                                        .size(72.dp),
-                                    userAvatar = contact.userAvatar,
-                                    onClick = {
-                                        onContactSelected(contact.id)
-                                    },
-                                )
-                            }
+            RecentContactsSection(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                recentContacts = recentContacts,
+                onContactSelected = onContactSelected,
+            )
+        }
+    }
+}
+
+@Composable
+private fun RecentContactsSection(
+    recentContacts: LazyPagingItems<Contact>,
+    onContactSelected: (contactId: Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            text = "Recent contacts",
+            style = MaterialTheme.typography.titleSmall,
+        )
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = 20.dp),
+        ) {
+            when (recentContacts.loadState.refresh) {
+                is LoadState.Error -> {
+                    // TODO
+                }
+
+                is LoadState.Loading,
+                is LoadState.NotLoading,
+                -> {
+                    items(
+                        count = recentContacts.itemCount,
+                        key = {
+                            val contact = recentContacts[it]
+                            contact?.id ?: Int.MIN_VALUE
+                        },
+                    ) { contactId ->
+                        val contact = recentContacts[contactId]
+                        if (contact != null) {
+                            UserAvatar(
+                                modifier = Modifier
+                                    .size(72.dp),
+                                userAvatar = contact.userAvatar,
+                                onClick = {
+                                    onContactSelected(contact.id)
+                                },
+                            )
                         }
                     }
                 }
@@ -190,19 +209,13 @@ private fun PreviewDashboardScreen() {
                 ),
             )
             DashboardScreen(
+                searchBar = { },
                 userUiState = UserUiState(
                     userInfo = UserUiState.UserInfo(
                         name = "Teo",
                     ),
-                    avatar = UserAvatar(
-                        contactId = 0,
-                        initials = "TB",
-                        color = "#709512",
-                        avatarUrl = null,
-                    ),
                 ),
                 recentContacts = recentContacts.collectAsLazyPagingItems(),
-                onAvatarClick = { },
                 onContactSelected = { },
             )
         }
