@@ -29,20 +29,28 @@ private const val PAGE_SIZE = 10
 internal class DashboardViewModel @Inject constructor(
     private val dispatcher: Dispatcher,
     private val homeNavigationManager: HomeNavigationManager,
-    userRepository: UserRepository,
+    private val userRepository: UserRepository,
     contactRepository: ContactRepository,
     private val contactSynchronizer: ContactSynchronizer,
     private val photoSynchronizer: PhotoSynchronizer,
 ) : ViewModel() {
 
+    val userAvatar = userRepository.me
+        .mapLatest { me ->
+            me.contact?.userAvatar ?: me.userAvatar
+        }
+        .stateIn(
+            scope = viewModelScope,
+            initialValue = null,
+            started = SharingStarted.WhileSubscribed(5_000),
+        )
+
     val userUiState = userRepository.me
         .mapLatest { me ->
-            val avatar = me.contact?.userAvatar ?: me.userAvatar
             UserUiState(
                 userInfo = UserUiState.UserInfo(
                     name = me.firstName,
                 ),
-                avatar = avatar,
             )
         }
         .stateIn(
@@ -76,6 +84,9 @@ internal class DashboardViewModel @Inject constructor(
     }
 
     fun refresh() {
+        viewModelScope.launch(dispatcher.io) {
+            userRepository.sync()
+        }
         viewModelScope.launch(dispatcher.io) {
             contactSynchronizer.sync()
         }
