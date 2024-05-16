@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.PeopleOutline
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.datetime.LocalDateFormatter
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.LocalDate
@@ -95,6 +97,28 @@ private fun ContactActivity(activity: ContactActivity, modifier: Modifier = Modi
                 style = MaterialTheme.typography.bodySmall,
             )
         }
+        if (activity.participants.isNotEmpty()) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.PeopleOutline,
+                    tint = MaterialTheme.colorScheme.secondary,
+                    contentDescription = null,
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(start = 8.dp),
+                    text = activity.participants
+                        .joinToString(", ") { contact ->
+                            contact.completeName
+                        },
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+        }
     }
 }
 
@@ -111,7 +135,18 @@ private fun PreviewContactActivity() {
                 title = "Poker Night",
                 description = "It was fun",
                 date = LocalDate.now(),
-                participants = emptyList(),
+                participants = listOf(
+                    Contact(
+                        id = 1,
+                        firstName = "Alice",
+                        lastName = null,
+                        completeName = "Alice",
+                        initials = "A",
+                        avatarUrl = null,
+                        avatarColor = "#FF0000",
+                        updated = null,
+                    ),
+                ),
             ),
         )
     }

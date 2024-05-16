@@ -1,8 +1,7 @@
 package com.teobaranga.monica.contacts.detail.activities.ui
 
 import androidx.compose.runtime.Immutable
-import com.teobaranga.monica.activities.data.ContactActivityEntity
-import com.teobaranga.monica.contacts.data.ContactEntity
+import com.teobaranga.monica.activities.data.ContactActivityWithParticipants
 import com.teobaranga.monica.contacts.data.toExternalModel
 import com.teobaranga.monica.contacts.list.model.Contact
 import java.time.LocalDate
@@ -16,12 +15,14 @@ data class ContactActivity(
     val participants: List<Contact>,
 )
 
-fun ContactActivityEntity.toExternalModel(participants: List<ContactEntity>): ContactActivity {
+fun ContactActivityWithParticipants.toExternalModel(contactId: Int): ContactActivity {
     return ContactActivity(
-        id = activityId,
-        title = title,
-        description = description,
-        date = date,
-        participants = participants.map { it.toExternalModel() },
+        id = activity.activityId,
+        title = activity.title,
+        description = activity.description,
+        date = activity.date,
+        participants = participants
+            .filterNot { it.contactId == contactId }
+            .map { it.toExternalModel() },
     )
 }

@@ -11,11 +11,9 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel(assistedFactory = ContactActivitiesViewModel.Factory::class)
@@ -30,11 +28,8 @@ internal class ContactActivitiesViewModel @AssistedInject constructor(
     val contactActivities = contactRepository.getContactActivities(contactId)
         .mapLatest { contactActivities ->
             val activities = contactActivities
-                .map { contactActivityEntity ->
-                    val participants = withContext(dispatcher.io) {
-                        contactRepository.getContacts(emptyList()).first()
-                    }
-                    contactActivityEntity.toExternalModel(participants)
+                .map { contactActivityWithParticipants ->
+                    contactActivityWithParticipants.toExternalModel(contactId)
                 }
             if (activities.isEmpty()) {
                 ContactActivitiesUiState.Empty
