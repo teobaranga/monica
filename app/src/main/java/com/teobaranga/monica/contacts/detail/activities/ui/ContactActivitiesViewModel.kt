@@ -1,4 +1,4 @@
-package com.teobaranga.monica.contacts.detail.activities
+package com.teobaranga.monica.contacts.detail.activities.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +11,6 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -28,16 +27,20 @@ internal class ContactActivitiesViewModel @AssistedInject constructor(
 
     val contactActivities = contactRepository.getContactActivities(contactId)
         .mapLatest { contactActivities ->
-            contactActivities
-                .map { contactActivityEntity ->
-                    val participants = contactRepository.getContacts(emptyList()).first()
-                    contactActivityEntity.toExternalModel(participants)
+            val activities = contactActivities
+                .map { contactActivityWithParticipants ->
+                    contactActivityWithParticipants.toExternalModel(contactId)
                 }
+            if (activities.isEmpty()) {
+                ContactActivitiesUiState.Empty
+            } else {
+                ContactActivitiesUiState.Loaded(activities)
+            }
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = emptyList(),
+            initialValue = ContactActivitiesUiState.Loading,
         )
 
     init {

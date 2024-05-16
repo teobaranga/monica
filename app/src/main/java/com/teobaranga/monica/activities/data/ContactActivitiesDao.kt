@@ -24,7 +24,7 @@ abstract class ContactActivitiesDao {
         """,
     )
     @RewriteQueriesToDropUnusedColumns
-    abstract fun getContactActivities(contactId: Int): Flow<List<ContactActivityEntity>>
+    abstract fun getContactActivities(contactId: Int): Flow<List<ContactActivityWithParticipants>>
 
     @Upsert
     abstract suspend fun upsert(entities: List<ContactActivityEntity>)

@@ -3,7 +3,7 @@ package com.teobaranga.monica.contacts.data
 import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.activities.data.ContactActivitiesDao
-import com.teobaranga.monica.activities.data.ContactActivityEntity
+import com.teobaranga.monica.activities.data.ContactActivityWithParticipants
 import com.teobaranga.monica.data.photo.ContactPhotos
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +53,7 @@ internal class ContactRepository @Inject constructor(
         return contactDao.getContactPhotos(contactId)
     }
 
-    fun getContactActivities(contactId: Int): Flow<List<ContactActivityEntity>> {
+    fun getContactActivities(contactId: Int): Flow<List<ContactActivityWithParticipants>> {
         return contactActivitiesDao.getContactActivities(contactId)
     }
 

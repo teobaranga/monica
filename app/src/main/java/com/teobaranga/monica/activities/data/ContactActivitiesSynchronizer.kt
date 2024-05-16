@@ -25,7 +25,7 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
 
         // Keep track of removed contact activities, start with the full database first
         val removedIds = contactActivitiesDao.getContactActivities(contactId).first()
-            .map { it.activityId }
+            .map { it.activity.activityId }
             .toMutableSet()
 
         var nextPage: Int? = 1
@@ -42,12 +42,18 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
                 .map {
                     it.toEntity()
                 }
-            val contactActivitiesCrossRefs = contactActivityEntities
-                .map { activityEntity ->
-                    ContactActivityCrossRef(
-                        contactId = contactId,
-                        activityId = activityEntity.activityId,
-                    )
+            val contactActivitiesCrossRefs = contactActivitiesResponse.data
+                .flatMap { activity ->
+                    activity.attendees.contacts
+                        .distinctBy { contact ->
+                            contact.id
+                        }
+                        .map { contact ->
+                            ContactActivityCrossRef(
+                                contactId = contact.id,
+                                activityId = activity.id,
+                            )
+                        }
                 }
 
             contactActivitiesDao.upsert(contactActivityEntities)
