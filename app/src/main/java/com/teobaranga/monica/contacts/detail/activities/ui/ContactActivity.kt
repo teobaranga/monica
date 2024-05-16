@@ -1,4 +1,4 @@
-package com.teobaranga.monica.contacts.detail.activities
+package com.teobaranga.monica.contacts.detail.activities.ui
 
 import androidx.compose.runtime.Immutable
 import com.teobaranga.monica.activities.data.ContactActivityEntity

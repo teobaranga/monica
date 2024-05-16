@@ -1,4 +1,4 @@
-package com.teobaranga.monica.contacts.detail.activities
+package com.teobaranga.monica.contacts.detail.activities.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,7 +36,11 @@ internal class ContactActivitiesViewModel @AssistedInject constructor(
                     }
                     contactActivityEntity.toExternalModel(participants)
                 }
-            ContactActivitiesUiState.Loaded(activities)
+            if (activities.isEmpty()) {
+                ContactActivitiesUiState.Empty
+            } else {
+                ContactActivitiesUiState.Loaded(activities)
+            }
         }
         .stateIn(
             scope = viewModelScope,
