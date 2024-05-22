@@ -12,6 +12,7 @@ data class ContactEntity(
     val contactId: Int,
     val firstName: String,
     val lastName: String?,
+    val nickname: String?,
     val completeName: String,
     val initials: String,
     val avatarUrl: String?,

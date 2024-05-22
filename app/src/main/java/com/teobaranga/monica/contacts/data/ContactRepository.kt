@@ -62,6 +62,7 @@ internal class ContactRepository @Inject constructor(
             contactId = contactResponse.id,
             firstName = contactResponse.firstName,
             lastName = contactResponse.lastName,
+            nickname = contactResponse.nickname,
             completeName = contactResponse.completeName,
             initials = contactResponse.initials,
             avatarUrl = contactResponse.info.avatar.url,

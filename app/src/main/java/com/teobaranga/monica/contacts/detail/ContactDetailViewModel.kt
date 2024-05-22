@@ -2,12 +2,12 @@ package com.teobaranga.monica.contacts.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.detail.activities.ui.ContactInfoActivitiesSection
+import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
-import com.teobaranga.monica.contacts.detail.ui.ContactInfoPersonalSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
-import com.teobaranga.monica.contacts.detail.ui.ContactInfoWorkSection
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -29,18 +29,20 @@ internal class ContactDetailViewModel @AssistedInject constructor(
     val contact = contactRepository.getContact(contactId)
         .mapLatest { contact ->
             ContactDetail(
-                fullName = contact.completeName,
-                userAvatar = UserAvatar(
-                    contactId = contactId,
-                    initials = contact.initials,
-                    color = contact.avatarColor,
-                    avatarUrl = contact.avatarUrl,
-                ),
+                fullName = contact.getTitleName(),
                 infoSections = listOf(
+                    ContactInfoBioSection(
+                        userAvatar = UserAvatar(
+                            contactId = contactId,
+                            initials = contact.initials,
+                            color = contact.avatarColor,
+                            avatarUrl = contact.avatarUrl,
+                        ),
+                        fullName = contact.completeName,
+                        birthday = contact.birthdate?.toBirthday(),
+                    ),
                     ContactInfoActivitiesSection(contactId),
-                    ContactInfoPersonalSection(contact.birthdate?.toBirthday()),
                     ContactInfoContactSection,
-                    ContactInfoWorkSection,
                     ContactInfoRelationshipsSection,
                 ),
             )
@@ -50,6 +52,15 @@ internal class ContactDetailViewModel @AssistedInject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = null,
         )
+
+    private fun ContactEntity.getTitleName(): String {
+        return buildString {
+            append(firstName)
+            if (!nickname.isNullOrBlank()) {
+                append(" ($nickname)")
+            }
+        }
+    }
 
     @AssistedFactory
     interface Factory {

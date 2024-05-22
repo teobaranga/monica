@@ -1,7 +1,6 @@
 package com.teobaranga.monica.contacts.detail.activities.ui
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,8 +43,6 @@ data class ContactInfoActivitiesSection(
                 is ContactActivitiesUiState.Loaded -> {
                     ContactActivitiesColumn(
                         uiState = uiState,
-                        modifier = Modifier
-                            .fillMaxSize(),
                     )
                 }
             }
