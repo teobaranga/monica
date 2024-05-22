@@ -17,6 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.teobaranga.monica.contacts.detail.ContactDetail
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoSection
 import com.teobaranga.monica.ui.avatar.UserAvatar
@@ -33,7 +35,7 @@ data class ContactInfoBioSection(
     override val title: String = "Bio"
 
     @Composable
-    override fun Content(modifier: Modifier) {
+    override fun Content(modifier: Modifier, navigator: DestinationsNavigator) {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -119,6 +121,9 @@ private fun PreviewBioSection() {
                 avatarUrl = null,
             ),
             birthday = ContactDetail.Birthday.AgeBased(29),
-        ).Content(modifier = Modifier)
+        ).Content(
+            modifier = Modifier,
+            navigator = EmptyDestinationsNavigator,
+        )
     }
 }

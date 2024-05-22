@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
@@ -60,7 +61,7 @@ internal fun ContactDetail(
             else -> {
                 ContactDetailScreen(
                     contactDetail = contactDetail,
-                    onBack = navigator::popBackStack,
+                    navigator = navigator,
                 )
             }
         }
@@ -69,7 +70,7 @@ internal fun ContactDetail(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ContactDetailScreen(contactDetail: ContactDetail, onBack: () -> Unit) {
+private fun ContactDetailScreen(contactDetail: ContactDetail, navigator: DestinationsNavigator) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -80,7 +81,7 @@ private fun ContactDetailScreen(contactDetail: ContactDetail, onBack: () -> Unit
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = onBack,
+                        onClick = navigator::popBackStack,
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -123,7 +124,11 @@ private fun ContactDetailScreen(contactDetail: ContactDetail, onBack: () -> Unit
                 state = pagerState,
                 verticalAlignment = Alignment.Top,
             ) { page ->
-                contactDetail.infoSections[page].Content(modifier = Modifier)
+                val contactInfoSection = contactDetail.infoSections[page]
+                contactInfoSection.Content(
+                    modifier = Modifier,
+                    navigator = navigator,
+                )
             }
         }
     }
@@ -166,7 +171,7 @@ private fun PreviewContactDetailScreen() {
                     ContactInfoRelationshipsSection,
                 ),
             ),
-            onBack = { },
+            navigator = EmptyDestinationsNavigator,
         )
     }
 }
