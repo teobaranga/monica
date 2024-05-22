@@ -2,6 +2,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     alias(libs.plugins.androidApplication)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.ksp)
@@ -61,12 +62,6 @@ android {
         freeCompilerArgs += arrayOf(
             "-Xcontext-receivers",
         )
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
