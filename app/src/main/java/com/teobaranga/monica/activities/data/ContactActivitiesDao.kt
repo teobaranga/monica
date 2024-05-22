@@ -3,6 +3,7 @@ package com.teobaranga.monica.activities.data
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.RewriteQueriesToDropUnusedColumns
+import androidx.room.Transaction
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
@@ -24,6 +25,7 @@ abstract class ContactActivitiesDao {
         """,
     )
     @RewriteQueriesToDropUnusedColumns
+    @Transaction
     abstract fun getContactActivities(contactId: Int): Flow<List<ContactActivityWithParticipants>>
 
     @Upsert
