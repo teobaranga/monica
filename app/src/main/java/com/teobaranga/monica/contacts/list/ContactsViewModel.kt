@@ -32,7 +32,7 @@ internal class ContactsViewModel @Inject constructor(
 
     val userAvatar = userRepository.me
         .mapLatest { me ->
-            me.contact?.userAvatar ?: me.userAvatar
+            me.contact?.avatar ?: me.userAvatar
         }
         .stateIn(
             scope = viewModelScope,

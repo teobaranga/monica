@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
+import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.datetime.LocalDateFormatter
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
@@ -155,8 +156,12 @@ private fun PreviewContactActivity() {
                         lastName = null,
                         completeName = "Alice",
                         initials = "A",
-                        avatarUrl = null,
-                        avatarColor = "#FF0000",
+                        avatar = UserAvatar(
+                            contactId = 1,
+                            initials = "A",
+                            color = "#FF0000",
+                            avatarUrl = null,
+                        ),
                         updated = null,
                     ),
                 ),

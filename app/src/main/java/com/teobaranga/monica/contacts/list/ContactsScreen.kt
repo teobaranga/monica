@@ -188,7 +188,7 @@ private fun ContactItem(contact: Contact, onContactSelected: (Int) -> Unit, modi
         UserAvatar(
             modifier = Modifier
                 .size(48.dp),
-            userAvatar = contact.userAvatar,
+            userAvatar = contact.avatar,
             onClick = {
                 onContactSelected(contact.id)
             },
@@ -215,8 +215,12 @@ private fun PreviewContactsScreen() {
                             lastName = null,
                             completeName = "Alice",
                             initials = "A",
-                            avatarUrl = null,
-                            avatarColor = "#FF0000",
+                            avatar = UserAvatar(
+                                contactId = 1,
+                                initials = "A",
+                                color = "#FF0000",
+                                avatarUrl = null,
+                            ),
                             updated = null,
                         ),
                         Contact(
@@ -225,8 +229,12 @@ private fun PreviewContactsScreen() {
                             lastName = null,
                             completeName = "Bob",
                             initials = "B",
-                            avatarUrl = null,
-                            avatarColor = "#00FF00",
+                            avatar = UserAvatar(
+                                contactId = 2,
+                                initials = "B",
+                                color = "#00FF00",
+                                avatarUrl = null,
+                            ),
                             updated = null,
                         ),
                     ),

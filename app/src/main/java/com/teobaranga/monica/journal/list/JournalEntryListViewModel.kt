@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.journal.data.JournalRepository
@@ -33,7 +32,7 @@ internal class JournalEntryListViewModel @Inject constructor(
 
     val userAvatar = userRepository.me
         .mapLatest { me ->
-            me.contact?.userAvatar ?: me.userAvatar
+            me.contact?.avatar ?: me.userAvatar
         }
         .stateIn(
             scope = viewModelScope,

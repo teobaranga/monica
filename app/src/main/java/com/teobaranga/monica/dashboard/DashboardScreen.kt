@@ -35,7 +35,6 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.contacts.list.model.Contact
-import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
@@ -164,7 +163,7 @@ private fun RecentContactsSection(
                             UserAvatar(
                                 modifier = Modifier
                                     .size(72.dp),
-                                userAvatar = contact.userAvatar,
+                                userAvatar = contact.avatar,
                                 onClick = {
                                     onContactSelected(contact.id)
                                 },
@@ -191,8 +190,12 @@ private fun PreviewDashboardScreen() {
                             lastName = "B",
                             completeName = "Alice B",
                             initials = "AB",
-                            avatarUrl = null,
-                            avatarColor = "#709512",
+                            avatar = UserAvatar(
+                                contactId = 1,
+                                initials = "AB",
+                                color = "#709512",
+                                avatarUrl = null,
+                            ),
                             updated = null,
                         ),
                         Contact(
@@ -201,8 +204,12 @@ private fun PreviewDashboardScreen() {
                             lastName = "D",
                             completeName = "Charlie D",
                             initials = "CD",
-                            avatarUrl = null,
-                            avatarColor = "#709512",
+                            avatar = UserAvatar(
+                                contactId = 2,
+                                initials = "CD",
+                                color = "#709512",
+                                avatarUrl = null,
+                            ),
                             updated = null,
                         ),
                     ),

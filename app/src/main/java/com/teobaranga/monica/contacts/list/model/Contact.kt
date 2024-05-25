@@ -1,5 +1,6 @@
 package com.teobaranga.monica.contacts.list.model
 
+import com.teobaranga.monica.ui.avatar.UserAvatar
 import java.time.OffsetDateTime
 
 data class Contact(
@@ -8,7 +9,6 @@ data class Contact(
     val lastName: String?,
     val completeName: String,
     val initials: String,
-    val avatarUrl: String?,
-    val avatarColor: String,
+    val avatar: UserAvatar,
     val updated: OffsetDateTime?,
 )
