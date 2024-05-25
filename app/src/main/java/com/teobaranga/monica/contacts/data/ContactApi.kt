@@ -2,7 +2,11 @@ package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.activities.data.ContactActivitiesResponse
+import com.teobaranga.monica.activities.data.CreateActivityRequest
+import com.teobaranga.monica.activities.data.CreateActivityResponse
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -23,4 +27,7 @@ interface ContactApi {
         @Query("limit") limit: Int? = null,
         @Query("page") page: Int? = null,
     ): ApiResponse<ContactActivitiesResponse>
+
+    @POST("api/activities")
+    suspend fun createActivity(@Body request: CreateActivityRequest): ApiResponse<CreateActivityResponse>
 }

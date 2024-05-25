@@ -83,6 +83,7 @@ internal fun EditContactActivity(
         } else {
             "Edit activity"
         },
+        onSave = viewModel::onSave,
     )
 }
 
@@ -92,6 +93,7 @@ private fun EditContactActivity(
     uiState: EditContactActivityUiState,
     navigator: DestinationsNavigator,
     title: String,
+    onSave: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -123,7 +125,7 @@ private fun EditContactActivity(
                 modifier = Modifier
                     .navigationBarsPadding(),
                 onClick = {
-                    // TODO save
+                    onSave()
                     navigator.popBackStack()
                 },
             ) {
@@ -381,6 +383,7 @@ private fun PreviewEditContactActivityLoadedScreen() {
             uiState = EditContactActivityUiState(),
             navigator = EmptyDestinationsNavigator,
             title = "New activity",
+            onSave = { },
         )
     }
 }

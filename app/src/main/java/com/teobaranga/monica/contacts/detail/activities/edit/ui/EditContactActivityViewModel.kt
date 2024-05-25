@@ -18,9 +18,9 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel(assistedFactory = EditContactActivityViewModel.Factory::class)
 internal class EditContactActivityViewModel @AssistedInject constructor(
-    dispatcher: Dispatcher,
+    private val dispatcher: Dispatcher,
     contactRepository: ContactRepository,
-    contactActivitiesRepository: ContactActivitiesRepository,
+    private val contactActivitiesRepository: ContactActivitiesRepository,
     @Assisted
     private val contactId: Int,
     @Assisted
@@ -41,9 +41,10 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
 
             _uiState.value.participants.add(
                 ActivityParticipant(
+                    contactId = contact.contactId,
                     name = contact.completeName,
                     avatar = contact.userAvatar,
-                )
+                ),
             )
         }
         if (activityId != null) {
@@ -58,6 +59,20 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
                 _uiState.value.summary = TextFieldValue(activity.title)
                 _uiState.value.details = TextFieldValue(activity.description.orEmpty())
                 _uiState.value.date = activity.date
+            }
+        }
+    }
+
+    fun onSave() {
+        if (activityId == null) {
+            viewModelScope.launch(dispatcher.io) {
+                val activity = _uiState.value
+                contactActivitiesRepository.insertActivity(
+                    title = activity.summary.text,
+                    description = activity.details.text.takeUnless { it.isEmpty() },
+                    date = activity.date,
+                    participants = activity.participants.map { it.contactId },
+                )
             }
         }
     }

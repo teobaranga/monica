@@ -3,6 +3,7 @@ package com.teobaranga.monica.activities.data
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.contacts.data.ContactApi
+import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.data.sync.Synchronizer
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -16,12 +17,15 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
     private val contactId: Int,
     private val contactApi: ContactApi,
     private val contactActivitiesDao: ContactActivitiesDao,
+    private val contactActivityNewSynchronizer: ContactActivityNewSynchronizer,
 ) : Synchronizer {
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
     override suspend fun sync() {
         syncState.value = Synchronizer.State.REFRESHING
+
+        contactActivityNewSynchronizer.sync()
 
         // Keep track of removed contact activities, start with the full database first
         val removedIds = contactActivitiesDao.getContactActivities(contactId).first()
@@ -56,8 +60,7 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
                         }
                 }
 
-            contactActivitiesDao.upsert(contactActivityEntities)
-            contactActivitiesDao.upsertCrossRefs(contactActivitiesCrossRefs)
+            contactActivitiesDao.upsert(contactActivityEntities, contactActivitiesCrossRefs)
 
             contactActivitiesResponse.meta.run {
                 nextPage = if (currentPage != lastPage) {
@@ -73,22 +76,24 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
 
         val activityIds = removedIds.toList()
         contactActivitiesDao.delete(activityIds)
-        contactActivitiesDao.deleteCrossRefs(activityIds)
 
         syncState.value = Synchronizer.State.IDLE
-    }
-
-    private fun ContactActivitiesResponse.ContactActivity.toEntity(): ContactActivityEntity {
-        return ContactActivityEntity(
-            activityId = id,
-            title = summary,
-            description = description,
-            date = happenedAt,
-        )
     }
 
     @AssistedFactory
     interface Factory {
         fun create(contactId: Int): ContactActivitiesSynchronizer
     }
+}
+
+fun ContactActivitiesResponse.ContactActivity.toEntity(): ContactActivityEntity {
+    return ContactActivityEntity(
+        activityId = id,
+        title = summary,
+        description = description,
+        date = happenedAt,
+        created = created,
+        updated = updated,
+        syncStatus = SyncStatus.UP_TO_DATE,
+    )
 }
