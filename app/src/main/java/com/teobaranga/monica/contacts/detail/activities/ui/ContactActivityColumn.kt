@@ -2,9 +2,13 @@ package com.teobaranga.monica.contacts.detail.activities.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -23,7 +27,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.list.model.Contact
+import com.teobaranga.monica.ui.FabHeight
+import com.teobaranga.monica.ui.FabPadding
 import com.teobaranga.monica.ui.datetime.LocalDateFormatter
+import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.LocalDate
 
@@ -35,6 +42,8 @@ internal fun ContactActivitiesColumn(
     LazyColumn(
         modifier = modifier
             .fillMaxSize(),
+        contentPadding = WindowInsets.navigationBars.asPaddingValues() +
+            PaddingValues(bottom = FabPadding + FabHeight + 24.dp),
     ) {
         itemsIndexed(
             items = uiState.activities,

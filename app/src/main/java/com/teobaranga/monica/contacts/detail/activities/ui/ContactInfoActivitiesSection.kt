@@ -2,6 +2,7 @@ package com.teobaranga.monica.contacts.detail.activities.ui
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -37,6 +38,8 @@ data class ContactInfoActivitiesSection(
             floatingActionButton = {
                 if (activitiesUiState != ContactActivitiesUiState.Loading) {
                     FloatingActionButton(
+                        modifier = Modifier
+                            .navigationBarsPadding(),
                         onClick = {
                             navigator.navigate(EditContactActivityDestination(contactId))
                         },
