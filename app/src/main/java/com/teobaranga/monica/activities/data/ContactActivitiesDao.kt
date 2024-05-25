@@ -28,6 +28,9 @@ abstract class ContactActivitiesDao {
     @Transaction
     abstract fun getContactActivities(contactId: Int): Flow<List<ContactActivityWithParticipants>>
 
+    @Query("SELECT * FROM contact_activity WHERE activityId = :activityId")
+    abstract fun getActivity(activityId: Int): Flow<ContactActivityEntity>
+
     @Upsert
     abstract suspend fun upsert(entities: List<ContactActivityEntity>)
 

@@ -37,6 +37,7 @@ import java.time.LocalDate
 @Composable
 internal fun ContactActivitiesColumn(
     uiState: ContactActivitiesUiState.Loaded,
+    onActivityClick: (activityId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -55,7 +56,7 @@ internal fun ContactActivitiesColumn(
                 modifier = Modifier
                     .clickable(
                         onClick = {
-                            // TODO launch activity view / edit
+                            onActivityClick(item.id)
                         },
                     )
                     .fillMaxWidth()

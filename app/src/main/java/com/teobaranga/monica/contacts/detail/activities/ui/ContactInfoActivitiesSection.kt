@@ -41,7 +41,7 @@ data class ContactInfoActivitiesSection(
                         modifier = Modifier
                             .navigationBarsPadding(),
                         onClick = {
-                            navigator.navigate(EditContactActivityDestination(contactId))
+                            navigator.navigate(EditContactActivityDestination(contactId = contactId, activityId = null))
                         },
                     ) {
                         Icon(
@@ -75,6 +75,14 @@ data class ContactInfoActivitiesSection(
                             modifier = Modifier
                                 .padding(contentPadding),
                             uiState = uiState,
+                            onActivityClick = { activityId ->
+                                navigator.navigate(
+                                    EditContactActivityDestination(
+                                        contactId = contactId,
+                                        activityId = activityId,
+                                    ),
+                                )
+                            },
                         )
                     }
                 }

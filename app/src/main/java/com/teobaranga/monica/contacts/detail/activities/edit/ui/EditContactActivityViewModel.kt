@@ -1,8 +1,11 @@
 package com.teobaranga.monica.contacts.detail.activities.edit.ui
 
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teobaranga.monica.activities.data.ContactActivitiesRepository
 import com.teobaranga.monica.contacts.data.ContactRepository
+import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -17,11 +20,14 @@ import kotlinx.coroutines.launch
 internal class EditContactActivityViewModel @AssistedInject constructor(
     dispatcher: Dispatcher,
     contactRepository: ContactRepository,
+    contactActivitiesRepository: ContactActivitiesRepository,
     @Assisted
     private val contactId: Int,
+    @Assisted
+    private val activityId: Int?,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<EditContactActivityUiState>(EditContactActivityUiState.Loading)
+    private val _uiState = MutableStateFlow(EditContactActivityUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -32,16 +38,32 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
                 // TODO handle
                 return@launch
             }
-            _uiState.value = EditContactActivityUiState.Loaded(
-                participants = listOf(
-                    ActivityParticipant(contact.completeName),
-                ),
+
+            _uiState.value.participants.add(
+                ActivityParticipant(
+                    name = contact.completeName,
+                    avatar = contact.userAvatar,
+                )
             )
+        }
+        if (activityId != null) {
+            viewModelScope.launch(dispatcher.io) {
+                val activity = contactActivitiesRepository.getActivity(activityId)
+                    .firstOrNull()
+                if (activity == null) {
+                    // TODO handle
+                    return@launch
+                }
+
+                _uiState.value.summary = TextFieldValue(activity.title)
+                _uiState.value.details = TextFieldValue(activity.description.orEmpty())
+                _uiState.value.date = activity.date
+            }
         }
     }
 
     @AssistedFactory
     interface Factory {
-        fun create(contactId: Int): EditContactActivityViewModel
+        fun create(contactId: Int, activityId: Int?): EditContactActivityViewModel
     }
 }
