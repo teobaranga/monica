@@ -18,6 +18,7 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
     private val contactApi: ContactApi,
     private val contactActivitiesDao: ContactActivitiesDao,
     private val contactActivityNewSynchronizer: ContactActivityNewSynchronizer,
+    private val contactActivityDeletedSynchronizer: ContactActivityDeletedSynchronizer,
 ) : Synchronizer {
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
@@ -26,6 +27,8 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
         syncState.value = Synchronizer.State.REFRESHING
 
         contactActivityNewSynchronizer.sync()
+
+        contactActivityDeletedSynchronizer.sync()
 
         // Keep track of removed contact activities, start with the full database first
         val removedIds = contactActivitiesDao.getContactActivities(contactId).first()

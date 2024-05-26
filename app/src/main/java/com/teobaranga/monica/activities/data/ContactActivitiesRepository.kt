@@ -16,6 +16,7 @@ internal class ContactActivitiesRepository @Inject constructor(
     dispatcher: Dispatcher,
     private val contactActivitiesDao: ContactActivitiesDao,
     private val contactActivityNewSynchronizer: ContactActivityNewSynchronizer,
+    private val contactActivityDeletedSynchronizer: ContactActivityDeletedSynchronizer,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
@@ -57,6 +58,13 @@ internal class ContactActivitiesRepository @Inject constructor(
         )
         scope.launch {
             contactActivityNewSynchronizer.sync()
+        }
+    }
+
+    suspend fun deleteActivity(activityId: Int) {
+        contactActivitiesDao.setSyncStatus(activityId, SyncStatus.DELETED)
+        scope.launch {
+            contactActivityDeletedSynchronizer.sync()
         }
     }
 }

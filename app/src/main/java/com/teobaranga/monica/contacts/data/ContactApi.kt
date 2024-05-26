@@ -4,7 +4,9 @@ import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.activities.data.ContactActivitiesResponse
 import com.teobaranga.monica.activities.data.CreateActivityRequest
 import com.teobaranga.monica.activities.data.CreateActivityResponse
+import com.teobaranga.monica.data.common.DeleteResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -30,4 +32,7 @@ interface ContactApi {
 
     @POST("api/activities")
     suspend fun createActivity(@Body request: CreateActivityRequest): ApiResponse<CreateActivityResponse>
+
+    @DELETE("api/activities/{id}")
+    suspend fun deleteActivity(@Path("id") id: Int): ApiResponse<DeleteResponse>
 }

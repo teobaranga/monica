@@ -77,6 +77,15 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
         }
     }
 
+    fun onDelete() {
+        if (activityId == null) {
+            return
+        }
+        viewModelScope.launch(dispatcher.io) {
+            contactActivitiesRepository.deleteActivity(activityId)
+        }
+    }
+
     @AssistedFactory
     interface Factory {
         fun create(contactId: Int, activityId: Int?): EditContactActivityViewModel

@@ -13,18 +13,10 @@ abstract class ContactActivitiesDao {
 
     @Query(
         """
-        SELECT
-            contact_activity.activityId,
-            contact_activity.description,
-            contact_activity.title,
-            contact_activity.date,
-            contact_activity.created,
-            contact_activity.updated,
-            contact_activity.syncStatus
-        FROM contact_activity
+        SELECT contact_activity.* FROM contact_activity
         INNER JOIN contact_activity_cross_refs ON contact_activity_cross_refs.activityId = contact_activity.activityId
         INNER JOIN contacts ON contacts.contactId = contact_activity_cross_refs.contactId
-        WHERE contacts.contactId = :contactId
+        WHERE contacts.contactId = :contactId AND NOT contact_activity.syncStatus = 'DELETED'
         ORDER BY date(date) DESC
         """,
     )
@@ -37,15 +29,7 @@ abstract class ContactActivitiesDao {
 
     @Query(
         """
-        SELECT
-            contact_activity.activityId,
-            contact_activity.description,
-            contact_activity.title,
-            contact_activity.date,
-            contact_activity.created,
-            contact_activity.updated,
-            contact_activity.syncStatus
-        FROM contact_activity
+        SELECT contact_activity.* FROM contact_activity
         INNER JOIN contact_activity_cross_refs ON contact_activity_cross_refs.activityId = contact_activity.activityId
         INNER JOIN contacts ON contacts.contactId = contact_activity_cross_refs.contactId
         WHERE contact_activity.syncStatus = :status
@@ -80,6 +64,9 @@ abstract class ContactActivitiesDao {
 
     @Query("DELETE FROM contact_activity_cross_refs WHERE activityId in (:entityIds)")
     protected abstract suspend fun deleteCrossRefs(entityIds: List<Int>)
+
+    @Query("UPDATE contact_activity SET syncStatus = :syncStatus WHERE activityId = :activityId")
+    abstract suspend fun setSyncStatus(activityId: Int, syncStatus: SyncStatus)
 
     @Transaction
     open suspend fun delete(activityIds: List<Int>) {

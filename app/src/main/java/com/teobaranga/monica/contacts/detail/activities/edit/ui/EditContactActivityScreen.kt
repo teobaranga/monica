@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Today
@@ -27,15 +26,14 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -50,7 +48,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
 import com.teobaranga.monica.ui.avatar.UserAvatar
@@ -61,6 +58,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Destination<ContactsNavGraph>
 @Composable
 internal fun EditContactActivity(
@@ -77,13 +75,19 @@ internal fun EditContactActivity(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     EditContactActivity(
         uiState = uiState,
-        navigator = navigator,
-        title = if (activityId == null) {
-            "New activity"
-        } else {
-            "Edit activity"
+        topAppBar = { topAppBarScrollBehaviour ->
+            EditContactActivityTopAppBar(
+                isEdit = activityId != null,
+                onBack = navigator::popBackStack,
+                onDelete = {
+                    viewModel.onDelete()
+                    navigator.popBackStack()
+                },
+                scrollBehavior = topAppBarScrollBehaviour,
+            )
         },
         onSave = viewModel::onSave,
+        onBack = navigator::popBackStack,
     )
 }
 
@@ -91,9 +95,9 @@ internal fun EditContactActivity(
 @Composable
 private fun EditContactActivity(
     uiState: EditContactActivityUiState,
-    navigator: DestinationsNavigator,
-    title: String,
+    topAppBar: @Composable (TopAppBarScrollBehavior) -> Unit,
     onSave: () -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -101,24 +105,7 @@ private fun EditContactActivity(
         modifier = modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = title,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = navigator::popBackStack,
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Navigate back",
-                        )
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-            )
+            topAppBar(scrollBehavior)
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -126,7 +113,7 @@ private fun EditContactActivity(
                     .navigationBarsPadding(),
                 onClick = {
                     onSave()
-                    navigator.popBackStack()
+                    onBack()
                 },
             ) {
                 Icon(
@@ -375,15 +362,16 @@ private fun DetailsSection(uiState: EditContactActivityUiState, modifier: Modifi
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 private fun PreviewEditContactActivityLoadedScreen() {
     MonicaTheme {
         EditContactActivity(
             uiState = EditContactActivityUiState(),
-            navigator = EmptyDestinationsNavigator,
-            title = "New activity",
+            topAppBar = { },
             onSave = { },
+            onBack = { },
         )
     }
 }
