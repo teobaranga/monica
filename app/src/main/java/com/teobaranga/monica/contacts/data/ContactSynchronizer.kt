@@ -63,6 +63,7 @@ class ContactSynchronizer @Inject constructor(
             contactId = id,
             firstName = firstName,
             lastName = lastName,
+            nickname = nickname,
             completeName = completeName,
             initials = initials,
             avatarUrl = info.avatar.url,

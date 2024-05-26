@@ -8,7 +8,6 @@ import androidx.paging.cachedIn
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.data.ContactSynchronizer
-import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.data.photo.PhotoSynchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.home.HomeNavigationManager
@@ -37,7 +36,7 @@ internal class DashboardViewModel @Inject constructor(
 
     val userAvatar = userRepository.me
         .mapLatest { me ->
-            me.contact?.userAvatar ?: me.userAvatar
+            me.contact?.avatar ?: me.userAvatar
         }
         .stateIn(
             scope = viewModelScope,

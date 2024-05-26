@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.teobaranga.monica.contacts.list.model.Contact
+import com.teobaranga.monica.contacts.list.userAvatar
 import java.time.OffsetDateTime
 
 @Entity(tableName = "contacts")
@@ -12,6 +13,7 @@ data class ContactEntity(
     val contactId: Int,
     val firstName: String,
     val lastName: String?,
+    val nickname: String?,
     val completeName: String,
     val initials: String,
     val avatarUrl: String?,
@@ -42,8 +44,7 @@ fun ContactEntity.toExternalModel(): Contact {
                 firstName.take(2)
             }
         },
-        avatarUrl = avatarUrl,
-        avatarColor = avatarColor,
+        avatar = userAvatar,
         updated = updated,
     )
 }

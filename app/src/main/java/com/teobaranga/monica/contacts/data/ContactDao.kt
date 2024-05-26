@@ -50,6 +50,9 @@ abstract class ContactDao {
     )
     abstract fun getContact(id: Int): Flow<ContactEntity>
 
+    @Query("SELECT * FROM contacts WHERE completeName LIKE '%' || :query || '%'")
+    abstract suspend fun searchContacts(query: String): List<ContactEntity>
+
     @Transaction
     @Query("SELECT contactId, avatarUrl FROM contacts WHERE contactId = :contactId")
     abstract fun getContactPhotos(contactId: Int): Flow<ContactPhotos>

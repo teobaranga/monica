@@ -50,7 +50,6 @@ internal fun ContactActivityPlaceholder(modifier: Modifier = Modifier) {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 private fun PreviewContactActivityPlaceholder() {

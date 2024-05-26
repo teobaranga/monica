@@ -2,8 +2,8 @@ package com.teobaranga.monica.contacts.detail.activities.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teobaranga.monica.activities.data.ContactActivitiesRepository
 import com.teobaranga.monica.activities.data.ContactActivitiesSynchronizer
-import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -18,14 +18,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel(assistedFactory = ContactActivitiesViewModel.Factory::class)
 internal class ContactActivitiesViewModel @AssistedInject constructor(
-    contactRepository: ContactRepository,
+    contactActivitiesRepository: ContactActivitiesRepository,
     dispatcher: Dispatcher,
     @Assisted
     private val contactId: Int,
     private val contactActivitiesSynchronizerFactory: ContactActivitiesSynchronizer.Factory,
 ) : ViewModel() {
 
-    val contactActivities = contactRepository.getContactActivities(contactId)
+    val contactActivities = contactActivitiesRepository.getActivities(contactId)
         .mapLatest { contactActivities ->
             val activities = contactActivities
                 .map { contactActivityWithParticipants ->

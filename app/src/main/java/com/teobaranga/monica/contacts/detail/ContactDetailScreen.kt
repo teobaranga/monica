@@ -3,39 +3,40 @@ package com.teobaranga.monica.contacts.detail
 import ContactsNavGraph
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.Tab
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
-import com.teobaranga.monica.contacts.detail.ui.ContactInfoPersonalSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
-import com.teobaranga.monica.contacts.detail.ui.ContactInfoWorkSection
-import com.teobaranga.monica.contacts.detail.ui.fullNameItem
-import com.teobaranga.monica.contacts.detail.ui.infoSectionTabs
-import com.teobaranga.monica.contacts.detail.ui.userAvatarItem
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
-import com.teobaranga.monica.util.compose.nestedScrollParentFirst
+import kotlinx.coroutines.launch
 
 @Destination<ContactsNavGraph>
 @Composable
@@ -61,7 +62,7 @@ internal fun ContactDetail(
             else -> {
                 ContactDetailScreen(
                     contactDetail = contactDetail,
-                    onBack = navigator::popBackStack,
+                    navigator = navigator,
                 )
             }
         }
@@ -70,14 +71,18 @@ internal fun ContactDetail(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ContactDetailScreen(contactDetail: ContactDetail, onBack: () -> Unit) {
+private fun ContactDetailScreen(contactDetail: ContactDetail, navigator: DestinationsNavigator) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { },
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = contactDetail.fullName,
+                    )
+                },
                 navigationIcon = {
                     IconButton(
-                        onClick = onBack,
+                        onClick = navigator::popBackStack,
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -87,35 +92,63 @@ private fun ContactDetailScreen(contactDetail: ContactDetail, onBack: () -> Unit
                 },
             )
         },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
     ) { contentPadding ->
-        val pagerState = rememberPagerState(
-            pageCount = { contactDetail.infoSections.size },
-        )
-        //noinspection UnusedBoxWithConstraintsScope - actually used through multiple context receivers
-        BoxWithConstraints(
+        Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
                 .padding(contentPadding),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            val state = rememberLazyListState()
-            LazyColumn(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .fillMaxSize()
-                    .nestedScrollParentFirst(state),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                state = state,
+            val pagerState = rememberPagerState(
+                pageCount = { contactDetail.infoSections.size },
+            )
+            val coroutineScope = rememberCoroutineScope()
+            PrimaryScrollableTabRow(
+                selectedTabIndex = pagerState.currentPage,
             ) {
-                userAvatarItem(contactDetail.userAvatar)
-                fullNameItem(contactDetail.fullName)
-                infoSectionTabs(
-                    pagerState = pagerState,
-                    infoSections = contactDetail.infoSections,
+                contactDetail.infoSections.forEachIndexed { index, infoSection ->
+                    ContactDetailTab(
+                        text = infoSection.title,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        },
+                        selected = pagerState.currentPage == index,
+                    )
+                }
+            }
+            HorizontalPager(
+                modifier = Modifier
+                    .fillMaxSize(),
+                state = pagerState,
+                verticalAlignment = Alignment.Top,
+            ) { page ->
+                val contactInfoSection = contactDetail.infoSections[page]
+                contactInfoSection.Content(
+                    modifier = Modifier,
+                    navigator = navigator,
                 )
             }
         }
     }
+}
+
+@Composable
+private fun ContactDetailTab(text: String, onClick: () -> Unit, selected: Boolean, modifier: Modifier = Modifier) {
+    Tab(
+        modifier = modifier,
+        selected = selected,
+        onClick = onClick,
+        text = {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+    )
 }
 
 @Composable
@@ -125,20 +158,22 @@ private fun PreviewContactDetailScreen() {
         ContactDetailScreen(
             contactDetail = ContactDetail(
                 fullName = "John Doe (Johnny)",
-                userAvatar = UserAvatar(
-                    contactId = -1,
-                    initials = "JD",
-                    color = "#709512",
-                    avatarUrl = null,
-                ),
                 infoSections = listOf(
-                    ContactInfoPersonalSection(birthday = null),
+                    ContactInfoBioSection(
+                        fullName = "John Doe (Johnny)",
+                        userAvatar = UserAvatar(
+                            contactId = -1,
+                            initials = "JD",
+                            color = "#709512",
+                            avatarUrl = null,
+                        ),
+                        birthday = null,
+                    ),
                     ContactInfoContactSection,
-                    ContactInfoWorkSection,
                     ContactInfoRelationshipsSection,
                 ),
             ),
-            onBack = { },
+            navigator = EmptyDestinationsNavigator,
         )
     }
 }

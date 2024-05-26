@@ -3,7 +3,6 @@ package com.teobaranga.monica.contacts.detail
 import androidx.compose.runtime.Immutable
 import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoSection
-import com.teobaranga.monica.ui.avatar.UserAvatar
 import java.time.MonthDay
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
@@ -11,7 +10,6 @@ import java.time.temporal.ChronoUnit
 @Immutable
 data class ContactDetail(
     val fullName: String,
-    val userAvatar: UserAvatar,
     val infoSections: List<ContactInfoSection>,
 ) {
     sealed interface Birthday {

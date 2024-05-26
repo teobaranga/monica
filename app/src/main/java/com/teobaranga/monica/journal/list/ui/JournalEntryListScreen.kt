@@ -31,14 +31,13 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.teobaranga.monica.journal.model.JournalEntry
+import com.teobaranga.monica.ui.FabHeight
+import com.teobaranga.monica.ui.FabPadding
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
 import java.time.OffsetDateTime
-
-private val fabHeight = 56.dp
-private val fabPadding = 20.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,7 +74,7 @@ fun JournalEntryListScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
                 top = SearchBarDefaults.InputFieldHeight + 36.dp,
-                bottom = 20.dp + fabHeight + fabPadding,
+                bottom = 20.dp + FabHeight + FabPadding,
             ),
         ) {
             when (lazyItems.loadState.refresh) {
@@ -97,7 +96,7 @@ fun JournalEntryListScreen(
                         if (journalEntry != null) {
                             JournalItem(
                                 modifier = Modifier
-                                    .padding(horizontal = fabPadding),
+                                    .padding(horizontal = FabPadding),
                                 journalEntry = journalEntry,
                                 onClick = {
                                     onEntryClick(journalEntry.id)
