@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -32,6 +33,9 @@ interface ContactApi {
 
     @POST("api/activities")
     suspend fun createActivity(@Body request: CreateActivityRequest): ApiResponse<CreateActivityResponse>
+
+    @PUT("api/activities/{id}")
+    suspend fun updateActivity(@Path("id") id: Int, @Body request: CreateActivityRequest): ApiResponse<CreateActivityResponse>
 
     @DELETE("api/activities/{id}")
     suspend fun deleteActivity(@Path("id") id: Int): ApiResponse<DeleteResponse>

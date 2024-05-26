@@ -110,7 +110,6 @@ fun ParticipantsSection(
             modifier = Modifier
                 .padding(horizontal = 24.dp)
                 .padding(top = 4.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             for (participant in uiState.participants) {

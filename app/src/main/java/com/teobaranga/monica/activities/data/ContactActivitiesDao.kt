@@ -24,8 +24,17 @@ abstract class ContactActivitiesDao {
     @Transaction
     abstract fun getContactActivities(contactId: Int): Flow<List<ContactActivityWithParticipants>>
 
-    @Query("SELECT * FROM contact_activity WHERE activityId = :activityId")
-    abstract fun getActivity(activityId: Int): Flow<ContactActivityEntity>
+    @Query(
+        """
+        SELECT contact_activity.* FROM contact_activity
+        INNER JOIN contact_activity_cross_refs ON contact_activity_cross_refs.activityId = contact_activity.activityId
+        INNER JOIN contacts ON contacts.contactId = contact_activity_cross_refs.contactId
+        WHERE contact_activity.activityId = :activityId
+        """,
+    )
+    @RewriteQueriesToDropUnusedColumns
+    @Transaction
+    abstract fun getActivity(activityId: Int): Flow<ContactActivityWithParticipants>
 
     @Query(
         """
@@ -49,6 +58,7 @@ abstract class ContactActivitiesDao {
     @Transaction
     open suspend fun upsert(activities: List<ContactActivityEntity>, crossRefs: List<ContactActivityCrossRef>) {
         upsert(activities)
+        deleteCrossRefs(activities.map { it.activityId })
         upsertCrossRefs(crossRefs)
     }
 
@@ -62,8 +72,11 @@ abstract class ContactActivitiesDao {
     @Query("DELETE FROM contact_activity WHERE activityId in (:entityIds)")
     protected abstract suspend fun deleteActivities(entityIds: List<Int>)
 
-    @Query("DELETE FROM contact_activity_cross_refs WHERE activityId in (:entityIds)")
-    protected abstract suspend fun deleteCrossRefs(entityIds: List<Int>)
+    /**
+     * Delete all the links between the given activities (mapped by ID) and their contacts.
+     */
+    @Query("DELETE FROM contact_activity_cross_refs WHERE activityId in (:activityIds)")
+    protected abstract suspend fun deleteCrossRefs(activityIds: List<Int>)
 
     @Query("UPDATE contact_activity SET syncStatus = :syncStatus WHERE activityId = :activityId")
     abstract suspend fun setSyncStatus(activityId: Int, syncStatus: SyncStatus)

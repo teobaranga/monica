@@ -5,6 +5,7 @@ import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -16,6 +17,7 @@ internal class ContactActivitiesRepository @Inject constructor(
     dispatcher: Dispatcher,
     private val contactActivitiesDao: ContactActivitiesDao,
     private val contactActivityNewSynchronizer: ContactActivityNewSynchronizer,
+    private val contactActivityUpdateSynchronizer: ContactActivityUpdateSynchronizer,
     private val contactActivityDeletedSynchronizer: ContactActivityDeletedSynchronizer,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
@@ -24,11 +26,19 @@ internal class ContactActivitiesRepository @Inject constructor(
         return contactActivitiesDao.getContactActivities(contactId)
     }
 
-    fun getActivity(activityId: Int): Flow<ContactActivityEntity> {
+    fun getActivity(activityId: Int): Flow<ContactActivityWithParticipants> {
         return contactActivitiesDao.getActivity(activityId)
     }
 
-    suspend fun insertActivity(title: String, description: String?, date: LocalDate, participants: List<Int>) {
+    suspend fun upsertActivity(activityId: Int?, title: String, description: String?, date: LocalDate, participants: List<Int>) {
+        if (activityId != null) {
+            updateActivity(activityId, title, description, date, participants)
+        } else {
+            insertActivity(title, description, date, participants)
+        }
+    }
+
+    private suspend fun insertActivity(title: String, description: String?, date: LocalDate, participants: List<Int>) {
         /**
          * Add new entry to Room with id = max(id) + 1
          * Create new entry using API
@@ -58,6 +68,29 @@ internal class ContactActivitiesRepository @Inject constructor(
         )
         scope.launch {
             contactActivityNewSynchronizer.sync()
+        }
+    }
+
+    private suspend fun updateActivity(activityId: Int, title: String, description: String?, date: LocalDate, participants: List<Int>) {
+        val originalActivityWithParticipants = contactActivitiesDao.getActivity(activityId)
+            .firstOrNull() ?: return
+        val updatedActivity = originalActivityWithParticipants.activity.copy(
+            title = title,
+            description = description,
+            date = date,
+            updated = OffsetDateTime.now(),
+            syncStatus = SyncStatus.EDITED,
+        )
+        val crossRefs = participants
+            .map { participantId ->
+                ContactActivityCrossRef(
+                    contactId = participantId,
+                    activityId = updatedActivity.activityId,
+                )
+            }
+        contactActivitiesDao.upsert(listOf(updatedActivity), crossRefs)
+        scope.launch {
+            contactActivityUpdateSynchronizer.sync()
         }
     }
 

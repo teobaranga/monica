@@ -18,6 +18,7 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
     private val contactApi: ContactApi,
     private val contactActivitiesDao: ContactActivitiesDao,
     private val contactActivityNewSynchronizer: ContactActivityNewSynchronizer,
+    private val contactActivityUpdateSynchronizer: ContactActivityUpdateSynchronizer,
     private val contactActivityDeletedSynchronizer: ContactActivityDeletedSynchronizer,
 ) : Synchronizer {
 
@@ -27,6 +28,8 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
         syncState.value = Synchronizer.State.REFRESHING
 
         contactActivityNewSynchronizer.sync()
+
+        contactActivityUpdateSynchronizer.sync()
 
         contactActivityDeletedSynchronizer.sync()
 

@@ -47,41 +47,54 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
                 return@launch
             }
 
-            _uiState.value.participants.add(
-                ActivityParticipant(
-                    contactId = contact.contactId,
-                    name = contact.completeName,
-                    avatar = contact.userAvatar,
-                ),
-            )
+            withContext(dispatcher.main) {
+                _uiState.value.participants.add(
+                    ActivityParticipant(
+                        contactId = contact.contactId,
+                        name = contact.completeName,
+                        avatar = contact.userAvatar,
+                    ),
+                )
+            }
         }
         if (activityId != null) {
             viewModelScope.launch(dispatcher.io) {
-                val activity = contactActivitiesRepository.getActivity(activityId)
+                val activityWithParticipants = contactActivitiesRepository.getActivity(activityId)
                     .firstOrNull()
-                if (activity == null) {
+                if (activityWithParticipants == null) {
                     // TODO handle
                     return@launch
                 }
+                val participants = activityWithParticipants.participants
+                    .map { contact ->
+                        ActivityParticipant(
+                            contactId = contact.contactId,
+                            name = contact.completeName,
+                            avatar = contact.userAvatar,
+                        )
+                    }
 
-                _uiState.value.summary = TextFieldValue(activity.title)
-                _uiState.value.details = TextFieldValue(activity.description.orEmpty())
-                _uiState.value.date = activity.date
+                withContext(dispatcher.main) {
+                    _uiState.value.summary = TextFieldValue(activityWithParticipants.activity.title)
+                    _uiState.value.details = TextFieldValue(activityWithParticipants.activity.description.orEmpty())
+                    _uiState.value.date = activityWithParticipants.activity.date
+                    _uiState.value.participants.clear()
+                    _uiState.value.participants.addAll(participants)
+                }
             }
         }
     }
 
     fun onSave() {
-        if (activityId == null) {
-            viewModelScope.launch(dispatcher.io) {
-                val activity = _uiState.value
-                contactActivitiesRepository.insertActivity(
-                    title = activity.summary.text,
-                    description = activity.details.text.takeUnless { it.isEmpty() },
-                    date = activity.date,
-                    participants = activity.participants.map { it.contactId },
-                )
-            }
+        val activity = _uiState.value
+        viewModelScope.launch(dispatcher.io) {
+            contactActivitiesRepository.upsertActivity(
+                activityId = activityId,
+                title = activity.summary.text,
+                description = activity.details.text.takeUnless { it.isEmpty() },
+                date = activity.date,
+                participants = activity.participants.map { it.contactId },
+            )
         }
     }
 
