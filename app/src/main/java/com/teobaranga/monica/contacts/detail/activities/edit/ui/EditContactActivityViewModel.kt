@@ -11,15 +11,17 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @HiltViewModel(assistedFactory = EditContactActivityViewModel.Factory::class)
 internal class EditContactActivityViewModel @AssistedInject constructor(
     private val dispatcher: Dispatcher,
-    contactRepository: ContactRepository,
+    private val contactRepository: ContactRepository,
     private val contactActivitiesRepository: ContactActivitiesRepository,
     @Assisted
     private val contactId: Int,
@@ -27,8 +29,14 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
     private val activityId: Int?,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(EditContactActivityUiState())
+    private val _uiState = MutableStateFlow(
+        EditContactActivityUiState(
+            onParticipantSearch = ::onParticipantSearch,
+        ),
+    )
     val uiState = _uiState.asStateFlow()
+
+    private var participantSearchJob: Job? = null
 
     init {
         viewModelScope.launch(dispatcher.io) {
@@ -83,6 +91,35 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
         }
         viewModelScope.launch(dispatcher.io) {
             contactActivitiesRepository.deleteActivity(activityId)
+        }
+    }
+
+    private fun onParticipantSearch(query: String) {
+        _uiState.value.participantResults.clear()
+        participantSearchJob?.cancel()
+
+        val trimmedQuery = query.trim()
+        if (trimmedQuery.isEmpty()) {
+            return
+        }
+
+        participantSearchJob = viewModelScope.launch(dispatcher.io) {
+            val results = contactRepository.searchContact(trimmedQuery)
+            val existingParticipantIds = _uiState.value.participants.map { it.contactId }.toSet()
+            val participantResults = results
+                .filter {
+                    it.contactId !in existingParticipantIds
+                }
+                .map { contact ->
+                    ActivityParticipant(
+                        contactId = contact.contactId,
+                        name = contact.completeName,
+                        avatar = contact.userAvatar,
+                    )
+                }
+            withContext(dispatcher.main) {
+                _uiState.value.participantResults.addAll(participantResults)
+            }
         }
     }
 

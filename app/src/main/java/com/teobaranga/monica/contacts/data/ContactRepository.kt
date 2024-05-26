@@ -38,6 +38,10 @@ internal class ContactRepository @Inject constructor(
         return pagingSource.get().create(orderBy)
     }
 
+    suspend fun searchContact(query: String): List<ContactEntity> {
+        return contactDao.searchContacts(query)
+    }
+
     fun getContacts(ids: List<Int>): Flow<List<ContactEntity>> {
         return contactDao.getContacts(ids)
     }

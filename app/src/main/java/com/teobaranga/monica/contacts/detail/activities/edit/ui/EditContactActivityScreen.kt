@@ -1,10 +1,7 @@
 package com.teobaranga.monica.contacts.detail.activities.edit.ui
 
 import ContactsNavGraph
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -14,13 +11,11 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Today
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -30,7 +25,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
@@ -53,7 +47,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
-import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.datetime.LocalDateFormatter
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
@@ -152,9 +145,6 @@ private fun EditContactActivity(
                 modifier = Modifier
                     .padding(top = 20.dp),
                 uiState = uiState,
-                onAddParticipants = {
-                    // TODO
-                },
             )
 
             DetailsSection(
@@ -277,69 +267,6 @@ private fun SummarySection(uiState: EditContactActivityUiState, modifier: Modifi
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun ParticipantsSection(
-    uiState: EditContactActivityUiState,
-    onAddParticipants: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier,
-    ) {
-        Text(
-            modifier = Modifier
-                .padding(start = 40.dp),
-            text = "Participants",
-            style = MaterialTheme.typography.titleMedium,
-        )
-        FlowRow(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .padding(top = 4.dp),
-            verticalArrangement = Arrangement.spacedBy(0.dp),
-        ) {
-            for (participant in uiState.participants) {
-                SuggestionChip(
-                    icon = {
-                        UserAvatar(
-                            modifier = Modifier
-                                .size(24.dp),
-                            userAvatar = participant.avatar,
-                            onClick = {
-                                // TODO?
-                            },
-                        )
-                    },
-                    label = {
-                        Text(
-                            text = participant.name,
-                        )
-                    },
-                    onClick = {
-                        // TODO?
-                    },
-                )
-            }
-        }
-        TextButton(
-            modifier = Modifier
-                .padding(start = 24.dp, top = 4.dp),
-            onClick = onAddParticipants,
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Add,
-                contentDescription = null,
-            )
-            Text(
-                modifier = Modifier
-                    .padding(start = 8.dp),
-                text = "Add participants",
-            )
-        }
-    }
-}
-
 @Composable
 private fun DetailsSection(uiState: EditContactActivityUiState, modifier: Modifier = Modifier) {
     Column(
@@ -381,7 +308,9 @@ private fun DetailsSection(uiState: EditContactActivityUiState, modifier: Modifi
 private fun PreviewEditContactActivityLoadedScreen() {
     MonicaTheme {
         EditContactActivity(
-            uiState = EditContactActivityUiState(),
+            uiState = EditContactActivityUiState(
+                onParticipantSearch = { },
+            ),
             topAppBar = { },
             onSave = { },
             onBack = { },
