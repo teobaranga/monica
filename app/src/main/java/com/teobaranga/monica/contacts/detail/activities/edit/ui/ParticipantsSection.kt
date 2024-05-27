@@ -38,7 +38,7 @@ import com.teobaranga.monica.ui.avatar.UserAvatar
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ParticipantsSection(
-    uiState: EditContactActivityUiState,
+    uiState: EditContactActivityUiState.Loaded,
     modifier: Modifier = Modifier,
 ) {
     Column(
