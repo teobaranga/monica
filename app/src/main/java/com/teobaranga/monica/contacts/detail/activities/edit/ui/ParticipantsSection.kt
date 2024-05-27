@@ -156,9 +156,6 @@ private fun ParticipantChip(participant: ActivityParticipant, onRemove: () -> Un
                     .padding(start = 8.dp)
                     .size(24.dp),
                 userAvatar = participant.avatar,
-                onClick = {
-                    // TODO?
-                },
             )
         },
         label = {
