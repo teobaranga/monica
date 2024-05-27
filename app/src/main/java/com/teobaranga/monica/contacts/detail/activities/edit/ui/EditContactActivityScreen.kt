@@ -2,6 +2,7 @@ package com.teobaranga.monica.contacts.detail.activities.edit.ui
 
 import ContactsNavGraph
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -254,7 +255,8 @@ private fun DateSection(
 @Composable
 private fun SummarySection(uiState: EditContactActivityUiState.Loaded, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(),
     ) {
         Text(
             modifier = Modifier
@@ -288,7 +290,8 @@ private fun SummarySection(uiState: EditContactActivityUiState.Loaded, modifier:
 @Composable
 private fun DetailsSection(uiState: EditContactActivityUiState.Loaded, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(),
     ) {
         Text(
             modifier = Modifier
