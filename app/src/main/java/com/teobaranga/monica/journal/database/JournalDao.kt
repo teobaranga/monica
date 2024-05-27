@@ -1,11 +1,14 @@
 package com.teobaranga.monica.journal.database
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RawQuery
+import androidx.room.Transaction
 import androidx.room.Upsert
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.database.OrderBy
 import kotlinx.coroutines.flow.Flow
 
@@ -38,6 +41,9 @@ abstract class JournalDao {
     @RawQuery(observedEntities = [JournalEntryEntity::class])
     protected abstract fun getJournalEntries(query: SupportSQLiteQuery): Flow<List<JournalEntryEntity>>
 
+    @Query("SELECT * FROM journal_entries WHERE syncStatus = :status")
+    abstract suspend fun getJournalEntriesByStatus(status: SyncStatus): List<JournalEntryEntity>
+
     @Query("SELECT id FROM journal_entries")
     abstract fun getJournalEntryIds(): Flow<List<Int>>
 
@@ -51,6 +57,18 @@ abstract class JournalDao {
 
     @Upsert
     abstract suspend fun upsertJournalEntries(entities: List<JournalEntryEntity>)
+
+    @Insert
+    abstract suspend fun insertJournalEntry(entry: JournalEntryEntity)
+
+    @Transaction
+    open suspend fun sync(entityId: Int, entry: JournalEntryEntity) {
+        delete(listOf(entityId))
+        upsertJournalEntries(listOf(entry))
+    }
+
+    @Query("SELECT max(id) FROM journal_entries")
+    abstract suspend fun getMaxId(): Int
 
     @Query("SELECT (SELECT COUNT(*) FROM journal_entries) == 0")
     abstract suspend fun isEmpty(): Boolean

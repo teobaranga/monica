@@ -7,7 +7,7 @@ import com.teobaranga.monica.data.common.MetaResponse
 @JsonClass(generateAdapter = true)
 data class JournalEntriesResponse(
     @Json(name = "data")
-    val data: List<JournalEntryResponse>,
+    val data: List<JournalEntry>,
     @Json(name = "meta")
     val meta: MetaResponse,
 )

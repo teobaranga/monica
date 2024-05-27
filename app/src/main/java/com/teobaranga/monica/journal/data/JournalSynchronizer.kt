@@ -2,6 +2,7 @@ package com.teobaranga.monica.journal.data
 
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.journal.database.JournalDao
 import com.teobaranga.monica.journal.database.JournalEntryEntity
@@ -15,12 +16,15 @@ import javax.inject.Singleton
 class JournalSynchronizer @Inject constructor(
     private val journalApi: JournalApi,
     private val journalDao: JournalDao,
+    private val journalNewEntrySynchronizer: JournalNewEntrySynchronizer,
 ) : Synchronizer {
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
     override suspend fun sync() {
         syncState.value = Synchronizer.State.REFRESHING
+
+        journalNewEntrySynchronizer.sync()
 
         // Keep track of removed journal entries, start with the full database first
         val removedIds = journalDao.getJournalEntryIds().first().toMutableSet()
@@ -59,16 +63,16 @@ class JournalSynchronizer @Inject constructor(
         syncState.value = Synchronizer.State.IDLE
     }
 
-    private fun JournalEntryResponse.toEntity(): JournalEntryEntity {
+    private fun JournalEntry.toEntity(): JournalEntryEntity {
         return JournalEntryEntity(
             id = id,
             uuid = uuid,
-            accountId = account.id,
             title = title,
             post = post,
             date = date,
             created = created,
             updated = updated,
+            syncStatus = SyncStatus.UP_TO_DATE,
         )
     }
 }

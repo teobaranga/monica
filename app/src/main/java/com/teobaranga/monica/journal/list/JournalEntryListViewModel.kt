@@ -7,6 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
+import com.teobaranga.monica.journal.data.JournalPagingSource
 import com.teobaranga.monica.journal.data.JournalRepository
 import com.teobaranga.monica.journal.data.JournalSynchronizer
 import com.teobaranga.monica.user.userAvatar
@@ -30,6 +31,8 @@ internal class JournalEntryListViewModel @Inject constructor(
     private val journalSynchronizer: JournalSynchronizer,
 ) : ViewModel() {
 
+    private lateinit var pagingSource: JournalPagingSource
+
     val userAvatar = userRepository.me
         .mapLatest { me ->
             me.contact?.avatar ?: me.userAvatar
@@ -47,9 +50,10 @@ internal class JournalEntryListViewModel @Inject constructor(
             initialLoadSize = PAGE_SIZE,
         ),
         pagingSourceFactory = {
-            journalRepository.getJournalEntries(
+            pagingSource = journalRepository.getJournalEntries(
                 orderBy = JournalRepository.OrderBy.Date(isAscending = false),
             )
+            pagingSource
         },
     )
         .flow
@@ -73,5 +77,9 @@ internal class JournalEntryListViewModel @Inject constructor(
         viewModelScope.launch(dispatcher.io) {
             journalSynchronizer.sync()
         }
+    }
+
+    fun onEntriesChanged() {
+        pagingSource.invalidate()
     }
 }

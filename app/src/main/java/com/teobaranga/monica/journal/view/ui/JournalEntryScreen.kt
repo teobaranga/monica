@@ -25,11 +25,12 @@ import java.time.OffsetDateTime
 @Composable
 fun JournalEntryScreen(entry: JournalEntryUiState, topBar: @Composable () -> Unit, modifier: Modifier = Modifier) {
     Scaffold(
+        modifier = modifier,
         topBar = topBar,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
     ) { paddingValues ->
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .padding(paddingValues)
                 .consumeWindowInsets(paddingValues)
                 .imePadding(),
@@ -93,6 +94,7 @@ private fun PreviewJournalEntryScreen() {
             topBar = {
                 JournalEntryTopAppBar(
                     onBack = { },
+                    onSave = { },
                     onDelete = { },
                 )
             },

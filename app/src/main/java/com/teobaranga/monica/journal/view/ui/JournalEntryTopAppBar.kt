@@ -16,6 +16,7 @@ import com.teobaranga.monica.ui.OverflowMenu
 @Composable
 fun JournalEntryTopAppBar(
     onBack: () -> Unit,
+    onSave: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -36,9 +37,7 @@ fun JournalEntryTopAppBar(
         },
         actions = {
             IconButton(
-                onClick = {
-
-                },
+                onClick = onSave,
             ) {
                 Icon(
                     imageVector = Icons.Filled.Check,

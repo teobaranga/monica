@@ -37,6 +37,10 @@ internal fun JournalEntry(
         topBar = {
             JournalEntryTopAppBar(
                 onBack = navigator::popBackStack,
+                onSave = {
+                    viewModel.onSave()
+                    navigator.popBackStack()
+                },
                 onDelete = {
                     // TODO
                 },
