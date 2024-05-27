@@ -29,13 +29,20 @@ data class UserAvatar(
 )
 
 @Composable
-fun UserAvatar(userAvatar: UserAvatar, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun UserAvatar(userAvatar: UserAvatar, modifier: Modifier = Modifier, onClick: (() -> Unit)? = null) {
     SubcomposeAsyncImage(
         modifier = modifier
             .size(32.dp)
             .clip(CircleShape)
             .background(Color(userAvatar.color.toColorInt()))
-            .clickable(onClick = onClick),
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(onClick = onClick)
+                } else {
+                    Modifier
+                }
+            )
+        ,
         model = ImageRequest.Builder(LocalContext.current)
             .data(userAvatar)
             .memoryCacheKey(userAvatar.avatarUrl)

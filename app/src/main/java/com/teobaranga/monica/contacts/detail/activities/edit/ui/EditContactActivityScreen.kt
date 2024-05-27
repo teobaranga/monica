@@ -1,6 +1,8 @@
 package com.teobaranga.monica.contacts.detail.activities.edit.ui
 
 import ContactsNavGraph
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +24,7 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -120,46 +123,62 @@ private fun EditContactActivity(
         },
         contentWindowInsets = WindowInsets.ime,
     ) { contentPadding ->
-        Column(
-            modifier = Modifier
-                .padding(contentPadding)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-        ) {
-            DateSection(
-                modifier = Modifier
-                    .padding(top = 24.dp),
-                onDateSelect = { date ->
-                    uiState.date = date
-                },
-                uiState = uiState,
-            )
+        Crossfade(
+            targetState = uiState,
+            label = "Edit Contact Activity",
+        ) { uiState ->
+            when (uiState) {
+                is EditContactActivityUiState.Loading -> {
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .padding(contentPadding)
+                            .fillMaxWidth(),
+                    )
+                }
+                is EditContactActivityUiState.Loaded -> {
+                    Column(
+                        modifier = Modifier
+                            .padding(contentPadding)
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState()),
+                    ) {
+                        DateSection(
+                            modifier = Modifier
+                                .padding(top = 24.dp),
+                            onDateSelect = { date ->
+                                uiState.date = date
+                            },
+                            uiState = uiState,
+                        )
 
-            SummarySection(
-                modifier = Modifier
-                    .padding(top = 20.dp),
-                uiState = uiState,
-            )
+                        SummarySection(
+                            modifier = Modifier
+                                .padding(top = 20.dp),
+                            uiState = uiState,
+                        )
 
-            ParticipantsSection(
-                modifier = Modifier
-                    .padding(top = 20.dp),
-                uiState = uiState,
-            )
+                        ParticipantsSection(
+                            modifier = Modifier
+                                .padding(top = 20.dp),
+                            uiState = uiState,
+                        )
 
-            DetailsSection(
-                modifier = Modifier
-                    .padding(top = 20.dp),
-                uiState = uiState,
-            )
+                        DetailsSection(
+                            modifier = Modifier
+                                .padding(top = 20.dp),
+                            uiState = uiState,
+                        )
 
-            Spacer(
-                modifier = Modifier
-                    .padding(
-                        WindowInsets.navigationBars.asPaddingValues() +
-                            PaddingValues(bottom = FabPadding + FabHeight + 24.dp),
-                    ),
-            )
+                        Spacer(
+                            modifier = Modifier
+                                .padding(
+                                    WindowInsets.navigationBars.asPaddingValues() +
+                                        PaddingValues(bottom = FabPadding + FabHeight + 24.dp),
+                                ),
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -167,7 +186,7 @@ private fun EditContactActivity(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DateSection(
-    uiState: EditContactActivityUiState,
+    uiState: EditContactActivityUiState.Loaded,
     onDateSelect: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -234,9 +253,10 @@ private fun DateSection(
 }
 
 @Composable
-private fun SummarySection(uiState: EditContactActivityUiState, modifier: Modifier = Modifier) {
+private fun SummarySection(uiState: EditContactActivityUiState.Loaded, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(),
     ) {
         Text(
             modifier = Modifier
@@ -268,9 +288,10 @@ private fun SummarySection(uiState: EditContactActivityUiState, modifier: Modifi
 }
 
 @Composable
-private fun DetailsSection(uiState: EditContactActivityUiState, modifier: Modifier = Modifier) {
+private fun DetailsSection(uiState: EditContactActivityUiState.Loaded, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(),
     ) {
         Text(
             modifier = Modifier
@@ -308,7 +329,7 @@ private fun DetailsSection(uiState: EditContactActivityUiState, modifier: Modifi
 private fun PreviewEditContactActivityLoadedScreen() {
     MonicaTheme {
         EditContactActivity(
-            uiState = EditContactActivityUiState(
+            uiState = EditContactActivityUiState.Loaded(
                 onParticipantSearch = { },
             ),
             topAppBar = { },

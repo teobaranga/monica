@@ -30,7 +30,13 @@ internal class ContactActivitiesRepository @Inject constructor(
         return contactActivitiesDao.getActivity(activityId)
     }
 
-    suspend fun upsertActivity(activityId: Int?, title: String, description: String?, date: LocalDate, participants: List<Int>) {
+    suspend fun upsertActivity(
+        activityId: Int?,
+        title: String,
+        description: String?,
+        date: LocalDate,
+        participants: List<Int>,
+    ) {
         if (activityId != null) {
             updateActivity(activityId, title, description, date, participants)
         } else {
@@ -71,7 +77,13 @@ internal class ContactActivitiesRepository @Inject constructor(
         }
     }
 
-    private suspend fun updateActivity(activityId: Int, title: String, description: String?, date: LocalDate, participants: List<Int>) {
+    private suspend fun updateActivity(
+        activityId: Int,
+        title: String,
+        description: String?,
+        date: LocalDate,
+        participants: List<Int>,
+    ) {
         val originalActivityWithParticipants = contactActivitiesDao.getActivity(activityId)
             .firstOrNull() ?: return
         val updatedActivity = originalActivityWithParticipants.activity.copy(

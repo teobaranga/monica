@@ -9,25 +9,31 @@ import androidx.compose.ui.text.input.TextFieldValue
 import java.time.LocalDate
 
 @Stable
-class EditContactActivityUiState(
-    private val onParticipantSearch: (String) -> Unit,
-) {
+sealed interface EditContactActivityUiState {
 
-    var date by mutableStateOf(LocalDate.now())
+    data object Loading : EditContactActivityUiState
 
-    var participantSearch by mutableStateOf(TextFieldValue())
-        private set
+    @Stable
+    data class Loaded(
+        private val onParticipantSearch: (String) -> Unit,
+    ) : EditContactActivityUiState {
 
-    val participantResults = mutableStateListOf<ActivityParticipant>()
+        var date by mutableStateOf(LocalDate.now())
 
-    val participants = mutableStateListOf<ActivityParticipant>()
+        var participantSearch by mutableStateOf(TextFieldValue())
+            private set
 
-    var summary by mutableStateOf(TextFieldValue())
+        val participantResults = mutableStateListOf<ActivityParticipant>()
 
-    var details by mutableStateOf(TextFieldValue())
+        val participants = mutableStateListOf<ActivityParticipant>()
 
-    fun onParticipantSearch(search: TextFieldValue) {
-        participantSearch = search
-        onParticipantSearch(search.text)
+        var summary by mutableStateOf(TextFieldValue())
+
+        var details by mutableStateOf(TextFieldValue())
+
+        fun onParticipantSearch(search: TextFieldValue) {
+            participantSearch = search
+            onParticipantSearch(search.text)
+        }
     }
 }

@@ -14,7 +14,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -29,71 +31,65 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
     private val activityId: Int?,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(
-        EditContactActivityUiState(
-            onParticipantSearch = ::onParticipantSearch,
-        ),
-    )
+    private val _uiState = MutableStateFlow<EditContactActivityUiState>(EditContactActivityUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     private var participantSearchJob: Job? = null
 
     init {
-        viewModelScope.launch(dispatcher.io) {
-            val contact = contactRepository.getContact(contactId)
-                .firstOrNull()
-            if (contact == null) {
-                // TODO handle
-                return@launch
-            }
-
-            withContext(dispatcher.main) {
-                _uiState.value.participants.add(
-                    ActivityParticipant(
-                        contactId = contact.contactId,
-                        name = contact.completeName,
-                        avatar = contact.userAvatar,
-                    ),
-                )
-            }
+        val getContact = contactRepository.getContact(contactId)
+        val getActivity = if (activityId != null) {
+            contactActivitiesRepository.getActivity(activityId)
+        } else {
+            flowOf(null)
         }
-        if (activityId != null) {
-            viewModelScope.launch(dispatcher.io) {
-                val activityWithParticipants = contactActivitiesRepository.getActivity(activityId)
-                    .firstOrNull()
-                if (activityWithParticipants == null) {
-                    // TODO handle
-                    return@launch
-                }
-                val participants = activityWithParticipants.participants
-                    .map { contact ->
-                        ActivityParticipant(
-                            contactId = contact.contactId,
-                            name = contact.completeName,
-                            avatar = contact.userAvatar,
+        viewModelScope.launch(dispatcher.io) {
+            getContact
+                .combine(getActivity) { contact, activityWithParticipants ->
+                    EditContactActivityUiState.Loaded(
+                        onParticipantSearch = ::onParticipantSearch,
+                    ).apply {
+                        participants.add(
+                            ActivityParticipant(
+                                contactId = contact.contactId,
+                                name = contact.completeName,
+                                avatar = contact.userAvatar,
+                            ),
                         )
+                        if (activityWithParticipants != null) {
+                            summary = TextFieldValue(activityWithParticipants.activity.title)
+                            details = TextFieldValue(activityWithParticipants.activity.description.orEmpty())
+                            date = activityWithParticipants.activity.date
+                            val activityParticipants = activityWithParticipants.participants
+                                .filter {
+                                    it.contactId != contactId
+                                }
+                                .map { contact ->
+                                    ActivityParticipant(
+                                        contactId = contact.contactId,
+                                        name = contact.completeName,
+                                        avatar = contact.userAvatar,
+                                    )
+                                }
+                            participants.addAll(activityParticipants)
+                        }
                     }
-
-                withContext(dispatcher.main) {
-                    _uiState.value.summary = TextFieldValue(activityWithParticipants.activity.title)
-                    _uiState.value.details = TextFieldValue(activityWithParticipants.activity.description.orEmpty())
-                    _uiState.value.date = activityWithParticipants.activity.date
-                    _uiState.value.participants.clear()
-                    _uiState.value.participants.addAll(participants)
                 }
-            }
+                .collectLatest { uiState ->
+                    _uiState.value = uiState
+                }
         }
     }
 
     fun onSave() {
-        val activity = _uiState.value
+        val uiState = getLoadedUiState() ?: return
         viewModelScope.launch(dispatcher.io) {
             contactActivitiesRepository.upsertActivity(
                 activityId = activityId,
-                title = activity.summary.text,
-                description = activity.details.text.takeUnless { it.isEmpty() },
-                date = activity.date,
-                participants = activity.participants.map { it.contactId },
+                title = uiState.summary.text,
+                description = uiState.details.text.takeUnless { it.isEmpty() },
+                date = uiState.date,
+                participants = uiState.participants.map { it.contactId },
             )
         }
     }
@@ -108,7 +104,8 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
     }
 
     private fun onParticipantSearch(query: String) {
-        _uiState.value.participantResults.clear()
+        val uiState = getLoadedUiState() ?: return
+        uiState.participantResults.clear()
         participantSearchJob?.cancel()
 
         val trimmedQuery = query.trim()
@@ -118,7 +115,7 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
 
         participantSearchJob = viewModelScope.launch(dispatcher.io) {
             val results = contactRepository.searchContact(trimmedQuery)
-            val existingParticipantIds = _uiState.value.participants.map { it.contactId }.toSet()
+            val existingParticipantIds = uiState.participants.map { it.contactId }.toSet()
             val participantResults = results
                 .filter {
                     it.contactId !in existingParticipantIds
@@ -131,9 +128,13 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
                     )
                 }
             withContext(dispatcher.main) {
-                _uiState.value.participantResults.addAll(participantResults)
+                uiState.participantResults.addAll(participantResults)
             }
         }
+    }
+
+    private fun getLoadedUiState(): EditContactActivityUiState.Loaded? {
+        return _uiState.value as? EditContactActivityUiState.Loaded
     }
 
     @AssistedFactory

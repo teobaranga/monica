@@ -24,7 +24,7 @@ class ContactActivityNewSynchronizer @Inject constructor(
                     date = newEntry.activity.date,
                     contacts = newEntry.participants.map { it.contactId },
                     emotions = null,
-                )
+                ),
             )
             when (response) {
                 is ApiResponse.Success -> {
@@ -42,6 +42,7 @@ class ContactActivityNewSynchronizer @Inject constructor(
 
                     contactActivitiesDao.sync(newEntry.activity.activityId, entity, crossRefs)
                 }
+
                 else -> {
                     println("ERROR $response")
                 }
