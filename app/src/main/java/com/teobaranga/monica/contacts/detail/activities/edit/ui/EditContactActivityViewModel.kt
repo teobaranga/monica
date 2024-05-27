@@ -66,6 +66,9 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
                     return@launch
                 }
                 val participants = activityWithParticipants.participants
+                    .filter {
+                        it.contactId != contactId
+                    }
                     .map { contact ->
                         ActivityParticipant(
                             contactId = contact.contactId,
@@ -78,7 +81,6 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
                     _uiState.value.summary = TextFieldValue(activityWithParticipants.activity.title)
                     _uiState.value.details = TextFieldValue(activityWithParticipants.activity.description.orEmpty())
                     _uiState.value.date = activityWithParticipants.activity.date
-                    _uiState.value.participants.clear()
                     _uiState.value.participants.addAll(participants)
                 }
             }
