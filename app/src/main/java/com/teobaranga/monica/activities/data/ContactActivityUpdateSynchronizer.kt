@@ -25,12 +25,13 @@ class ContactActivityUpdateSynchronizer @Inject constructor(
                     date = entry.activity.date,
                     contacts = entry.participants.map { it.contactId },
                     emotions = null,
-                )
+                ),
             )
             when (response) {
                 is ApiResponse.Success -> {
                     contactActivitiesDao.setSyncStatus(entry.activity.activityId, SyncStatus.UP_TO_DATE)
                 }
+
                 else -> {
                     println("ERROR $response")
                 }

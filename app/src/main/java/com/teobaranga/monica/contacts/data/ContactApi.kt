@@ -35,7 +35,10 @@ interface ContactApi {
     suspend fun createActivity(@Body request: CreateActivityRequest): ApiResponse<CreateActivityResponse>
 
     @PUT("api/activities/{id}")
-    suspend fun updateActivity(@Path("id") id: Int, @Body request: CreateActivityRequest): ApiResponse<CreateActivityResponse>
+    suspend fun updateActivity(
+        @Path("id") id: Int,
+        @Body request: CreateActivityRequest,
+    ): ApiResponse<CreateActivityResponse>
 
     @DELETE("api/activities/{id}")
     suspend fun deleteActivity(@Path("id") id: Int): ApiResponse<DeleteResponse>
