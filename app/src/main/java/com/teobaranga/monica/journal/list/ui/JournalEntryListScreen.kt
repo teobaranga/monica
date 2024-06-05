@@ -30,20 +30,19 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.teobaranga.monica.journal.model.JournalEntry
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
-import java.time.OffsetDateTime
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JournalEntryListScreen(
     searchBar: @Composable () -> Unit,
-    lazyItems: LazyPagingItems<JournalEntry>,
+    lazyItems: LazyPagingItems<JournalEntryListItem>,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onEntryClick: (id: Int) -> Unit,
@@ -132,7 +131,7 @@ private fun PreviewJournalScreen() {
         val journalItems = flowOf(
             PagingData.from(
                 listOf(
-                    JournalEntry(
+                    JournalEntryListItem(
                         id = 1,
                         title = null,
                         post = """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -143,9 +142,7 @@ private fun PreviewJournalScreen() {
                             | mollit anim id est laborum.
                             | 
                         """.trimMargin(),
-                        date = OffsetDateTime.now(),
-                        created = OffsetDateTime.now(),
-                        updated = OffsetDateTime.now(),
+                        date = LocalDate.now(),
                     ),
                 ),
             ),

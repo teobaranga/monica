@@ -2,6 +2,7 @@ package com.teobaranga.monica.journal.data
 
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.journal.database.JournalDao
 import com.teobaranga.monica.journal.database.JournalEntryEntity
@@ -12,15 +13,24 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class JournalSynchronizer @Inject constructor(
+class JournalEntrySynchronizer @Inject constructor(
     private val journalApi: JournalApi,
     private val journalDao: JournalDao,
+    private val journalEntryNewSynchronizer: JournalEntryNewSynchronizer,
+    private val journalEntryUpdateSynchronizer: JournalEntryUpdateSynchronizer,
+    private val journalEntryDeletedSynchronizer: JournalEntryDeletedSynchronizer,
 ) : Synchronizer {
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
     override suspend fun sync() {
         syncState.value = Synchronizer.State.REFRESHING
+
+        journalEntryNewSynchronizer.sync()
+
+        journalEntryUpdateSynchronizer.sync()
+
+        journalEntryDeletedSynchronizer.sync()
 
         // Keep track of removed journal entries, start with the full database first
         val removedIds = journalDao.getJournalEntryIds().first().toMutableSet()
@@ -58,17 +68,17 @@ class JournalSynchronizer @Inject constructor(
 
         syncState.value = Synchronizer.State.IDLE
     }
+}
 
-    private fun JournalEntryResponse.toEntity(): JournalEntryEntity {
-        return JournalEntryEntity(
-            id = id,
-            uuid = uuid,
-            accountId = account.id,
-            title = title,
-            post = post,
-            date = date,
-            created = created,
-            updated = updated,
-        )
-    }
+fun JournalEntry.toEntity(): JournalEntryEntity {
+    return JournalEntryEntity(
+        id = id,
+        uuid = uuid,
+        title = title,
+        post = post,
+        date = date.toLocalDate(),
+        created = created,
+        updated = updated,
+        syncStatus = SyncStatus.UP_TO_DATE,
+    )
 }

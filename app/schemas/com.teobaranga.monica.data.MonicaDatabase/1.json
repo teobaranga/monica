@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "53766773bc257a6570355e7bda073f07",
+    "identityHash": "287c200068d83ec68b24b8a8c14e7f6f",
     "entities": [
       {
         "tableName": "me",
@@ -255,7 +255,7 @@
       },
       {
         "tableName": "journal_entries",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `uuid` BLOB NOT NULL, `accountId` INTEGER NOT NULL, `title` TEXT, `post` TEXT NOT NULL, `date` TEXT NOT NULL, `created` TEXT NOT NULL, `updated` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `uuid` BLOB NOT NULL, `title` TEXT, `post` TEXT NOT NULL, `date` TEXT NOT NULL, `created` TEXT NOT NULL, `updated` TEXT NOT NULL, `syncStatus` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -267,12 +267,6 @@
             "fieldPath": "uuid",
             "columnName": "uuid",
             "affinity": "BLOB",
-            "notNull": true
-          },
-          {
-            "fieldPath": "accountId",
-            "columnName": "accountId",
-            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -304,6 +298,12 @@
             "columnName": "updated",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "syncStatus",
+            "columnName": "syncStatus",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -319,7 +319,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '53766773bc257a6570355e7bda073f07')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '287c200068d83ec68b24b8a8c14e7f6f')"
     ]
   }
 }

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,15 +11,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.teobaranga.monica.journal.model.JournalEntry
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
-import java.time.OffsetDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JournalItem(journalEntry: JournalEntry, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun JournalItem(journalEntry: JournalEntryListItem, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth(),
@@ -56,7 +53,7 @@ private fun PreviewJournalItem() {
         JournalItem(
             modifier = Modifier
                 .padding(20.dp),
-            journalEntry = JournalEntry(
+            journalEntry = JournalEntryListItem(
                 id = 1,
                 title = null,
                 post = """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -67,9 +64,7 @@ private fun PreviewJournalItem() {
                             | mollit anim id est laborum.
                             | 
                 """.trimMargin(),
-                date = OffsetDateTime.now(),
-                created = OffsetDateTime.now(),
-                updated = OffsetDateTime.now(),
+                date = LocalDate.now(),
             ),
             onClick = { },
         )

@@ -13,14 +13,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.teobaranga.monica.journal.view.ui.JournalEntryScreen
+import com.teobaranga.monica.journal.view.ui.JournalEntryTopAppBar
 
 @Destination<JournalNavGraph>(
     style = JournalEntryTransitions::class,
 )
 @Composable
 internal fun JournalEntry(
+    navigator: DestinationsNavigator,
     entryId: Int? = null,
     viewModel: JournalEntryViewModel = hiltViewModel<JournalEntryViewModel, JournalEntryViewModel.Factory>(
         creationCallback = { factory ->
@@ -28,9 +31,22 @@ internal fun JournalEntry(
         },
     ),
 ) {
-    val entry by viewModel.entry.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     JournalEntryScreen(
-        entry = entry,
+        uiState = uiState,
+        topBar = {
+            JournalEntryTopAppBar(
+                onBack = navigator::popBackStack,
+                onDelete = {
+                    viewModel.onDelete()
+                    navigator.popBackStack()
+                },
+            )
+        },
+        onSave = {
+            viewModel.onSave()
+            navigator.popBackStack()
+        },
     )
 }
 
