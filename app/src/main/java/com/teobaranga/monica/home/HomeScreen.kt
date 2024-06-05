@@ -1,12 +1,11 @@
 package com.teobaranga.monica.home
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -16,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.DestinationsNavHost
@@ -33,6 +33,7 @@ import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.util.compose.thenIf
 import kotlinx.coroutines.flow.collectLatest
 
 @Destination<RootGraph>(start = true)
@@ -80,19 +81,14 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     currentDestination in listOf(DashboardDestination, ContactsDestination, JournalEntryListDestination)
                 }
             }
-            AnimatedVisibility(
-                visible = isVisible,
-                enter = slideInVertically(
-                    initialOffsetY = { it },
-                ),
-                exit = slideOutVertically(
-                    targetOffsetY = { it },
-                ),
-            ) {
-                HomeNavigationBar(
-                    navController = navController,
-                )
-            }
+            HomeNavigationBar(
+                modifier = Modifier
+                    .animateContentSize()
+                    .thenIf(!isVisible) {
+                        height(0.dp)
+                    },
+                navController = navController,
+            )
         },
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
     ) { contentPadding ->
