@@ -3,6 +3,7 @@ package com.teobaranga.monica.journal.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.teobaranga.monica.data.sync.SyncStatus
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.util.UUID
 
@@ -13,7 +14,7 @@ data class JournalEntryEntity(
     val uuid: UUID,
     val title: String?,
     val post: String,
-    val date: OffsetDateTime,
+    val date: LocalDate,
     val created: OffsetDateTime,
     val updated: OffsetDateTime,
     val syncStatus: SyncStatus,

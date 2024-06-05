@@ -39,7 +39,7 @@ import com.teobaranga.monica.ui.datetime.LocalDateFormatter
 import com.teobaranga.monica.ui.text.MonicaTextField
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.Instant
-import java.time.OffsetDateTime
+import java.time.LocalDate
 import java.time.ZoneOffset
 
 @Composable
@@ -168,7 +168,8 @@ private fun DateButton(uiState: JournalEntryUiState.Loaded, modifier: Modifier =
     if (showDatePickerDialog) {
         val datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = uiState.date
-                .toInstant()
+                .atStartOfDay()
+                .toInstant(ZoneOffset.UTC)
                 .toEpochMilli(),
         )
         DatePickerDialog(
@@ -176,7 +177,7 @@ private fun DateButton(uiState: JournalEntryUiState.Loaded, modifier: Modifier =
                 TextButton(
                     onClick = {
                         datePickerState.selectedDateMillis?.let {
-                            uiState.date = OffsetDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneOffset.UTC)
+                            uiState.date = LocalDate.ofInstant(Instant.ofEpochMilli(it), ZoneOffset.UTC)
                         }
                         showDatePickerDialog = false
                     },
@@ -206,7 +207,7 @@ private fun PreviewJournalEntryScreen() {
                 id = 1,
                 title = null,
                 post = "Hello World!",
-                date = OffsetDateTime.now(),
+                date = LocalDate.now(),
             ),
             topBar = {
                 JournalEntryTopAppBar(

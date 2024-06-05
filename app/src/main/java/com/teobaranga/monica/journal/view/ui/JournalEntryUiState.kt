@@ -5,7 +5,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import java.time.OffsetDateTime
+import java.time.LocalDate
 
 sealed interface JournalEntryUiState {
     data object Loading : JournalEntryUiState
@@ -15,7 +15,7 @@ sealed interface JournalEntryUiState {
         val id: Int,
         val title: TextFieldState,
         val post: TextFieldState,
-        private val initialDate: OffsetDateTime,
+        private val initialDate: LocalDate,
     ) : JournalEntryUiState {
 
         var date by mutableStateOf(initialDate)
@@ -24,7 +24,7 @@ sealed interface JournalEntryUiState {
             id: Int,
             title: String?,
             post: String,
-            date: OffsetDateTime,
+            date: LocalDate,
         ) : this(
             id = id,
             title = TextFieldState(title.orEmpty()),

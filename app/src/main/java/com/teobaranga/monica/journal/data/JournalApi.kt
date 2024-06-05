@@ -1,29 +1,12 @@
 package com.teobaranga.monica.journal.data
 
 import com.skydoves.sandwich.ApiResponse
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 import retrofit2.http.Query
-import java.time.OffsetDateTime
-
-@JsonClass(generateAdapter = true)
-data class JournalEntryCreateRequest(
-    /**
-     * A title for this journal entry. Max 255 characters.
-     */
-    @Json(name = "title")
-    val title: String,
-    /**
-     * The content of the post. Max 1000000 characters.
-     */
-    @Json(name = "post")
-    val post: String,
-    @Json(name = "date")
-    val date: OffsetDateTime,
-)
 
 interface JournalApi {
 
@@ -38,4 +21,13 @@ interface JournalApi {
      */
     @POST("api/journal")
     suspend fun createJournalEntry(@Body request: JournalEntryCreateRequest): ApiResponse<JournalEntryResponse>
+
+    /**
+     * Update a journal entry.
+     */
+    @PUT("api/journal/{id}")
+    suspend fun updateJournalEntry(
+        @Path("id") id: Int,
+        @Body request: JournalEntryCreateRequest,
+    ): ApiResponse<JournalEntryResponse>
 }

@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
-import java.time.OffsetDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -64,7 +64,7 @@ private fun PreviewJournalItem() {
                             | mollit anim id est laborum.
                             | 
                 """.trimMargin(),
-                date = OffsetDateTime.now(),
+                date = LocalDate.now(),
             ),
             onClick = { },
         )

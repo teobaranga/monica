@@ -3,10 +3,9 @@ package com.teobaranga.monica.journal.data
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.journal.database.JournalDao
-import com.teobaranga.monica.journal.database.JournalEntryEntity
 import javax.inject.Inject
 
-class JournalNewEntrySynchronizer @Inject constructor(
+class JournalEntryNewSynchronizer @Inject constructor(
     private val journalApi: JournalApi,
     private val journalDao: JournalDao,
 ) {
@@ -14,7 +13,7 @@ class JournalNewEntrySynchronizer @Inject constructor(
     suspend fun sync() {
         // TODO check for network before syncing
 
-        val newEntries = journalDao.getJournalEntriesByStatus(SyncStatus.NEW)
+        val newEntries = journalDao.getByStatus(SyncStatus.NEW)
 
         for (newEntry in newEntries) {
             val response = journalApi.createJournalEntry(
@@ -35,18 +34,5 @@ class JournalNewEntrySynchronizer @Inject constructor(
                 }
             }
         }
-    }
-
-    private fun JournalEntry.toEntity(): JournalEntryEntity {
-        return JournalEntryEntity(
-            id = id,
-            uuid = uuid,
-            title = title,
-            post = post,
-            date = date,
-            created = created,
-            updated = updated,
-            syncStatus = SyncStatus.UP_TO_DATE,
-        )
     }
 }

@@ -1,7 +1,6 @@
 package com.teobaranga.monica.journal.database
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
@@ -42,7 +41,10 @@ abstract class JournalDao {
     protected abstract fun getJournalEntries(query: SupportSQLiteQuery): Flow<List<JournalEntryEntity>>
 
     @Query("SELECT * FROM journal_entries WHERE syncStatus = :status")
-    abstract suspend fun getJournalEntriesByStatus(status: SyncStatus): List<JournalEntryEntity>
+    abstract suspend fun getByStatus(status: SyncStatus): List<JournalEntryEntity>
+
+    @Query("UPDATE journal_entries SET syncStatus = :syncStatus WHERE id = :entryId")
+    abstract suspend fun setSyncStatus(entryId: Int, syncStatus: SyncStatus)
 
     @Query("SELECT id FROM journal_entries")
     abstract fun getJournalEntryIds(): Flow<List<Int>>
@@ -58,8 +60,8 @@ abstract class JournalDao {
     @Upsert
     abstract suspend fun upsertJournalEntries(entities: List<JournalEntryEntity>)
 
-    @Insert
-    abstract suspend fun insertJournalEntry(entry: JournalEntryEntity)
+    @Upsert
+    abstract suspend fun upsertJournalEntry(entry: JournalEntryEntity)
 
     @Transaction
     open suspend fun sync(entityId: Int, entry: JournalEntryEntity) {

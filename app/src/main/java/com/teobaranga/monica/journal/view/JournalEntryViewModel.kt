@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.time.OffsetDateTime
+import java.time.LocalDate
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel(assistedFactory = JournalEntryViewModel.Factory::class)
@@ -45,8 +45,9 @@ internal class JournalEntryViewModel @AssistedInject constructor(
 
     fun onSave() {
         viewModelScope.launch(dispatcher.io) {
-            val uiState = uiState.value as? JournalEntryUiState.Loaded ?: return@launch
-            journalRepository.createJournalEntry(
+            val uiState = getLoadedState() ?: return@launch
+            journalRepository.upsertJournalEntry(
+                entryId = entryId,
                 title = uiState.title.text.toString().takeUnless { it.isBlank() },
                 post = uiState.post.text.toString(),
                 date = uiState.date,
@@ -59,8 +60,12 @@ internal class JournalEntryViewModel @AssistedInject constructor(
             id = -1,
             title = null,
             post = "",
-            date = OffsetDateTime.now(),
+            date = LocalDate.now(),
         )
+    }
+
+    private fun getLoadedState(): JournalEntryUiState.Loaded? {
+        return uiState.value as? JournalEntryUiState.Loaded
     }
 
     @AssistedFactory

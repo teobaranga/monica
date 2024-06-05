@@ -12,13 +12,13 @@ import kotlinx.coroutines.flow.first
 
 internal class JournalPagingSource @AssistedInject constructor(
     dispatcher: Dispatcher,
-    journalSynchronizer: JournalSynchronizer,
+    journalEntrySynchronizer: JournalEntrySynchronizer,
     private val journalDao: JournalDao,
     @Assisted
     private val orderBy: JournalRepository.OrderBy,
 ) : RoomPagingSource<JournalEntryEntity>(
     dispatcher = dispatcher,
-    synchronizer = journalSynchronizer,
+    synchronizer = journalEntrySynchronizer,
 ) {
 
     override suspend fun getEntries(start: Int, params: LoadParams<Int>): List<JournalEntryEntity> {

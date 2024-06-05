@@ -36,7 +36,7 @@ import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
-import java.time.OffsetDateTime
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -142,7 +142,7 @@ private fun PreviewJournalScreen() {
                             | mollit anim id est laborum.
                             | 
                         """.trimMargin(),
-                        date = OffsetDateTime.now(),
+                        date = LocalDate.now(),
                     ),
                 ),
             ),

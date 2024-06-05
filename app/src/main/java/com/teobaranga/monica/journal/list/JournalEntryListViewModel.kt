@@ -10,7 +10,7 @@ import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.journal.data.JournalPagingSource
 import com.teobaranga.monica.journal.data.JournalRepository
-import com.teobaranga.monica.journal.data.JournalSynchronizer
+import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
 import com.teobaranga.monica.journal.database.JournalEntryEntity
 import com.teobaranga.monica.journal.list.ui.JournalEntryListItem
 import com.teobaranga.monica.user.userAvatar
@@ -31,7 +31,7 @@ internal class JournalEntryListViewModel @Inject constructor(
     private val dispatcher: Dispatcher,
     userRepository: UserRepository,
     private val journalRepository: JournalRepository,
-    private val journalSynchronizer: JournalSynchronizer,
+    private val journalEntrySynchronizer: JournalEntrySynchronizer,
 ) : ViewModel() {
 
     private lateinit var pagingSource: JournalPagingSource
@@ -67,7 +67,7 @@ internal class JournalEntryListViewModel @Inject constructor(
         }
         .cachedIn(viewModelScope)
 
-    val isRefreshing = journalSynchronizer.syncState
+    val isRefreshing = journalEntrySynchronizer.syncState
         .mapLatest { state ->
             state == Synchronizer.State.REFRESHING
         }
@@ -83,7 +83,7 @@ internal class JournalEntryListViewModel @Inject constructor(
 
     fun refresh() {
         viewModelScope.launch(dispatcher.io) {
-            journalSynchronizer.sync()
+            journalEntrySynchronizer.sync()
         }
     }
 
