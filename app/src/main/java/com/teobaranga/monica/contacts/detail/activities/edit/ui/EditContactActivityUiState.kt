@@ -8,7 +8,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import java.time.LocalDate
 
-@Stable
 sealed interface EditContactActivityUiState {
 
     data object Loading : EditContactActivityUiState
