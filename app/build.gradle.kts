@@ -42,6 +42,10 @@ android {
         }
     }
 
+    buildFeatures {
+        compose = true
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
