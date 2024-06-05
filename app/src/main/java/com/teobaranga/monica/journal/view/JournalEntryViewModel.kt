@@ -9,15 +9,12 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel(assistedFactory = JournalEntryViewModel.Factory::class)
 internal class JournalEntryViewModel @AssistedInject constructor(
     @Assisted
@@ -26,10 +23,19 @@ internal class JournalEntryViewModel @AssistedInject constructor(
     private val journalRepository: JournalRepository,
 ) : ViewModel() {
 
-    val uiState = when (entryId) {
-        null -> flowOf(getEmptyState())
-        else -> journalRepository.getJournalEntry(entryId)
-            .mapLatest { entry ->
+    private val _uiState = MutableStateFlow<JournalEntryUiState>(JournalEntryUiState.Loading)
+    val uiState = _uiState.asStateFlow()
+
+    init {
+        viewModelScope.launch(dispatcher.io) {
+            val entry = if (entryId == null) {
+                null
+            } else {
+                journalRepository.getJournalEntry(entryId).firstOrNull()
+            }
+            _uiState.value = if (entry == null) {
+                getEmptyState()
+            } else {
                 JournalEntryUiState.Loaded(
                     id = entry.id,
                     title = entry.title,
@@ -37,11 +43,8 @@ internal class JournalEntryViewModel @AssistedInject constructor(
                     date = entry.date,
                 )
             }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = JournalEntryUiState.Loading,
-    )
+        }
+    }
 
     fun onSave() {
         viewModelScope.launch(dispatcher.io) {
@@ -52,6 +55,15 @@ internal class JournalEntryViewModel @AssistedInject constructor(
                 post = uiState.post.text.toString(),
                 date = uiState.date,
             )
+        }
+    }
+
+    fun onDelete() {
+        if (entryId == null) {
+            return
+        }
+        viewModelScope.launch(dispatcher.io) {
+            journalRepository.deleteJournalEntry(entryId)
         }
     }
 

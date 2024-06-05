@@ -18,6 +18,7 @@ class JournalEntrySynchronizer @Inject constructor(
     private val journalDao: JournalDao,
     private val journalEntryNewSynchronizer: JournalEntryNewSynchronizer,
     private val journalEntryUpdateSynchronizer: JournalEntryUpdateSynchronizer,
+    private val journalEntryDeletedSynchronizer: JournalEntryDeletedSynchronizer,
 ) : Synchronizer {
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
@@ -28,6 +29,8 @@ class JournalEntrySynchronizer @Inject constructor(
         journalEntryNewSynchronizer.sync()
 
         journalEntryUpdateSynchronizer.sync()
+
+        journalEntryDeletedSynchronizer.sync()
 
         // Keep track of removed journal entries, start with the full database first
         val removedIds = journalDao.getJournalEntryIds().first().toMutableSet()

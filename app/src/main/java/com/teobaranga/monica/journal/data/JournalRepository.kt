@@ -23,6 +23,7 @@ internal class JournalRepository @Inject constructor(
     private val pagingSource: Provider<JournalPagingSource.Factory>,
     private val journalEntryNewSynchronizer: JournalEntryNewSynchronizer,
     private val journalEntryUpdateSynchronizer: JournalEntryUpdateSynchronizer,
+    private val journalEntryDeletedSynchronizer: JournalEntryDeletedSynchronizer,
 ) {
 
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
@@ -79,6 +80,13 @@ internal class JournalRepository @Inject constructor(
         journalDao.upsertJournalEntry(updatedEntry)
         scope.launch {
             journalEntryUpdateSynchronizer.sync()
+        }
+    }
+
+    suspend fun deleteJournalEntry(entryId: Int) {
+        journalDao.setSyncStatus(entryId, SyncStatus.DELETED)
+        scope.launch {
+            journalEntryDeletedSynchronizer.sync()
         }
     }
 

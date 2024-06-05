@@ -1,7 +1,9 @@
 package com.teobaranga.monica.journal.data
 
 import com.skydoves.sandwich.ApiResponse
+import com.teobaranga.monica.data.common.DeleteResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -30,4 +32,10 @@ interface JournalApi {
         @Path("id") id: Int,
         @Body request: JournalEntryCreateRequest,
     ): ApiResponse<JournalEntryResponse>
+
+    /**
+     * Delete a journal entry.
+     */
+    @DELETE("api/journal/{id}")
+    suspend fun deleteJournalEntry(@Path("id") id: Int): ApiResponse<DeleteResponse>
 }
