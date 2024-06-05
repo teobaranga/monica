@@ -31,20 +31,20 @@ internal fun JournalEntry(
         },
     ),
 ) {
-    val entry by viewModel.entry.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     JournalEntryScreen(
-        entry = entry,
+        uiState = uiState,
         topBar = {
             JournalEntryTopAppBar(
                 onBack = navigator::popBackStack,
-                onSave = {
-                    viewModel.onSave()
-                    navigator.popBackStack()
-                },
                 onDelete = {
                     // TODO
                 },
             )
+        },
+        onSave = {
+            viewModel.onSave()
+            navigator.popBackStack()
         },
     )
 }

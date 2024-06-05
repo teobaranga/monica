@@ -11,14 +11,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.teobaranga.monica.journal.model.JournalEntryUiState
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun JournalItem(journalEntry: JournalEntryUiState, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun JournalItem(journalEntry: JournalEntryListItem, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth(),
@@ -29,7 +28,7 @@ fun JournalItem(journalEntry: JournalEntryUiState, onClick: () -> Unit, modifier
                 .padding(16.dp),
         ) {
             Text(
-                text = journalEntry.post.text.toString(),
+                text = journalEntry.post,
                 maxLines = 5,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium,
@@ -54,7 +53,7 @@ private fun PreviewJournalItem() {
         JournalItem(
             modifier = Modifier
                 .padding(20.dp),
-            journalEntry = JournalEntryUiState(
+            journalEntry = JournalEntryListItem(
                 id = 1,
                 title = null,
                 post = """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -66,8 +65,6 @@ private fun PreviewJournalItem() {
                             | 
                 """.trimMargin(),
                 date = OffsetDateTime.now(),
-                created = OffsetDateTime.now(),
-                updated = OffsetDateTime.now(),
             ),
             onClick = { },
         )

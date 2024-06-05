@@ -3,18 +3,13 @@ package com.teobaranga.monica.journal.data
 import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.journal.database.JournalDao
 import com.teobaranga.monica.journal.database.JournalEntryEntity
-import com.teobaranga.monica.journal.database.toExternalModel
-import com.teobaranga.monica.journal.model.JournalEntryUiState
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapLatest
 import java.time.OffsetDateTime
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
 internal class JournalRepository @Inject constructor(
     private val journalDao: JournalDao,
@@ -24,11 +19,8 @@ internal class JournalRepository @Inject constructor(
         return pagingSource.get().create(orderBy)
     }
 
-    fun getJournalEntry(id: Int): Flow<JournalEntryUiState> {
+    fun getJournalEntry(id: Int): Flow<JournalEntryEntity> {
         return journalDao.getJournalEntry(id)
-            .mapLatest {
-                it.toExternalModel()
-            }
     }
 
     suspend fun createJournalEntry(title: String?, post: String, date: OffsetDateTime) {

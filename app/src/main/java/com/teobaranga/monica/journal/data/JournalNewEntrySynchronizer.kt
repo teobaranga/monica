@@ -22,13 +22,14 @@ class JournalNewEntrySynchronizer @Inject constructor(
                     title = newEntry.title.orEmpty(),
                     post = newEntry.post,
                     date = newEntry.date,
-                )
+                ),
             )
             when (response) {
                 is ApiResponse.Success -> {
                     val entity = response.data.data.toEntity()
                     journalDao.sync(newEntry.id, entity)
                 }
+
                 else -> {
                     println("ERROR $response")
                 }

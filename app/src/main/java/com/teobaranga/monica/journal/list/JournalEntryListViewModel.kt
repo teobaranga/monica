@@ -5,11 +5,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.journal.data.JournalPagingSource
 import com.teobaranga.monica.journal.data.JournalRepository
 import com.teobaranga.monica.journal.data.JournalSynchronizer
+import com.teobaranga.monica.journal.database.JournalEntryEntity
+import com.teobaranga.monica.journal.list.ui.JournalEntryListItem
 import com.teobaranga.monica.user.userAvatar
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,6 +60,11 @@ internal class JournalEntryListViewModel @Inject constructor(
         },
     )
         .flow
+        .mapLatest { pagingData ->
+            pagingData.map { journalEntryEntity ->
+                journalEntryEntity.toUiModel()
+            }
+        }
         .cachedIn(viewModelScope)
 
     val isRefreshing = journalSynchronizer.syncState
@@ -81,5 +89,14 @@ internal class JournalEntryListViewModel @Inject constructor(
 
     fun onEntriesChanged() {
         pagingSource.invalidate()
+    }
+
+    private fun JournalEntryEntity.toUiModel(): JournalEntryListItem {
+        return JournalEntryListItem(
+            id = id,
+            title = title,
+            post = post,
+            date = date,
+        )
     }
 }
