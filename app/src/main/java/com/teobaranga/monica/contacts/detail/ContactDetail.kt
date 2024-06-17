@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit
 
 @Immutable
 data class ContactDetail(
+    val id: Int,
     val fullName: String,
     val infoSections: List<ContactInfoSection>,
 ) {

@@ -29,6 +29,7 @@ internal class ContactDetailViewModel @AssistedInject constructor(
     val contact = contactRepository.getContact(contactId)
         .mapLatest { contact ->
             ContactDetail(
+                id = contactId,
                 fullName = contact.getTitleName(),
                 infoSections = listOf(
                     ContactInfoBioSection(

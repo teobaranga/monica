@@ -11,6 +11,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
@@ -87,6 +89,18 @@ private fun ContactDetailScreen(contactDetail: ContactDetail, navigator: Destina
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "",
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            navigator.navigate(ContactEditDestination(contactDetail.id))
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = "Edit contact",
                         )
                     }
                 },
@@ -157,6 +171,7 @@ private fun PreviewContactDetailScreen() {
     MonicaTheme {
         ContactDetailScreen(
             contactDetail = ContactDetail(
+                id = 1,
                 fullName = "John Doe (Johnny)",
                 infoSections = listOf(
                     ContactInfoBioSection(
