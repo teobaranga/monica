@@ -17,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -60,66 +61,67 @@ fun JournalEntryListScreen(
             pullRefreshState.endRefresh()
         }
     }
-    Box(
+    Scaffold(
         modifier = modifier
             .fillMaxSize()
             .nestedScroll(pullRefreshState.nestedScrollConnection),
-    ) {
-        searchBar()
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
-                top = SearchBarDefaults.InputFieldHeight + 36.dp,
-                bottom = 20.dp + FabHeight + FabPadding,
-            ),
-        ) {
-            when (lazyItems.loadState.refresh) {
-                is LoadState.Error -> {
-                    // TODO
-                }
+        topBar = searchBar,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onEntryAdd,
+            ) {
+                Icon(Icons.Filled.Add, "Add a new entry")
+            }
+        },
+    ) { contentPadding ->
+        Box {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
+                    top = SearchBarDefaults.InputFieldHeight + 36.dp,
+                    bottom = 20.dp + FabHeight + FabPadding,
+                ),
+            ) {
+                when (lazyItems.loadState.refresh) {
+                    is LoadState.Error -> {
+                        // TODO
+                    }
 
-                is LoadState.Loading,
-                is LoadState.NotLoading,
-                -> {
-                    items(
-                        count = lazyItems.itemCount,
-                        key = {
+                    is LoadState.Loading,
+                    is LoadState.NotLoading,
+                    -> {
+                        items(
+                            count = lazyItems.itemCount,
+                            key = {
+                                val journalEntry = lazyItems[it]
+                                journalEntry?.id ?: Int.MIN_VALUE
+                            },
+                        ) {
                             val journalEntry = lazyItems[it]
-                            journalEntry?.id ?: Int.MIN_VALUE
-                        },
-                    ) {
-                        val journalEntry = lazyItems[it]
-                        if (journalEntry != null) {
-                            JournalItem(
-                                modifier = Modifier
-                                    .padding(horizontal = FabPadding),
-                                journalEntry = journalEntry,
-                                onClick = {
-                                    onEntryClick(journalEntry.id)
-                                },
-                            )
+                            if (journalEntry != null) {
+                                JournalItem(
+                                    modifier = Modifier
+                                        .padding(horizontal = FabPadding),
+                                    journalEntry = journalEntry,
+                                    onClick = {
+                                        onEntryClick(journalEntry.id)
+                                    },
+                                )
+                            }
                         }
                     }
                 }
             }
-        }
-        PullToRefreshContainer(
-            modifier = Modifier
-                .statusBarsPadding()
-                .padding(top = SearchBarDefaults.InputFieldHeight)
-                .align(Alignment.TopCenter),
-            state = pullRefreshState,
-        )
-        FloatingActionButton(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(20.dp),
-            onClick = onEntryAdd,
-        ) {
-            Icon(Icons.Filled.Add, "Add a new entry")
+            PullToRefreshContainer(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .padding(top = SearchBarDefaults.InputFieldHeight)
+                    .align(Alignment.TopCenter),
+                state = pullRefreshState,
+            )
         }
     }
 }
