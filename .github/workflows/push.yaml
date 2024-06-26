@@ -17,7 +17,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.8
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       - name: Setup signing
         run: |
           # Decode keystore and save in expected place
