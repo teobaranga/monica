@@ -8,6 +8,9 @@ import androidx.room.Upsert
 import com.teobaranga.monica.data.sync.SyncStatus
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Cache test
+ */
 @Dao
 abstract class ContactActivitiesDao {
 
