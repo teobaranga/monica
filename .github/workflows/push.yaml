@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - name: JDK 17
@@ -17,12 +17,15 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.8
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
       - name: Setup signing
         run: |
           # Decode keystore and save in expected place
           echo ${{ secrets.RELEASE_KEYSTORE_BASE64 }} > keystore_base64.txt
-          base64 -d keystore_base64.txt > app/release.jks
+          base64 -d -i keystore_base64.txt -o app/release.jks
           # Retrieve other secrets and place in expected place
           touch local.properties
           echo "RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}" >> local.properties
