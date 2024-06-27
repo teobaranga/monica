@@ -1,6 +1,8 @@
 package com.teobaranga.monica.contacts.edit
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FloatingActionButton
@@ -18,6 +21,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -25,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.ui.PreviewPixel4
+import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.text.MonicaTextField
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
@@ -51,7 +57,7 @@ internal fun ContactEditScreen(
                 )
             }
         },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        contentWindowInsets = WindowInsets.Zero,
     ) { contentPadding ->
         Crossfade(
             targetState = uiState,
@@ -65,6 +71,7 @@ internal fun ContactEditScreen(
                             .fillMaxWidth(),
                     )
                 }
+
                 is ContactEditUiState.Loaded -> {
                     Column(
                         modifier = Modifier
@@ -72,83 +79,75 @@ internal fun ContactEditScreen(
                             .consumeWindowInsets(contentPadding)
                             .imePadding(),
                     ) {
-                        MonicaTextField(
+                        NameTextField(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 24.dp),
                             state = uiState.firstName,
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                            placeholder = {
-                                Text(
-                                    text = "First name",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                )
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                capitalization = KeyboardCapitalization.Words,
-                                autoCorrectEnabled = true,
-                                keyboardType = KeyboardType.Text,
-                            ),
+                            placeholder = "First name",
                         )
-                        MonicaTextField(
+                        NameTextField(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 24.dp),
+                                .padding(horizontal = 24.dp)
+                                .padding(top = 28.dp),
                             state = uiState.middleName,
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                            placeholder = {
-                                Text(
-                                    text = "Middle name (optional)",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                )
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                capitalization = KeyboardCapitalization.Words,
-                                autoCorrectEnabled = true,
-                                keyboardType = KeyboardType.Text,
-                            ),
+                            placeholder = "Middle name (optional)",
                         )
-                        MonicaTextField(
+                        NameTextField(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 24.dp),
+                                .padding(horizontal = 24.dp)
+                                .padding(top = 28.dp),
                             state = uiState.lastName,
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                            placeholder = {
-                                Text(
-                                    text = "Last name (optional)",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                )
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                capitalization = KeyboardCapitalization.Words,
-                                autoCorrectEnabled = true,
-                                keyboardType = KeyboardType.Text,
-                            ),
+                            placeholder = "Last name (optional)",
                         )
-                        MonicaTextField(
+                        NameTextField(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 24.dp),
+                                .padding(horizontal = 24.dp)
+                                .padding(top = 28.dp),
                             state = uiState.nickname,
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                            placeholder = {
-                                Text(
-                                    text = "Nickname (optional)",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                )
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                capitalization = KeyboardCapitalization.Words,
-                                autoCorrectEnabled = true,
-                                keyboardType = KeyboardType.Text,
-                            ),
+                            placeholder = "Nickname (optional)",
                         )
                     }
                 }
             }
         }
     }
+}
+
+@Composable
+private fun NameTextField(state: TextFieldState, placeholder: String, modifier: Modifier = Modifier) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isFocused by interactionSource.collectIsFocusedAsState()
+    MonicaTextField(
+        modifier = modifier,
+        state = state,
+        textStyle = MaterialTheme.typography.bodyMedium,
+        placeholder = if (!isFocused) {
+            {
+                Text(
+                    text = placeholder,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        } else {
+            null
+        },
+        label = {
+            Text(
+                text = placeholder,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Words,
+            autoCorrectEnabled = true,
+            keyboardType = KeyboardType.Text,
+        ),
+        interactionSource = interactionSource,
+    )
 }
 
 @PreviewPixel4
