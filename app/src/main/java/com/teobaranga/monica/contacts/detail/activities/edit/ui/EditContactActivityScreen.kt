@@ -18,9 +18,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.outlined.Today
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -29,15 +26,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -50,12 +42,10 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
-import com.teobaranga.monica.ui.datetime.LocalDateFormatter
+import com.teobaranga.monica.ui.button.DateButton
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneOffset
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination<ContactsNavGraph>
@@ -183,14 +173,12 @@ private fun EditContactActivity(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DateSection(
     uiState: EditContactActivityUiState.Loaded,
     onDateSelect: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var showDatePickerDialog by remember { mutableStateOf(false) }
     Column(
         modifier = modifier,
     ) {
@@ -200,55 +188,12 @@ private fun DateSection(
             text = "Date",
             style = MaterialTheme.typography.titleMedium,
         )
-        TextButton(
+        DateButton(
             modifier = Modifier
                 .padding(start = 24.dp, top = 12.dp),
-            onClick = {
-                showDatePickerDialog = true
-            },
-        ) {
-            val dateFormatter = LocalDateFormatter.current
-            Icon(
-                imageVector = Icons.Outlined.Today,
-                contentDescription = null,
-            )
-            Text(
-                modifier = Modifier
-                    .padding(start = 8.dp),
-                text = dateFormatter.format(uiState.date),
-            )
-        }
-    }
-    if (showDatePickerDialog) {
-        val datePickerState = rememberDatePickerState(
-            initialSelectedDateMillis = uiState.date
-                .atStartOfDay()
-                .toInstant(ZoneOffset.UTC)
-                .toEpochMilli(),
+            date = uiState.date,
+            onDateSelected = onDateSelect,
         )
-        DatePickerDialog(
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        datePickerState.selectedDateMillis?.let {
-                            onDateSelect(LocalDate.ofInstant(Instant.ofEpochMilli(it), ZoneOffset.UTC))
-                        }
-                        showDatePickerDialog = false
-                    },
-                ) {
-                    Text(
-                        text = "Confirm",
-                    )
-                }
-            },
-            onDismissRequest = {
-                showDatePickerDialog = false
-            },
-        ) {
-            DatePicker(
-                state = datePickerState,
-            )
-        }
     }
 }
 
