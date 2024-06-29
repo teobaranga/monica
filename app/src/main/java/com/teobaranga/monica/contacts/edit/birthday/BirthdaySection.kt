@@ -27,7 +27,7 @@ import java.time.format.FormatStyle
 @Composable
 internal fun BirthdaySection(
     birthday: ContactDetail.Birthday?,
-    onBirthdayChange: (ContactDetail.Birthday?) -> Unit,
+    onBirthdayChange: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -42,9 +42,7 @@ internal fun BirthdaySection(
         TextButton(
             modifier = Modifier
                 .padding(top = 4.dp),
-            onClick = {
-                // showDatePickerDialog = true
-            },
+            onClick = onBirthdayChange,
         ) {
             Icon(
                 modifier = Modifier,
