@@ -40,7 +40,7 @@ internal class ContactDetailViewModel @AssistedInject constructor(
                             avatarUrl = contact.avatarUrl,
                         ),
                         fullName = contact.completeName,
-                        birthday = contact.birthdate?.toBirthday(),
+                        birthday = contact.birthdate?.toUiBirthday(),
                     ),
                     ContactInfoActivitiesSection(contactId),
                     ContactInfoContactSection,

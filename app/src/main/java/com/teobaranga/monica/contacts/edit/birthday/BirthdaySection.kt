@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.teobaranga.monica.contacts.detail.ContactDetail
+import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.ui.datetime.getMonthDayFormatter
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.MonthDay
@@ -26,8 +26,8 @@ import java.time.format.FormatStyle
 
 @Composable
 internal fun BirthdaySection(
-    birthday: ContactDetail.Birthday?,
-    onBirthdayChange: (ContactDetail.Birthday?) -> Unit,
+    birthday: Birthday?,
+    onBirthdayChange: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -42,9 +42,7 @@ internal fun BirthdaySection(
         TextButton(
             modifier = Modifier
                 .padding(top = 4.dp),
-            onClick = {
-                // showDatePickerDialog = true
-            },
+            onClick = onBirthdayChange,
         ) {
             Icon(
                 modifier = Modifier,
@@ -59,16 +57,16 @@ internal fun BirthdaySection(
                 modifier = Modifier
                     .padding(start = 8.dp),
                 text = when (birthday) {
-                    is ContactDetail.Birthday.AgeBased -> {
+                    is Birthday.AgeBased -> {
                         "~${birthday.age} years old"
                     }
 
-                    is ContactDetail.Birthday.Full -> {
+                    is Birthday.Full -> {
                         val dateFormatter = remember { DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG) }
                         "${birthday.date.format(dateFormatter)} (${birthday.age} years old)"
                     }
 
-                    is ContactDetail.Birthday.UnknownYear -> {
+                    is Birthday.UnknownYear -> {
                         val monthDayFormatter = getMonthDayFormatter(dateStyle = FormatStyle.LONG)
                         birthday.monthDay.format(monthDayFormatter)
                     }
@@ -82,18 +80,18 @@ internal fun BirthdaySection(
     }
 }
 
-private class BirthdayPreviewParameterProvider : PreviewParameterProvider<ContactDetail.Birthday?> {
+private class BirthdayPreviewParameterProvider : PreviewParameterProvider<Birthday?> {
     override val values = sequenceOf(
         null,
-        ContactDetail.Birthday.AgeBased(23),
-        ContactDetail.Birthday.UnknownYear(MonthDay.now()),
-        ContactDetail.Birthday.Full(OffsetDateTime.now(), 24),
+        Birthday.AgeBased(23),
+        Birthday.UnknownYear(MonthDay.now()),
+        Birthday.Full(OffsetDateTime.now().minusYears(23L)),
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewBirthdaySection(@PreviewParameter(BirthdayPreviewParameterProvider::class) birthday: ContactDetail.Birthday?) {
+private fun PreviewBirthdaySection(@PreviewParameter(BirthdayPreviewParameterProvider::class) birthday: Birthday?) {
     MonicaTheme {
         BirthdaySection(
             birthday = birthday,

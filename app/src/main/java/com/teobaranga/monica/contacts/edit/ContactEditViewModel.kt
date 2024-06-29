@@ -3,7 +3,7 @@ package com.teobaranga.monica.contacts.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.contacts.data.ContactRepository
-import com.teobaranga.monica.contacts.detail.toBirthday
+import com.teobaranga.monica.contacts.detail.toUiBirthday
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.assisted.Assisted
@@ -28,11 +28,7 @@ internal class ContactEditViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch(dispatcher.io) {
-            val contact = if (contactId == null) {
-                null
-            } else {
-                contactRepository.getContact(contactId).firstOrNull()
-            }
+            val contact = contactId?.let(contactRepository::getContact)?.firstOrNull()
             _uiState.value = if (contact == null) {
                 getEmptyState()
             } else {
@@ -41,7 +37,7 @@ internal class ContactEditViewModel @AssistedInject constructor(
                     firstName = contact.firstName,
                     lastName = contact.lastName,
                     nickname = contact.nickname,
-                    initialBirthday = contact.birthdate?.toBirthday(),
+                    initialBirthday = contact.birthdate?.toUiBirthday(),
                 )
             }
         }

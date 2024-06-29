@@ -5,7 +5,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.teobaranga.monica.contacts.detail.ContactDetail
+import com.teobaranga.monica.contacts.ui.Birthday
 
 sealed interface ContactEditUiState {
     data object Loading : ContactEditUiState
@@ -16,7 +16,7 @@ sealed interface ContactEditUiState {
         val firstName: TextFieldState,
         val lastName: TextFieldState,
         val nickname: TextFieldState,
-        private val initialBirthday: ContactDetail.Birthday?,
+        private val initialBirthday: Birthday?,
     ) : ContactEditUiState {
 
         var birthday by mutableStateOf(initialBirthday)
@@ -26,7 +26,7 @@ sealed interface ContactEditUiState {
             firstName: String,
             lastName: String?,
             nickname: String?,
-            initialBirthday: ContactDetail.Birthday?,
+            initialBirthday: Birthday?,
         ): this(
             id,
             TextFieldState(firstName),

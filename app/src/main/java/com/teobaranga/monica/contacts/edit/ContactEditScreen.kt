@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -22,11 +23,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.teobaranga.monica.contacts.edit.birthday.BirthdayPicker
 import com.teobaranga.monica.contacts.edit.birthday.BirthdaySection
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
@@ -35,6 +40,7 @@ import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.text.MonicaTextField
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ContactEditScreen(
     uiState: ContactEditUiState,
@@ -74,13 +80,29 @@ internal fun ContactEditScreen(
                 }
 
                 is ContactEditUiState.Loaded -> {
+                    var shouldShowBirthdayPicker by rememberSaveable { mutableStateOf(false) }
                     ContactEditLoaded(
                         modifier = Modifier
                             .padding(contentPadding)
                             .consumeWindowInsets(contentPadding)
                             .imePadding(),
                         uiState = uiState,
+                        onBirthdayChange = {
+                            shouldShowBirthdayPicker = true
+                        },
                     )
+                    if (shouldShowBirthdayPicker) {
+                        BirthdayPicker(
+                            onDismissRequest = {
+                                shouldShowBirthdayPicker = false
+                            },
+                            birthday = uiState.birthday,
+                            onBirthdaySelected = { birthday ->
+                                uiState.birthday = birthday
+                                shouldShowBirthdayPicker = false
+                            },
+                        )
+                    }
                 }
             }
         }
@@ -90,6 +112,7 @@ internal fun ContactEditScreen(
 @Composable
 private fun ContactEditLoaded(
     uiState: ContactEditUiState.Loaded,
+    onBirthdayChange: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -125,9 +148,7 @@ private fun ContactEditLoaded(
                 .padding(horizontal = 24.dp)
                 .padding(top = 24.dp),
             birthday = uiState.birthday,
-            onBirthdayChange = {
-                uiState.birthday = it
-            },
+            onBirthdayChange = onBirthdayChange,
         )
     }
 }
