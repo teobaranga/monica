@@ -2,7 +2,6 @@ package com.teobaranga.monica.ui.text
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
@@ -135,7 +134,7 @@ fun MonicaTextField(
                     isError = isError,
                     interactionSource = interactionSource,
                     colors = colors,
-                    contentPadding = ContentPadding,
+                    contentPadding = OutlinedTextFieldDefaults.contentPadding(),
                     container = {
                         OutlinedTextFieldDefaults.ContainerBox(
                             enabled = enabled,
@@ -158,5 +157,3 @@ need to add additional padding themselves
 */
 /* @VisibleForTesting */
 private val OutlinedTextFieldTopPadding = 8.dp
-
-private val ContentPadding = PaddingValues(start = 16.dp)
