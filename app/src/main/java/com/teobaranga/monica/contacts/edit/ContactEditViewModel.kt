@@ -3,6 +3,7 @@ package com.teobaranga.monica.contacts.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.contacts.data.ContactRepository
+import com.teobaranga.monica.contacts.detail.toBirthday
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.assisted.Assisted
@@ -40,6 +41,7 @@ internal class ContactEditViewModel @AssistedInject constructor(
                     firstName = contact.firstName,
                     lastName = contact.lastName,
                     nickname = contact.nickname,
+                    initialBirthday = contact.birthdate?.toBirthday(),
                 )
             }
         }
@@ -59,6 +61,7 @@ internal class ContactEditViewModel @AssistedInject constructor(
             firstName = "",
             lastName = null,
             nickname = null,
+            initialBirthday = null,
         )
     }
 

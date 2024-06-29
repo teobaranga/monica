@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.teobaranga.monica.contacts.edit.birthday.BirthdaySection
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.ui.PreviewPixel4
@@ -73,39 +74,61 @@ internal fun ContactEditScreen(
                 }
 
                 is ContactEditUiState.Loaded -> {
-                    Column(
+                    ContactEditLoaded(
                         modifier = Modifier
                             .padding(contentPadding)
                             .consumeWindowInsets(contentPadding)
                             .imePadding(),
-                    ) {
-                        NameTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 24.dp),
-                            state = uiState.firstName,
-                            placeholder = "First name",
-                        )
-                        NameTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 24.dp)
-                                .padding(top = 28.dp),
-                            state = uiState.lastName,
-                            placeholder = "Last name (optional)",
-                        )
-                        NameTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 24.dp)
-                                .padding(top = 28.dp),
-                            state = uiState.nickname,
-                            placeholder = "Nickname (optional)",
-                        )
-                    }
+                        uiState = uiState,
+                    )
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ContactEditLoaded(
+    uiState: ContactEditUiState.Loaded,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        NameTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            state = uiState.firstName,
+            placeholder = "First name",
+        )
+        NameTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(top = 24.dp),
+            state = uiState.lastName,
+            placeholder = "Last name (optional)",
+        )
+        NameTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(top = 24.dp),
+            state = uiState.nickname,
+            placeholder = "Nickname (optional)",
+        )
+
+        BirthdaySection(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(top = 24.dp),
+            birthday = uiState.birthday,
+            onBirthdayChange = {
+                uiState.birthday = it
+            },
+        )
     }
 }
 
@@ -152,6 +175,7 @@ private fun PreviewContactEditScreen() {
                 firstName = "",
                 lastName = null,
                 nickname = null,
+                initialBirthday = null,
             ),
             topBar = {
                 ContactEditTopAppBar(
