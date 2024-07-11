@@ -66,8 +66,10 @@ class ContactSynchronizer @Inject constructor(
             nickname = nickname,
             completeName = completeName,
             initials = initials,
-            avatarUrl = info.avatar.url,
-            avatarColor = info.avatar.color,
+            avatar = ContactEntity.Avatar(
+                url = info.avatar.url,
+                color = info.avatar.color,
+            ),
             birthdate = info.dates?.birthdate?.toBirthday(),
             updated = updated,
         )

@@ -16,12 +16,20 @@ data class ContactEntity(
     val nickname: String?,
     val completeName: String,
     val initials: String,
-    val avatarUrl: String?,
-    val avatarColor: String,
+    /**
+     * Avatar of the user.
+     * Server-driven.
+     */
+    @Embedded(prefix = "avatar_")
+    val avatar: Avatar,
     @Embedded(prefix = "birthdate_")
     val birthdate: Birthdate?,
     val updated: OffsetDateTime?,
 ) {
+    data class Avatar(
+        val url: String?,
+        val color: String,
+    )
     data class Birthdate(
         val isAgeBased: Boolean,
         val isYearUnknown: Boolean,

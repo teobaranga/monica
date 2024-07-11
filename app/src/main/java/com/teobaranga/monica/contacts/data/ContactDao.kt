@@ -54,7 +54,7 @@ abstract class ContactDao {
     abstract suspend fun searchContacts(query: String): List<ContactEntity>
 
     @Transaction
-    @Query("SELECT contactId, avatarUrl FROM contacts WHERE contactId = :contactId")
+    @Query("SELECT contactId, avatar_url FROM contacts WHERE contactId = :contactId")
     abstract fun getContactPhotos(contactId: Int): Flow<ContactPhotos>
 
     @Upsert

@@ -7,6 +7,6 @@ val ContactEntity.userAvatar: UserAvatar
     get() = UserAvatar(
         contactId = contactId,
         initials = initials,
-        color = avatarColor,
-        avatarUrl = avatarUrl,
+        color = avatar.color,
+        avatarUrl = avatar.url,
     )

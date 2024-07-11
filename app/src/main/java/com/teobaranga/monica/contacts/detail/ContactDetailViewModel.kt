@@ -36,8 +36,8 @@ internal class ContactDetailViewModel @AssistedInject constructor(
                         userAvatar = UserAvatar(
                             contactId = contactId,
                             initials = contact.initials,
-                            color = contact.avatarColor,
-                            avatarUrl = contact.avatarUrl,
+                            color = contact.avatar.color,
+                            avatarUrl = contact.avatar.url,
                         ),
                         fullName = contact.completeName,
                         birthday = contact.birthdate?.toUiBirthday(),

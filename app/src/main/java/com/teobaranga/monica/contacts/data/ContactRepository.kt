@@ -62,8 +62,10 @@ internal class ContactRepository @Inject constructor(
             nickname = contactResponse.nickname,
             completeName = contactResponse.completeName,
             initials = contactResponse.initials,
-            avatarUrl = contactResponse.info.avatar.url,
-            avatarColor = contactResponse.info.avatar.color,
+            avatar = ContactEntity.Avatar(
+                url = contactResponse.info.avatar.url,
+                color = contactResponse.info.avatar.color,
+            ),
             birthdate = contactResponse.info.dates?.birthdate?.toBirthday(),
             updated = contactResponse.updated,
         )
