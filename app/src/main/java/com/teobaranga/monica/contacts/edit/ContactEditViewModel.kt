@@ -38,7 +38,6 @@ internal class ContactEditViewModel @AssistedInject constructor(
                 ContactEditUiState.Loaded(
                     id = contact.contactId,
                     firstName = contact.firstName,
-                    middleName = null,
                     lastName = contact.lastName,
                     nickname = contact.nickname,
                 )
@@ -58,7 +57,6 @@ internal class ContactEditViewModel @AssistedInject constructor(
         return ContactEditUiState.Loaded(
             id = -1,
             firstName = "",
-            middleName = null,
             lastName = null,
             nickname = null,
         )

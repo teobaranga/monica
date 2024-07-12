@@ -91,14 +91,6 @@ internal fun ContactEditScreen(
                                 .fillMaxWidth()
                                 .padding(horizontal = 24.dp)
                                 .padding(top = 28.dp),
-                            state = uiState.middleName,
-                            placeholder = "Middle name (optional)",
-                        )
-                        NameTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 24.dp)
-                                .padding(top = 28.dp),
                             state = uiState.lastName,
                             placeholder = "Last name (optional)",
                         )
@@ -158,7 +150,6 @@ private fun PreviewContactEditScreen() {
             uiState = ContactEditUiState.Loaded(
                 id = 1,
                 firstName = "",
-                middleName = null,
                 lastName = null,
                 nickname = null,
             ),

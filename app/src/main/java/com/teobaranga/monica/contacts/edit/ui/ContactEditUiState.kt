@@ -10,7 +10,6 @@ sealed interface ContactEditUiState {
     data class Loaded(
         val id: Int,
         val firstName: TextFieldState,
-        val middleName: TextFieldState,
         val lastName: TextFieldState,
         val nickname: TextFieldState,
     ) : ContactEditUiState {
@@ -18,13 +17,11 @@ sealed interface ContactEditUiState {
         constructor(
             id: Int,
             firstName: String,
-            middleName: String?,
             lastName: String?,
             nickname: String?,
         ): this(
             id,
             TextFieldState(firstName),
-            TextFieldState(middleName.orEmpty()),
             TextFieldState(lastName.orEmpty()),
             TextFieldState(nickname.orEmpty()),
         )
