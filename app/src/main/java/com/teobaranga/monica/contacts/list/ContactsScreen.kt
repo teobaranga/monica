@@ -38,6 +38,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -105,6 +107,13 @@ internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewM
             navigator.navigate(ContactEditDestination())
         },
     )
+
+    val state by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsStateWithLifecycle()
+    LaunchedEffect(state) {
+        if (state == Lifecycle.State.RESUMED) {
+            viewModel.onEntriesChanged()
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

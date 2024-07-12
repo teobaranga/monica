@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.teobaranga.monica.contacts.data.ContactApi
+import com.teobaranga.monica.data.adapter.AlwaysSerializeNullsFactory
 import com.teobaranga.monica.data.adapter.LocalDateAdapter
 import com.teobaranga.monica.data.adapter.OffsetDateTimeAdapter
 import com.teobaranga.monica.data.adapter.UuidAdapter
@@ -51,6 +52,7 @@ object ApiModule {
     @Singleton
     fun provideMoshiConverterFactory(): MoshiConverterFactory {
         val moshi = Moshi.Builder()
+            .add(AlwaysSerializeNullsFactory())
             .add(OffsetDateTimeAdapter())
             .add(LocalDateAdapter())
             .add(UuidAdapter())

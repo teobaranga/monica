@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.contacts.list.userAvatar
+import com.teobaranga.monica.data.sync.SyncStatus
 import java.time.OffsetDateTime
 
 @Entity(tableName = "contacts")
@@ -14,7 +15,15 @@ data class ContactEntity(
     val firstName: String,
     val lastName: String?,
     val nickname: String?,
+    /**
+     * Complete name in the format "First Middle Last (Nickname)".
+     * Server-driven.
+     */
     val completeName: String,
+    /**
+     * Initials of the contact.
+     * Server-driven.
+     */
     val initials: String,
     /**
      * Avatar of the user.
@@ -25,6 +34,7 @@ data class ContactEntity(
     @Embedded(prefix = "birthdate_")
     val birthdate: Birthdate?,
     val updated: OffsetDateTime?,
+    val syncStatus: SyncStatus,
 ) {
     data class Avatar(
         val url: String?,

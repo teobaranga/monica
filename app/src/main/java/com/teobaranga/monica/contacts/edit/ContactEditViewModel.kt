@@ -1,10 +1,12 @@
 package com.teobaranga.monica.contacts.edit
 
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.detail.toUiBirthday
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
+import com.teobaranga.monica.contacts.ui.toDomainBirthday
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -14,6 +16,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+
+private const val ID_CONTACT_UNDEFINED = -1
 
 @HiltViewModel(assistedFactory = ContactEditViewModel.Factory::class)
 internal class ContactEditViewModel @AssistedInject constructor(
@@ -44,7 +48,23 @@ internal class ContactEditViewModel @AssistedInject constructor(
     }
 
     fun onSave() {
-        // TODO
+        val uiState = _uiState.value as? ContactEditUiState.Loaded ?: return
+        // TODO validation
+        val firstname = uiState.firstName.getValidText()
+        if (firstname == null) {
+            // TODO error
+            return
+        }
+        viewModelScope.launch(dispatcher.io) {
+            contactRepository.upsertContact(
+                contactId = contactId,
+                firstName = firstname,
+                lastName = uiState.lastName.getValidText(),
+                nickname = uiState.nickname.getValidText(),
+                birthdate = uiState.birthday?.toDomainBirthday(),
+            )
+        }
+
     }
 
     fun onDelete() {
@@ -53,12 +73,16 @@ internal class ContactEditViewModel @AssistedInject constructor(
 
     private fun getEmptyState(): ContactEditUiState.Loaded {
         return ContactEditUiState.Loaded(
-            id = -1,
+            id = ID_CONTACT_UNDEFINED,
             firstName = "",
             lastName = null,
             nickname = null,
             initialBirthday = null,
         )
+    }
+
+    private fun TextFieldState.getValidText(): String? {
+        return text.trim().takeIf { it.isNotEmpty() }?.toString()
     }
 
     @AssistedFactory

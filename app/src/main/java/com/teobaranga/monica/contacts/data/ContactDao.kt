@@ -8,6 +8,7 @@ import androidx.room.Upsert
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.teobaranga.monica.data.photo.ContactPhotos
+import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.database.OrderBy
 import kotlinx.coroutines.flow.Flow
 
@@ -62,4 +63,16 @@ abstract class ContactDao {
 
     @Query("DELETE FROM contacts WHERE contactId in (:entityIds)")
     abstract suspend fun delete(entityIds: List<Int>)
+
+    @Query("SELECT max(contactId) FROM contacts")
+    abstract suspend fun getMaxId(): Int
+
+    @Query("SELECT * FROM contacts WHERE syncStatus = :status")
+    abstract suspend fun getByStatus(status: SyncStatus): List<ContactEntity>
+
+    @Transaction
+    open suspend fun sync(entityId: Int, contact: ContactEntity) {
+        delete(listOf(entityId))
+        upsertContacts(listOf(contact))
+    }
 }
