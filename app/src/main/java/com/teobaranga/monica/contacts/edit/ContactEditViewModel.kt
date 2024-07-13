@@ -68,7 +68,12 @@ internal class ContactEditViewModel @AssistedInject constructor(
     }
 
     fun onDelete() {
-        // TODO
+        if (contactId == null) {
+            return
+        }
+        viewModelScope.launch(dispatcher.io) {
+            contactRepository.deleteContact(contactId)
+        }
     }
 
     private fun getEmptyState(): ContactEditUiState.Loaded {

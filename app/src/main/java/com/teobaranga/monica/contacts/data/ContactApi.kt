@@ -34,6 +34,9 @@ interface ContactApi {
         @Body request: CreateContactRequest,
     ): ApiResponse<SingleContactResponse>
 
+    @DELETE("api/contacts/{id}")
+    suspend fun deleteContact(@Path("id") id: Int): ApiResponse<DeleteResponse>
+
     @GET("api/contacts/{id}/activities")
     suspend fun getContactActivities(
         @Path("id") id: Int,

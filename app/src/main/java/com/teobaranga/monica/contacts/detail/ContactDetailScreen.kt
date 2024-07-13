@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -36,6 +37,7 @@ import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
 import com.teobaranga.monica.ui.PreviewPixel4
+import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.launch
@@ -52,6 +54,15 @@ internal fun ContactDetail(
     ),
 ) {
     val contactDetail by viewModel.contact.collectAsStateWithLifecycle()
+    LaunchedEffect(viewModel.effects) {
+        viewModel.effects.collect { effect ->
+            when (effect) {
+                is ContactDetailEffect.Deleted -> {
+                    navigator.popBackStack()
+                }
+            }
+        }
+    }
     Crossfade(
         targetState = contactDetail,
         label = "ContactDetailScreen",
@@ -106,7 +117,7 @@ private fun ContactDetailScreen(contactDetail: ContactDetail, navigator: Destina
                 },
             )
         },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        contentWindowInsets = WindowInsets.Zero,
     ) { contentPadding ->
         Column(
             modifier = Modifier

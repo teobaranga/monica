@@ -13,7 +13,7 @@ class ContactUpdateSynchronizer @Inject constructor(
     suspend fun sync() {
         // TODO check for network before syncing
 
-        val editedEntries = contactDao.getByStatus(SyncStatus.EDITED)
+        val editedEntries = contactDao.getBySyncStatus(SyncStatus.EDITED)
 
         for (entry in editedEntries) {
             val response = contactApi.updateContact(

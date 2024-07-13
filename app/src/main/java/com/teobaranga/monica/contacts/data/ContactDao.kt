@@ -68,7 +68,10 @@ abstract class ContactDao {
     abstract suspend fun getMaxId(): Int
 
     @Query("SELECT * FROM contacts WHERE syncStatus = :status")
-    abstract suspend fun getByStatus(status: SyncStatus): List<ContactEntity>
+    abstract suspend fun getBySyncStatus(status: SyncStatus): List<ContactEntity>
+
+    @Query("UPDATE contacts SET syncStatus = :syncStatus WHERE contactId = :contactId")
+    abstract suspend fun setSyncStatus(contactId: Int, syncStatus: SyncStatus)
 
     @Transaction
     open suspend fun sync(entityId: Int, contact: ContactEntity) {

@@ -14,7 +14,10 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 
@@ -26,7 +29,15 @@ internal class ContactDetailViewModel @AssistedInject constructor(
     private val contactId: Int,
 ) : ViewModel() {
 
+    private val _effects = MutableSharedFlow<ContactDetailEffect>()
+    val effects = _effects.asSharedFlow()
+
     val contact = contactRepository.getContact(contactId)
+        .catch {
+            // TODO this is not great, better handle when a contact is deleted
+            System.err.println(it)
+            _effects.emit(ContactDetailEffect.Deleted)
+        }
         .mapLatest { contact ->
             ContactDetail(
                 id = contactId,

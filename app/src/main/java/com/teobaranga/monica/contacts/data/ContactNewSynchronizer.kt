@@ -13,7 +13,7 @@ class ContactNewSynchronizer @Inject constructor(
     suspend fun sync() {
         // TODO check for network before syncing
 
-        val newContacts = contactDao.getByStatus(SyncStatus.NEW)
+        val newContacts = contactDao.getBySyncStatus(SyncStatus.NEW)
 
         for (newContact in newContacts) {
             val response = contactApi.createContact(

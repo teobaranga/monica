@@ -4,6 +4,7 @@ import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.data.photo.ContactPhotos
 import com.teobaranga.monica.data.sync.SyncStatus
+import com.teobaranga.monica.journal.data.ContactDeleteSynchronizer
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -24,6 +25,7 @@ internal class ContactRepository @Inject constructor(
     private val pagingSource: Provider<ContactPagingSource.Factory>,
     private val contactNewSynchronizer: ContactNewSynchronizer,
     private val contactUpdateSynchronizer: ContactUpdateSynchronizer,
+    private val contactDeleteSynchronizer: ContactDeleteSynchronizer,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
@@ -154,6 +156,13 @@ internal class ContactRepository @Inject constructor(
             url = null,
             color = colors.random(),
         )
+    }
+
+    suspend fun deleteContact(contactId: Int) {
+        contactDao.setSyncStatus(contactId, SyncStatus.DELETED)
+        scope.launch {
+            contactDeleteSynchronizer.sync()
+        }
     }
 
     sealed interface OrderBy {
