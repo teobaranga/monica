@@ -15,8 +15,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
@@ -33,6 +38,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -40,6 +47,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.generated.destinations.ContactDetailDestination
+import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.account.Account
@@ -91,13 +99,21 @@ internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewM
         },
         lazyItems = lazyItems,
         isRefreshing = isRefreshing,
-        onRefresh = {
-            viewModel.refresh()
-        },
+        onRefresh = viewModel::refresh,
         onContactSelected = { contactId ->
             navigator.navigate(ContactDetailDestination(contactId))
         },
+        onContactAdd = {
+            navigator.navigate(ContactEditDestination())
+        },
     )
+
+    val state by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsStateWithLifecycle()
+    LaunchedEffect(state) {
+        if (state == Lifecycle.State.RESUMED) {
+            viewModel.onEntriesChanged()
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -108,6 +124,7 @@ private fun ContactsScreen(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onContactSelected: (Int) -> Unit,
+    onContactAdd: () -> Unit,
 ) {
     val pullRefreshState = rememberPullToRefreshState()
     if (pullRefreshState.isRefreshing) {
@@ -120,54 +137,66 @@ private fun ContactsScreen(
             pullRefreshState.endRefresh()
         }
     }
-    Box(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(pullRefreshState.nestedScrollConnection),
-    ) {
-        searchBar()
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-            contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
-                top = SearchBarDefaults.InputFieldHeight + 30.dp,
-                bottom = 20.dp,
-            ),
-        ) {
-            when (lazyItems.loadState.refresh) {
-                is LoadState.Error -> {
-                    // TODO
-                }
+        topBar = searchBar,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onContactAdd,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add contact",
+                )
+            }
+        },
+    ) { contentPadding ->
+        Box {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
+                contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
+                    top = SearchBarDefaults.InputFieldHeight + 30.dp,
+                    bottom = 20.dp,
+                ),
+            ) {
+                when (lazyItems.loadState.refresh) {
+                    is LoadState.Error -> {
+                        // TODO
+                    }
 
-                is LoadState.Loading,
-                is LoadState.NotLoading,
-                -> {
-                    items(
-                        count = lazyItems.itemCount,
-                        key = {
+                    is LoadState.Loading,
+                    is LoadState.NotLoading,
+                    -> {
+                        items(
+                            count = lazyItems.itemCount,
+                            key = {
+                                val contact = lazyItems[it]
+                                contact?.id ?: Int.MIN_VALUE
+                            },
+                        ) {
                             val contact = lazyItems[it]
-                            contact?.id ?: Int.MIN_VALUE
-                        },
-                    ) {
-                        val contact = lazyItems[it]
-                        if (contact != null) {
-                            ContactItem(
-                                contact = contact,
-                                onContactSelected = onContactSelected,
-                            )
+                            if (contact != null) {
+                                ContactItem(
+                                    contact = contact,
+                                    onContactSelected = onContactSelected,
+                                )
+                            }
                         }
                     }
                 }
             }
+            PullToRefreshContainer(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .padding(top = SearchBarDefaults.InputFieldHeight)
+                    .align(Alignment.TopCenter),
+                state = pullRefreshState,
+            )
         }
-        PullToRefreshContainer(
-            modifier = Modifier
-                .statusBarsPadding()
-                .padding(top = SearchBarDefaults.InputFieldHeight)
-                .align(Alignment.TopCenter),
-            state = pullRefreshState,
-        )
     }
 }
 
@@ -246,6 +275,7 @@ private fun PreviewContactsScreen() {
                 isRefreshing = false,
                 onRefresh = { },
                 onContactSelected = { },
+                onContactAdd = { },
             )
         }
     }

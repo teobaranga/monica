@@ -4,6 +4,7 @@ import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.activities.data.ContactActivitiesResponse
 import com.teobaranga.monica.activities.data.CreateActivityRequest
 import com.teobaranga.monica.activities.data.CreateActivityResponse
+import com.teobaranga.monica.activities.data.CreateContactRequest
 import com.teobaranga.monica.data.common.DeleteResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -23,6 +24,18 @@ interface ContactApi {
 
     @GET("api/contacts/{id}")
     suspend fun getContact(@Path("id") id: Int): ApiResponse<SingleContactResponse>
+
+    @POST("api/contacts")
+    suspend fun createContact(@Body request: CreateContactRequest): ApiResponse<SingleContactResponse>
+
+    @PUT("api/contacts/{id}")
+    suspend fun updateContact(
+        @Path("id") id: Int,
+        @Body request: CreateContactRequest,
+    ): ApiResponse<SingleContactResponse>
+
+    @DELETE("api/contacts/{id}")
+    suspend fun deleteContact(@Path("id") id: Int): ApiResponse<DeleteResponse>
 
     @GET("api/contacts/{id}/activities")
     suspend fun getContactActivities(

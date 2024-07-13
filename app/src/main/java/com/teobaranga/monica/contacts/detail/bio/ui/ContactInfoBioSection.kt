@@ -19,8 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
-import com.teobaranga.monica.contacts.detail.ContactDetail
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoSection
+import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.datetime.LocalDateFormatter
 import com.teobaranga.monica.ui.datetime.LocalMonthDayFormatter
@@ -29,7 +29,7 @@ import com.teobaranga.monica.ui.theme.MonicaTheme
 data class ContactInfoBioSection(
     private val userAvatar: UserAvatar,
     private val fullName: String,
-    private val birthday: ContactDetail.Birthday?,
+    private val birthday: Birthday?,
 ) : ContactInfoSection {
 
     override val title: String = "Bio"
@@ -65,7 +65,7 @@ data class ContactInfoBioSection(
 }
 
 @Composable
-private fun BirthdayItem(birthday: ContactDetail.Birthday) {
+private fun BirthdayItem(birthday: Birthday) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -90,16 +90,16 @@ private fun BirthdayItem(birthday: ContactDetail.Birthday) {
             modifier = Modifier
                 .padding(top = 2.dp),
             text = when (birthday) {
-                is ContactDetail.Birthday.AgeBased -> {
+                is Birthday.AgeBased -> {
                     "This person is around ${birthday.age} years old"
                 }
 
-                is ContactDetail.Birthday.Full -> {
+                is Birthday.Full -> {
                     val dateFormatter = LocalDateFormatter.current
                     "This person was born on ${birthday.date.format(dateFormatter)} (${birthday.age} years old)"
                 }
 
-                is ContactDetail.Birthday.UnknownYear -> {
+                is Birthday.UnknownYear -> {
                     val monthDayFormatter = LocalMonthDayFormatter.current
                     "This person was born on ${birthday.monthDay.format(monthDayFormatter)}"
                 }
@@ -120,7 +120,7 @@ private fun PreviewBioSection() {
                 color = "#709512",
                 avatarUrl = null,
             ),
-            birthday = ContactDetail.Birthday.AgeBased(29),
+            birthday = Birthday.AgeBased(29),
         ).Content(
             modifier = Modifier,
             navigator = EmptyDestinationsNavigator,

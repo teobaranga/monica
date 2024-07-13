@@ -11,6 +11,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -28,12 +30,14 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
 import com.teobaranga.monica.ui.PreviewPixel4
+import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.launch
@@ -50,6 +54,15 @@ internal fun ContactDetail(
     ),
 ) {
     val contactDetail by viewModel.contact.collectAsStateWithLifecycle()
+    LaunchedEffect(viewModel.effects) {
+        viewModel.effects.collect { effect ->
+            when (effect) {
+                is ContactDetailEffect.Deleted -> {
+                    navigator.popBackStack()
+                }
+            }
+        }
+    }
     Crossfade(
         targetState = contactDetail,
         label = "ContactDetailScreen",
@@ -90,9 +103,21 @@ private fun ContactDetailScreen(contactDetail: ContactDetail, navigator: Destina
                         )
                     }
                 },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            navigator.navigate(ContactEditDestination(contactDetail.id))
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = "Edit contact",
+                        )
+                    }
+                },
             )
         },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        contentWindowInsets = WindowInsets.Zero,
     ) { contentPadding ->
         Column(
             modifier = Modifier
@@ -157,6 +182,7 @@ private fun PreviewContactDetailScreen() {
     MonicaTheme {
         ContactDetailScreen(
             contactDetail = ContactDetail(
+                id = 1,
                 fullName = "John Doe (Johnny)",
                 infoSections = listOf(
                     ContactInfoBioSection(

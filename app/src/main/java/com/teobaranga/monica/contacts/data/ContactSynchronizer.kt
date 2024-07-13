@@ -2,6 +2,7 @@ package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.data.sync.Synchronizer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -56,30 +57,32 @@ class ContactSynchronizer @Inject constructor(
 
         syncState.value = Synchronizer.State.IDLE
     }
+}
 
-    private fun ContactResponse.toEntity(): ContactEntity {
-        // TODO this is duplicated mapping - figure out if really necessary
-        return ContactEntity(
-            contactId = id,
-            firstName = firstName,
-            lastName = lastName,
-            nickname = nickname,
-            completeName = completeName,
-            initials = initials,
-            avatarUrl = info.avatar.url,
-            avatarColor = info.avatar.color,
-            birthdate = info.dates?.birthdate?.toBirthday(),
-            updated = updated,
+internal fun ContactResponse.toEntity(): ContactEntity {
+    return ContactEntity(
+        contactId = id,
+        firstName = firstName,
+        lastName = lastName,
+        nickname = nickname,
+        completeName = completeName,
+        initials = initials,
+        avatar = ContactEntity.Avatar(
+            url = info.avatar.url,
+            color = info.avatar.color,
+        ),
+        birthdate = info.dates?.birthdate?.toBirthday(),
+        updated = updated,
+        syncStatus = SyncStatus.UP_TO_DATE,
+    )
+}
+
+private fun ContactResponse.Information.Dates.Birthdate.toBirthday(): ContactEntity.Birthdate? {
+    return date?.let { date ->
+        ContactEntity.Birthdate(
+            isAgeBased = isAgeBased == true,
+            isYearUnknown = isYearUnknown == true,
+            date = date,
         )
-    }
-
-    private fun ContactResponse.Information.Dates.Birthdate.toBirthday(): ContactEntity.Birthdate? {
-        return date?.let { date ->
-            ContactEntity.Birthdate(
-                isAgeBased = isAgeBased ?: false,
-                isYearUnknown = isYearUnknown ?: false,
-                date = date,
-            )
-        }
     }
 }

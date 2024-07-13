@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.teobaranga.monica.contacts.data.ContactPagingSource
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.data.ContactSynchronizer
 import com.teobaranga.monica.data.sync.Synchronizer
@@ -30,6 +31,8 @@ internal class ContactsViewModel @Inject constructor(
     private val contactSynchronizer: ContactSynchronizer,
 ) : ViewModel() {
 
+    private lateinit var pagingSource: ContactPagingSource
+
     val userAvatar = userRepository.me
         .mapLatest { me ->
             me.contact?.avatar ?: me.userAvatar
@@ -49,7 +52,9 @@ internal class ContactsViewModel @Inject constructor(
         pagingSourceFactory = {
             contactRepository.getContacts(
                 orderBy = ContactRepository.OrderBy.Name(isAscending = true),
-            )
+            ).also {
+                pagingSource = it
+            }
         },
     )
         .flow
@@ -73,5 +78,9 @@ internal class ContactsViewModel @Inject constructor(
         viewModelScope.launch(dispatcher.io) {
             contactSynchronizer.sync()
         }
+    }
+
+    fun onEntriesChanged() {
+        pagingSource.invalidate()
     }
 }
