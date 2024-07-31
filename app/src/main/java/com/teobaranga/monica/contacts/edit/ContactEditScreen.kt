@@ -97,7 +97,7 @@ internal fun ContactEditScreen(
                                 shouldShowBirthdayPicker = false
                             },
                             birthday = uiState.birthday,
-                            onBirthdaySelected = { birthday ->
+                            onBirthdaySelect = { birthday ->
                                 uiState.birthday = birthday
                                 shouldShowBirthdayPicker = false
                             },

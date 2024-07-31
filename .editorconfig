@@ -6,4 +6,10 @@ ij_kotlin_allow_trailing_comma_on_call_site=true
 ij_kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
 ktlint_code_style = android_studio
 ktlint_function_naming_ignore_when_annotated_with = Composable
+# Prefer using function bodies instead of expression bodies
+# Rationale: diffs are cleaner when function bodies are changed
+ktlint_standard_function-expression-body = disabled
+# Disable the class-signature rule
+# Rationale: the decision for a single or multiline class signature is context dependent
+ktlint_standard_class-signature = disabled
 max_line_length = 120

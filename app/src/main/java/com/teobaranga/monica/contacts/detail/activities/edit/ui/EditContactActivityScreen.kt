@@ -192,7 +192,7 @@ private fun DateSection(
             modifier = Modifier
                 .padding(start = 24.dp, top = 12.dp),
             date = uiState.date,
-            onDateSelected = onDateSelect,
+            onDateSelect = onDateSelect,
         )
     }
 }
