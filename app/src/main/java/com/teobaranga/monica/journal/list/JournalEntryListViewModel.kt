@@ -8,9 +8,9 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
+import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
 import com.teobaranga.monica.journal.data.JournalPagingSource
 import com.teobaranga.monica.journal.data.JournalRepository
-import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
 import com.teobaranga.monica.journal.database.JournalEntryEntity
 import com.teobaranga.monica.journal.list.ui.JournalEntryListItem
 import com.teobaranga.monica.user.userAvatar

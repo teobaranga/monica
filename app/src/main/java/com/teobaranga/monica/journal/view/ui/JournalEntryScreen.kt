@@ -89,7 +89,7 @@ fun JournalEntryScreen(
                             )
                             DateButton(
                                 date = uiState.date,
-                                onDateSelected = { date ->
+                                onDateSelect = { date ->
                                     uiState.date = date
                                 },
                             )

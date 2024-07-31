@@ -141,5 +141,6 @@ dependencies {
 
 ktlint {
     android = true
-    version = "1.2.1"
+    verbose = true
+    version = "1.3.1"
 }

@@ -26,7 +26,7 @@ import java.time.ZoneOffset
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateButton(date: LocalDate, onDateSelected: (LocalDate) -> Unit, modifier: Modifier = Modifier) {
+fun DateButton(date: LocalDate, onDateSelect: (LocalDate) -> Unit, modifier: Modifier = Modifier) {
     var showDatePickerDialog by remember { mutableStateOf(false) }
     TextButton(
         modifier = modifier,
@@ -57,7 +57,7 @@ fun DateButton(date: LocalDate, onDateSelected: (LocalDate) -> Unit, modifier: M
                 TextButton(
                     onClick = {
                         datePickerState.selectedDateMillis?.let {
-                            onDateSelected(LocalDate.ofInstant(Instant.ofEpochMilli(it), ZoneOffset.UTC))
+                            onDateSelect(LocalDate.ofInstant(Instant.ofEpochMilli(it), ZoneOffset.UTC))
                         }
                         showDatePickerDialog = false
                     },
@@ -84,7 +84,7 @@ private fun PreviewDateButton() {
     MonicaTheme {
         DateButton(
             date = LocalDate.now(),
-            onDateSelected = { },
+            onDateSelect = { },
         )
     }
 }

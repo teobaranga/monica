@@ -43,7 +43,7 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun BirthdayPicker(
     birthday: Birthday?,
-    onBirthdaySelected: (Birthday?) -> Unit,
+    onBirthdaySelect: (Birthday?) -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
@@ -56,7 +56,7 @@ fun BirthdayPicker(
     BirthdayPicker(
         modifier = modifier,
         uiState = viewModel.uiState,
-        onBirthdaySelected = onBirthdaySelected,
+        onBirthdaySelect = onBirthdaySelect,
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     )
@@ -66,12 +66,11 @@ fun BirthdayPicker(
 @Composable
 private fun BirthdayPicker(
     uiState: BirthdayPickerUiState,
-    onBirthdaySelected: (Birthday?) -> Unit,
+    onBirthdaySelect: (Birthday?) -> Unit,
     onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier,
     sheetState: SheetState,
+    modifier: Modifier = Modifier,
 ) {
-
     ModalBottomSheet(
         modifier = modifier,
         sheetState = sheetState,
@@ -123,7 +122,7 @@ private fun BirthdayPicker(
                 .padding(top = 16.dp, bottom = 24.dp)
                 .navigationBarsPadding(),
             onClick = {
-                onBirthdaySelected(uiState.birthday)
+                onBirthdaySelect(uiState.birthday)
             },
         ) {
             Text(text = "Confirm")
@@ -324,7 +323,7 @@ private fun FullBirthday(
             modifier = Modifier
                 .padding(start = 52.dp),
             date = uiState.fullBirthDate,
-            onDateSelected = {
+            onDateSelect = {
                 uiState.fullBirthDate = it
                 onSelectFull()
             },
@@ -342,7 +341,7 @@ private fun PreviewBirthdayPicker() {
         BirthdayPicker(
             uiState = BirthdayPickerUiState(initialBirthday = null),
             sheetState = sheetState,
-            onBirthdaySelected = { },
+            onBirthdaySelect = { },
             onDismissRequest = { },
         )
     }

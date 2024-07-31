@@ -75,7 +75,7 @@ internal fun Dashboard(navigator: DestinationsNavigator, viewModel: DashboardVie
         },
         userUiState = userUiState,
         recentContacts = recentContacts,
-        onContactSelected = { contactId ->
+        onContactSelect = { contactId ->
             navigator.navigate(ContactDetailDestination(contactId))
         },
     )
@@ -87,7 +87,7 @@ private fun DashboardScreen(
     searchBar: @Composable () -> Unit,
     userUiState: UserUiState?,
     recentContacts: LazyPagingItems<Contact>,
-    onContactSelected: (contactId: Int) -> Unit,
+    onContactSelect: (contactId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -114,7 +114,7 @@ private fun DashboardScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 recentContacts = recentContacts,
-                onContactSelected = onContactSelected,
+                onContactSelect = onContactSelect,
             )
         }
     }
@@ -123,7 +123,7 @@ private fun DashboardScreen(
 @Composable
 private fun RecentContactsSection(
     recentContacts: LazyPagingItems<Contact>,
-    onContactSelected: (contactId: Int) -> Unit,
+    onContactSelect: (contactId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -165,7 +165,7 @@ private fun RecentContactsSection(
                                     .size(72.dp),
                                 userAvatar = contact.avatar,
                                 onClick = {
-                                    onContactSelected(contact.id)
+                                    onContactSelect(contact.id)
                                 },
                             )
                         }
@@ -223,7 +223,7 @@ private fun PreviewDashboardScreen() {
                     ),
                 ),
                 recentContacts = recentContacts.collectAsLazyPagingItems(),
-                onContactSelected = { },
+                onContactSelect = { },
             )
         }
     }

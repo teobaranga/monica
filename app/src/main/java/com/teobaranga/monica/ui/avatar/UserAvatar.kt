@@ -40,9 +40,8 @@ fun UserAvatar(userAvatar: UserAvatar, modifier: Modifier = Modifier, onClick: (
                     Modifier.clickable(onClick = onClick)
                 } else {
                     Modifier
-                }
-            )
-        ,
+                },
+            ),
         model = ImageRequest.Builder(LocalContext.current)
             .data(userAvatar)
             .memoryCacheKey(userAvatar.avatarUrl)

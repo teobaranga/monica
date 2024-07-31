@@ -9,7 +9,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
 
-
 @Destination<ContactsNavGraph>
 @Composable
 internal fun ContactEdit(

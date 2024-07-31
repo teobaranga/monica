@@ -100,7 +100,7 @@ internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewM
         lazyItems = lazyItems,
         isRefreshing = isRefreshing,
         onRefresh = viewModel::refresh,
-        onContactSelected = { contactId ->
+        onContactSelect = { contactId ->
             navigator.navigate(ContactDetailDestination(contactId))
         },
         onContactAdd = {
@@ -123,7 +123,7 @@ private fun ContactsScreen(
     lazyItems: LazyPagingItems<Contact>,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
-    onContactSelected: (Int) -> Unit,
+    onContactSelect: (Int) -> Unit,
     onContactAdd: () -> Unit,
 ) {
     val pullRefreshState = rememberPullToRefreshState()
@@ -182,7 +182,7 @@ private fun ContactsScreen(
                             if (contact != null) {
                                 ContactItem(
                                     contact = contact,
-                                    onContactSelected = onContactSelected,
+                                    onContactSelect = onContactSelect,
                                 )
                             }
                         }
@@ -201,12 +201,12 @@ private fun ContactsScreen(
 }
 
 @Composable
-private fun ContactItem(contact: Contact, onContactSelected: (Int) -> Unit, modifier: Modifier = Modifier) {
+private fun ContactItem(contact: Contact, onContactSelect: (Int) -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clickable {
-                onContactSelected(contact.id)
+                onContactSelect(contact.id)
             }
             .padding(
                 horizontal = 20.dp,
@@ -219,7 +219,7 @@ private fun ContactItem(contact: Contact, onContactSelected: (Int) -> Unit, modi
                 .size(48.dp),
             userAvatar = contact.avatar,
             onClick = {
-                onContactSelected(contact.id)
+                onContactSelect(contact.id)
             },
         )
         Text(
@@ -274,7 +274,7 @@ private fun PreviewContactsScreen() {
                 lazyItems = lazyItems.collectAsLazyPagingItems(),
                 isRefreshing = false,
                 onRefresh = { },
-                onContactSelected = { },
+                onContactSelect = { },
                 onContactAdd = { },
             )
         }

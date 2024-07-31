@@ -64,7 +64,6 @@ internal class ContactEditViewModel @AssistedInject constructor(
                 birthdate = uiState.birthday?.toDomainBirthday(),
             )
         }
-
     }
 
     fun onDelete() {

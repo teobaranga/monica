@@ -27,7 +27,7 @@ sealed interface ContactEditUiState {
             lastName: String?,
             nickname: String?,
             initialBirthday: Birthday?,
-        ): this(
+        ) : this(
             id,
             TextFieldState(firstName),
             TextFieldState(lastName.orEmpty()),
