@@ -3,7 +3,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     alias(libs.plugins.monica.android.application)
     alias(libs.plugins.monica.android.compose)
-    alias(libs.plugins.hilt)
+    alias(libs.plugins.monica.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktlint)
 }
@@ -71,9 +71,7 @@ dependencies {
 
     implementation(libs.compose.placeholder)
 
-    implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
-    ksp(libs.hilt.compiler)
 
     implementation(libs.browser)
 

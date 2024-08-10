@@ -73,5 +73,9 @@ gradlePlugin {
             id = "monica.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"
         }
+        register("hilt") {
+            id = "monica.hilt"
+            implementationClass = "HiltConventionPlugin"
+        }
     }
 }
