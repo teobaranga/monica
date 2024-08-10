@@ -61,6 +61,7 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":feature:configuration"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.compose)
