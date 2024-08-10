@@ -13,31 +13,26 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-/*
- * Modifications copyright (C) 2024 Teo Baranga
- */
 
-import com.android.build.api.dsl.ApplicationExtension
-import com.teobaranga.monica.configureKotlinAndroid
+import com.android.build.gradle.LibraryExtension
 import com.teobaranga.monica.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 
-class AndroidApplicationConventionPlugin : Plugin<Project> {
-
+class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            with(pluginManager) {
-                apply(libs.plugins.androidApplication.get().pluginId)
-                apply(libs.plugins.kotlinAndroid.get().pluginId)
+            pluginManager.apply {
+                apply(libs.plugins.monica.android.library.get().pluginId)
+            }
+            extensions.configure<LibraryExtension> {
+                testOptions.animationsDisabled = true
             }
 
-            extensions.configure<ApplicationExtension> {
-                configureKotlinAndroid(this)
-                defaultConfig.targetSdk = libs.versions.targetSdk.get().toInt()
-                @Suppress("UnstableApiUsage")
-                testOptions.animationsDisabled = true
+            dependencies {
+                // Add common feature libs here
             }
         }
     }
