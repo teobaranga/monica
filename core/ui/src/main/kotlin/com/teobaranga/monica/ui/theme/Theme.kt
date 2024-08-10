@@ -11,8 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.teobaranga.monica.ui.datetime.LocalMonthDayFormatter
-import com.teobaranga.monica.ui.datetime.getMonthDayFormatter
 
 private val DarkColorScheme = darkColorScheme(
     primary = Primary80,
@@ -72,7 +70,6 @@ fun MonicaTheme(
     // Composition locals
     CompositionLocalProvider(
         LocalBackgroundTheme provides backgroundTheme,
-        LocalMonthDayFormatter provides getMonthDayFormatter(),
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

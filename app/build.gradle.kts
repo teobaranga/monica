@@ -60,6 +60,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.lifecycle.runtime.ktx)
