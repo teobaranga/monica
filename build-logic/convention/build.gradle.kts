@@ -45,6 +45,7 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.android.tools.common)
     compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.compose.gradlePlugin)
 }
 
 tasks {
@@ -59,6 +60,22 @@ gradlePlugin {
         register("androidApplication") {
             id = "monica.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
+        }
+        register("androidFeature") {
+            id = "monica.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
+        register("androidLibrary") {
+            id = "monica.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("androidCompose") {
+            id = "monica.android.compose"
+            implementationClass = "AndroidComposeConventionPlugin"
+        }
+        register("hilt") {
+            id = "monica.hilt"
+            implementationClass = "HiltConventionPlugin"
         }
     }
 }

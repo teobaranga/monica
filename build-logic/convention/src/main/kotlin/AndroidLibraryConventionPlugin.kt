@@ -17,27 +17,34 @@
  * Modifications copyright (C) 2024 Teo Baranga
  */
 
-import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.gradle.LibraryExtension
 import com.teobaranga.monica.configureKotlinAndroid
 import com.teobaranga.monica.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 
-class AndroidApplicationConventionPlugin : Plugin<Project> {
+class AndroidLibraryConventionPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply(libs.plugins.androidApplication.get().pluginId)
+                apply(libs.plugins.androidLibrary.get().pluginId)
                 apply(libs.plugins.kotlinAndroid.get().pluginId)
             }
 
-            extensions.configure<ApplicationExtension> {
+            extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = libs.versions.targetSdk.get().toInt()
-                @Suppress("UnstableApiUsage")
+                defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 testOptions.animationsDisabled = true
+                // The resource prefix is derived from the module name,
+                // so resources inside ":core:module1" must be prefixed with "core_module1_"
+                resourcePrefix = path.split("""\W""".toRegex()).drop(1).distinct().joinToString(separator = "_").lowercase() + "_"
+            }
+            dependencies {
+                // Add common library dependencies here
             }
         }
     }

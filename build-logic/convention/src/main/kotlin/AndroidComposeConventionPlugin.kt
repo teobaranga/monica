@@ -18,26 +18,27 @@
  */
 
 import com.android.build.api.dsl.ApplicationExtension
-import com.teobaranga.monica.configureKotlinAndroid
+import com.android.build.gradle.LibraryExtension
+import com.teobaranga.monica.configureAndroidCompose
 import com.teobaranga.monica.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.findByType
 
-class AndroidApplicationConventionPlugin : Plugin<Project> {
+class AndroidComposeConventionPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply(libs.plugins.androidApplication.get().pluginId)
-                apply(libs.plugins.kotlinAndroid.get().pluginId)
+                apply(libs.plugins.compose.compiler.get().pluginId)
             }
 
-            extensions.configure<ApplicationExtension> {
-                configureKotlinAndroid(this)
-                defaultConfig.targetSdk = libs.versions.targetSdk.get().toInt()
-                @Suppress("UnstableApiUsage")
-                testOptions.animationsDisabled = true
+            extensions.findByType<LibraryExtension>()?.let {
+                configureAndroidCompose(it)
+            }
+
+            extensions.findByType<ApplicationExtension>()?.let {
+                configureAndroidCompose(it)
             }
         }
     }
