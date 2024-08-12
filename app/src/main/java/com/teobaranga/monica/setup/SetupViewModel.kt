@@ -16,6 +16,7 @@ import com.teobaranga.monica.data.PARAM_RESPONSE_TYPE
 import com.teobaranga.monica.data.REDIRECT_URI
 import com.teobaranga.monica.settings.getOAuthSettings
 import com.teobaranga.monica.settings.oAuthSettings
+import com.teobaranga.monica.setup.domain.SignInUseCase
 import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -33,7 +34,8 @@ class SetupViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val dispatcher: Dispatcher,
     private val dataStore: DataStore<Preferences>,
-    private val authorizationRepository: AuthorizationRepository,
+    authorizationRepository: AuthorizationRepository,
+    private val signInUseCase: SignInUseCase,
 ) : ViewModel() {
 
     val isLoggedIn = authorizationRepository.isLoggedIn
@@ -97,12 +99,18 @@ class SetupViewModel @Inject constructor(
         }
         Timber.d("Authorization code: $code")
         viewModelScope.launch(dispatcher.io) {
+            withContext(dispatcher.main) {
+                uiState.isSigningIn = true
+            }
             val oAuthSettings = dataStore.data.first().getOAuthSettings()
             val clientId = requireNotNull(oAuthSettings.clientId)
             val clientSecret = requireNotNull(oAuthSettings.clientSecret)
-            val result = authorizationRepository.signIn(clientId, clientSecret, code)
-            if (!result) {
+            val isSignInSuccess = signInUseCase(clientId, clientSecret, code)
+            if (!isSignInSuccess) {
                 uiState.error = UiState.Error.ConfigurationError
+                withContext(dispatcher.main) {
+                    uiState.isSigningIn = false
+                }
             }
         }
     }

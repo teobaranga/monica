@@ -1,5 +1,6 @@
 package com.teobaranga.monica.setup
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,6 +8,7 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 
+@Stable
 class UiState {
 
     sealed interface Error {
@@ -22,8 +24,13 @@ class UiState {
     var clientSecret by mutableStateOf(TextFieldValue())
         private set
 
+    var isSigningIn by mutableStateOf(false)
+
     val isSignInEnabled by derivedStateOf {
-        serverAddress.text.isNotBlank() && clientId.text.isNotBlank() && clientSecret.text.isNotBlank()
+        serverAddress.text.isNotBlank() &&
+            clientId.text.isNotBlank() &&
+            clientSecret.text.isNotBlank() &&
+            !isSigningIn
     }
 
     var error: Error? by mutableStateOf(null)
