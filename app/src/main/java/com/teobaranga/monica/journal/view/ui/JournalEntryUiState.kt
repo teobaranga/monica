@@ -11,25 +11,35 @@ sealed interface JournalEntryUiState {
     data object Loading : JournalEntryUiState
 
     @Stable
-    data class Loaded(
+    class Loaded(
         val id: Int,
-        val title: TextFieldState,
-        val post: TextFieldState,
-        private val initialDate: LocalDate,
+        title: String?,
+        post: String,
+        date: LocalDate,
     ) : JournalEntryUiState {
 
-        var date by mutableStateOf(initialDate)
+        var date by mutableStateOf(date)
 
-        constructor(
-            id: Int,
-            title: String?,
-            post: String,
-            date: LocalDate,
-        ) : this(
-            id = id,
-            title = TextFieldState(title.orEmpty()),
-            post = TextFieldState(post),
-            initialDate = date,
-        )
+        val title = TextFieldState(title.orEmpty())
+
+        val post = TextFieldState(post)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+            other as Loaded
+            return id == other.id
+                && title.text == other.title.text
+                && post.text == other.post.text
+                && date == other.date
+        }
+
+        override fun hashCode(): Int {
+            var result = id
+            result = 31 * result + title.hashCode()
+            result = 31 * result + post.hashCode()
+            result = 31 * result + date.hashCode()
+            return result
+        }
     }
 }
