@@ -3,8 +3,10 @@ package com.teobaranga.monica.data
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.teobaranga.monica.settings.getOAuthSettings
+import com.teobaranga.monica.util.coroutines.Dispatcher
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.mapLatest
@@ -20,6 +22,9 @@ import javax.inject.Singleton
 @OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
 class HostSelectionInterceptor @Inject constructor(
+    @ApplicationContext
+    appCoroutineScope: CoroutineScope,
+    dispatcher: Dispatcher,
     dataStore: DataStore<Preferences>,
 ) : Interceptor {
 
@@ -27,7 +32,7 @@ class HostSelectionInterceptor @Inject constructor(
     private lateinit var host: HttpUrl
 
     init {
-        GlobalScope.launch {
+        appCoroutineScope.launch(dispatcher.io) {
             dataStore.data
                 .mapLatest { preferences ->
                     preferences.getOAuthSettings().serverAddress
