@@ -11,28 +11,40 @@ sealed interface ContactEditUiState {
     data object Loading : ContactEditUiState
 
     @Stable
-    data class Loaded(
+    class Loaded(
         val id: Int,
-        val firstName: TextFieldState,
-        val lastName: TextFieldState,
-        val nickname: TextFieldState,
-        private val initialBirthday: Birthday?,
+        firstName: String,
+        lastName: String?,
+        nickname: String?,
+        initialBirthday: Birthday?,
     ) : ContactEditUiState {
+
+        val firstName = TextFieldState(firstName)
+
+        val lastName = TextFieldState(lastName.orEmpty())
+
+        val nickname = TextFieldState(nickname.orEmpty())
 
         var birthday by mutableStateOf(initialBirthday)
 
-        constructor(
-            id: Int,
-            firstName: String,
-            lastName: String?,
-            nickname: String?,
-            initialBirthday: Birthday?,
-        ) : this(
-            id,
-            TextFieldState(firstName),
-            TextFieldState(lastName.orEmpty()),
-            TextFieldState(nickname.orEmpty()),
-            initialBirthday,
-        )
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+            other as Loaded
+            return id == other.id &&
+                firstName.text == other.firstName.text &&
+                lastName.text == other.lastName.text &&
+                nickname.text == other.nickname.text &&
+                birthday == other.birthday
+        }
+
+        override fun hashCode(): Int {
+            var result = id
+            result = 31 * result + firstName.hashCode()
+            result = 31 * result + lastName.hashCode()
+            result = 31 * result + nickname.hashCode()
+            result = 31 * result + (birthday?.hashCode() ?: 0)
+            return result
+        }
     }
 }

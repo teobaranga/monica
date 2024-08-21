@@ -27,7 +27,13 @@ internal class ContactEditViewModel @AssistedInject constructor(
     private val contactRepository: ContactRepository,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<ContactEditUiState>(ContactEditUiState.Loading)
+    private val _uiState = MutableStateFlow(
+        if (contactId == null) {
+            getEmptyState()
+        } else {
+            ContactEditUiState.Loading
+        }
+    )
     val uiState = _uiState.asStateFlow()
 
     init {

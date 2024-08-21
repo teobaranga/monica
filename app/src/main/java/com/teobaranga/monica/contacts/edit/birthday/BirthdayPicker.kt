@@ -47,12 +47,12 @@ fun BirthdayPicker(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-) {
-    val viewModel = hiltViewModel<BirthdayPickerViewModel, BirthdayPickerViewModel.Factory>(
+    viewModel: BirthdayPickerViewModel = hiltViewModel<BirthdayPickerViewModel, BirthdayPickerViewModel.Factory>(
         creationCallback = { factory: BirthdayPickerViewModel.Factory ->
             factory.create(birthday)
-        },
-    )
+        }
+    ),
+) {
     BirthdayPicker(
         modifier = modifier,
         uiState = viewModel.uiState,

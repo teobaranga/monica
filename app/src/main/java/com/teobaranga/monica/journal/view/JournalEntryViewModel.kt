@@ -23,7 +23,12 @@ internal class JournalEntryViewModel @AssistedInject constructor(
     private val journalRepository: JournalRepository,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<JournalEntryUiState>(JournalEntryUiState.Loading)
+    private val _uiState = MutableStateFlow(
+        when (entryId) {
+            null -> getEmptyState()
+            else -> JournalEntryUiState.Loading
+        }
+    )
     val uiState = _uiState.asStateFlow()
 
     init {
