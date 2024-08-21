@@ -13,11 +13,10 @@ import com.teobaranga.monica.util.coroutines.Dispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Provider
 
 class SignInUseCase @Inject internal constructor(
     private val dispatcher: Dispatcher,
-    private val monicaApi: Provider<MonicaApi>,
+    private val monicaApi: MonicaApi,
     private val dataStore: DataStore<Preferences>,
     private val userRepository: UserRepository,
 ) {
@@ -25,7 +24,7 @@ class SignInUseCase @Inject internal constructor(
     suspend operator fun invoke(clientId: String, clientSecret: String, authorizationCode: String): Boolean {
         return withContext(dispatcher.io) {
             // Fetch the access token
-            val tokenResponse = monicaApi.get().getAccessToken(TokenRequest(clientId, clientSecret, authorizationCode))
+            val tokenResponse = monicaApi.getAccessToken(TokenRequest(clientId, clientSecret, authorizationCode))
                 .onFailure {
                     Timber.w("Failed to get access token: %s", this)
                 }
