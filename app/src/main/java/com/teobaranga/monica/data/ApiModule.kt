@@ -2,6 +2,7 @@ package com.teobaranga.monica.data
 
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
+import com.teobaranga.monica.MONICA_URL
 import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.data.adapter.AlwaysSerializeNullsFactory
 import com.teobaranga.monica.data.adapter.LocalDateAdapter
@@ -51,7 +52,7 @@ object ApiModule {
             .build()
         val retrofit = Retrofit.Builder()
             .client(client)
-            .baseUrl("https://app.monicahq.com/")
+            .baseUrl(MONICA_URL)
             .addConverterFactory(moshiConverterFactory)
             .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .build()
