@@ -33,7 +33,7 @@ sandwich = "2.0.8"
 timber = "5.0.1"
 androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
-lifecycle = "2.8.4"
+lifecycle = "2.8.5"
 activity-compose = "1.9.1"
 
 [libraries]
