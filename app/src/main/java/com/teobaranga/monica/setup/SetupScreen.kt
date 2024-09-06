@@ -36,7 +36,6 @@ import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.generated.destinations.SetupDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.R
 import com.teobaranga.monica.data.PARAM_CODE
 import com.teobaranga.monica.ui.PreviewPixel4
@@ -91,110 +90,106 @@ fun Setup(navigator: DestinationsNavigator, viewModel: SetupViewModel = hiltView
 
 @Composable
 fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Modifier) {
-    MonicaBackground(
-        modifier = modifier,
-    ) {
-        val scrollState = rememberScrollState()
+    val scrollState = rememberScrollState()
 
-        // Scroll to bottom to keep the main button visible when the IME is open
-        val keyboardState by keyboardAsState()
-        LaunchedEffect(keyboardState) {
-            if (keyboardState) {
-                scrollState.animateScrollTo(Int.MAX_VALUE)
-            }
+    // Scroll to bottom to keep the main button visible when the IME is open
+    val keyboardState by keyboardAsState()
+    LaunchedEffect(keyboardState) {
+        if (keyboardState) {
+            scrollState.animateScrollTo(Int.MAX_VALUE)
         }
+    }
 
-        Column(
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .systemBarsPadding()
+            .imePadding(),
+    ) {
+        Image(
             modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .systemBarsPadding()
-                .imePadding(),
-        ) {
-            Image(
-                modifier = Modifier
-                    .widthIn(max = 192.dp)
-                    .padding(top = 20.dp)
-                    .align(Alignment.CenterHorizontally),
-                painter = painterResource(R.drawable.monica),
-                contentDescription = null,
-            )
-            Spacer(
-                modifier = Modifier
-                    .weight(1f),
-            )
+                .widthIn(max = 192.dp)
+                .padding(top = 20.dp)
+                .align(Alignment.CenterHorizontally),
+            painter = painterResource(R.drawable.monica),
+            contentDescription = null,
+        )
+        Spacer(
+            modifier = Modifier
+                .weight(1f),
+        )
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 20.dp),
+            text = "OAuth 2.0 Setup",
+        )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp)
+                .padding(horizontal = 20.dp),
+            value = uiState.serverAddress,
+            onValueChange = {
+                uiState.onServerAddressChanged(it)
+            },
+            singleLine = true,
+            label = {
+                Text(text = "Server Address")
+            },
+        )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp)
+                .padding(horizontal = 20.dp),
+            value = uiState.clientId,
+            onValueChange = {
+                uiState.onClientIdChanged(it)
+            },
+            singleLine = true,
+            label = {
+                Text(text = "Client ID")
+            },
+        )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp)
+                .padding(horizontal = 20.dp),
+            value = uiState.clientSecret,
+            onValueChange = {
+                uiState.onClientSecretChanged(it)
+            },
+            label = {
+                Text(text = "Client Secret")
+            },
+        )
+        uiState.error?.let {
             Text(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-                text = "OAuth 2.0 Setup",
-            )
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp)
-                    .padding(horizontal = 20.dp),
-                value = uiState.serverAddress,
-                onValueChange = {
-                    uiState.onServerAddressChanged(it)
-                },
-                singleLine = true,
-                label = {
-                    Text(text = "Server Address")
-                },
-            )
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp)
-                    .padding(horizontal = 20.dp),
-                value = uiState.clientId,
-                onValueChange = {
-                    uiState.onClientIdChanged(it)
-                },
-                singleLine = true,
-                label = {
-                    Text(text = "Client ID")
-                },
-            )
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp)
-                    .padding(horizontal = 20.dp),
-                value = uiState.clientSecret,
-                onValueChange = {
-                    uiState.onClientSecretChanged(it)
-                },
-                label = {
-                    Text(text = "Client Secret")
-                },
-            )
-            uiState.error?.let {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .padding(top = 12.dp),
-                    text = when (it) {
-                        UiState.Error.ConfigurationError -> "Please check your configuration"
-                    },
-                    color = Color.Red,
-                )
-            }
-            Button(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
-                    .padding(top = 12.dp, bottom = 20.dp),
-                onClick = onSignIn,
-                enabled = uiState.isSignInEnabled,
-                content = {
-                    Text(
-                        text = "Sign In",
-                    )
+                    .padding(top = 12.dp),
+                text = when (it) {
+                    UiState.Error.ConfigurationError -> "Please check your configuration"
                 },
+                color = Color.Red,
             )
         }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .padding(top = 12.dp, bottom = 20.dp),
+            onClick = onSignIn,
+            enabled = uiState.isSignInEnabled,
+            content = {
+                Text(
+                    text = "Sign In",
+                )
+            },
+        )
     }
 }
 

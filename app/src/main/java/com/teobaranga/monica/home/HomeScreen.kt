@@ -30,15 +30,15 @@ import com.ramcosta.composedestinations.generated.destinations.SetupDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
-import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.ui.PreviewPixel4
+import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.thenIf
 import kotlinx.coroutines.flow.collectLatest
 
 @Destination<RootGraph>(start = true)
 @Composable
-fun Home(navigator: DestinationsNavigator, modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
+internal fun Home(navigator: DestinationsNavigator, modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn == false) {
@@ -90,7 +90,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 navController = navController,
             )
         },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        contentWindowInsets = WindowInsets.Zero,
     ) { contentPadding ->
         if (!LocalInspectionMode.current) {
             DestinationsNavHost(
@@ -110,8 +110,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun PreviewHomeScreen() {
     MonicaTheme {
-        MonicaBackground {
-            HomeScreen()
-        }
+        HomeScreen()
     }
 }

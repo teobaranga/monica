@@ -46,7 +46,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.generated.destinations.ContactDetailDestination
 import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.MonicaSearchBar
@@ -233,55 +232,53 @@ private fun ContactItem(contact: Contact, onContactSelect: (Int) -> Unit, modifi
 @Composable
 private fun PreviewContactsScreen() {
     MonicaTheme {
-        MonicaBackground {
-            val lazyItems = flowOf(
-                PagingData.from(
-                    listOf(
-                        Contact(
-                            id = 1,
-                            firstName = "Alice",
-                            lastName = null,
-                            completeName = "Alice",
+        val lazyItems = flowOf(
+            PagingData.from(
+                listOf(
+                    Contact(
+                        id = 1,
+                        firstName = "Alice",
+                        lastName = null,
+                        completeName = "Alice",
+                        initials = "A",
+                        avatar = UserAvatar(
+                            contactId = 1,
                             initials = "A",
-                            avatar = UserAvatar(
-                                contactId = 1,
-                                initials = "A",
-                                color = "#FF0000",
-                                avatarUrl = null,
-                            ),
-                            updated = null,
+                            color = "#FF0000",
+                            avatarUrl = null,
                         ),
-                        Contact(
-                            id = 2,
-                            firstName = "Bob",
-                            lastName = null,
-                            completeName = "Bob",
+                        updated = null,
+                    ),
+                    Contact(
+                        id = 2,
+                        firstName = "Bob",
+                        lastName = null,
+                        completeName = "Bob",
+                        initials = "B",
+                        avatar = UserAvatar(
+                            contactId = 2,
                             initials = "B",
-                            avatar = UserAvatar(
-                                contactId = 2,
-                                initials = "B",
-                                color = "#00FF00",
-                                avatarUrl = null,
-                            ),
-                            updated = null,
+                            color = "#00FF00",
+                            avatarUrl = null,
                         ),
+                        updated = null,
                     ),
                 ),
-            )
-            ContactsScreen(
-                searchBar = {
-                    MonicaSearchBar(
-                        modifier = Modifier
-                            .padding(top = 16.dp),
-                        userAvatar = { },
-                    )
-                },
-                lazyItems = lazyItems.collectAsLazyPagingItems(),
-                isRefreshing = false,
-                onRefresh = { },
-                onContactSelect = { },
-                onContactAdd = { },
-            )
-        }
+            ),
+        )
+        ContactsScreen(
+            searchBar = {
+                MonicaSearchBar(
+                    modifier = Modifier
+                        .padding(top = 16.dp),
+                    userAvatar = { },
+                )
+            },
+            lazyItems = lazyItems.collectAsLazyPagingItems(),
+            isRefreshing = false,
+            onRefresh = { },
+            onContactSelect = { },
+            onContactAdd = { },
+        )
     }
 }

@@ -34,7 +34,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.generated.destinations.ContactDetailDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.teobaranga.monica.MonicaBackground
 import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.MonicaSearchBar
@@ -191,57 +190,55 @@ private fun RecentContactsSection(
 @Composable
 private fun PreviewDashboardScreen() {
     MonicaTheme {
-        MonicaBackground {
-            val recentContacts = flowOf(
-                PagingData.from(
-                    listOf(
-                        Contact(
-                            id = 1,
-                            firstName = "Alice",
-                            lastName = "B",
-                            completeName = "Alice B",
+        val recentContacts = flowOf(
+            PagingData.from(
+                listOf(
+                    Contact(
+                        id = 1,
+                        firstName = "Alice",
+                        lastName = "B",
+                        completeName = "Alice B",
+                        initials = "AB",
+                        avatar = UserAvatar(
+                            contactId = 1,
                             initials = "AB",
-                            avatar = UserAvatar(
-                                contactId = 1,
-                                initials = "AB",
-                                color = "#709512",
-                                avatarUrl = null,
-                            ),
-                            updated = null,
+                            color = "#709512",
+                            avatarUrl = null,
                         ),
-                        Contact(
-                            id = 2,
-                            firstName = "Charlie",
-                            lastName = "D",
-                            completeName = "Charlie D",
+                        updated = null,
+                    ),
+                    Contact(
+                        id = 2,
+                        firstName = "Charlie",
+                        lastName = "D",
+                        completeName = "Charlie D",
+                        initials = "CD",
+                        avatar = UserAvatar(
+                            contactId = 2,
                             initials = "CD",
-                            avatar = UserAvatar(
-                                contactId = 2,
-                                initials = "CD",
-                                color = "#709512",
-                                avatarUrl = null,
-                            ),
-                            updated = null,
+                            color = "#709512",
+                            avatarUrl = null,
                         ),
+                        updated = null,
                     ),
                 ),
-            )
-            DashboardScreen(
-                searchBar = {
-                    MonicaSearchBar(
-                        modifier = Modifier
-                            .padding(top = 16.dp),
-                        userAvatar = { },
-                    )
-                },
-                userUiState = UserUiState(
-                    userInfo = UserUiState.UserInfo(
-                        name = "Teo",
-                    ),
+            ),
+        )
+        DashboardScreen(
+            searchBar = {
+                MonicaSearchBar(
+                    modifier = Modifier
+                        .padding(top = 16.dp),
+                    userAvatar = { },
+                )
+            },
+            userUiState = UserUiState(
+                userInfo = UserUiState.UserInfo(
+                    name = "Teo",
                 ),
-                recentContacts = recentContacts.collectAsLazyPagingItems(),
-                onContactSelect = { },
-            )
-        }
+            ),
+            recentContacts = recentContacts.collectAsLazyPagingItems(),
+            onContactSelect = { },
+        )
     }
 }
