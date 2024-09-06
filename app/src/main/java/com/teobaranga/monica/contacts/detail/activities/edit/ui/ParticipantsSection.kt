@@ -22,6 +22,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -68,7 +69,7 @@ fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Mo
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .menuAnchor(),
+                    .menuAnchor(type = MenuAnchorType.PrimaryEditable),
                 value = uiState.participantSearch,
                 onValueChange = { search ->
                     uiState.onParticipantSearch(search)
@@ -85,28 +86,26 @@ fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Mo
                     keyboardType = KeyboardType.Text,
                 ),
             )
-            if (uiState.participantResults.isNotEmpty()) {
-                DropdownMenu(
-                    modifier = Modifier
-                        .exposedDropdownSize(true),
-                    properties = PopupProperties(focusable = false),
-                    expanded = expanded,
-                    onDismissRequest = {
-                        expanded = false
-                    },
-                ) {
-                    uiState.participantResults.forEach { result ->
-                        DropdownMenuItem(
-                            text = {
-                                Text(text = result.name)
-                            },
-                            onClick = {
-                                uiState.onParticipantSearch(TextFieldValue())
-                                uiState.participants.add(result)
-                                expanded = false
-                            },
-                        )
-                    }
+            DropdownMenu(
+                modifier = Modifier
+                    .exposedDropdownSize(true),
+                properties = PopupProperties(focusable = false),
+                expanded = uiState.participantResults.isNotEmpty(),
+                onDismissRequest = {
+                    expanded = false
+                },
+            ) {
+                uiState.participantResults.forEach { result ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = result.name)
+                        },
+                        onClick = {
+                            uiState.onParticipantSearch(TextFieldValue())
+                            uiState.participants.add(result)
+                            expanded = false
+                        },
+                    )
                 }
             }
         }
