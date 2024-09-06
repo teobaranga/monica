@@ -136,7 +136,7 @@ fun MonicaTextField(
                     colors = colors,
                     contentPadding = OutlinedTextFieldDefaults.contentPadding(),
                     container = {
-                        OutlinedTextFieldDefaults.ContainerBox(
+                        OutlinedTextFieldDefaults.Container(
                             enabled = enabled,
                             isError = isError,
                             interactionSource = interactionSource,
