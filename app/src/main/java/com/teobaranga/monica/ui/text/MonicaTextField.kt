@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
@@ -69,6 +71,7 @@ fun MonicaTextField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
+    inputTransformation: InputTransformation? = null,
     textStyle: TextStyle = LocalTextStyle.current,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
@@ -81,6 +84,7 @@ fun MonicaTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     lineLimits: TextFieldLineLimits = TextFieldLineLimits.Default,
     interactionSource: MutableInteractionSource? = null,
+    outputTransformation: OutputTransformation? = null,
     shape: Shape = OutlinedTextFieldDefaults.shape,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
@@ -112,10 +116,12 @@ fun MonicaTextField(
                 ),
             enabled = enabled,
             readOnly = readOnly,
+            inputTransformation = inputTransformation,
             textStyle = mergedTextStyle,
             cursorBrush = SolidColor(colors.cursorColor(isError)),
             keyboardOptions = keyboardOptions,
             interactionSource = interactionSource,
+            outputTransformation = outputTransformation,
             lineLimits = lineLimits,
             decorator = { innerTextField ->
                 OutlinedTextFieldDefaults.DecorationBox(
