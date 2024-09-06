@@ -3,16 +3,13 @@ package com.teobaranga.monica.contacts.list
 import ContactsNavGraph
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -22,9 +19,9 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,7 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -56,6 +53,7 @@ import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.plus
+import com.teobaranga.monica.ui.rememberSearchBarState
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -64,7 +62,14 @@ import kotlinx.coroutines.flow.flowOf
 internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewModel = hiltViewModel()) {
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+    val searchBarState = rememberSearchBarState()
     ContactsScreen(
+        modifier = Modifier
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    searchBarState.shouldBeActive = false
+                }
+            },
         searchBar = {
             var shouldShowAccount by remember { mutableStateOf(false) }
             val colors = arrayOf(
@@ -76,7 +81,8 @@ internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewM
                 modifier = Modifier
                     .background(Brush.verticalGradient(colorStops = colors))
                     .statusBarsPadding()
-                    .padding(top = 16.dp, bottom = 20.dp),
+                    .padding(top = 16.dp),
+                state = searchBarState,
                 userAvatar = {
                     val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
                     userAvatar?.let {
@@ -125,22 +131,11 @@ private fun ContactsScreen(
     onRefresh: () -> Unit,
     onContactSelect: (Int) -> Unit,
     onContactAdd: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val pullRefreshState = rememberPullToRefreshState()
-    if (pullRefreshState.isRefreshing) {
-        LaunchedEffect(Unit) {
-            onRefresh()
-        }
-    }
-    LaunchedEffect(isRefreshing) {
-        if (!isRefreshing) {
-            pullRefreshState.endRefresh()
-        }
-    }
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(pullRefreshState.nestedScrollConnection),
+        modifier = modifier
+            .fillMaxSize(),
         topBar = searchBar,
         floatingActionButton = {
             FloatingActionButton(
@@ -153,15 +148,26 @@ private fun ContactsScreen(
             }
         },
     ) { contentPadding ->
-        Box {
+        val pullToRefreshState = rememberPullToRefreshState()
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
+            state = pullToRefreshState,
+            indicator = {
+                Indicator(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = contentPadding.calculateTopPadding()),
+                    isRefreshing = isRefreshing,
+                    state = pullToRefreshState,
+                )
+            },
+        ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background),
-                contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
-                    top = SearchBarDefaults.InputFieldHeight + 30.dp,
-                    bottom = 20.dp,
-                ),
+                contentPadding = contentPadding + PaddingValues(vertical = 16.dp),
             ) {
                 when (lazyItems.loadState.refresh) {
                     is LoadState.Error -> {
@@ -170,7 +176,7 @@ private fun ContactsScreen(
 
                     is LoadState.Loading,
                     is LoadState.NotLoading,
-                    -> {
+                        -> {
                         items(
                             count = lazyItems.itemCount,
                             key = {
@@ -189,13 +195,6 @@ private fun ContactsScreen(
                     }
                 }
             }
-            PullToRefreshContainer(
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .padding(top = SearchBarDefaults.InputFieldHeight)
-                    .align(Alignment.TopCenter),
-                state = pullRefreshState,
-            )
         }
     }
 }
@@ -270,7 +269,13 @@ private fun PreviewContactsScreen() {
                 ),
             )
             ContactsScreen(
-                searchBar = { },
+                searchBar = {
+                    MonicaSearchBar(
+                        modifier = Modifier
+                            .padding(top = 16.dp),
+                        userAvatar = { },
+                    )
+                },
                 lazyItems = lazyItems.collectAsLazyPagingItems(),
                 isRefreshing = false,
                 onRefresh = { },

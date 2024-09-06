@@ -1,6 +1,7 @@
 package com.teobaranga.monica.dashboard
 
 import DashboardNavGraph
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,6 +40,7 @@ import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.ui.rememberSearchBarState
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -46,13 +49,21 @@ import kotlinx.coroutines.flow.flowOf
 internal fun Dashboard(navigator: DestinationsNavigator, viewModel: DashboardViewModel = hiltViewModel()) {
     val userUiState by viewModel.userUiState.collectAsStateWithLifecycle()
     val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
+    val searchBarState = rememberSearchBarState()
     DashboardScreen(
+        modifier = Modifier
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    searchBarState.shouldBeActive = false
+                }
+            },
         searchBar = {
             var shouldShowAccount by remember { mutableStateOf(false) }
             MonicaSearchBar(
                 modifier = Modifier
                     .statusBarsPadding()
                     .padding(top = 16.dp),
+                state = searchBarState,
                 userAvatar = {
                     val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
                     userAvatar?.let {
@@ -216,7 +227,13 @@ private fun PreviewDashboardScreen() {
                 ),
             )
             DashboardScreen(
-                searchBar = { },
+                searchBar = {
+                    MonicaSearchBar(
+                        modifier = Modifier
+                            .padding(top = 16.dp),
+                        userAvatar = { },
+                    )
+                },
                 userUiState = UserUiState(
                     userInfo = UserUiState.UserInfo(
                         name = "Teo",
