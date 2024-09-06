@@ -26,13 +26,11 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalMonthDayFormatter provides getMonthDayFormatter(),
                 ) {
-                    MonicaBackground {
-                        DestinationsNavHost(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            navGraph = NavGraphs.root,
-                        )
-                    }
+                    DestinationsNavHost(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        navGraph = NavGraphs.root,
+                    )
                 }
             }
         }

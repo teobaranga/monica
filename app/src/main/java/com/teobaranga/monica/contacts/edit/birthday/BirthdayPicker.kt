@@ -75,7 +75,7 @@ private fun BirthdayPicker(
         modifier = modifier,
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
-        windowInsets = WindowInsets.Zero,
+        contentWindowInsets = { WindowInsets.Zero },
     ) {
         val focusManager = LocalFocusManager.current
 

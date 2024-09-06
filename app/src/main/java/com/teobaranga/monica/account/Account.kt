@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teobaranga.monica.ui.PreviewPixel4
+import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
 @Composable
@@ -37,7 +38,7 @@ private fun AccountScreen(onClearAuthorization: () -> Unit, onDismissRequest: ()
         modifier = Modifier
             .statusBarsPadding(),
         onDismissRequest = onDismissRequest,
-        windowInsets = WindowInsets(0, 0, 0, 0),
+        contentWindowInsets = { WindowInsets.Zero },
     ) {
         Column(
             modifier = Modifier

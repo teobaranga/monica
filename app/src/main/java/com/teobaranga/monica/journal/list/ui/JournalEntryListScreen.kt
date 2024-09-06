@@ -2,14 +2,9 @@ package com.teobaranga.monica.journal.list.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -18,21 +13,19 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBarDefaults
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
+import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
@@ -50,21 +43,9 @@ fun JournalEntryListScreen(
     onEntryAdd: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val pullRefreshState = rememberPullToRefreshState()
-    if (pullRefreshState.isRefreshing) {
-        LaunchedEffect(Unit) {
-            onRefresh()
-        }
-    }
-    LaunchedEffect(isRefreshing) {
-        if (!isRefreshing) {
-            pullRefreshState.endRefresh()
-        }
-    }
     Scaffold(
         modifier = modifier
-            .fillMaxSize()
-            .nestedScroll(pullRefreshState.nestedScrollConnection),
+            .fillMaxSize(),
         topBar = searchBar,
         floatingActionButton = {
             FloatingActionButton(
@@ -74,16 +55,27 @@ fun JournalEntryListScreen(
             }
         },
     ) { contentPadding ->
-        Box {
+        val pullToRefreshState = rememberPullToRefreshState()
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
+            state = pullToRefreshState,
+            indicator = {
+                Indicator(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = contentPadding.calculateTopPadding()),
+                    isRefreshing = isRefreshing,
+                    state = pullToRefreshState,
+                )
+            },
+        ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = WindowInsets.statusBars.asPaddingValues() + PaddingValues(
-                    top = SearchBarDefaults.InputFieldHeight + 36.dp,
-                    bottom = 20.dp + FabHeight + FabPadding,
-                ),
+                contentPadding = contentPadding + PaddingValues(vertical = 16.dp),
             ) {
                 when (lazyItems.loadState.refresh) {
                     is LoadState.Error -> {
@@ -92,7 +84,7 @@ fun JournalEntryListScreen(
 
                     is LoadState.Loading,
                     is LoadState.NotLoading,
-                    -> {
+                        -> {
                         items(
                             count = lazyItems.itemCount,
                             key = {
@@ -115,13 +107,6 @@ fun JournalEntryListScreen(
                     }
                 }
             }
-            PullToRefreshContainer(
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .padding(top = SearchBarDefaults.InputFieldHeight)
-                    .align(Alignment.TopCenter),
-                state = pullRefreshState,
-            )
         }
     }
 }
@@ -150,7 +135,13 @@ private fun PreviewJournalScreen() {
             ),
         )
         JournalEntryListScreen(
-            searchBar = { },
+            searchBar = {
+                MonicaSearchBar(
+                    modifier = Modifier
+                        .padding(top = 16.dp),
+                    userAvatar = { },
+                )
+            },
             lazyItems = journalItems.collectAsLazyPagingItems(),
             isRefreshing = false,
             onRefresh = { },

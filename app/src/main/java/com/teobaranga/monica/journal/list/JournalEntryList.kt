@@ -2,6 +2,7 @@ package com.teobaranga.monica.journal.list
 
 import JournalNavGraph
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
@@ -13,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -26,6 +28,7 @@ import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.journal.list.ui.JournalEntryListScreen
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.ui.rememberSearchBarState
 
 @Destination<JournalNavGraph>(start = true)
 @Composable
@@ -35,7 +38,14 @@ internal fun JournalEntryList(
 ) {
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+    val searchBarState = rememberSearchBarState()
     JournalEntryListScreen(
+        modifier = Modifier
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    searchBarState.shouldBeActive = false
+                }
+            },
         searchBar = {
             var shouldShowAccount by remember { mutableStateOf(false) }
             val colors = arrayOf(
@@ -47,7 +57,8 @@ internal fun JournalEntryList(
                 modifier = Modifier
                     .background(Brush.verticalGradient(colorStops = colors))
                     .statusBarsPadding()
-                    .padding(top = 16.dp, bottom = 20.dp),
+                    .padding(top = 16.dp),
+                state = searchBarState,
                 userAvatar = {
                     val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
                     userAvatar?.let {
