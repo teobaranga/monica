@@ -43,8 +43,6 @@ internal fun Project.configureAndroidCompose(
             add("implementation", libs.compose.ui.graphics)
             add("implementation", libs.compose.ui.tooling.preview)
             add("implementation", libs.compose.material3)
-            // Override foundation-text to get access to BasicTextField2
-            add("implementation", libs.compose.foundation.text)
 
             add("androidTestImplementation", platform(libs.compose.bom))
             add("androidTestImplementation", libs.compose.ui.test.junit4)
