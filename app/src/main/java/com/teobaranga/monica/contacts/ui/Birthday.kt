@@ -3,6 +3,7 @@ package com.teobaranga.monica.contacts.ui
 import com.teobaranga.monica.contacts.data.ContactEntity
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.Month
 import java.time.MonthDay
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -27,7 +28,7 @@ fun Birthday.toDomainBirthday(): ContactEntity.Birthdate {
             isAgeBased = true,
             isYearUnknown = false,
             date = OffsetDateTime.now().minusYears(age.toLong())
-                .withMonth(1)
+                .withMonth(Month.JANUARY.value)
                 .withDayOfMonth(1)
                 .truncatedTo(ChronoUnit.HOURS),
         )

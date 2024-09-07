@@ -22,10 +22,17 @@ class BirthdayPickerViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            snapshotFlow { uiState.ageTextFieldState.text }
+            snapshotFlow { uiState.age.birthday }
                 .drop(1)
                 .collectLatest {
                     uiState.setAgeBased()
+                }
+        }
+        viewModelScope.launch {
+            snapshotFlow { uiState.unknownYear.birthday }
+                .drop(1)
+                .collectLatest {
+                    uiState.setUnknownYear()
                 }
         }
     }
