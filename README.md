@@ -1,7 +1,7 @@
 Monica
 ==================
 
-This app serves as Android client for the awesome [monica](https://github.com/monicahq/monica) personal relationship management system.
+This app serves as an offline-first Android client for the awesome [monica](https://github.com/monicahq/monica) personal relationship management system.
 
 This project is not affiliated or endorsed by the official Monica maintainers.
 
@@ -9,7 +9,11 @@ This project is not affiliated or endorsed by the official Monica maintainers.
 
 # Features
 
-TBD
+- Contacts, including avatars
+- Activities with contacts
+- Journal
+
+More to come...
 
 ## Screenshots
 
