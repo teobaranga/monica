@@ -15,8 +15,18 @@ data class CreateContactRequest(
     val nickname: String?,
     @Json(name = "gender_id")
     val genderId: Int,
+    @Json(name = "birthdate_day")
+    val birthdateDay: Int?,
+    @Json(name = "birthdate_month")
+    val birthdateMonth: Int?,
+    @Json(name = "birthdate_year")
+    val birthdateYear: Int?,
+    @Json(name = "birthdate_is_age_based")
+    val birthdateIsAgeBased: Boolean,
     @Json(name = "is_birthdate_known")
     val isBirthdateKnown: Boolean,
+    @Json(name = "birthdate_age")
+    val birthdateAge: Int?,
     @Json(name = "is_deceased")
     val isDeceased: Boolean,
     @Json(name = "is_deceased_date_known")

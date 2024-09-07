@@ -1,13 +1,13 @@
 package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.ApiResponse
-import com.teobaranga.monica.activities.data.CreateContactRequest
 import com.teobaranga.monica.data.sync.SyncStatus
 import javax.inject.Inject
 
 class ContactNewSynchronizer @Inject constructor(
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
+    private val contactRequestMapper: ContactRequestMapper,
 ) {
 
     suspend fun sync() {
@@ -15,22 +15,12 @@ class ContactNewSynchronizer @Inject constructor(
 
         val newContacts = contactDao.getBySyncStatus(SyncStatus.NEW)
 
-        for (newContact in newContacts) {
-            val response = contactApi.createContact(
-                CreateContactRequest(
-                    firstName = newContact.firstName,
-                    lastName = newContact.lastName,
-                    nickname = newContact.nickname,
-                    genderId = 1,
-                    isBirthdateKnown = false,
-                    isDeceased = false,
-                    isDeceasedDateKnown = false,
-                ),
-            )
-            when (response) {
+        for (entry in newContacts) {
+            val request = contactRequestMapper(entry)
+            when (val response = contactApi.createContact(request)) {
                 is ApiResponse.Success -> {
                     val entity = response.data.data.toEntity()
-                    contactDao.sync(newContact.contactId, entity)
+                    contactDao.sync(entry.contactId, entity)
                 }
 
                 else -> {
