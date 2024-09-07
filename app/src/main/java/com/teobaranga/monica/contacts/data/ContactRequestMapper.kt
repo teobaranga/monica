@@ -33,7 +33,9 @@ class ContactRequestMapper @Inject constructor() {
     }
 
     private fun ContactEntity.getBirthdateYear(): Int? {
-        return birthdate?.date?.year
+        return birthdate?.run {
+            date.year.takeIf { !isYearUnknown }
+        }
     }
 
     private fun ContactEntity.getBirthdateAge(): Int? {
