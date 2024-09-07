@@ -24,28 +24,11 @@ abstract class ContactActivitiesDao {
     @Transaction
     abstract fun getContactActivities(contactId: Int): Flow<List<ContactActivityWithParticipants>>
 
-    @Query(
-        """
-        SELECT contact_activity.* FROM contact_activity
-        INNER JOIN contact_activity_cross_refs ON contact_activity_cross_refs.activityId = contact_activity.activityId
-        INNER JOIN contacts ON contacts.contactId = contact_activity_cross_refs.contactId
-        WHERE contact_activity.activityId = :activityId
-        """,
-    )
-    @RewriteQueriesToDropUnusedColumns
+    @Query("SELECT * FROM contact_activity WHERE activityId = :activityId")
     @Transaction
     abstract fun getActivity(activityId: Int): Flow<ContactActivityWithParticipants>
 
-    @Query(
-        """
-        SELECT contact_activity.* FROM contact_activity
-        INNER JOIN contact_activity_cross_refs ON contact_activity_cross_refs.activityId = contact_activity.activityId
-        INNER JOIN contacts ON contacts.contactId = contact_activity_cross_refs.contactId
-        WHERE contact_activity.syncStatus = :status
-        ORDER BY date(date) DESC
-        """,
-    )
-    @RewriteQueriesToDropUnusedColumns
+    @Query("SELECT * FROM contact_activity WHERE syncStatus = :status ORDER BY date(date) DESC")
     @Transaction
     abstract suspend fun getActivitiesByStatus(status: SyncStatus): List<ContactActivityWithParticipants>
 

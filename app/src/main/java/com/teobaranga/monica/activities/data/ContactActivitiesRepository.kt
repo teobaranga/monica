@@ -50,10 +50,10 @@ internal class ContactActivitiesRepository @Inject constructor(
          * Create new entry using API
          * Insert response into Room, should ideally have a similar ID but keep a map of local to remote ID
          */
-        val localId = contactActivitiesDao.getMaxId() + 1
+        val activityId = contactActivitiesDao.getMaxId() + 1
         val createdDate = OffsetDateTime.now()
         val entity = ContactActivityEntity(
-            activityId = localId,
+            activityId = activityId,
             title = title,
             description = description,
             date = date,
@@ -62,10 +62,10 @@ internal class ContactActivitiesRepository @Inject constructor(
             syncStatus = SyncStatus.NEW,
         )
         val crossRefs = participants
-            .map {
+            .map { contactId ->
                 ContactActivityCrossRef(
-                    contactId = it,
-                    activityId = localId,
+                    contactId = contactId,
+                    activityId = activityId,
                 )
             }
         contactActivitiesDao.upsert(
