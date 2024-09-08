@@ -46,3 +46,6 @@ captures/
 
 # Keystore
 app/release.jks
+
+# Firebase
+app/google-services.json
