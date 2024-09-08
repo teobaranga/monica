@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.monica.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -103,6 +104,8 @@ dependencies {
     implementation(libs.sandwich.retrofit)
 
     implementation(libs.timber)
+
+    implementation(platform(libs.firebase.bom))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

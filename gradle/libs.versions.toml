@@ -19,6 +19,8 @@ compose-rules-ktlint = "0.4.11"
 core-ktx = "1.13.1"
 datastore = "1.1.1"
 desugar-jdk-libs = "2.1.2"
+firebase-bom = "33.2.0"
+google-services = "4.4.2"
 hilt-navigation-compose = "1.2.0"
 junit = "4.13.2"
 kotlinx-coroutines-test = "1.8.1"
@@ -51,6 +53,7 @@ compose-placeholder = { group = "com.eygraber", name = "compose-placeholder-mate
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
@@ -98,6 +101,7 @@ monica-hilt = { id = "monica.hilt", version = "unspecified" }
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
