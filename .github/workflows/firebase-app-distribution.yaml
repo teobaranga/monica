@@ -1,0 +1,30 @@
+name: Firebase App Distribution
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-notes:
+        description: 'Release notes'
+        required: false
+        type: string
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download release APK
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: push.yaml
+          branch: main
+          name: apk-release
+      - name: Upload release APK
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: testers
+          file: app-release.apk
+          releaseNotes: ${{ inputs.release-notes }}
