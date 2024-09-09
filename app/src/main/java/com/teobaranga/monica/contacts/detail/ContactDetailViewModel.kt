@@ -52,6 +52,7 @@ internal class ContactDetailViewModel @AssistedInject constructor(
                         ),
                         fullName = contact.completeName,
                         birthday = contact.birthdate?.toUiBirthday(),
+                        gender = contact.gender,
                     ),
                     ContactInfoActivitiesSection(contactId),
                     ContactInfoContactSection,

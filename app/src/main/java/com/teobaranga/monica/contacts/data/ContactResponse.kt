@@ -20,8 +20,6 @@ data class ContactResponse(
     val initials: String,
     @Json(name = "gender")
     val gender: String?,
-    @Json(name = "gender_type")
-    val genderId: String?,
     @Json(name = "information")
     val info: Information,
     @Json(name = "updated_at")

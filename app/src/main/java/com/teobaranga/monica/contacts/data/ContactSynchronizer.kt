@@ -72,6 +72,7 @@ internal fun ContactResponse.toEntity(): ContactEntity {
             color = info.avatar.color,
         ),
         birthdate = info.dates?.birthdate?.toBirthday(),
+        gender = gender,
         updated = updated,
         syncStatus = SyncStatus.UP_TO_DATE,
     )

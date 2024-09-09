@@ -194,6 +194,7 @@ private fun PreviewContactDetailScreen() {
                             avatarUrl = null,
                         ),
                         birthday = null,
+                        gender = null,
                     ),
                     ContactInfoContactSection,
                     ContactInfoRelationshipsSection,

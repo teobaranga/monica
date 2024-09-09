@@ -91,6 +91,7 @@ internal class ContactRepository @Inject constructor(
             completeName = getCompleteName(firstName, lastName, nickname),
             initials = getInitials(firstName, lastName),
             birthdate = birthdate,
+            gender = null,
             updated = createdDate,
             // Avatar is set separately
             avatar = getRandomAvatar(),
