@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import com.teobaranga.monica.auth.AuthorizationRepository
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.PARAM_CLIENT_ID
 import com.teobaranga.monica.data.PARAM_REDIRECT_URI
 import com.teobaranga.monica.data.PARAM_RESPONSE_TYPE
@@ -17,7 +18,6 @@ import com.teobaranga.monica.data.REDIRECT_URI
 import com.teobaranga.monica.settings.getOAuthSettings
 import com.teobaranga.monica.settings.oAuthSettings
 import com.teobaranga.monica.setup.domain.SignInUseCase
-import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

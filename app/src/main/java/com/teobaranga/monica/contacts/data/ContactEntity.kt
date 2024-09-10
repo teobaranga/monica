@@ -33,6 +33,7 @@ data class ContactEntity(
     val avatar: Avatar,
     @Embedded(prefix = "birthdate_")
     val birthdate: Birthdate?,
+    val genderId: Int?,
     val updated: OffsetDateTime?,
     val syncStatus: SyncStatus,
 ) {

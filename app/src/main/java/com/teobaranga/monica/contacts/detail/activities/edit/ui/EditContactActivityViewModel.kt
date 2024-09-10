@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.activities.data.ContactActivitiesRepository
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.list.userAvatar
-import com.teobaranga.monica.util.coroutines.Dispatcher
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

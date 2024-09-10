@@ -1,4 +1,4 @@
-package com.teobaranga.monica.util.coroutines
+package com.teobaranga.monica.core.dispatcher
 
 import dagger.Module
 import dagger.Provides
@@ -10,6 +10,10 @@ import javax.inject.Qualifier
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
+annotation class DefaultDispatcher
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
 annotation class MainDispatcher
 
 @Retention(AnnotationRetention.RUNTIME)
@@ -17,6 +21,7 @@ annotation class MainDispatcher
 annotation class IoDispatcher
 
 interface Dispatcher {
+    val default: CoroutineDispatcher
     val main: CoroutineDispatcher
     val io: CoroutineDispatcher
 }
@@ -24,6 +29,10 @@ interface Dispatcher {
 @Module
 @InstallIn(SingletonComponent::class)
 object CoroutineDispatchersModule {
+
+    @DefaultDispatcher
+    @Provides
+    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @MainDispatcher
     @Provides
@@ -35,12 +44,15 @@ object CoroutineDispatchersModule {
 
     @Provides
     fun provideDispatcher(
+        @DefaultDispatcher
+        defaultDispatcher: CoroutineDispatcher,
         @MainDispatcher
         mainDispatcher: CoroutineDispatcher,
         @IoDispatcher
         ioDispatcher: CoroutineDispatcher,
     ): Dispatcher {
         return object : Dispatcher {
+            override val default = defaultDispatcher
             override val main = mainDispatcher
             override val io = ioDispatcher
         }

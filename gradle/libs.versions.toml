@@ -23,7 +23,7 @@ firebase-bom = "33.2.0"
 google-services = "4.4.2"
 hilt-navigation-compose = "1.2.0"
 junit = "4.13.2"
-kotlinx-coroutines-test = "1.8.1"
+kotlinx-coroutines = "1.8.1"
 moshi = "1.15.1"
 moshi-converter = "2.11.0"
 okhttp = "4.12.0"
@@ -56,9 +56,11 @@ desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", ver
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
 moshi-adapters = { group = "com.squareup.moshi", name = "moshi-adapters", version.ref = "moshi" }
 moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshi-converter" }
@@ -75,7 +77,6 @@ sandwich-retrofit = { group = "com.github.skydoves", name = "sandwich-retrofit",
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycle" }
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
 lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
@@ -97,6 +98,7 @@ monica-android-feature = { id = "monica.android.feature", version = "unspecified
 monica-android-library = { id = "monica.android.library", version = "unspecified" }
 monica-android-compose = { id = "monica.android.compose", version = "unspecified" }
 monica-hilt = { id = "monica.hilt", version = "unspecified" }
+monica-jvm-library = { id = "monica.jvm.library", version = "unspecified" }
 
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }

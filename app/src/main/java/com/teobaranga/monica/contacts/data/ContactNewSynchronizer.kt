@@ -8,6 +8,7 @@ class ContactNewSynchronizer @Inject constructor(
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
     private val contactRequestMapper: ContactRequestMapper,
+    private val contactEntityMapper: ContactEntityMapper,
 ) {
 
     suspend fun sync() {
@@ -19,7 +20,7 @@ class ContactNewSynchronizer @Inject constructor(
             val request = contactRequestMapper(entry)
             when (val response = contactApi.createContact(request)) {
                 is ApiResponse.Success -> {
-                    val entity = response.data.data.toEntity()
+                    val entity = contactEntityMapper(response.data.data)
                     contactDao.sync(entry.contactId, entity)
                 }
 

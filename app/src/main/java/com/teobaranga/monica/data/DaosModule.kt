@@ -20,6 +20,7 @@ import com.teobaranga.monica.activities.data.ContactActivitiesDao
 import com.teobaranga.monica.contacts.data.ContactDao
 import com.teobaranga.monica.data.photo.PhotoDao
 import com.teobaranga.monica.data.user.UserDao
+import com.teobaranga.monica.genders.data.GendersDao
 import com.teobaranga.monica.journal.database.JournalDao
 import dagger.Module
 import dagger.Provides
@@ -43,4 +44,7 @@ object DaosModule {
 
     @Provides
     fun providesJournalDao(database: MonicaDatabase): JournalDao = database.journalDao()
+
+    @Provides
+    fun providesGendersDao(database: MonicaDatabase): GendersDao = database.gendersDao()
 }

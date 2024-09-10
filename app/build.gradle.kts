@@ -62,10 +62,11 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":core:dispatcher"))
     implementation(project(":feature:configuration"))
+    implementation(project(":feature:genders"))
 
     implementation(libs.core.ktx)
-    implementation(libs.lifecycle.process)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.compose)

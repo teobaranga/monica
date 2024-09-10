@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.configuration.domain.ConfigurationDataStore
 import com.teobaranga.monica.configuration.domain.ConfigurationItem
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
@@ -14,6 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConfigurationViewModel @Inject constructor(
+    private val dispatcher: Dispatcher,
     private val configurationDataStore: ConfigurationDataStore,
 ) : ViewModel() {
 
@@ -21,13 +22,13 @@ class ConfigurationViewModel @Inject constructor(
 
     init {
         with(viewModelScope) {
-            launch(Dispatchers.IO) {
+            launch(dispatcher.io) {
                 configurationDataStore.getAsFlow(ConfigurationItem.ShouldClearDatabaseOnNextLaunch)
                     .collectLatest {
                         uiState.shouldClearDatabaseOnNextLaunch = it
                     }
             }
-            launch(Dispatchers.IO) {
+            launch(dispatcher.io) {
                 snapshotFlow { uiState.shouldClearDatabaseOnNextLaunch }
                     .drop(1)
                     .collectLatest {

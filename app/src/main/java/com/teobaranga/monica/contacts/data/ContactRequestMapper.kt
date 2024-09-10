@@ -12,7 +12,7 @@ class ContactRequestMapper @Inject constructor() {
             firstName = entity.firstName,
             lastName = entity.lastName,
             nickname = entity.nickname,
-            genderId = 1,
+            genderId = entity.genderId,
             birthdateDay = entity.getBirthdateDay(),
             birthdateMonth = entity.getBirthdateMonth(),
             birthdateYear = entity.getBirthdateYear(),

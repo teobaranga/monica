@@ -1,9 +1,9 @@
 package com.teobaranga.monica.contacts.data
 
 import com.teobaranga.monica.contacts.list.model.Contact
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.database.OrderBy
 import com.teobaranga.monica.paging.RoomPagingSource
-import com.teobaranga.monica.util.coroutines.Dispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

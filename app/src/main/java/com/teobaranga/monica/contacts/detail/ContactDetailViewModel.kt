@@ -8,6 +8,7 @@ import com.teobaranga.monica.contacts.detail.activities.ui.ContactInfoActivities
 import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
+import com.teobaranga.monica.genders.data.GenderRepository
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -27,6 +28,7 @@ internal class ContactDetailViewModel @AssistedInject constructor(
     contactRepository: ContactRepository,
     @Assisted
     private val contactId: Int,
+    private val genderRepository: GenderRepository,
 ) : ViewModel() {
 
     private val _effects = MutableSharedFlow<ContactDetailEffect>()
@@ -52,6 +54,7 @@ internal class ContactDetailViewModel @AssistedInject constructor(
                         ),
                         fullName = contact.completeName,
                         birthday = contact.birthdate?.toUiBirthday(),
+                        gender = contact.genderId?.let { genderRepository.getById(it) }?.name,
                     ),
                     ContactInfoActivitiesSection(contactId),
                     ContactInfoContactSection,

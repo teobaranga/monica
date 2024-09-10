@@ -36,6 +36,13 @@ class HiltConventionPlugin : Plugin<Project> {
                     add("implementation", libs.hilt.android)
                 }
             }
+
+            /** Add support for JVM modules */
+            pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
+                dependencies {
+                    add("implementation", libs.hilt.core)
+                }
+            }
         }
     }
 }

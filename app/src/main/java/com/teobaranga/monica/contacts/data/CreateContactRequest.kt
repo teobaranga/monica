@@ -14,7 +14,7 @@ data class CreateContactRequest(
     @Json(name = "nickname")
     val nickname: String?,
     @Json(name = "gender_id")
-    val genderId: Int,
+    val genderId: Int?,
     @Json(name = "birthdate_day")
     val birthdateDay: Int?,
     @Json(name = "birthdate_month")
