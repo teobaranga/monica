@@ -2,11 +2,11 @@ package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.photo.ContactPhotos
 import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.genders.domain.Gender
 import com.teobaranga.monica.journal.data.ContactDeleteSynchronizer
-import com.teobaranga.monica.core.dispatcher.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow

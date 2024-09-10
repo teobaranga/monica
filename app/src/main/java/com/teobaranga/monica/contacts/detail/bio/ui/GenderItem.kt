@@ -28,7 +28,7 @@ internal fun GenderItem(gender: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-private fun PreviewBirthdayItem() {
+private fun PreviewGenderItem() {
     MonicaTheme {
         GenderItem(
             modifier = Modifier

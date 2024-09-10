@@ -5,11 +5,11 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.MonicaApi
 import com.teobaranga.monica.data.TokenRequest
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.settings.tokenStorage
-import com.teobaranga.monica.core.dispatcher.Dispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject

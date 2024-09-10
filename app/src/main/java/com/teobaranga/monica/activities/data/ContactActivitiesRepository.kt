@@ -1,7 +1,7 @@
 package com.teobaranga.monica.activities.data
 
-import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.core.dispatcher.Dispatcher
+import com.teobaranga.monica.data.sync.SyncStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow

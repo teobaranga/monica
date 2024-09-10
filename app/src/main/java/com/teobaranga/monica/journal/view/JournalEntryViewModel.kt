@@ -2,9 +2,9 @@ package com.teobaranga.monica.journal.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.journal.data.JournalRepository
 import com.teobaranga.monica.journal.view.ui.JournalEntryUiState
-import com.teobaranga.monica.core.dispatcher.Dispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

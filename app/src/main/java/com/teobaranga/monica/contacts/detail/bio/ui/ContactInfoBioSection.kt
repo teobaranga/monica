@@ -66,7 +66,8 @@ data class ContactInfoBioSection(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp)
                         .padding(top = 24.dp),
-                    gender = gender)
+                    gender = gender,
+                )
             }
         }
     }
