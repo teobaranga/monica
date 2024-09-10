@@ -7,7 +7,9 @@ import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.detail.toUiBirthday
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.contacts.ui.toDomainBirthday
-import com.teobaranga.monica.util.coroutines.Dispatcher
+import com.teobaranga.monica.core.dispatcher.Dispatcher
+import com.teobaranga.monica.genders.domain.Gender
+import com.teobaranga.monica.genders.domain.GetGendersUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -25,28 +27,28 @@ internal class ContactEditViewModel @AssistedInject constructor(
     private val contactId: Int?,
     private val dispatcher: Dispatcher,
     private val contactRepository: ContactRepository,
+    private val getGendersUseCase: GetGendersUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(
-        if (contactId == null) {
-            getEmptyState()
-        } else {
-            ContactEditUiState.Loading
-        }
-    )
+    private val _uiState = MutableStateFlow<ContactEditUiState>(ContactEditUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch(dispatcher.io) {
             val contact = contactId?.let(contactRepository::getContact)?.firstOrNull()
+            val genders = getGendersUseCase().firstOrNull() ?: emptyList()
             _uiState.value = if (contact == null) {
-                getEmptyState()
+                getEmptyState(
+                    genders = genders,
+                )
             } else {
                 ContactEditUiState.Loaded(
                     id = contact.contactId,
                     firstName = contact.firstName,
                     lastName = contact.lastName,
                     nickname = contact.nickname,
+                    initialGender = genders.firstOrNull { it.id == contact.genderId },
+                    genders = genders,
                     initialBirthday = contact.birthdate?.toUiBirthday(),
                 )
             }
@@ -67,6 +69,7 @@ internal class ContactEditViewModel @AssistedInject constructor(
                 firstName = firstname,
                 lastName = uiState.lastName.getValidText(),
                 nickname = uiState.nickname.getValidText(),
+                gender = uiState.gender,
                 birthdate = uiState.birthday?.toDomainBirthday(),
             )
         }
@@ -81,12 +84,14 @@ internal class ContactEditViewModel @AssistedInject constructor(
         }
     }
 
-    private fun getEmptyState(): ContactEditUiState.Loaded {
+    private fun getEmptyState(genders: List<Gender>): ContactEditUiState.Loaded {
         return ContactEditUiState.Loaded(
             id = ID_CONTACT_UNDEFINED,
             firstName = "",
             lastName = null,
             nickname = null,
+            initialGender = null,
+            genders = genders,
             initialBirthday = null,
         )
     }

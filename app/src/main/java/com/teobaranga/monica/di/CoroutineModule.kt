@@ -1,6 +1,6 @@
 package com.teobaranga.monica.di
 
-import com.teobaranga.monica.util.coroutines.Dispatcher
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

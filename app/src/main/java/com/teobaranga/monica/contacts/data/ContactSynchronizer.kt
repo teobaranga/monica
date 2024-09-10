@@ -2,7 +2,6 @@ package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
-import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.data.sync.Synchronizer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -14,6 +13,7 @@ import javax.inject.Singleton
 class ContactSynchronizer @Inject constructor(
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
+    private val contactEntityMapper: ContactEntityMapper,
 ) : Synchronizer {
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
@@ -36,7 +36,7 @@ class ContactSynchronizer @Inject constructor(
                 }
             val contactEntities = contactsResponse.data
                 .map {
-                    it.toEntity()
+                    contactEntityMapper(it)
                 }
 
             contactDao.upsertContacts(contactEntities)
@@ -56,34 +56,5 @@ class ContactSynchronizer @Inject constructor(
         contactDao.delete(removedIds.toList())
 
         syncState.value = Synchronizer.State.IDLE
-    }
-}
-
-internal fun ContactResponse.toEntity(): ContactEntity {
-    return ContactEntity(
-        contactId = id,
-        firstName = firstName,
-        lastName = lastName,
-        nickname = nickname,
-        completeName = completeName,
-        initials = initials,
-        avatar = ContactEntity.Avatar(
-            url = info.avatar.url,
-            color = info.avatar.color,
-        ),
-        birthdate = info.dates?.birthdate?.toBirthday(),
-        gender = gender,
-        updated = updated,
-        syncStatus = SyncStatus.UP_TO_DATE,
-    )
-}
-
-private fun ContactResponse.Information.Dates.Birthdate.toBirthday(): ContactEntity.Birthdate? {
-    return date?.let { date ->
-        ContactEntity.Birthdate(
-            isAgeBased = isAgeBased == true,
-            isYearUnknown = isYearUnknown == true,
-            date = date,
-        )
     }
 }

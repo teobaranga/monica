@@ -4,8 +4,9 @@ import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.data.photo.ContactPhotos
 import com.teobaranga.monica.data.sync.SyncStatus
+import com.teobaranga.monica.genders.domain.Gender
 import com.teobaranga.monica.journal.data.ContactDeleteSynchronizer
-import com.teobaranga.monica.util.coroutines.Dispatcher
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +27,7 @@ internal class ContactRepository @Inject constructor(
     private val contactNewSynchronizer: ContactNewSynchronizer,
     private val contactUpdateSynchronizer: ContactUpdateSynchronizer,
     private val contactDeleteSynchronizer: ContactDeleteSynchronizer,
+    private val contactEntityMapper: ContactEntityMapper,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
@@ -36,7 +38,7 @@ internal class ContactRepository @Inject constructor(
                     Timber.w("Error while loading contact %d: %s", contactId, this)
                 }
                 .getOrNull() ?: return@launch
-            val contact = singleContactResponse.data.toEntity()
+            val contact = contactEntityMapper(singleContactResponse.data)
             contactDao.upsertContacts(listOf(contact))
         }
     }
@@ -66,12 +68,13 @@ internal class ContactRepository @Inject constructor(
         firstName: String,
         lastName: String?,
         nickname: String?,
+        gender: Gender?,
         birthdate: ContactEntity.Birthdate?,
     ) {
         if (contactId != null) {
-            updateContact(contactId, firstName, lastName, nickname, birthdate)
+            updateContact(contactId, firstName, lastName, nickname, gender, birthdate)
         } else {
-            insertContact(firstName, lastName, nickname, birthdate)
+            insertContact(firstName, lastName, nickname, gender, birthdate)
         }
     }
 
@@ -79,6 +82,7 @@ internal class ContactRepository @Inject constructor(
         firstName: String,
         lastName: String?,
         nickname: String?,
+        gender: Gender?,
         birthdate: ContactEntity.Birthdate?,
     ) {
         val localId = contactDao.getMaxId() + 1
@@ -91,7 +95,7 @@ internal class ContactRepository @Inject constructor(
             completeName = getCompleteName(firstName, lastName, nickname),
             initials = getInitials(firstName, lastName),
             birthdate = birthdate,
-            gender = null,
+            genderId = gender?.id,
             updated = createdDate,
             // Avatar is set separately
             avatar = getRandomAvatar(),
@@ -108,6 +112,7 @@ internal class ContactRepository @Inject constructor(
         firstName: String,
         lastName: String?,
         nickname: String?,
+        gender: Gender?,
         birthdate: ContactEntity.Birthdate?,
     ) {
         val originalContact = contactDao.getContact(contactId).firstOrNull() ?: return
@@ -117,6 +122,7 @@ internal class ContactRepository @Inject constructor(
             nickname = nickname,
             completeName = getCompleteName(firstName, lastName, nickname),
             initials = getInitials(firstName, lastName),
+            genderId = gender?.id,
             birthdate = birthdate,
             updated = OffsetDateTime.now(),
             syncStatus = SyncStatus.EDITED,

@@ -1,4 +1,4 @@
-package com.teobaranga.monica.util.coroutines
+package com.teobaranga.monica.core.dispatcher
 
 import dagger.Module
 import dagger.Provides

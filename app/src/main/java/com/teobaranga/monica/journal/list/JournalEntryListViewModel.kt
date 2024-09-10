@@ -14,7 +14,7 @@ import com.teobaranga.monica.journal.data.JournalRepository
 import com.teobaranga.monica.journal.database.JournalEntryEntity
 import com.teobaranga.monica.journal.list.ui.JournalEntryListItem
 import com.teobaranga.monica.user.userAvatar
-import com.teobaranga.monica.util.coroutines.Dispatcher
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted

@@ -9,7 +9,7 @@ import com.teobaranga.monica.data.MonicaApi
 import com.teobaranga.monica.data.TokenRequest
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.settings.tokenStorage
-import com.teobaranga.monica.util.coroutines.Dispatcher
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject

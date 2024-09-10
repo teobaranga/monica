@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "136b2879ccc54e4faa47d9d21265fe20",
+    "identityHash": "a7343b9f5afba58c866a9f22ca290ef7",
     "entities": [
       {
         "tableName": "me",
@@ -38,7 +38,7 @@
       },
       {
         "tableName": "contacts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`contactId` INTEGER NOT NULL, `firstName` TEXT NOT NULL, `lastName` TEXT, `nickname` TEXT, `completeName` TEXT NOT NULL, `initials` TEXT NOT NULL, `gender` TEXT, `updated` TEXT, `syncStatus` TEXT NOT NULL, `avatar_url` TEXT, `avatar_color` TEXT NOT NULL, `birthdate_isAgeBased` INTEGER, `birthdate_isYearUnknown` INTEGER, `birthdate_date` TEXT, PRIMARY KEY(`contactId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`contactId` INTEGER NOT NULL, `firstName` TEXT NOT NULL, `lastName` TEXT, `nickname` TEXT, `completeName` TEXT NOT NULL, `initials` TEXT NOT NULL, `genderId` INTEGER, `updated` TEXT, `syncStatus` TEXT NOT NULL, `avatar_url` TEXT, `avatar_color` TEXT NOT NULL, `birthdate_isAgeBased` INTEGER, `birthdate_isYearUnknown` INTEGER, `birthdate_date` TEXT, PRIMARY KEY(`contactId`))",
         "fields": [
           {
             "fieldPath": "contactId",
@@ -77,9 +77,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "gender",
-            "columnName": "gender",
-            "affinity": "TEXT",
+            "fieldPath": "genderId",
+            "columnName": "genderId",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
@@ -326,12 +326,38 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "genders",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`genderId` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`genderId`))",
+        "fields": [
+          {
+            "fieldPath": "genderId",
+            "columnName": "genderId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "genderId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '136b2879ccc54e4faa47d9d21265fe20')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a7343b9f5afba58c866a9f22ca290ef7')"
     ]
   }
 }

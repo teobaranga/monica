@@ -4,7 +4,7 @@ import com.teobaranga.monica.database.OrderBy
 import com.teobaranga.monica.journal.database.JournalDao
 import com.teobaranga.monica.journal.database.JournalEntryEntity
 import com.teobaranga.monica.paging.RoomPagingSource
-import com.teobaranga.monica.util.coroutines.Dispatcher
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

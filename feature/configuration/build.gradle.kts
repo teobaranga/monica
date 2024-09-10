@@ -10,6 +10,7 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":core:dispatcher"))
 
     implementation(libs.activity.compose)
 

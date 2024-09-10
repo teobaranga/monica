@@ -77,5 +77,9 @@ gradlePlugin {
             id = "monica.hilt"
             implementationClass = "HiltConventionPlugin"
         }
+        register("jvmLibrary") {
+            id = "monica.jvm.library"
+            implementationClass = "JvmLibraryConventionPlugin"
+        }
     }
 }

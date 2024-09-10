@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.edit.birthday.BirthdayPicker
 import com.teobaranga.monica.contacts.edit.birthday.BirthdaySection
+import com.teobaranga.monica.contacts.edit.gender.GenderSection
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.ui.PreviewPixel4
@@ -142,6 +143,18 @@ private fun ContactEditLoaded(
             placeholder = "Nickname (optional)",
         )
 
+        GenderSection(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(top = 24.dp),
+            gender = uiState.gender,
+            onGenderChange = { gender ->
+                uiState.gender = gender
+            },
+            genders = uiState.genders,
+        )
+
         BirthdaySection(
             modifier = Modifier
                 .fillMaxWidth()
@@ -196,6 +209,8 @@ private fun PreviewContactEditScreen() {
                 firstName = "",
                 lastName = null,
                 nickname = null,
+                initialGender = null,
+                genders = emptyList(),
                 initialBirthday = null,
             ),
             topBar = {

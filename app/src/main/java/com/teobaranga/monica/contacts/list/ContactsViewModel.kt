@@ -11,7 +11,7 @@ import com.teobaranga.monica.contacts.data.ContactSynchronizer
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.user.userAvatar
-import com.teobaranga.monica.util.coroutines.Dispatcher
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted

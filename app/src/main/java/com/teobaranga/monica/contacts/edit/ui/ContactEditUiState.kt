@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.teobaranga.monica.contacts.ui.Birthday
+import com.teobaranga.monica.genders.domain.Gender
 
 sealed interface ContactEditUiState {
     data object Loading : ContactEditUiState
@@ -16,6 +17,8 @@ sealed interface ContactEditUiState {
         firstName: String,
         lastName: String?,
         nickname: String?,
+        initialGender: Gender?,
+        val genders: List<Gender>,
         initialBirthday: Birthday?,
     ) : ContactEditUiState {
 
@@ -24,6 +27,8 @@ sealed interface ContactEditUiState {
         val lastName = TextFieldState(lastName.orEmpty())
 
         val nickname = TextFieldState(nickname.orEmpty())
+
+        var gender by mutableStateOf(initialGender)
 
         var birthday by mutableStateOf(initialBirthday)
 
@@ -35,6 +40,7 @@ sealed interface ContactEditUiState {
                 firstName.text == other.firstName.text &&
                 lastName.text == other.lastName.text &&
                 nickname.text == other.nickname.text &&
+                gender == other.gender &&
                 birthday == other.birthday
         }
 
@@ -44,6 +50,7 @@ sealed interface ContactEditUiState {
             result = 31 * result + lastName.hashCode()
             result = 31 * result + nickname.hashCode()
             result = 31 * result + (birthday?.hashCode() ?: 0)
+            result = 31 * result + (gender?.hashCode() ?: 0)
             return result
         }
     }
