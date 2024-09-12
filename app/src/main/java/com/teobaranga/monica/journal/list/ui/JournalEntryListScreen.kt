@@ -84,7 +84,7 @@ fun JournalEntryListScreen(
 
                     is LoadState.Loading,
                     is LoadState.NotLoading,
-                        -> {
+                    -> {
                         items(
                             count = lazyItems.itemCount,
                             key = {

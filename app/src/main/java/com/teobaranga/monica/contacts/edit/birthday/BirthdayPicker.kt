@@ -114,10 +114,7 @@ private fun BirthdayPicker(
 }
 
 @Composable
-private fun UnknownBirthday(
-    uiState: BirthdayPickerUiState,
-    modifier: Modifier = Modifier,
-) {
+private fun UnknownBirthday(uiState: BirthdayPickerUiState, modifier: Modifier = Modifier) {
     val focusManager = LocalFocusManager.current
     val isSelected = uiState.birthday == null
     Row(

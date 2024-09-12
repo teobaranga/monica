@@ -28,10 +28,10 @@ sealed interface JournalEntryUiState {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
             other as Loaded
-            return id == other.id
-                && title.text == other.title.text
-                && post.text == other.post.text
-                && date == other.date
+            return id == other.id &&
+                title.text == other.title.text &&
+                post.text == other.post.text &&
+                date == other.date
         }
 
         override fun hashCode(): Int {
