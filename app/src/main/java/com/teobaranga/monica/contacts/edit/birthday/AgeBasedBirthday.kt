@@ -24,10 +24,7 @@ import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.ui.text.MonicaTextField
 
 @Composable
-internal fun AgeBasedBirthday(
-    uiState: BirthdayPickerUiState,
-    modifier: Modifier = Modifier,
-) {
+internal fun AgeBasedBirthday(uiState: BirthdayPickerUiState, modifier: Modifier = Modifier) {
     val focusManager = LocalFocusManager.current
     val isSelected = uiState.birthday is Birthday.AgeBased
     val onSelectAgeBased = {

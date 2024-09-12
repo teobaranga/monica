@@ -86,7 +86,6 @@ class SearchBarState {
             val isImeVisible by keyboardAsState()
             return shouldBeActive && (query.isNotBlank() || isImeVisible)
         }
-
 }
 
 @Composable

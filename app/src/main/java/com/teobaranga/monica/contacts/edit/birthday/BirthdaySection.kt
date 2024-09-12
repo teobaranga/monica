@@ -25,11 +25,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-internal fun BirthdaySection(
-    birthday: Birthday?,
-    onBirthdayChange: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+internal fun BirthdaySection(birthday: Birthday?, onBirthdayChange: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
     ) {

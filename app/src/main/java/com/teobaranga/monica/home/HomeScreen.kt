@@ -38,7 +38,11 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Destination<RootGraph>(start = true)
 @Composable
-internal fun Home(navigator: DestinationsNavigator, modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
+internal fun Home(
+    navigator: DestinationsNavigator,
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel(),
+) {
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn == false) {

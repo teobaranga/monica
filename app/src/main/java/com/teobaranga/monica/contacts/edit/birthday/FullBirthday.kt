@@ -16,10 +16,7 @@ import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.ui.button.DateButton
 
 @Composable
-internal fun FullBirthday(
-    uiState: BirthdayPickerUiState,
-    modifier: Modifier = Modifier,
-) {
+internal fun FullBirthday(uiState: BirthdayPickerUiState, modifier: Modifier = Modifier) {
     val focusManager = LocalFocusManager.current
     val isSelected = uiState.birthday is Birthday.Full
     val onSelectFull = {

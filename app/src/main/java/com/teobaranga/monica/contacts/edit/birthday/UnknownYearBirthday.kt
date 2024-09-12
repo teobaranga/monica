@@ -41,10 +41,7 @@ import java.time.Month
 import java.time.format.TextStyle
 
 @Composable
-internal fun UnknownYearBirthday(
-    uiState: BirthdayPickerUiState,
-    modifier: Modifier = Modifier,
-) {
+internal fun UnknownYearBirthday(uiState: BirthdayPickerUiState, modifier: Modifier = Modifier) {
     val focusManager = LocalFocusManager.current
     val isSelected = uiState.birthday is Birthday.UnknownYear
     val onSelectUnknownYear = {
@@ -129,10 +126,7 @@ internal fun UnknownYearBirthday(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MonthDropdown(
-    uiState: BirthdayPickerUiState.UnknownYear,
-    modifier: Modifier = Modifier,
-) {
+private fun MonthDropdown(uiState: BirthdayPickerUiState.UnknownYear, modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(
         modifier = modifier,
