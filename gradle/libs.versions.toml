@@ -99,6 +99,7 @@ monica-android-library = { id = "monica.android.library", version = "unspecified
 monica-android-compose = { id = "monica.android.compose", version = "unspecified" }
 monica-hilt = { id = "monica.hilt", version = "unspecified" }
 monica-jvm-library = { id = "monica.jvm.library", version = "unspecified" }
+monica-network = { id = "monica.network", version = "unspecified" }
 
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }

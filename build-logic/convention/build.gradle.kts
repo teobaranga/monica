@@ -81,5 +81,9 @@ gradlePlugin {
             id = "monica.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
+        register("network") {
+            id = "monica.network"
+            implementationClass = "NetworkConventionPlugin"
+        }
     }
 }

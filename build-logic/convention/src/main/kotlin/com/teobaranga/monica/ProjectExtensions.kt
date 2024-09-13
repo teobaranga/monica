@@ -18,6 +18,16 @@ package com.teobaranga.monica
 
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.DependencyHandlerScope
 
 val Project.libs
     get(): LibrariesForLibs = extensions.getByName("libs") as LibrariesForLibs
+
+
+fun DependencyHandlerScope.implementation(dependencyNotation: Any) {
+    add("implementation", dependencyNotation)
+}
+
+fun DependencyHandlerScope.ksp(dependencyNotation: Any) {
+    add("ksp", dependencyNotation)
+}

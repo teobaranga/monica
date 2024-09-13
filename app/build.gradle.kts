@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.monica.android.application)
     alias(libs.plugins.monica.android.compose)
     alias(libs.plugins.monica.hilt)
+    alias(libs.plugins.monica.network)
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.google.services)
@@ -86,23 +87,14 @@ dependencies {
 
     implementation(libs.datastore.preferences)
 
-    implementation(libs.moshi)
-    implementation(libs.moshi.adapters)
-    implementation(libs.moshi.converter)
-    ksp(libs.moshi.kotlin.codegen)
-
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
 
-    implementation(libs.retrofit)
     debugImplementation(libs.okhttp.logging.interceptor)
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
-
-    implementation(libs.sandwich)
-    implementation(libs.sandwich.retrofit)
 
     implementation(libs.timber)
 
