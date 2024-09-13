@@ -38,17 +38,17 @@ internal fun Project.configureAndroidCompose(
         }
 
         dependencies {
-            add("implementation", platform(libs.compose.bom))
-            add("implementation", libs.compose.ui)
-            add("implementation", libs.compose.ui.graphics)
-            add("implementation", libs.compose.ui.tooling.preview)
-            add("implementation", libs.compose.material3)
+            implementation(platform(libs.compose.bom))
+            implementation(libs.compose.ui)
+            implementation(libs.compose.ui.graphics)
+            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.compose.material3)
 
-            add("androidTestImplementation", platform(libs.compose.bom))
-            add("androidTestImplementation", libs.compose.ui.test.junit4)
+            androidTestImplementation(platform(libs.compose.bom))
+            androidTestImplementation(libs.compose.ui.test.junit4)
 
-            add("debugImplementation", libs.compose.ui.tooling)
-            add("debugImplementation", libs.compose.ui.test.manifest)
+            debugImplementation(libs.compose.ui.tooling)
+            debugImplementation(libs.compose.ui.test.manifest)
         }
     }
 
