@@ -1,4 +1,3 @@
-
 import com.teobaranga.monica.implementation
 import com.teobaranga.monica.ksp
 import com.teobaranga.monica.libs
@@ -9,10 +8,12 @@ import org.gradle.kotlin.dsl.dependencies
 class NetworkConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
+            with(pluginManager) {
+                apply(libs.plugins.moshix.get().pluginId)
+            }
+
             dependencies {
                 // Moshi for JSON serialization
-                implementation(libs.moshi)
-                implementation(libs.moshi.adapters)
                 implementation(libs.moshi.converter)
                 ksp(libs.moshi.kotlin.codegen)
 
