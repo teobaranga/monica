@@ -89,8 +89,9 @@ private inline fun <reified T : KotlinTopLevelExtension> Project.configureKotlin
     }.apply {
         jvmTarget = JvmTarget.JVM_11
         allWarningsAsErrors = warningsAsErrors.toBoolean()
-        freeCompilerArgs.add(
+        freeCompilerArgs.addAll(
             "-Xcontext-receivers",
+            "-opt-in=kotlin.uuid.ExperimentalUuidApi",
         )
     }
 }

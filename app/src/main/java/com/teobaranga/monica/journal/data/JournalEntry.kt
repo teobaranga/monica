@@ -4,14 +4,14 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.teobaranga.monica.data.common.AccountResponse
 import java.time.OffsetDateTime
-import java.util.UUID
+import kotlin.uuid.Uuid
 
 @JsonClass(generateAdapter = true)
 data class JournalEntry(
     @Json(name = "id")
     val id: Int,
     @Json(name = "uuid")
-    val uuid: UUID,
+    val uuid: Uuid,
     @Json(name = "account")
     val account: AccountResponse,
     @Json(name = "title")

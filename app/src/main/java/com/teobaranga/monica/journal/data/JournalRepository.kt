@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.OffsetDateTime
-import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
+import kotlin.uuid.Uuid
 
 @Singleton
 internal class JournalRepository @Inject constructor(
@@ -54,7 +54,7 @@ internal class JournalRepository @Inject constructor(
         val createdDate = OffsetDateTime.now()
         val entry = JournalEntryEntity(
             id = localId,
-            uuid = UUID.randomUUID(),
+            uuid = Uuid.random(),
             title = title,
             post = post,
             date = date,

@@ -14,6 +14,7 @@ import com.teobaranga.monica.data.user.MeEntity
 import com.teobaranga.monica.data.user.UserDao
 import com.teobaranga.monica.database.adapter.LocalDateAdapter
 import com.teobaranga.monica.database.adapter.OffsetDateTimeAdapter
+import com.teobaranga.monica.database.adapter.UuidAdapter
 import com.teobaranga.monica.genders.data.GenderEntity
 import com.teobaranga.monica.genders.data.GendersDao
 import com.teobaranga.monica.journal.database.JournalDao
@@ -35,6 +36,7 @@ import com.teobaranga.monica.journal.database.JournalEntryEntity
 @TypeConverters(
     OffsetDateTimeAdapter::class,
     LocalDateAdapter::class,
+    UuidAdapter::class,
 )
 abstract class MonicaDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
