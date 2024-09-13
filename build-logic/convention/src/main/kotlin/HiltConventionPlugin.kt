@@ -15,6 +15,8 @@
  */
 
 import com.android.build.gradle.api.AndroidBasePlugin
+import com.teobaranga.monica.implementation
+import com.teobaranga.monica.ksp
 import com.teobaranga.monica.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -26,21 +28,21 @@ class HiltConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply(libs.plugins.ksp.get().pluginId)
             dependencies {
-                add("ksp", libs.hilt.compiler)
+                ksp(libs.hilt.compiler)
             }
 
             /** Add support for Android modules, based on [AndroidBasePlugin] */
             pluginManager.withPlugin("com.android.base") {
                 pluginManager.apply(libs.plugins.hilt.get().pluginId)
                 dependencies {
-                    add("implementation", libs.hilt.android)
+                    implementation(libs.hilt.android)
                 }
             }
 
             /** Add support for JVM modules */
             pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
                 dependencies {
-                    add("implementation", libs.hilt.core)
+                    implementation(libs.hilt.core)
                 }
             }
         }

@@ -18,6 +18,27 @@ package com.teobaranga.monica
 
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.DependencyHandlerScope
 
 val Project.libs
     get(): LibrariesForLibs = extensions.getByName("libs") as LibrariesForLibs
+
+fun DependencyHandlerScope.implementation(dependencyNotation: Any) {
+    add("implementation", dependencyNotation)
+}
+
+fun DependencyHandlerScope.debugImplementation(dependencyNotation: Any) {
+    add("debugImplementation", dependencyNotation)
+}
+
+fun DependencyHandlerScope.androidTestImplementation(dependencyNotation: Any) {
+    add("androidTestImplementation", dependencyNotation)
+}
+
+fun DependencyHandlerScope.ksp(dependencyNotation: Any) {
+    add("ksp", dependencyNotation)
+}
+
+fun DependencyHandlerScope.coreLibraryDesugaring(dependencyNotation: Any) {
+    add("coreLibraryDesugaring", dependencyNotation)
+}
