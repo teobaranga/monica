@@ -10,7 +10,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,15 +20,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.theme.MonicaTheme
-import com.teobaranga.monica.util.compose.keyboardAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MonicaSearchBar(
     userAvatar: @Composable () -> Unit,
+    onSearch: (String) -> Unit,
     modifier: Modifier = Modifier,
-    state: SearchBarState = rememberSearchBarState(),
 ) {
+    var query by remember { mutableStateOf("") }
     DockedSearchBar(
         modifier = modifier
             .fillMaxWidth()
@@ -38,16 +37,14 @@ fun MonicaSearchBar(
             SearchBarDefaults.InputField(
                 modifier = Modifier
                     .fillMaxWidth(),
-                query = state.query,
+                query = query,
                 onQueryChange = {
-                    state.query = it
+                    query = it
                 },
-                onSearch = {
-                    state.shouldBeActive = false
-                },
-                expanded = state.active,
+                onSearch = onSearch,
+                expanded = false,
                 onExpandedChange = {
-                    state.shouldBeActive = it
+                    // Never expand
                 },
                 placeholder = {
                     Text(text = "Search something")
@@ -63,35 +60,14 @@ fun MonicaSearchBar(
                 },
             )
         },
-        expanded = state.active,
+        expanded = false,
         onExpandedChange = {
-            state.shouldBeActive = it
+            // Never expand
         },
         content = {
-            // TODO: display results
+            // Display content on a different screen
         },
     )
-}
-
-@Stable
-class SearchBarState {
-
-    var query by mutableStateOf("")
-
-    var shouldBeActive by mutableStateOf(false)
-
-    val active: Boolean
-        @Composable
-        get() {
-            val isImeVisible by keyboardAsState()
-            return shouldBeActive && (query.isNotBlank() || isImeVisible)
-        }
-}
-
-@Composable
-fun rememberSearchBarState(): SearchBarState {
-    // TODO make this saveable
-    return remember { SearchBarState() }
 }
 
 @Preview
@@ -110,6 +86,7 @@ private fun PreviewDashboardSearchBar() {
                     onClick = { },
                 )
             },
+            onSearch = { },
         )
     }
 }

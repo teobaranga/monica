@@ -21,12 +21,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
-import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.generated.destinations.ContactsDestination
 import com.ramcosta.composedestinations.generated.destinations.DashboardDestination
 import com.ramcosta.composedestinations.generated.destinations.HomeDestination
 import com.ramcosta.composedestinations.generated.destinations.JournalEntryListDestination
 import com.ramcosta.composedestinations.generated.destinations.SetupDestination
+import com.ramcosta.composedestinations.generated.navgraphs.HomeGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
@@ -102,7 +102,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     .fillMaxSize()
                     .padding(contentPadding)
                     .consumeWindowInsets(contentPadding),
-                navGraph = NavGraphs.rootHome,
+                navGraph = HomeGraph,
                 engine = engine,
                 navController = navController,
             )

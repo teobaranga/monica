@@ -14,10 +14,12 @@ import com.teobaranga.monica.journal.data.JournalPagingSource
 import com.teobaranga.monica.journal.data.JournalRepository
 import com.teobaranga.monica.journal.database.JournalEntryEntity
 import com.teobaranga.monica.journal.list.ui.JournalEntryListItem
+import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.user.userAvatar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -67,13 +69,19 @@ internal class JournalEntryListViewModel @Inject constructor(
         }
         .cachedIn(viewModelScope)
 
-    val isRefreshing = journalEntrySynchronizer.syncState
+    private val _refreshState = MonicaPullToRefreshState(onRefresh = ::refresh)
+    val refreshState = journalEntrySynchronizer.syncState
         .mapLatest { state ->
             state == Synchronizer.State.REFRESHING
         }
+        .map {
+            _refreshState.apply {
+                isRefreshing = it
+            }
+        }
         .stateIn(
             scope = viewModelScope,
-            initialValue = false,
+            initialValue = _refreshState,
             started = SharingStarted.WhileSubscribed(5_000),
         )
 
@@ -81,7 +89,7 @@ internal class JournalEntryListViewModel @Inject constructor(
         refresh()
     }
 
-    fun refresh() {
+    private fun refresh() {
         viewModelScope.launch(dispatcher.io) {
             journalEntrySynchronizer.sync()
         }

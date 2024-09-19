@@ -9,14 +9,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.navigation.NavController
-import com.ramcosta.composedestinations.generated.NavGraphs
+import com.ramcosta.composedestinations.generated.navgraphs.DashboardGraph
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
+import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import com.ramcosta.composedestinations.utils.startDestination
 
 @Composable
 fun HomeNavigationBar(navController: NavController, modifier: Modifier = Modifier) {
     val currentDestination: DestinationSpec? by navController.currentDestinationAsState()
+    val destinationsNavigator = navController.rememberDestinationsNavigator()
     NavigationBar(
         modifier = modifier,
     ) {
@@ -24,11 +26,11 @@ fun HomeNavigationBar(navController: NavController, modifier: Modifier = Modifie
             NavigationBarItem(
                 selected = homeTab.destination.destinations.contains(currentDestination?.startDestination),
                 onClick = {
-                    navController.navigate(homeTab.destination.route) {
+                    destinationsNavigator.navigate(homeTab.destination) {
                         launchSingleTop = true
                         restoreState = true
                         // make the dashboard screen the last one before exiting
-                        popUpTo(NavGraphs.rootDashboard.startRoute.route) {
+                        popUpTo(DashboardGraph.startRoute) {
                             saveState = true
                         }
                     }

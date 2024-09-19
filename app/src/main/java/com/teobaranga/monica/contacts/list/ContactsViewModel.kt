@@ -11,10 +11,12 @@ import com.teobaranga.monica.contacts.data.ContactSynchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
+import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.user.userAvatar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -60,15 +62,25 @@ internal class ContactsViewModel @Inject constructor(
         .flow
         .cachedIn(viewModelScope)
 
-    val isRefreshing = contactSynchronizer.syncState
+    private val _refreshState = MonicaPullToRefreshState(onRefresh = ::refresh)
+    val refreshState = contactSynchronizer.syncState
         .mapLatest { state ->
             state == Synchronizer.State.REFRESHING
         }
+        .map {
+            _refreshState.apply {
+                isRefreshing = it
+            }
+        }
         .stateIn(
             scope = viewModelScope,
-            initialValue = false,
+            initialValue = _refreshState,
             started = SharingStarted.WhileSubscribed(5_000),
         )
+
+    val state = ContactsUiState(
+        items = items,
+    )
 
     init {
         refresh()

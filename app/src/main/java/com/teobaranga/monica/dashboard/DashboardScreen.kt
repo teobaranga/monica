@@ -1,9 +1,16 @@
 package com.teobaranga.monica.dashboard
 
 import DashboardNavGraph
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +21,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,7 +29,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,7 +45,6 @@ import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
-import com.teobaranga.monica.ui.rememberSearchBarState
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -48,21 +53,13 @@ import kotlinx.coroutines.flow.flowOf
 internal fun Dashboard(navigator: DestinationsNavigator, viewModel: DashboardViewModel = hiltViewModel()) {
     val userUiState by viewModel.userUiState.collectAsStateWithLifecycle()
     val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
-    val searchBarState = rememberSearchBarState()
     DashboardScreen(
-        modifier = Modifier
-            .pointerInput(Unit) {
-                detectTapGestures {
-                    searchBarState.shouldBeActive = false
-                }
-            },
         searchBar = {
             var shouldShowAccount by remember { mutableStateOf(false) }
             MonicaSearchBar(
                 modifier = Modifier
                     .statusBarsPadding()
                     .padding(top = 16.dp),
-                state = searchBarState,
                 userAvatar = {
                     val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
                     userAvatar?.let {
@@ -73,6 +70,9 @@ internal fun Dashboard(navigator: DestinationsNavigator, viewModel: DashboardVie
                             },
                         )
                     }
+                },
+                onSearch = {
+                    // TODO: Implement search
                 },
             )
             if (shouldShowAccount) {
@@ -100,32 +100,44 @@ private fun DashboardScreen(
     onContactSelect: (contactId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    Scaffold(
         modifier = modifier
-            .fillMaxSize(),
-    ) {
-        searchBar()
-        Column(
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        topBar = searchBar,
+    ) { contentPadding ->
+        val visible = remember { MutableTransitionState(false).apply { targetState = true } }
+        AnimatedVisibility(
             modifier = Modifier
-                .fillMaxWidth()
-                .statusBarsPadding()
-                .padding(top = SearchBarDefaults.InputFieldHeight + 16.dp),
+                .fillMaxSize()
+                .padding(contentPadding),
+            visibleState = visible,
+            enter = EnterTransition.None,
+            exit = ExitTransition.None,
         ) {
-            Text(
+            Column(
                 modifier = Modifier
-                    .padding(horizontal = 32.dp)
-                    .padding(top = 24.dp, bottom = 32.dp),
-                text = "Welcome, ${userUiState?.userInfo?.name ?: "..."}",
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
-            )
+                    .animateEnterExit(
+                        enter = fadeIn() + scaleIn(initialScale = 0.95f),
+                        exit = fadeOut() + scaleOut(targetScale = 0.95f),
+                    ),
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 32.dp)
+                        .padding(top = 24.dp, bottom = 32.dp),
+                    text = "Welcome, ${userUiState?.userInfo?.name ?: "..."}",
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                )
 
-            RecentContactsSection(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                recentContacts = recentContacts,
-                onContactSelect = onContactSelect,
-            )
+                RecentContactsSection(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    recentContacts = recentContacts,
+                    onContactSelect = onContactSelect,
+                )
+            }
         }
     }
 }
@@ -230,6 +242,7 @@ private fun PreviewDashboardScreen() {
                     modifier = Modifier
                         .padding(top = 16.dp),
                     userAvatar = { },
+                    onSearch = { },
                 )
             },
             userUiState = UserUiState(
