@@ -49,3 +49,6 @@ app/release.jks
 
 # Firebase
 app/google-services.json
+
+# Kotlin
+.kotlin/
