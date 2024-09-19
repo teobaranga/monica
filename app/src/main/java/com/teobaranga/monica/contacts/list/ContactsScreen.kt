@@ -1,6 +1,14 @@
 package com.teobaranga.monica.contacts.list
 
 import ContactsNavGraph
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,9 +27,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,7 +43,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.generated.destinations.ContactDetailDestination
@@ -50,14 +54,17 @@ import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.plus
+import com.teobaranga.monica.ui.preview.contactAlice
+import com.teobaranga.monica.ui.preview.contactBob
+import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshBox
+import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
 
 @Destination<ContactsNavGraph>(start = true)
 @Composable
 internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewModel = hiltViewModel()) {
-    val lazyItems = viewModel.items.collectAsLazyPagingItems()
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+    val refreshState by viewModel.refreshState.collectAsStateWithLifecycle()
     ContactsScreen(
         searchBar = {
             var shouldShowAccount by remember { mutableStateOf(false) }
@@ -94,9 +101,8 @@ internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewM
                 )
             }
         },
-        lazyItems = lazyItems,
-        isRefreshing = isRefreshing,
-        onRefresh = viewModel::refresh,
+        uiState = viewModel.state,
+        refreshState = refreshState,
         onContactSelect = { contactId ->
             navigator.navigate(ContactDetailDestination(contactId))
         },
@@ -117,13 +123,13 @@ internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewM
 @Composable
 private fun ContactsScreen(
     searchBar: @Composable () -> Unit,
-    lazyItems: LazyPagingItems<Contact>,
-    isRefreshing: Boolean,
-    onRefresh: () -> Unit,
+    uiState: ContactsUiState,
+    refreshState: MonicaPullToRefreshState,
     onContactSelect: (Int) -> Unit,
     onContactAdd: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val contacts = uiState.items.collectAsLazyPagingItems()
     Scaffold(
         modifier = modifier
             .fillMaxSize(),
@@ -139,48 +145,54 @@ private fun ContactsScreen(
             }
         },
     ) { contentPadding ->
-        val pullToRefreshState = rememberPullToRefreshState()
-        PullToRefreshBox(
-            isRefreshing = isRefreshing,
-            onRefresh = onRefresh,
-            state = pullToRefreshState,
+        MonicaPullToRefreshBox(
+            state = refreshState,
             indicator = {
-                Indicator(
+                MonicaIndicator(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
                         .padding(top = contentPadding.calculateTopPadding()),
-                    isRefreshing = isRefreshing,
-                    state = pullToRefreshState,
                 )
             },
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background),
-                contentPadding = contentPadding + PaddingValues(vertical = 16.dp),
+            val visibleState = remember { MutableTransitionState(false).apply { targetState = true } }
+            AnimatedVisibility(
+                visibleState = visibleState,
+                enter = EnterTransition.None,
+                exit = ExitTransition.None,
             ) {
-                when (lazyItems.loadState.refresh) {
-                    is LoadState.Error -> {
-                        // TODO
-                    }
+                LazyColumn(
+                    modifier = Modifier
+                        .animateEnterExit(
+                            enter = fadeIn() + scaleIn(initialScale = 0.95f),
+                            exit = fadeOut() + scaleOut(targetScale = 0.95f),
+                        )
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
+                    contentPadding = contentPadding + PaddingValues(vertical = 16.dp),
+                ) {
+                    when (contacts.loadState.refresh) {
+                        is LoadState.Error -> {
+                            // TODO
+                        }
 
-                    is LoadState.Loading,
-                    is LoadState.NotLoading,
-                    -> {
-                        items(
-                            count = lazyItems.itemCount,
-                            key = {
-                                val contact = lazyItems[it]
-                                contact?.id ?: Int.MIN_VALUE
-                            },
-                        ) {
-                            val contact = lazyItems[it]
-                            if (contact != null) {
-                                ContactItem(
-                                    contact = contact,
-                                    onContactSelect = onContactSelect,
-                                )
+                        is LoadState.Loading,
+                        is LoadState.NotLoading,
+                        -> {
+                            items(
+                                count = contacts.itemCount,
+                                key = {
+                                    val contact = contacts[it]
+                                    contact?.id ?: Int.MIN_VALUE
+                                },
+                            ) {
+                                val contact = contacts[it]
+                                if (contact != null) {
+                                    ContactItem(
+                                        contact = contact,
+                                        onContactSelect = onContactSelect,
+                                    )
+                                }
                             }
                         }
                     }
@@ -224,40 +236,6 @@ private fun ContactItem(contact: Contact, onContactSelect: (Int) -> Unit, modifi
 @Composable
 private fun PreviewContactsScreen() {
     MonicaTheme {
-        val lazyItems = flowOf(
-            PagingData.from(
-                listOf(
-                    Contact(
-                        id = 1,
-                        firstName = "Alice",
-                        lastName = null,
-                        completeName = "Alice",
-                        initials = "A",
-                        avatar = UserAvatar(
-                            contactId = 1,
-                            initials = "A",
-                            color = "#FF0000",
-                            avatarUrl = null,
-                        ),
-                        updated = null,
-                    ),
-                    Contact(
-                        id = 2,
-                        firstName = "Bob",
-                        lastName = null,
-                        completeName = "Bob",
-                        initials = "B",
-                        avatar = UserAvatar(
-                            contactId = 2,
-                            initials = "B",
-                            color = "#00FF00",
-                            avatarUrl = null,
-                        ),
-                        updated = null,
-                    ),
-                ),
-            ),
-        )
         ContactsScreen(
             searchBar = {
                 MonicaSearchBar(
@@ -267,9 +245,10 @@ private fun PreviewContactsScreen() {
                     onSearch = { },
                 )
             },
-            lazyItems = lazyItems.collectAsLazyPagingItems(),
-            isRefreshing = false,
-            onRefresh = { },
+            uiState = ContactsUiState(
+                items = flowOf(PagingData.from(listOf(contactAlice, contactBob))),
+            ),
+            refreshState = MonicaPullToRefreshState(onRefresh = { }),
             onContactSelect = { },
             onContactAdd = { },
         )

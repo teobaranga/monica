@@ -34,7 +34,7 @@ internal fun JournalEntryList(
     viewModel: JournalEntryListViewModel = hiltViewModel(),
 ) {
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+    val refreshState by viewModel.refreshState.collectAsStateWithLifecycle()
     JournalEntryListScreen(
         searchBar = {
             var shouldShowAccount by remember { mutableStateOf(false) }
@@ -72,10 +72,7 @@ internal fun JournalEntryList(
             }
         },
         lazyItems = lazyItems,
-        isRefreshing = isRefreshing,
-        onRefresh = {
-            viewModel.refresh()
-        },
+        refreshState = refreshState,
         onEntryClick = { id ->
             navigator.navigate(JournalEntryDestination(id))
         },
