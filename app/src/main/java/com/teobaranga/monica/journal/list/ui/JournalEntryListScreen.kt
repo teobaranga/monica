@@ -140,6 +140,7 @@ private fun PreviewJournalScreen() {
                     modifier = Modifier
                         .padding(top = 16.dp),
                     userAvatar = { },
+                    onSearch = { },
                 )
             },
             lazyItems = journalItems.collectAsLazyPagingItems(),

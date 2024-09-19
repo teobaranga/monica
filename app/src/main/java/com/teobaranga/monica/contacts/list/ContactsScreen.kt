@@ -3,7 +3,6 @@ package com.teobaranga.monica.contacts.list
 import ContactsNavGraph
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -52,7 +50,6 @@ import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.plus
-import com.teobaranga.monica.ui.rememberSearchBarState
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -61,14 +58,7 @@ import kotlinx.coroutines.flow.flowOf
 internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewModel = hiltViewModel()) {
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-    val searchBarState = rememberSearchBarState()
     ContactsScreen(
-        modifier = Modifier
-            .pointerInput(Unit) {
-                detectTapGestures {
-                    searchBarState.shouldBeActive = false
-                }
-            },
         searchBar = {
             var shouldShowAccount by remember { mutableStateOf(false) }
             val colors = arrayOf(
@@ -81,7 +71,6 @@ internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewM
                     .background(Brush.verticalGradient(colorStops = colors))
                     .statusBarsPadding()
                     .padding(top = 16.dp),
-                state = searchBarState,
                 userAvatar = {
                     val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
                     userAvatar?.let {
@@ -92,6 +81,9 @@ internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewM
                             },
                         )
                     }
+                },
+                onSearch = {
+                    // TODO: Implement search
                 },
             )
             if (shouldShowAccount) {
@@ -272,6 +264,7 @@ private fun PreviewContactsScreen() {
                     modifier = Modifier
                         .padding(top = 16.dp),
                     userAvatar = { },
+                    onSearch = { },
                 )
             },
             lazyItems = lazyItems.collectAsLazyPagingItems(),
