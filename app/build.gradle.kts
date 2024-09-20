@@ -100,6 +100,9 @@ dependencies {
 
     implementation(platform(libs.firebase.bom))
 
+    implementation(libs.work)
+    implementation(libs.hilt.work)
+
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
 

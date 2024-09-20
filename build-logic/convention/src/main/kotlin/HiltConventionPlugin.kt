@@ -36,6 +36,7 @@ class HiltConventionPlugin : Plugin<Project> {
                 pluginManager.apply(libs.plugins.hilt.get().pluginId)
                 dependencies {
                     implementation(libs.hilt.android)
+                    ksp(libs.hilt.compiler.androidx)
                 }
             }
 
