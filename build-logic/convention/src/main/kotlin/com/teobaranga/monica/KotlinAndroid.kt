@@ -92,6 +92,8 @@ private inline fun <reified T : KotlinTopLevelExtension> Project.configureKotlin
         freeCompilerArgs.addAll(
             "-Xcontext-receivers",
             "-opt-in=kotlin.uuid.ExperimentalUuidApi",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-opt-in=kotlinx.coroutines.FlowPreview",
         )
     }
 }

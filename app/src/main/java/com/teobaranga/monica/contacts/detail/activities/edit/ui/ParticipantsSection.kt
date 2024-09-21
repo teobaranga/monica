@@ -40,6 +40,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import kotlinx.coroutines.launch
 
@@ -66,6 +67,8 @@ fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Mo
                 expanded = it
             },
         ) {
+            val participantResults by uiState.participantResults.collectAsStateWithLifecycle()
+
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -90,12 +93,12 @@ fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Mo
                 modifier = Modifier
                     .exposedDropdownSize(true),
                 properties = PopupProperties(focusable = false),
-                expanded = uiState.participantResults.isNotEmpty(),
+                expanded = participantResults.isNotEmpty(),
                 onDismissRequest = {
                     expanded = false
                 },
             ) {
-                uiState.participantResults.forEach { result ->
+                participantResults.forEach { result ->
                     DropdownMenuItem(
                         text = {
                             Text(text = result.name)

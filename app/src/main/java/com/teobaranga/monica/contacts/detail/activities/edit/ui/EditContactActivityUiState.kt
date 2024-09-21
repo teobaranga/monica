@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
+import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 
 sealed interface EditContactActivityUiState {
@@ -15,14 +16,13 @@ sealed interface EditContactActivityUiState {
     @Stable
     data class Loaded(
         private val onParticipantSearch: (String) -> Unit,
+        val participantResults: StateFlow<List<ActivityParticipant>>,
     ) : EditContactActivityUiState {
 
-        var date by mutableStateOf(LocalDate.now())
+        var date: LocalDate by mutableStateOf(LocalDate.now())
 
         var participantSearch by mutableStateOf(TextFieldValue())
             private set
-
-        val participantResults = mutableStateListOf<ActivityParticipant>()
 
         val participants = mutableStateListOf<ActivityParticipant>()
 

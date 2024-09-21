@@ -45,6 +45,7 @@ import com.teobaranga.monica.ui.FabPadding
 import com.teobaranga.monica.ui.button.DateButton
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -276,6 +277,7 @@ private fun PreviewEditContactActivityLoadedScreen() {
         EditContactActivity(
             uiState = EditContactActivityUiState.Loaded(
                 onParticipantSearch = { },
+                participantResults = MutableStateFlow(emptyList()),
             ),
             topAppBar = { },
             onSave = { },
