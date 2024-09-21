@@ -4,26 +4,33 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.activities.data.ContactActivitiesRepository
-import com.teobaranga.monica.contacts.data.ContactRepository
+import com.teobaranga.monica.contacts.detail.activities.edit.domain.GetActivityUseCase
+import com.teobaranga.monica.contacts.detail.activities.edit.domain.SearchContactAsActivityParticipantUseCase
+import com.teobaranga.monica.contacts.domain.GetContactUseCase
 import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel(assistedFactory = EditContactActivityViewModel.Factory::class)
 internal class EditContactActivityViewModel @AssistedInject constructor(
     private val dispatcher: Dispatcher,
-    private val contactRepository: ContactRepository,
+    private val getContactUseCase: GetContactUseCase,
+    private val getActivityUseCase: GetActivityUseCase,
+    private val searchContactAsActivityParticipantUseCase: SearchContactAsActivityParticipantUseCase,
     private val contactActivitiesRepository: ContactActivitiesRepository,
     @Assisted
     private val contactId: Int,
@@ -31,55 +38,52 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
     private val activityId: Int?,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<EditContactActivityUiState>(EditContactActivityUiState.Loading)
-    val uiState = _uiState.asStateFlow()
+    private val participantQuery = MutableSharedFlow<String>(extraBufferCapacity = 1)
 
-    private var participantSearchJob: Job? = null
+    private val participantResults: StateFlow<List<ActivityParticipant>> = participantQuery
+        .debounce(200.milliseconds)
+        .flatMapLatest { query ->
+            val uiState = getLoadedUiState() ?: return@flatMapLatest flowOf(emptyList())
+            val results = searchContactAsActivityParticipantUseCase(
+                query = query,
+                excludeContacts = uiState.participants.map { it.contactId },
+            )
+            flowOf(results)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            initialValue = emptyList(),
+            started = WhileSubscribed(5.seconds.inWholeMilliseconds),
+        )
 
-    init {
-        val getContact = contactRepository.getContact(contactId)
-        val getActivity = if (activityId != null) {
-            contactActivitiesRepository.getActivity(activityId)
+    val uiState: StateFlow<EditContactActivityUiState> = flow {
+        val uiState = EditContactActivityUiState.Loaded(
+            onParticipantSearch = ::onParticipantSearch,
+            participantResults = participantResults,
+        )
+        if (activityId != null) {
+            val activity = getActivityUseCase(activityId)
+            uiState.apply {
+                summary = TextFieldValue(activity.summary)
+                details = TextFieldValue(activity.details.orEmpty())
+                date = activity.date
+                participants.addAll(activity.participants)
+            }
         } else {
-            flowOf(null)
+            val contact = getContactUseCase(contactId)
+            val contactParticipant = ActivityParticipant(
+                contactId = contact.contactId,
+                name = contact.completeName,
+                avatar = contact.userAvatar,
+            )
+            uiState.participants.add(contactParticipant)
         }
-        viewModelScope.launch(dispatcher.io) {
-            getContact
-                .combine(getActivity) { contact, activityWithParticipants ->
-                    EditContactActivityUiState.Loaded(
-                        onParticipantSearch = ::onParticipantSearch,
-                    ).apply {
-                        participants.add(
-                            ActivityParticipant(
-                                contactId = contact.contactId,
-                                name = contact.completeName,
-                                avatar = contact.userAvatar,
-                            ),
-                        )
-                        if (activityWithParticipants != null) {
-                            summary = TextFieldValue(activityWithParticipants.activity.title)
-                            details = TextFieldValue(activityWithParticipants.activity.description.orEmpty())
-                            date = activityWithParticipants.activity.date
-                            val activityParticipants = activityWithParticipants.participants
-                                .filter {
-                                    it.contactId != contactId
-                                }
-                                .map { contact ->
-                                    ActivityParticipant(
-                                        contactId = contact.contactId,
-                                        name = contact.completeName,
-                                        avatar = contact.userAvatar,
-                                    )
-                                }
-                            participants.addAll(activityParticipants)
-                        }
-                    }
-                }
-                .collectLatest { uiState ->
-                    _uiState.value = uiState
-                }
-        }
-    }
+        emit(uiState)
+    }.stateIn(
+        scope = viewModelScope,
+        initialValue = EditContactActivityUiState.Loading,
+        started = WhileSubscribed(5.seconds.inWholeMilliseconds),
+    )
 
     fun onSave() {
         val uiState = getLoadedUiState() ?: return
@@ -104,37 +108,11 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
     }
 
     private fun onParticipantSearch(query: String) {
-        val uiState = getLoadedUiState() ?: return
-        uiState.participantResults.clear()
-        participantSearchJob?.cancel()
-
-        val trimmedQuery = query.trim()
-        if (trimmedQuery.isEmpty()) {
-            return
-        }
-
-        participantSearchJob = viewModelScope.launch(dispatcher.io) {
-            val results = contactRepository.searchContact(trimmedQuery)
-            val existingParticipantIds = uiState.participants.map { it.contactId }.toSet()
-            val participantResults = results
-                .filter {
-                    it.contactId !in existingParticipantIds
-                }
-                .map { contact ->
-                    ActivityParticipant(
-                        contactId = contact.contactId,
-                        name = contact.completeName,
-                        avatar = contact.userAvatar,
-                    )
-                }
-            withContext(dispatcher.main) {
-                uiState.participantResults.addAll(participantResults)
-            }
-        }
+        participantQuery.tryEmit(query)
     }
 
     private fun getLoadedUiState(): EditContactActivityUiState.Loaded? {
-        return _uiState.value as? EditContactActivityUiState.Loaded
+        return uiState.value as? EditContactActivityUiState.Loaded
     }
 
     @AssistedFactory
