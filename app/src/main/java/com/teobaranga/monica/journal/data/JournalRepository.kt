@@ -1,5 +1,9 @@
 package com.teobaranga.monica.journal.data
 
+import androidx.paging.InvalidatingPagingSourceFactory
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.journal.database.JournalDao
@@ -16,6 +20,8 @@ import javax.inject.Provider
 import javax.inject.Singleton
 import kotlin.uuid.Uuid
 
+private const val PAGE_SIZE = 15
+
 @Singleton
 internal class JournalRepository @Inject constructor(
     dispatcher: Dispatcher,
@@ -28,8 +34,20 @@ internal class JournalRepository @Inject constructor(
 
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
-    fun getJournalEntries(orderBy: OrderBy): JournalPagingSource {
-        return pagingSource.get().create(orderBy)
+    private val pagingSourceFactory = InvalidatingPagingSourceFactory {
+        pagingSource.get().create(OrderBy.Date(isAscending = false))
+    }
+
+    fun getJournalEntriesPagingData(): Flow<PagingData<JournalEntryEntity>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                enablePlaceholders = false,
+                initialLoadSize = PAGE_SIZE,
+            ),
+            pagingSourceFactory = pagingSourceFactory,
+        )
+            .flow
     }
 
     fun getJournalEntry(id: Int): Flow<JournalEntryEntity> {
@@ -42,6 +60,7 @@ internal class JournalRepository @Inject constructor(
         } else {
             insertJournalEntry(title, post, date)
         }
+        pagingSourceFactory.invalidate()
     }
 
     private suspend fun insertJournalEntry(title: String?, post: String, date: LocalDate) {
