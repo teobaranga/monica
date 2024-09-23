@@ -13,9 +13,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -35,10 +36,11 @@ import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshBox
 import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.util.compose.ScrollToTopEffect
+import com.teobaranga.monica.util.compose.keepScrollOnSizeChanged
 import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDate
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JournalEntryListScreen(
     searchBar: @Composable () -> Unit,
@@ -71,19 +73,27 @@ fun JournalEntryListScreen(
             },
         ) {
             val visibleState = remember { MutableTransitionState(false).apply { targetState = true } }
+            val lazyListState = rememberLazyListState()
             AnimatedVisibility(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .keepScrollOnSizeChanged(lazyListState),
                 visibleState = visibleState,
                 enter = EnterTransition.None,
                 exit = ExitTransition.None,
             ) {
+                ScrollToTopEffect(
+                    lazyListState = lazyListState,
+                    getFirstId = { lazyItems.itemSnapshotList.items.firstOrNull()?.id },
+                )
+
                 LazyColumn(
                     modifier = Modifier
                         .animateEnterExit(
                             enter = fadeIn() + scaleIn(initialScale = 0.95f),
                             exit = fadeOut() + scaleOut(targetScale = 0.95f),
                         ),
+                    state = lazyListState,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     contentPadding = contentPadding + PaddingValues(vertical = 16.dp),
                 ) {
@@ -96,17 +106,16 @@ fun JournalEntryListScreen(
                         is LoadState.NotLoading,
                         -> {
                             items(
-                                count = lazyItems.itemCount,
-                                key = {
-                                    val journalEntry = lazyItems[it]
+                                items =  lazyItems.itemSnapshotList,
+                                key = { journalEntry ->
                                     journalEntry?.id ?: Int.MIN_VALUE
                                 },
-                            ) {
-                                val journalEntry = lazyItems[it]
+                            ) { journalEntry ->
                                 if (journalEntry != null) {
                                     JournalItem(
                                         modifier = Modifier
-                                            .padding(horizontal = FabPadding),
+                                            .padding(horizontal = FabPadding)
+                                            .animateItem(),
                                         journalEntry = journalEntry,
                                         onClick = {
                                             onEntryClick(journalEntry.id)
