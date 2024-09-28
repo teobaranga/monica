@@ -1,8 +1,10 @@
 package com.teobaranga.monica.contacts.detail.bio.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -21,7 +23,8 @@ import com.teobaranga.monica.ui.theme.MonicaTheme
 
 data class ContactInfoBioSection(
     private val userAvatar: UserAvatar,
-    private val fullName: String,
+    private val name: String,
+    private val nickname: String?,
     private val birthday: Birthday?,
     private val gender: String?,
 ) : ContactInfoSection {
@@ -46,10 +49,23 @@ data class ContactInfoBioSection(
             )
             Text(
                 modifier = Modifier
-                    .padding(vertical = 28.dp)
+                    .padding(top = 28.dp)
                     .align(Alignment.CenterHorizontally),
-                text = fullName,
+                text = name,
                 style = MaterialTheme.typography.headlineMedium,
+            )
+            if (nickname != null) {
+                Text(
+                    modifier = Modifier
+                        .padding(top = 12.dp)
+                        .align(Alignment.CenterHorizontally),
+                    text = nickname,
+                    style = MaterialTheme.typography.headlineSmall,
+                )
+            }
+            Spacer(
+                modifier = Modifier
+                    .height(28.dp),
             )
             if (birthday != null) {
                 BirthdayItem(
@@ -78,7 +94,8 @@ data class ContactInfoBioSection(
 private fun PreviewBioSection() {
     MonicaTheme {
         ContactInfoBioSection(
-            fullName = "John Doe (Johnny)",
+            name = "John Doe",
+            nickname = "(Johnny)",
             userAvatar = UserAvatar(
                 contactId = -1,
                 initials = "JD",

@@ -43,8 +43,8 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
-import com.teobaranga.monica.ui.LocalDestinationsNavigator
 import com.teobaranga.monica.ui.button.DateButton
+import com.teobaranga.monica.ui.navigation.LocalDestinationsNavigator
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -132,6 +132,7 @@ private fun EditContactActivity(
                             .fillMaxWidth(),
                     )
                 }
+
                 is EditContactActivityUiState.Loaded -> {
                     Column(
                         modifier = Modifier
