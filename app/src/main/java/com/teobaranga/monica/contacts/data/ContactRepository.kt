@@ -51,10 +51,6 @@ internal class ContactRepository @Inject constructor(
         return contactDao.searchContacts(query, excludeIds)
     }
 
-    fun getContacts(ids: List<Int>): Flow<List<ContactEntity>> {
-        return contactDao.getContacts(ids)
-    }
-
     fun getContact(id: Int): Flow<ContactEntity> {
         return contactDao.getContact(id)
     }
