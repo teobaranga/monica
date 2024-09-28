@@ -52,7 +52,7 @@ abstract class ContactDao {
     abstract fun getContact(id: Int): Flow<ContactEntity>
 
     @Query("SELECT * FROM contacts WHERE completeName LIKE '%' || :query || '%' AND contactId NOT IN (:excludeIds)")
-    abstract suspend fun searchContacts(query: String, excludeIds: List<Int> = emptyList()): List<ContactEntity>
+    abstract fun searchContacts(query: String, excludeIds: List<Int> = emptyList()): Flow<List<ContactEntity>>
 
     @Transaction
     @Query("SELECT contactId, avatar_url FROM contacts WHERE contactId = :contactId")

@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -42,6 +43,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
+import com.teobaranga.monica.ui.LocalDestinationsNavigator
 import com.teobaranga.monica.ui.button.DateButton
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
@@ -62,23 +64,27 @@ internal fun EditContactActivity(
             },
         ),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    EditContactActivity(
-        uiState = uiState,
-        topAppBar = { topAppBarScrollBehaviour ->
-            EditContactActivityTopAppBar(
-                isEdit = activityId != null,
-                onBack = navigator::popBackStack,
-                onDelete = {
-                    viewModel.onDelete()
-                    navigator.popBackStack()
-                },
-                scrollBehavior = topAppBarScrollBehaviour,
-            )
-        },
-        onSave = viewModel::onSave,
-        onBack = navigator::popBackStack,
-    )
+    CompositionLocalProvider(
+        LocalDestinationsNavigator provides navigator,
+    ) {
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        EditContactActivity(
+            uiState = uiState,
+            topAppBar = { topAppBarScrollBehaviour ->
+                EditContactActivityTopAppBar(
+                    isEdit = activityId != null,
+                    onBack = navigator::popBackStack,
+                    onDelete = {
+                        viewModel.onDelete()
+                        navigator.popBackStack()
+                    },
+                    scrollBehavior = topAppBarScrollBehaviour,
+                )
+            },
+            onSave = viewModel::onSave,
+            onBack = navigator::popBackStack,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

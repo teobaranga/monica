@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
@@ -43,12 +44,22 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
     private val participantResults: StateFlow<List<ActivityParticipant>> = participantQuery
         .debounce(200.milliseconds)
         .flatMapLatest { query ->
+            if (query.isBlank()) {
+                return@flatMapLatest flowOf(emptyList())
+            }
             val uiState = getLoadedUiState() ?: return@flatMapLatest flowOf(emptyList())
             val results = searchContactAsActivityParticipantUseCase(
                 query = query,
                 excludeContacts = uiState.participants.map { it.contactId },
             )
-            flowOf(results)
+            results
+                .map { results ->
+                    if (results.isEmpty() && query.isNotBlank()) {
+                        listOf(ActivityParticipant.New(query))
+                    } else {
+                        results
+                    }
+                }
         }
         .stateIn(
             scope = viewModelScope,
@@ -71,7 +82,7 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
             }
         } else {
             val contact = getContactUseCase(contactId)
-            val contactParticipant = ActivityParticipant(
+            val contactParticipant = ActivityParticipant.Contact(
                 contactId = contact.contactId,
                 name = contact.completeName,
                 avatar = contact.userAvatar,

@@ -24,7 +24,7 @@ sealed interface EditContactActivityUiState {
         var participantSearch by mutableStateOf(TextFieldValue())
             private set
 
-        val participants = mutableStateListOf<ActivityParticipant>()
+        val participants = mutableStateListOf<ActivityParticipant.Contact>()
 
         var summary by mutableStateOf(TextFieldValue())
 
