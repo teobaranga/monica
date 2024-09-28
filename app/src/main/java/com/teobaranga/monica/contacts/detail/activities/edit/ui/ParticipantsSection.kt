@@ -43,8 +43,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
-import com.teobaranga.monica.ui.LocalDestinationsNavigator
 import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.ui.navigation.LocalDestinationsNavigator
 import kotlinx.coroutines.launch
 
 @Composable

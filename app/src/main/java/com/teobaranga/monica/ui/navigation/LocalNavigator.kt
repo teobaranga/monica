@@ -1,4 +1,4 @@
-package com.teobaranga.monica.ui
+package com.teobaranga.monica.ui.navigation
 
 import androidx.compose.runtime.compositionLocalOf
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

@@ -19,16 +19,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,7 +39,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -59,6 +59,8 @@ import com.teobaranga.monica.ui.preview.contactBob
 import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshBox
 import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.util.compose.ScrollToTopEffect
+import com.teobaranga.monica.util.compose.keepScrollOnSizeChanged
 import kotlinx.coroutines.flow.flowOf
 
 @Destination<ContactsNavGraph>(start = true)
@@ -111,15 +113,11 @@ internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewM
         },
     )
 
-    val state by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsStateWithLifecycle()
-    LaunchedEffect(state) {
-        if (state == Lifecycle.State.RESUMED) {
-            viewModel.onEntriesChanged()
-        }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        viewModel.onEntriesChanged()
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ContactsScreen(
     searchBar: @Composable () -> Unit,
@@ -156,19 +154,27 @@ private fun ContactsScreen(
             },
         ) {
             val visibleState = remember { MutableTransitionState(false).apply { targetState = true } }
+            val lazyListState = rememberLazyListState()
             AnimatedVisibility(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .keepScrollOnSizeChanged(lazyListState),
                 visibleState = visibleState,
                 enter = EnterTransition.None,
                 exit = ExitTransition.None,
             ) {
+                ScrollToTopEffect(
+                    lazyListState = lazyListState,
+                    getFirstId = { contacts.itemSnapshotList.items.firstOrNull()?.id },
+                )
+
                 LazyColumn(
                     modifier = Modifier
                         .animateEnterExit(
                             enter = fadeIn() + scaleIn(initialScale = 0.95f),
                             exit = fadeOut() + scaleOut(targetScale = 0.95f),
-                        )
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background),
+                        ),
+                    state = lazyListState,
                     contentPadding = contentPadding + PaddingValues(vertical = 16.dp),
                 ) {
                     when (contacts.loadState.refresh) {
@@ -180,15 +186,15 @@ private fun ContactsScreen(
                         is LoadState.NotLoading,
                         -> {
                             items(
-                                count = contacts.itemCount,
-                                key = {
-                                    val contact = contacts[it]
+                                items = contacts.itemSnapshotList,
+                                key = { contact ->
                                     contact?.id ?: Int.MIN_VALUE
                                 },
-                            ) {
-                                val contact = contacts[it]
+                            ) { contact ->
                                 if (contact != null) {
                                     ContactItem(
+                                        modifier = Modifier
+                                            .animateItem(),
                                         contact = contact,
                                         onContactSelect = onContactSelect,
                                     )
