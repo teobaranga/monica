@@ -15,10 +15,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
@@ -34,7 +34,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
@@ -42,14 +41,12 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
 import com.teobaranga.monica.ui.LocalDestinationsNavigator
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Modifier = Modifier) {
     Column(
@@ -78,7 +75,7 @@ fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Mo
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ParticipantDropdownMenu(
     uiState: EditContactActivityUiState.Loaded,
@@ -116,10 +113,7 @@ private fun ParticipantDropdownMenu(
                 keyboardType = KeyboardType.Text,
             ),
         )
-        DropdownMenu(
-            modifier = Modifier
-                .exposedDropdownSize(true),
-            properties = PopupProperties(focusable = false),
+        ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = {
                 shouldExpand = false
@@ -150,6 +144,7 @@ private fun ParticipantDropdownMenu(
                                 // Keep the dropdown open
                                 navigator.navigate(ContactEditDestination(contactName = result.name))
                             },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                         )
                     }
                 }
