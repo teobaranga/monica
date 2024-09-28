@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import javax.inject.Inject
-import javax.inject.Provider
 import javax.inject.Singleton
 import kotlin.uuid.Uuid
 
@@ -26,7 +25,7 @@ private const val PAGE_SIZE = 15
 internal class JournalRepository @Inject constructor(
     dispatcher: Dispatcher,
     private val journalDao: JournalDao,
-    private val pagingSource: Provider<JournalPagingSource.Factory>,
+    private val journalPagingSourceFactory: JournalPagingSource.Factory,
     private val journalEntryNewSynchronizer: JournalEntryNewSynchronizer,
     private val journalEntryUpdateSynchronizer: JournalEntryUpdateSynchronizer,
     private val journalEntryDeletedSynchronizer: JournalEntryDeletedSynchronizer,
@@ -35,7 +34,7 @@ internal class JournalRepository @Inject constructor(
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
     private val pagingSourceFactory = InvalidatingPagingSourceFactory {
-        pagingSource.get().create(OrderBy.Date(isAscending = false))
+        journalPagingSourceFactory.create(OrderBy.Date(isAscending = false))
     }
 
     fun getJournalEntriesPagingData(): Flow<PagingData<JournalEntryEntity>> {
