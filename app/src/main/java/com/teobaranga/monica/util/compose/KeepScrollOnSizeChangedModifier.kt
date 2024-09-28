@@ -21,10 +21,11 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun Modifier.keepScrollOnSizeChanged(lazyListState: LazyListState): Modifier {
+    var index by rememberSaveable { mutableIntStateOf(lazyListState.firstVisibleItemIndex) }
     var offset by rememberSaveable { mutableIntStateOf(lazyListState.firstVisibleItemScrollOffset) }
     var size by remember { mutableStateOf<IntSize?>(null) }
     var prevSize by remember { mutableStateOf(size) }
-    // Restore the offset when the screen is resumed, only as it is shrinking
+    // Restore the index & offset when the screen is resumed, only as it is shrinking
     LaunchedEffect(Unit) {
         snapshotFlow { size }
             .filterNotNull()
@@ -32,6 +33,11 @@ fun Modifier.keepScrollOnSizeChanged(lazyListState: LazyListState): Modifier {
                 val isShrinking = newSize.height < (prevSize?.height ?: Int.MAX_VALUE)
                 if (isShrinking) {
                     with(lazyListState) {
+                        // Only scroll to the item if not already visible, doing it multiple times
+                        // causes the list to avoid drawing until fully scrolled
+                        if (index != firstVisibleItemIndex) {
+                            scrollToItem(index)
+                        }
                         dispatchRawDelta((offset - firstVisibleItemScrollOffset).toFloat())
                     }
                 }
@@ -40,7 +46,8 @@ fun Modifier.keepScrollOnSizeChanged(lazyListState: LazyListState): Modifier {
             .collect()
     }
     LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) {
-        // Save the current offset when the screen is paused
+        // Save the current index & offset when the screen is paused
+        index = lazyListState.firstVisibleItemIndex
         offset = lazyListState.firstVisibleItemScrollOffset
     }
     return this then Modifier
