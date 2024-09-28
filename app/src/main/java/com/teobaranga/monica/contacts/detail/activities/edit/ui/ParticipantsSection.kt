@@ -15,10 +15,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
@@ -42,7 +42,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
 import com.teobaranga.monica.ui.LocalDestinationsNavigator
@@ -116,10 +115,7 @@ private fun ParticipantDropdownMenu(
                 keyboardType = KeyboardType.Text,
             ),
         )
-        DropdownMenu(
-            modifier = Modifier
-                .exposedDropdownSize(true),
-            properties = PopupProperties(focusable = false),
+        ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = {
                 shouldExpand = false
@@ -150,6 +146,7 @@ private fun ParticipantDropdownMenu(
                                 // Keep the dropdown open
                                 navigator.navigate(ContactEditDestination(contactName = result.name))
                             },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                         )
                     }
                 }
