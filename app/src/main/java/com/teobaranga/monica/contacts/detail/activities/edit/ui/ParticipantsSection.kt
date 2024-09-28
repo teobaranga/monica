@@ -34,7 +34,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
@@ -48,7 +47,6 @@ import com.teobaranga.monica.ui.LocalDestinationsNavigator
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Modifier = Modifier) {
     Column(
@@ -77,7 +75,7 @@ fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Mo
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ParticipantDropdownMenu(
     uiState: EditContactActivityUiState.Loaded,
