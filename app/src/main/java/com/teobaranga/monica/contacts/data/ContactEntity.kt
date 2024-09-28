@@ -16,7 +16,7 @@ data class ContactEntity(
     val lastName: String?,
     val nickname: String?,
     /**
-     * Complete name in the format "First Middle Last (Nickname)".
+     * Complete name in the format "First Last (Nickname)".
      * Server-driven.
      */
     val completeName: String,

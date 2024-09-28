@@ -52,7 +52,14 @@ internal class ContactDetailViewModel @AssistedInject constructor(
                             color = contact.avatar.color,
                             avatarUrl = contact.avatar.url,
                         ),
-                        fullName = contact.completeName,
+                        name = buildString {
+                            append(contact.firstName)
+                            if (contact.lastName != null) {
+                                append(" ")
+                                append(contact.lastName)
+                            }
+                        },
+                        nickname = contact.nickname?.let { "($it)" },
                         birthday = contact.birthdate?.toUiBirthday(),
                         gender = contact.genderId?.let { genderRepository.getById(it) }?.name,
                     ),

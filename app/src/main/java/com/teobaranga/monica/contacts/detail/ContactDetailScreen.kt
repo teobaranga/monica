@@ -186,7 +186,8 @@ private fun PreviewContactDetailScreen() {
                 fullName = "John Doe (Johnny)",
                 infoSections = listOf(
                     ContactInfoBioSection(
-                        fullName = "John Doe (Johnny)",
+                        name = "John Doe",
+                        nickname = "(Johnny)",
                         userAvatar = UserAvatar(
                             contactId = -1,
                             initials = "JD",
