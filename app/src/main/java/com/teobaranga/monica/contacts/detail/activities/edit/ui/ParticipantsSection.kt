@@ -26,12 +26,15 @@ import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
@@ -41,6 +44,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
+import com.teobaranga.monica.ui.LocalDestinationsNavigator
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import kotlinx.coroutines.launch
 
@@ -56,62 +61,13 @@ fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Mo
             text = "Participants",
             style = MaterialTheme.typography.titleMedium,
         )
-        var expanded by remember { mutableStateOf(false) }
-        ExposedDropdownMenuBox(
+        ParticipantDropdownMenu(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .padding(top = 12.dp),
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = it
-            },
-        ) {
-            val participantResults by uiState.participantResults.collectAsStateWithLifecycle()
-
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor(type = MenuAnchorType.PrimaryEditable),
-                value = uiState.participantSearch,
-                onValueChange = { search ->
-                    uiState.onParticipantSearch(search)
-                    expanded = true
-                },
-                placeholder = {
-                    Text(
-                        text = "Add a participant by name",
-                    )
-                },
-                maxLines = 1,
-                keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.Words,
-                    keyboardType = KeyboardType.Text,
-                ),
-            )
-            DropdownMenu(
-                modifier = Modifier
-                    .exposedDropdownSize(true),
-                properties = PopupProperties(focusable = false),
-                expanded = participantResults.isNotEmpty(),
-                onDismissRequest = {
-                    expanded = false
-                },
-            ) {
-                participantResults.forEach { result ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = result.name)
-                        },
-                        onClick = {
-                            uiState.onParticipantSearch(TextFieldValue())
-                            uiState.participants.add(result)
-                            expanded = false
-                        },
-                    )
-                }
-            }
-        }
+            uiState = uiState,
+        )
         ParticipantFlowRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -122,9 +78,92 @@ fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Mo
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@Composable
+private fun ParticipantDropdownMenu(
+    uiState: EditContactActivityUiState.Loaded,
+    modifier: Modifier = Modifier,
+) {
+    val participantResults by uiState.participantResults.collectAsStateWithLifecycle()
+    var shouldExpand by rememberSaveable { mutableStateOf(false) }
+    val expanded by remember {
+        derivedStateOf { shouldExpand && participantResults.isNotEmpty() }
+    }
+    ExposedDropdownMenuBox(
+        modifier = modifier,
+        expanded = expanded,
+        onExpandedChange = {
+            shouldExpand = it
+        },
+    ) {
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(type = MenuAnchorType.PrimaryEditable),
+            value = uiState.participantSearch,
+            onValueChange = { search ->
+                uiState.onParticipantSearch(search)
+                shouldExpand = true
+            },
+            placeholder = {
+                Text(
+                    text = "Add a participant by name",
+                )
+            },
+            maxLines = 1,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Words,
+                keyboardType = KeyboardType.Text,
+            ),
+        )
+        DropdownMenu(
+            modifier = Modifier
+                .exposedDropdownSize(true),
+            properties = PopupProperties(focusable = false),
+            expanded = expanded,
+            onDismissRequest = {
+                shouldExpand = false
+            },
+        ) {
+            participantResults.forEach { result ->
+                when (result) {
+                    is ActivityParticipant.Contact -> {
+                        DropdownMenuItem(
+                            text = {
+                                Text(text = result.name)
+                            },
+                            onClick = {
+                                uiState.onParticipantSearch(TextFieldValue())
+                                uiState.participants.add(result)
+                                shouldExpand = false
+                            },
+                        )
+                    }
+
+                    is ActivityParticipant.New -> {
+                        val navigator = LocalDestinationsNavigator.current
+                        DropdownMenuItem(
+                            text = {
+                                Text(text = "Add \"${result.name}\"")
+                            },
+                            onClick = {
+                                // Keep the dropdown open
+                                navigator.navigate(ContactEditDestination(contactName = result.name))
+                            },
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun ParticipantFlowRow(participants: SnapshotStateList<ActivityParticipant>, modifier: Modifier = Modifier) {
+private fun ParticipantFlowRow(
+    participants: SnapshotStateList<ActivityParticipant.Contact>,
+    modifier: Modifier = Modifier,
+) {
     FlowRow(
         modifier = modifier
             .animateContentSize(),
@@ -149,7 +188,11 @@ private fun ParticipantFlowRow(participants: SnapshotStateList<ActivityParticipa
 }
 
 @Composable
-private fun ParticipantChip(participant: ActivityParticipant, onRemove: () -> Unit, modifier: Modifier = Modifier) {
+private fun ParticipantChip(
+    participant: ActivityParticipant.Contact,
+    onRemove: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     InputChip(
         modifier = modifier,
         avatar = {

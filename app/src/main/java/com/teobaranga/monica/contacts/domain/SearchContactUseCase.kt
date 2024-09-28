@@ -2,19 +2,16 @@ package com.teobaranga.monica.contacts.domain
 
 import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.contacts.data.ContactRepository
-import com.teobaranga.monica.core.dispatcher.Dispatcher
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import javax.inject.Inject
 
 internal class SearchContactUseCase @Inject constructor(
-    private val dispatcher: Dispatcher,
     private val contactRepository: ContactRepository,
 ) {
-    suspend operator fun invoke(query: String, excludeContacts: List<Int> = emptyList()): List<ContactEntity> {
-        return withContext(dispatcher.io) {
-            val trimmedQuery = query.trim().takeIf { it.isNotBlank() }
-                ?: return@withContext emptyList()
-            contactRepository.searchContact(trimmedQuery, excludeContacts)
-        }
+    operator fun invoke(query: String, excludeContacts: List<Int> = emptyList()): Flow<List<ContactEntity>> {
+        val trimmedQuery = query.trim().takeIf { it.isNotBlank() }
+            ?: return emptyFlow()
+        return contactRepository.searchContact(trimmedQuery, excludeContacts)
     }
 }

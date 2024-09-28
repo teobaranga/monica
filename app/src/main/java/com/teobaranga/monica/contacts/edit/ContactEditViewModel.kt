@@ -1,8 +1,10 @@
 package com.teobaranga.monica.contacts.edit
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ramcosta.composedestinations.generated.navArgs
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.detail.toUiBirthday
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
@@ -10,35 +12,35 @@ import com.teobaranga.monica.contacts.ui.toDomainBirthday
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.genders.domain.Gender
 import com.teobaranga.monica.genders.domain.GetGendersUseCase
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val ID_CONTACT_UNDEFINED = -1
 
-@HiltViewModel(assistedFactory = ContactEditViewModel.Factory::class)
-internal class ContactEditViewModel @AssistedInject constructor(
-    @Assisted
-    private val contactId: Int?,
+@HiltViewModel
+internal class ContactEditViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val dispatcher: Dispatcher,
     private val contactRepository: ContactRepository,
     private val getGendersUseCase: GetGendersUseCase,
 ) : ViewModel() {
+
+    private val navArgs = savedStateHandle.navArgs<ContactEditNavArgs>()
 
     private val _uiState = MutableStateFlow<ContactEditUiState>(ContactEditUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch(dispatcher.io) {
-            val contact = contactId?.let(contactRepository::getContact)?.firstOrNull()
+            val contact = navArgs.contactId?.let(contactRepository::getContact)?.firstOrNull()
             val genders = getGendersUseCase().firstOrNull() ?: emptyList()
             _uiState.value = if (contact == null) {
                 getEmptyState(
+                    firstName = navArgs.contactName,
                     genders = genders,
                 )
             } else {
@@ -65,7 +67,7 @@ internal class ContactEditViewModel @AssistedInject constructor(
         }
         viewModelScope.launch(dispatcher.io) {
             contactRepository.upsertContact(
-                contactId = contactId,
+                contactId = navArgs.contactId,
                 firstName = firstname,
                 lastName = uiState.lastName.getValidText(),
                 nickname = uiState.nickname.getValidText(),
@@ -76,18 +78,18 @@ internal class ContactEditViewModel @AssistedInject constructor(
     }
 
     fun onDelete() {
-        if (contactId == null) {
+        if (navArgs.contactId == null) {
             return
         }
         viewModelScope.launch(dispatcher.io) {
-            contactRepository.deleteContact(contactId)
+            contactRepository.deleteContact(navArgs.contactId)
         }
     }
 
-    private fun getEmptyState(genders: List<Gender>): ContactEditUiState.Loaded {
+    private fun getEmptyState(firstName: String?, genders: List<Gender>): ContactEditUiState.Loaded {
         return ContactEditUiState.Loaded(
             id = ID_CONTACT_UNDEFINED,
-            firstName = "",
+            firstName = firstName.orEmpty(),
             lastName = null,
             nickname = null,
             initialGender = null,
@@ -98,10 +100,5 @@ internal class ContactEditViewModel @AssistedInject constructor(
 
     private fun TextFieldState.getValidText(): String? {
         return text.trim().takeIf { it.isNotEmpty() }?.toString()
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(contactId: Int?): ContactEditViewModel
     }
 }

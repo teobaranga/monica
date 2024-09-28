@@ -9,16 +9,18 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
 
-@Destination<ContactsNavGraph>
+data class ContactEditNavArgs(
+    val contactId: Int? = null,
+    val contactName: String? = null,
+)
+
+@Destination<ContactsNavGraph>(
+    navArgs = ContactEditNavArgs::class,
+)
 @Composable
 internal fun ContactEdit(
     navigator: DestinationsNavigator,
-    contactId: Int? = null,
-    viewModel: ContactEditViewModel = hiltViewModel<ContactEditViewModel, ContactEditViewModel.Factory>(
-        creationCallback = { factory: ContactEditViewModel.Factory ->
-            factory.create(contactId)
-        },
-    ),
+    viewModel: ContactEditViewModel = hiltViewModel<ContactEditViewModel>(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     ContactEditScreen(

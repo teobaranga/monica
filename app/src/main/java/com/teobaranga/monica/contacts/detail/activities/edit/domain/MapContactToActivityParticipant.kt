@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 class MapContactToActivityParticipant @Inject constructor() {
 
-    operator fun invoke(contact: ContactEntity): ActivityParticipant {
-        return ActivityParticipant(
+    operator fun invoke(contact: ContactEntity): ActivityParticipant.Contact {
+        return ActivityParticipant.Contact(
             contactId = contact.contactId,
             name = contact.completeName,
             avatar = contact.userAvatar,
