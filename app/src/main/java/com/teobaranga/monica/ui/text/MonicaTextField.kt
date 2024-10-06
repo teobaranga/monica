@@ -1,9 +1,12 @@
 package com.teobaranga.monica.ui.text
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
@@ -27,8 +30,10 @@ import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 
 // Developers need to handle invalid input manually. But since we don't provide an error message
@@ -83,6 +88,9 @@ fun MonicaTextField(
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     lineLimits: TextFieldLineLimits = TextFieldLineLimits.Default,
+    onTextLayout: (Density.(getResult: () -> TextLayoutResult?) -> Unit)? = null,
+    scrollState: ScrollState = rememberScrollState(),
+    contentPadding: PaddingValues = OutlinedTextFieldDefaults.contentPadding(),
     interactionSource: MutableInteractionSource? = null,
     outputTransformation: OutputTransformation? = null,
     shape: Shape = OutlinedTextFieldDefaults.shape,
@@ -123,6 +131,8 @@ fun MonicaTextField(
             interactionSource = interactionSource,
             outputTransformation = outputTransformation,
             lineLimits = lineLimits,
+            onTextLayout = onTextLayout,
+            scrollState = scrollState,
             decorator = { innerTextField ->
                 OutlinedTextFieldDefaults.DecorationBox(
                     value = state.text.toString(),
@@ -140,7 +150,7 @@ fun MonicaTextField(
                     isError = isError,
                     interactionSource = interactionSource,
                     colors = colors,
-                    contentPadding = OutlinedTextFieldDefaults.contentPadding(),
+                    contentPadding = contentPadding,
                     container = {
                         OutlinedTextFieldDefaults.Container(
                             enabled = enabled,
