@@ -20,6 +20,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.button.DateButton
@@ -83,7 +85,9 @@ fun JournalEntryScreen(
                         modifier = Modifier
                             .padding(contentPadding)
                             .consumeWindowInsets(contentPadding)
-                            .imePadding(),
+                            .imePadding()
+                            .navigationBarsPadding()
+                            .padding(bottom = FabHeight),
                     ) {
                         Row(
                             modifier = Modifier
@@ -154,6 +158,10 @@ fun JournalEntryScreen(
                             ),
                             onTextLayout = cursorData.textLayoutResult,
                             scrollState = cursorData.scrollState,
+                            contentPadding = OutlinedTextFieldDefaults.contentPadding(
+                                top = 0.dp,
+                                bottom = 0.dp,
+                            ),
                         )
                     }
                 }
