@@ -14,7 +14,7 @@ import com.teobaranga.monica.genders.domain.Gender
 import com.teobaranga.monica.genders.domain.GetGendersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -40,7 +40,7 @@ internal class ContactEditViewModel @Inject constructor(
         } else {
             null
         }
-        val genders = getGendersUseCase().firstOrNull() ?: emptyList()
+        val genders = getGendersUseCase().first()
         val state = if (contact == null) {
             getEmptyState(
                 firstName = navArgs.contactName,

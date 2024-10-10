@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,7 +29,7 @@ import com.teobaranga.monica.ui.text.MonicaTextField
 @Composable
 fun GenderSection(
     gender: Gender?,
-    onGenderChange: (Gender) -> Unit,
+    onGenderChange: (Gender?) -> Unit,
     genders: List<Gender>,
     modifier: Modifier = Modifier,
 ) {
@@ -55,7 +56,9 @@ fun GenderSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(type = MenuAnchorType.PrimaryNotEditable),
-                state = TextFieldState(gender?.name.orEmpty()),
+                state = rememberSaveable(inputs = arrayOf(gender), saver = TextFieldState.Saver) {
+                    TextFieldState(gender?.name ?: "No gender")
+                },
                 readOnly = true,
                 lineLimits = TextFieldLineLimits.SingleLine,
             )
@@ -69,6 +72,17 @@ fun GenderSection(
                     expanded = false
                 },
             ) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = "No gender",
+                        )
+                    },
+                    onClick = {
+                        onGenderChange(null)
+                        expanded = false
+                    },
+                )
                 genders.forEach { gender ->
                     DropdownMenuItem(
                         text = {
