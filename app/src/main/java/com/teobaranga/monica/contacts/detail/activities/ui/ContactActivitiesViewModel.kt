@@ -11,9 +11,10 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel(assistedFactory = ContactActivitiesViewModel.Factory::class)
@@ -25,30 +26,30 @@ internal class ContactActivitiesViewModel @AssistedInject constructor(
     private val contactActivitiesSynchronizerFactory: ContactActivitiesSynchronizer.Factory,
 ) : ViewModel() {
 
-    val contactActivities = contactActivitiesRepository.getActivities(contactId)
-        .mapLatest { contactActivities ->
-            val activities = contactActivities
-                .map { contactActivityWithParticipants ->
-                    contactActivityWithParticipants.toExternalModel(contactId)
-                }
-            if (activities.isEmpty()) {
-                ContactActivitiesUiState.Empty
-            } else {
-                ContactActivitiesUiState.Loaded(activities)
-            }
+    val contactActivities = flow {
+        withContext(dispatcher.io) {
+            contactActivitiesSynchronizerFactory.create(contactId)
+                .sync()
         }
+        contactActivitiesRepository.getActivities(contactId)
+            .mapLatest { contactActivities ->
+                val activities = contactActivities
+                    .map { contactActivityWithParticipants ->
+                        contactActivityWithParticipants.toExternalModel(contactId)
+                    }
+                if (activities.isEmpty()) {
+                    ContactActivitiesUiState.Empty
+                } else {
+                    ContactActivitiesUiState.Loaded(activities)
+                }
+            }
+            .collect(this)
+    }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = ContactActivitiesUiState.Loading,
         )
-
-    init {
-        viewModelScope.launch(dispatcher.io) {
-            contactActivitiesSynchronizerFactory.create(contactId)
-                .sync()
-        }
-    }
 
     @AssistedFactory
     interface Factory {

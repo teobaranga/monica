@@ -34,7 +34,6 @@ import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.thenIf
-import kotlinx.coroutines.flow.collectLatest
 
 @Destination<RootGraph>(start = true)
 @Composable
@@ -51,12 +50,6 @@ internal fun Home(
                     inclusive = true
                 }
             }
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.navigation.collectLatest {
-            navigator.navigate(it)
         }
     }
 
