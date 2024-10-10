@@ -5,20 +5,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.data.ContactSynchronizer
-import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.photo.PhotoSynchronizer
 import com.teobaranga.monica.data.user.UserRepository
-import com.teobaranga.monica.home.HomeNavigationManager
 import com.teobaranga.monica.user.userAvatar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val PAGE_SIZE = 10
@@ -26,8 +23,6 @@ private const val PAGE_SIZE = 10
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 internal class DashboardViewModel @Inject constructor(
-    private val dispatcher: Dispatcher,
-    private val homeNavigationManager: HomeNavigationManager,
     private val userRepository: UserRepository,
     contactRepository: ContactRepository,
     private val contactSynchronizer: ContactSynchronizer,
@@ -37,6 +32,9 @@ internal class DashboardViewModel @Inject constructor(
     val userAvatar = userRepository.me
         .mapLatest { me ->
             me.contact?.avatar ?: me.userAvatar
+        }
+        .onStart {
+            photoSynchronizer.sync()
         }
         .stateIn(
             scope = viewModelScope,
@@ -51,6 +49,9 @@ internal class DashboardViewModel @Inject constructor(
                     name = me.firstName,
                 ),
             )
+        }
+        .onStart {
+            userRepository.sync()
         }
         .stateIn(
             scope = viewModelScope,
@@ -72,25 +73,8 @@ internal class DashboardViewModel @Inject constructor(
         },
     )
         .flow
-        .cachedIn(viewModelScope)
-
-    fun navigateTo(destination: DirectionDestinationSpec) {
-        homeNavigationManager.navigateTo(destination)
-    }
-
-    init {
-        refresh()
-    }
-
-    fun refresh() {
-        viewModelScope.launch(dispatcher.io) {
-            userRepository.sync()
-        }
-        viewModelScope.launch(dispatcher.io) {
+        .onStart {
             contactSynchronizer.sync()
         }
-        viewModelScope.launch(dispatcher.io) {
-            photoSynchronizer.sync()
-        }
-    }
+        .cachedIn(viewModelScope)
 }

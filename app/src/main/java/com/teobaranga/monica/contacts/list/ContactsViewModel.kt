@@ -8,7 +8,6 @@ import androidx.paging.cachedIn
 import com.teobaranga.monica.contacts.data.ContactPagingSource
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.data.ContactSynchronizer
-import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
@@ -18,6 +17,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +27,6 @@ private const val PAGE_SIZE = 15
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 internal class ContactsViewModel @Inject constructor(
-    private val dispatcher: Dispatcher,
     userRepository: UserRepository,
     contactRepository: ContactRepository,
     private val contactSynchronizer: ContactSynchronizer,
@@ -60,6 +59,9 @@ internal class ContactsViewModel @Inject constructor(
         },
     )
         .flow
+        .onStart {
+            contactSynchronizer.sync()
+        }
         .cachedIn(viewModelScope)
 
     private val _refreshState = MonicaPullToRefreshState(onRefresh = ::refresh)
@@ -82,13 +84,9 @@ internal class ContactsViewModel @Inject constructor(
         items = items,
     )
 
-    init {
-        refresh()
-    }
-
     fun refresh() {
-        viewModelScope.launch(dispatcher.io) {
-            contactSynchronizer.sync()
+        viewModelScope.launch {
+            contactSynchronizer.reSync()
         }
     }
 

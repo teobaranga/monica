@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
@@ -26,7 +25,6 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 internal class JournalEntryListViewModel @Inject constructor(
-    private val dispatcher: Dispatcher,
     userRepository: UserRepository,
     journalRepository: JournalRepository,
     private val journalEntrySynchronizer: JournalEntrySynchronizer,
@@ -48,13 +46,13 @@ internal class JournalEntryListViewModel @Inject constructor(
                 journalEntryEntity.toUiModel()
             }
         }
+        .onStart {
+            journalEntrySynchronizer.sync()
+        }
         .cachedIn(viewModelScope)
 
     private val _refreshState = MonicaPullToRefreshState(onRefresh = ::refresh)
     val refreshState = journalEntrySynchronizer.syncState
-        .onStart {
-            refresh()
-        }
         .mapLatest { state ->
             state == Synchronizer.State.REFRESHING
         }
@@ -70,8 +68,8 @@ internal class JournalEntryListViewModel @Inject constructor(
         )
 
     private fun refresh() {
-        viewModelScope.launch(dispatcher.io) {
-            journalEntrySynchronizer.sync()
+        viewModelScope.launch {
+            journalEntrySynchronizer.reSync()
         }
     }
 

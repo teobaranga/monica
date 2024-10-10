@@ -2,15 +2,18 @@ package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.sync.Synchronizer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ContactSynchronizer @Inject constructor(
+    private val dispatcher: Dispatcher,
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
     private val contactEntityMapper: ContactEntityMapper,
@@ -18,7 +21,18 @@ class ContactSynchronizer @Inject constructor(
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
+    suspend fun reSync() {
+        withContext(dispatcher.io) {
+            isSyncEnabled = true
+            sync()
+        }
+    }
+
     override suspend fun sync() {
+        if (!isSyncEnabled) {
+            return
+        }
+
         syncState.value = Synchronizer.State.REFRESHING
 
         // Keep track of removed contacts, start with the full database first
@@ -56,5 +70,12 @@ class ContactSynchronizer @Inject constructor(
         contactDao.delete(removedIds.toList())
 
         syncState.value = Synchronizer.State.IDLE
+
+        isSyncEnabled = false
+    }
+
+    companion object {
+
+        private var isSyncEnabled = true
     }
 }

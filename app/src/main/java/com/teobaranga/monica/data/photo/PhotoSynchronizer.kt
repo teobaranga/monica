@@ -19,6 +19,10 @@ class PhotoSynchronizer @Inject constructor(
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
     override suspend fun sync() {
+        if (!isSyncEnabled) {
+            return
+        }
+
         syncState.value = Synchronizer.State.REFRESHING
 
         // Keep track of removed photos, start with the full database first
@@ -56,6 +60,8 @@ class PhotoSynchronizer @Inject constructor(
         photoDao.delete(removedIds.toList())
 
         syncState.value = Synchronizer.State.IDLE
+
+        isSyncEnabled = false
     }
 
     private fun ContactPhotosResponse.Photo.toEntity(): PhotoEntity {
@@ -65,5 +71,10 @@ class PhotoSynchronizer @Inject constructor(
             data = data.split(',').last(),
             contactId = contact.id,
         )
+    }
+
+    companion object {
+
+        private var isSyncEnabled = true
     }
 }
