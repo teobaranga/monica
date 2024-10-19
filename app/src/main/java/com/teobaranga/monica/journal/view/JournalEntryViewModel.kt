@@ -43,9 +43,9 @@ internal class JournalEntryViewModel @AssistedInject constructor(
             } else {
                 JournalEntryUiState.Loaded(
                     id = entry.id,
-                    title = entry.title,
-                    post = entry.post,
-                    date = entry.date,
+                    initialTitle = entry.title,
+                    initialPost = entry.post,
+                    initialDate = entry.date,
                 )
             }
         }
@@ -75,9 +75,9 @@ internal class JournalEntryViewModel @AssistedInject constructor(
     private fun getEmptyState(): JournalEntryUiState.Loaded {
         return JournalEntryUiState.Loaded(
             id = -1,
-            title = null,
-            post = "",
-            date = LocalDate.now(),
+            initialTitle = null,
+            initialPost = "",
+            initialDate = LocalDate.now(),
         )
     }
 
