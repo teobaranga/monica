@@ -31,10 +31,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.teobaranga.monica.ui.ConfirmExitDialog
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.button.DateButton
+import com.teobaranga.monica.ui.rememberConfirmExitDialogState
 import com.teobaranga.monica.ui.text.MonicaTextField
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.keepCursorVisible
@@ -81,6 +83,16 @@ fun JournalEntryScreen(
                 }
 
                 is JournalEntryUiState.Loaded -> {
+                    val confirmExitDialogState = rememberConfirmExitDialogState().apply {
+                        shouldConfirm = uiState.hasChanges
+                    }
+                    ConfirmExitDialog(
+                        state = confirmExitDialogState,
+                        title = "Unsaved changes",
+                        text = "You have unsaved changes. Are you sure you want to exit?",
+                        positiveText = "Keep editing",
+                        negativeText = "Exit",
+                    )
                     Column(
                         modifier = Modifier
                             .padding(contentPadding)
@@ -177,9 +189,9 @@ private fun PreviewJournalEntryScreen() {
         JournalEntryScreen(
             uiState = JournalEntryUiState.Loaded(
                 id = 1,
-                title = null,
-                post = "Hello World!",
-                date = LocalDate.now(),
+                initialTitle = null,
+                initialPost = "Hello World!",
+                initialDate = LocalDate.now(),
             ),
             topBar = {
                 JournalEntryTopAppBar(

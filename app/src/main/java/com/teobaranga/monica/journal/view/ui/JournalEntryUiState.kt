@@ -2,6 +2,7 @@ package com.teobaranga.monica.journal.view.ui
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,16 +14,22 @@ sealed interface JournalEntryUiState {
     @Stable
     class Loaded(
         val id: Int,
-        title: String?,
-        post: String,
-        date: LocalDate,
+        initialTitle: String?,
+        initialPost: String,
+        initialDate: LocalDate,
     ) : JournalEntryUiState {
 
-        var date by mutableStateOf(date)
+        var date by mutableStateOf(initialDate)
 
-        val title = TextFieldState(title.orEmpty())
+        val title = TextFieldState(initialTitle.orEmpty())
 
-        val post = TextFieldState(post)
+        val post = TextFieldState(initialPost)
+
+        val hasChanges by derivedStateOf {
+            initialTitle.orEmpty() != title.text
+                || initialPost != post.text
+                || initialDate != date
+        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

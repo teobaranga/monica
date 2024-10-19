@@ -1,6 +1,7 @@
 package com.teobaranga.monica.journal.view
 
 import JournalNavGraph
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,12 +25,15 @@ internal fun JournalEntry(
         },
     ),
 ) {
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     JournalEntryScreen(
         uiState = uiState,
         topBar = {
             JournalEntryTopAppBar(
-                onBack = navigator::popBackStack,
+                onBack = {
+                    onBackPressedDispatcher?.onBackPressed()
+                },
                 onDelete = {
                     viewModel.onDelete()
                     navigator.popBackStack()
