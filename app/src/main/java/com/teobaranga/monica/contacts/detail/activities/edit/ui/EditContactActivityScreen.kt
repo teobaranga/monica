@@ -1,20 +1,21 @@
 package com.teobaranga.monica.contacts.detail.activities.edit.ui
 
 import ContactsNavGraph
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
@@ -23,7 +24,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -31,6 +31,8 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -41,14 +43,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.teobaranga.monica.journal.view.ui.StartVerticalLineShape
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
+import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.button.DateButton
 import com.teobaranga.monica.ui.navigation.LocalDestinationsNavigator
-import com.teobaranga.monica.ui.plus
+import com.teobaranga.monica.ui.text.MonicaTextField
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.util.compose.keepCursorVisible
+import com.teobaranga.monica.util.compose.rememberCursorData
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination<ContactsNavGraph>
@@ -67,13 +72,16 @@ internal fun EditContactActivity(
     CompositionLocalProvider(
         LocalDestinationsNavigator provides navigator,
     ) {
+        val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         EditContactActivity(
             uiState = uiState,
             topAppBar = { topAppBarScrollBehaviour ->
                 EditContactActivityTopAppBar(
                     isEdit = activityId != null,
-                    onBack = navigator::popBackStack,
+                    onBack = {
+                        onBackPressedDispatcher?.onBackPressed()
+                    },
                     onDelete = {
                         viewModel.onDelete()
                         navigator.popBackStack()
@@ -106,7 +114,8 @@ private fun EditContactActivity(
         floatingActionButton = {
             FloatingActionButton(
                 modifier = Modifier
-                    .navigationBarsPadding(),
+                    .navigationBarsPadding()
+                    .imePadding(),
                 onClick = {
                     onSave()
                     onBack()
@@ -118,7 +127,7 @@ private fun EditContactActivity(
                 )
             }
         },
-        contentWindowInsets = WindowInsets.ime,
+        contentWindowInsets = WindowInsets.Zero,
     ) { contentPadding ->
         Crossfade(
             targetState = uiState,
@@ -134,24 +143,24 @@ private fun EditContactActivity(
                 }
 
                 is EditContactActivityUiState.Loaded -> {
+                    val scrollState = rememberScrollState()
                     Column(
                         modifier = Modifier
                             .padding(contentPadding)
                             .fillMaxWidth()
-                            .verticalScroll(rememberScrollState()),
+                            .verticalScroll(scrollState),
                     ) {
-                        DateSection(
+                        DateButton(
                             modifier = Modifier
-                                .padding(top = 24.dp),
+                                .padding(top = 24.dp, end = 24.dp)
+                                .align(Alignment.End),
+                            date = uiState.date,
                             onDateSelect = { date ->
                                 uiState.date = date
                             },
-                            uiState = uiState,
                         )
 
                         SummarySection(
-                            modifier = Modifier
-                                .padding(top = 20.dp),
                             uiState = uiState,
                         )
 
@@ -163,16 +172,12 @@ private fun EditContactActivity(
 
                         DetailsSection(
                             modifier = Modifier
-                                .padding(top = 20.dp),
+                                .padding(top = 20.dp)
+                                .navigationBarsPadding()
+                                .imePadding()
+                                .padding(bottom = FabPadding + FabHeight),
                             uiState = uiState,
-                        )
-
-                        Spacer(
-                            modifier = Modifier
-                                .padding(
-                                    WindowInsets.navigationBars.asPaddingValues() +
-                                        PaddingValues(bottom = FabPadding + FabHeight + 24.dp),
-                                ),
+                            scrollState = scrollState,
                         )
                     }
                 }
@@ -182,34 +187,9 @@ private fun EditContactActivity(
 }
 
 @Composable
-private fun DateSection(
-    uiState: EditContactActivityUiState.Loaded,
-    onDateSelect: (LocalDate) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier,
-    ) {
-        Text(
-            modifier = Modifier
-                .padding(start = 40.dp),
-            text = "Date",
-            style = MaterialTheme.typography.titleMedium,
-        )
-        DateButton(
-            modifier = Modifier
-                .padding(start = 24.dp, top = 12.dp),
-            date = uiState.date,
-            onDateSelect = onDateSelect,
-        )
-    }
-}
-
-@Composable
 private fun SummarySection(uiState: EditContactActivityUiState.Loaded, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
-            .animateContentSize(),
+        modifier = modifier,
     ) {
         Text(
             modifier = Modifier
@@ -217,15 +197,15 @@ private fun SummarySection(uiState: EditContactActivityUiState.Loaded, modifier:
             text = "Summary",
             style = MaterialTheme.typography.titleMedium,
         )
-        OutlinedTextField(
+        val interactionSource = remember { MutableInteractionSource() }
+        MonicaTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .padding(top = 12.dp),
-            value = uiState.summary,
-            onValueChange = { summary ->
-                uiState.summary = summary
-            },
+            interactionSource = interactionSource,
+            shape = StartVerticalLineShape(interactionSource),
+            state = uiState.summary,
             placeholder = {
                 Text(
                     text = "Write a short activity summary",
@@ -240,8 +220,13 @@ private fun SummarySection(uiState: EditContactActivityUiState.Loaded, modifier:
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun DetailsSection(uiState: EditContactActivityUiState.Loaded, modifier: Modifier = Modifier) {
+private fun DetailsSection(
+    uiState: EditContactActivityUiState.Loaded,
+    scrollState: ScrollState,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .animateContentSize(),
@@ -252,21 +237,28 @@ private fun DetailsSection(uiState: EditContactActivityUiState.Loaded, modifier:
             text = "Details",
             style = MaterialTheme.typography.titleMedium,
         )
-        OutlinedTextField(
+        val interactionSource = remember { MutableInteractionSource() }
+        val cursorData = rememberCursorData(
+            textFieldState = uiState.details,
+            isFixedContainer = false,
+            scrollState = scrollState,
+        )
+        MonicaTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
-                .padding(top = 12.dp),
-            value = uiState.details,
-            onValueChange = { summary ->
-                uiState.details = summary
-            },
+                .padding(top = 12.dp)
+                .keepCursorVisible(cursorData),
+            state = uiState.details,
+            onTextLayout = cursorData.textLayoutResult,
+            interactionSource = interactionSource,
+            shape = StartVerticalLineShape(interactionSource),
             placeholder = {
                 Text(
                     text = "Add more details (optional)",
                 )
             },
-            minLines = 3,
+            lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 3),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 autoCorrectEnabled = true,
@@ -283,7 +275,6 @@ private fun PreviewEditContactActivityLoadedScreen() {
     MonicaTheme {
         EditContactActivity(
             uiState = EditContactActivityUiState.Loaded(
-                onParticipantSearch = { },
                 participantResults = MutableStateFlow(emptyList()),
             ),
             topAppBar = { },

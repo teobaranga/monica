@@ -15,10 +15,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.layout.findRootCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
 
 /**
  * Holds the data required for the [keepCursorVisible] Modifier.
@@ -26,7 +32,7 @@ import androidx.compose.ui.unit.Density
  * The [scrollState] and [textLayoutResult] are meant to be passed to the `TextField` for which
  * the cursor should be kept visible.
  */
-interface CursorData {
+sealed interface CursorData {
 
     val scrollState: ScrollState
 
@@ -35,16 +41,41 @@ interface CursorData {
     var cursorRect: Rect?
 }
 
-@Stable
-private class CursorDataImpl(
-    private val textFieldState: TextFieldState,
-    override val scrollState: ScrollState,
+sealed class CursorDataBase(
 ) : CursorData {
+
+    abstract val textFieldState: TextFieldState
 
     override var cursorRect by mutableStateOf<Rect?>(null)
 
     override val textLayoutResult: Density.(getResult: () -> TextLayoutResult?) -> Unit = { getResult ->
         cursorRect = getResult()?.getCursorRect(textFieldState.selection.start)
+    }
+}
+
+@Stable
+private class FixedContainerCursorData(
+    override val textFieldState: TextFieldState,
+    override val scrollState: ScrollState,
+) : CursorDataBase() {
+
+    fun isCursorInBottomHalf(cursor: Rect, height: Int): Boolean {
+        return cursor.top - cursor.height - scrollState.value > height / 2
+    }
+}
+
+/**
+ * @param textFieldState The [TextFieldState] for which the cursor should be kept visible.
+ * @param scrollState The [ScrollState] for the `TextField` container.
+ */
+@Stable
+private class ScrollableContainerCursorData(
+    override val textFieldState: TextFieldState,
+    override val scrollState: ScrollState,
+) : CursorDataBase() {
+
+    fun isCursorInBottomHalf(cursor: Rect, positionInRoot: Offset, screenHeight: Int): Boolean {
+        return positionInRoot.y + cursor.top - cursor.height - scrollState.value.coerceAtMost(scrollState.maxValue) > screenHeight / 2
     }
 }
 
@@ -55,9 +86,17 @@ private class CursorDataImpl(
  * @param scrollState The [ScrollState] for the same `TextField`.
  */
 @Composable
-fun rememberCursorData(textFieldState: TextFieldState, scrollState: ScrollState = rememberScrollState()): CursorData {
-    return remember(textFieldState, scrollState) {
-        CursorDataImpl(textFieldState, scrollState)
+fun rememberCursorData(
+    textFieldState: TextFieldState,
+    isFixedContainer: Boolean,
+    scrollState: ScrollState = rememberScrollState(),
+): CursorData {
+    return remember(textFieldState, isFixedContainer, scrollState) {
+        if (isFixedContainer) {
+            FixedContainerCursorData(textFieldState, scrollState)
+        } else {
+            ScrollableContainerCursorData(textFieldState, scrollState)
+        }
     }
 }
 
@@ -68,8 +107,13 @@ fun rememberCursorData(textFieldState: TextFieldState, scrollState: ScrollState 
  */
 @Composable
 fun Modifier.keepCursorVisible(cursorData: CursorData): Modifier {
+    var positionInRoot by remember { mutableStateOf(Offset.Zero) }
     var isFocused by remember { mutableStateOf(false) }
     var height by remember { mutableIntStateOf(0) }
+    var rootHeight by remember { mutableIntStateOf(0) }
+    val screenHeight = with(LocalDensity.current) {
+        LocalConfiguration.current.screenHeightDp.dp.roundToPx()
+    }
     var prevScrollMaxValue by remember { mutableIntStateOf(cursorData.scrollState.maxValue) }
     var isShrinking by remember { mutableStateOf(false) }
     var isInProgress by remember { mutableStateOf(false) }
@@ -81,7 +125,14 @@ fun Modifier.keepCursorVisible(cursorData: CursorData): Modifier {
             // the scroll value to keep the cursor visible.
             val cursor = cursorData.cursorRect
             if (isFocused && cursor != null) {
-                val isCursorInBottomHalf = cursor.bottom - cursorData.scrollState.value > height / 2
+                val isCursorInBottomHalf = when (cursorData) {
+                    is FixedContainerCursorData -> cursorData.isCursorInBottomHalf(cursor, height)
+                    is ScrollableContainerCursorData -> cursorData.isCursorInBottomHalf(
+                        cursor,
+                        positionInRoot,
+                        screenHeight,
+                    )
+                }
                 // As the TextField is scrolled, eventually the cursor might be visible before the keyboard
                 // fully animates up. In that case, shouldScroll would become false and the scrolling would stop
                 // abruptly. To prevent this, we keep scrolling if a scroll is already in progress.
@@ -115,7 +166,9 @@ fun Modifier.keepCursorVisible(cursorData: CursorData): Modifier {
         .onFocusChanged {
             isFocused = it.isFocused
         }
-        .onGloballyPositioned {
-            height = it.size.height
+        .onGloballyPositioned { layoutCoordinates ->
+            positionInRoot = layoutCoordinates.positionInRoot()
+            rootHeight = layoutCoordinates.findRootCoordinates().size.height
+            height = layoutCoordinates.size.height
         }
 }

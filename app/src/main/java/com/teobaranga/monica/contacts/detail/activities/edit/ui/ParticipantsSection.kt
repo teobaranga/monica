@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.DropdownMenuItem
@@ -23,9 +26,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,12 +42,13 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
+import com.teobaranga.monica.journal.view.ui.StartVerticalLineShape
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.navigation.LocalDestinationsNavigator
+import com.teobaranga.monica.ui.text.MonicaTextField
 import kotlinx.coroutines.launch
 
 @Composable
@@ -93,21 +97,23 @@ private fun ParticipantDropdownMenu(
             shouldExpand = it
         },
     ) {
-        OutlinedTextField(
+        LaunchedEffect(uiState.participantSearch) {
+            shouldExpand = true
+        }
+        val interactionSource = remember { MutableInteractionSource() }
+        MonicaTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(type = MenuAnchorType.PrimaryEditable),
-            value = uiState.participantSearch,
-            onValueChange = { search ->
-                uiState.onParticipantSearch(search)
-                shouldExpand = true
-            },
+            state = uiState.participantSearch,
+            interactionSource = interactionSource,
+            shape = StartVerticalLineShape(interactionSource),
             placeholder = {
                 Text(
                     text = "Add a participant by name",
                 )
             },
-            maxLines = 1,
+            lineLimits = TextFieldLineLimits.SingleLine,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Words,
                 keyboardType = KeyboardType.Text,
@@ -127,7 +133,7 @@ private fun ParticipantDropdownMenu(
                                 Text(text = result.name)
                             },
                             onClick = {
-                                uiState.onParticipantSearch(TextFieldValue())
+                                uiState.participantSearch.clearText()
                                 uiState.participants.add(result)
                                 shouldExpand = false
                             },
