@@ -1,6 +1,7 @@
 package com.teobaranga.monica.contacts.detail.activities.edit.ui
 
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.activities.data.ContactActivitiesRepository
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -41,7 +43,10 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
 
     private val participantQuery = MutableSharedFlow<String>(extraBufferCapacity = 1)
 
-    private val participantResults: StateFlow<List<ActivityParticipant>> = participantQuery
+    private val participantResults: StateFlow<List<ActivityParticipant>> = snapshotFlow {
+        (uiState.value as? EditContactActivityUiState.Loaded)?.participantSearch?.text?.toString()
+    }
+        .filterNotNull()
         .debounce(200.milliseconds)
         .flatMapLatest { query ->
             if (query.isBlank()) {
@@ -69,14 +74,13 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
 
     val uiState: StateFlow<EditContactActivityUiState> = flow {
         val uiState = EditContactActivityUiState.Loaded(
-            onParticipantSearch = ::onParticipantSearch,
             participantResults = participantResults,
         )
         if (activityId != null) {
             val activity = getActivityUseCase(activityId)
             uiState.apply {
-                summary = TextFieldValue(activity.summary)
-                details = TextFieldValue(activity.details.orEmpty())
+                summary.setTextAndPlaceCursorAtEnd(activity.summary)
+                details.setTextAndPlaceCursorAtEnd(activity.details.orEmpty())
                 date = activity.date
                 participants.addAll(activity.participants)
             }
@@ -101,8 +105,8 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
         viewModelScope.launch(dispatcher.io) {
             contactActivitiesRepository.upsertActivity(
                 activityId = activityId,
-                title = uiState.summary.text,
-                description = uiState.details.text.takeUnless { it.isEmpty() },
+                title = uiState.summary.text.toString(),
+                description = uiState.details.text.toString().takeUnless { it.isEmpty() },
                 date = uiState.date,
                 participants = uiState.participants.map { it.contactId },
             )

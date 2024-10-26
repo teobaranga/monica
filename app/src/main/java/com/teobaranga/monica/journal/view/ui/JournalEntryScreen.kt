@@ -3,7 +3,6 @@ package com.teobaranga.monica.journal.view.ui
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -24,7 +23,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +37,7 @@ import com.teobaranga.monica.ui.button.DateButton
 import com.teobaranga.monica.ui.rememberConfirmExitDialogState
 import com.teobaranga.monica.ui.text.MonicaTextField
 import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.util.compose.CursorVisibilityStrategy
 import com.teobaranga.monica.util.compose.keepCursorVisible
 import com.teobaranga.monica.util.compose.rememberCursorData
 import java.time.LocalDate
@@ -121,7 +120,6 @@ fun JournalEntryScreen(
                             )
                         }
                         val titleInteractionSource = remember { MutableInteractionSource() }
-                        val titleIsFocused by titleInteractionSource.collectIsFocusedAsState()
                         MonicaTextField(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -136,7 +134,7 @@ fun JournalEntryScreen(
                                 )
                             },
                             lineLimits = TextFieldLineLimits.SingleLine,
-                            shape = StartVerticalLineShape { titleIsFocused },
+                            shape = StartVerticalLineShape(titleInteractionSource),
                             keyboardOptions = KeyboardOptions(
                                 capitalization = KeyboardCapitalization.Sentences,
                                 autoCorrectEnabled = true,
@@ -145,8 +143,12 @@ fun JournalEntryScreen(
                         )
 
                         val postInteractionSource = remember { MutableInteractionSource() }
-                        val postIsFocused by postInteractionSource.collectIsFocusedAsState()
-                        val cursorData = rememberCursorData(uiState.post)
+                        val cursorData = rememberCursorData(
+                            textFieldState = uiState.post,
+                            cursorVisibilityStrategy = CursorVisibilityStrategy { cursor, boundsInWindow, screenHeight, scrollState ->
+                                boundsInWindow.topLeft.y - scrollState.value + cursor.top - cursor.height > screenHeight / 2 + FabHeight.roundToPx()
+                            },
+                        )
                         MonicaTextField(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -162,7 +164,7 @@ fun JournalEntryScreen(
                                     style = MaterialTheme.typography.bodyMedium,
                                 )
                             },
-                            shape = StartVerticalLineShape { postIsFocused },
+                            shape = StartVerticalLineShape(postInteractionSource),
                             keyboardOptions = KeyboardOptions(
                                 capitalization = KeyboardCapitalization.Sentences,
                                 autoCorrectEnabled = true,
