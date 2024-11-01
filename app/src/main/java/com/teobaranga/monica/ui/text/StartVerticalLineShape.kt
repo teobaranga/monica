@@ -1,4 +1,4 @@
-package com.teobaranga.monica.journal.view.ui
+package com.teobaranga.monica.ui.text
 
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -36,7 +36,7 @@ private class StartVerticalLineShape(val isFocused: () -> Boolean) : Shape {
 }
 
 @Composable
-fun StartVerticalLineShape(interactionSource: InteractionSource): Shape {
+fun MonicaTextFieldDefaults.startVerticalLineShape(interactionSource: InteractionSource): Shape {
     val isFocused by interactionSource.collectIsFocusedAsState()
     return StartVerticalLineShape(isFocused = { isFocused })
 }

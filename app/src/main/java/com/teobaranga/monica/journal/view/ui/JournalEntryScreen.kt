@@ -36,6 +36,8 @@ import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.button.DateButton
 import com.teobaranga.monica.ui.rememberConfirmExitDialogState
 import com.teobaranga.monica.ui.text.MonicaTextField
+import com.teobaranga.monica.ui.text.MonicaTextFieldDefaults
+import com.teobaranga.monica.ui.text.startVerticalLineShape
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.CursorVisibilityStrategy
 import com.teobaranga.monica.util.compose.keepCursorVisible
@@ -134,7 +136,7 @@ fun JournalEntryScreen(
                                 )
                             },
                             lineLimits = TextFieldLineLimits.SingleLine,
-                            shape = StartVerticalLineShape(titleInteractionSource),
+                            shape = MonicaTextFieldDefaults.startVerticalLineShape(titleInteractionSource),
                             keyboardOptions = KeyboardOptions(
                                 capitalization = KeyboardCapitalization.Sentences,
                                 autoCorrectEnabled = true,
@@ -164,7 +166,7 @@ fun JournalEntryScreen(
                                     style = MaterialTheme.typography.bodyMedium,
                                 )
                             },
-                            shape = StartVerticalLineShape(postInteractionSource),
+                            shape = MonicaTextFieldDefaults.startVerticalLineShape(postInteractionSource),
                             keyboardOptions = KeyboardOptions(
                                 capitalization = KeyboardCapitalization.Sentences,
                                 autoCorrectEnabled = true,

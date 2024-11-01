@@ -43,13 +43,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.teobaranga.monica.journal.view.ui.StartVerticalLineShape
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
 import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.button.DateButton
 import com.teobaranga.monica.ui.navigation.LocalDestinationsNavigator
 import com.teobaranga.monica.ui.text.MonicaTextField
+import com.teobaranga.monica.ui.text.MonicaTextFieldDefaults
+import com.teobaranga.monica.ui.text.startVerticalLineShape
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.CursorData
 import com.teobaranga.monica.util.compose.CursorVisibilityStrategy
@@ -217,7 +218,7 @@ private fun SummarySection(uiState: EditContactActivityUiState.Loaded, modifier:
                 .padding(horizontal = 24.dp)
                 .padding(top = 12.dp),
             interactionSource = interactionSource,
-            shape = StartVerticalLineShape(interactionSource),
+            shape = MonicaTextFieldDefaults.startVerticalLineShape(interactionSource),
             state = uiState.summary,
             placeholder = {
                 Text(
@@ -260,7 +261,7 @@ private fun DetailsSection(
             state = textFieldState,
             onTextLayout = cursorData.textLayoutResult,
             interactionSource = interactionSource,
-            shape = StartVerticalLineShape(interactionSource),
+            shape = MonicaTextFieldDefaults.startVerticalLineShape(interactionSource),
             placeholder = {
                 Text(
                     text = "Add more details (optional)",

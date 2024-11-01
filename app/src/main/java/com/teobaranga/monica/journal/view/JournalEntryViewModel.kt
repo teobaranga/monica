@@ -9,9 +9,10 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -23,33 +24,28 @@ internal class JournalEntryViewModel @AssistedInject constructor(
     private val journalRepository: JournalRepository,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(
-        when (entryId) {
-            null -> getEmptyState()
-            else -> JournalEntryUiState.Loading
+    val uiState = flow<JournalEntryUiState> {
+        val entry = if (entryId == null) {
+            null
+        } else {
+            journalRepository.getJournalEntry(entryId).firstOrNull()
         }
+        val uiState = if (entry == null) {
+            getEmptyState()
+        } else {
+            JournalEntryUiState.Loaded(
+                id = entry.id,
+                initialTitle = entry.title,
+                initialPost = entry.post,
+                initialDate = entry.date,
+            )
+        }
+        emit(uiState)
+    }.stateIn(
+        scope = viewModelScope,
+        initialValue = JournalEntryUiState.Loading,
+        started = SharingStarted.Eagerly,
     )
-    val uiState = _uiState.asStateFlow()
-
-    init {
-        viewModelScope.launch(dispatcher.io) {
-            val entry = if (entryId == null) {
-                null
-            } else {
-                journalRepository.getJournalEntry(entryId).firstOrNull()
-            }
-            _uiState.value = if (entry == null) {
-                getEmptyState()
-            } else {
-                JournalEntryUiState.Loaded(
-                    id = entry.id,
-                    initialTitle = entry.title,
-                    initialPost = entry.post,
-                    initialDate = entry.date,
-                )
-            }
-        }
-    }
 
     fun onSave() {
         viewModelScope.launch(dispatcher.io) {
