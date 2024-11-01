@@ -45,10 +45,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
-import com.teobaranga.monica.journal.view.ui.StartVerticalLineShape
 import com.teobaranga.monica.ui.avatar.UserAvatar
 import com.teobaranga.monica.ui.navigation.LocalDestinationsNavigator
 import com.teobaranga.monica.ui.text.MonicaTextField
+import com.teobaranga.monica.ui.text.MonicaTextFieldDefaults
+import com.teobaranga.monica.ui.text.startVerticalLineShape
 import kotlinx.coroutines.launch
 
 @Composable
@@ -107,7 +108,7 @@ private fun ParticipantDropdownMenu(
                 .menuAnchor(type = MenuAnchorType.PrimaryEditable),
             state = uiState.participantSearch,
             interactionSource = interactionSource,
-            shape = StartVerticalLineShape(interactionSource),
+            shape = MonicaTextFieldDefaults.startVerticalLineShape(interactionSource),
             placeholder = {
                 Text(
                     text = "Add a participant by name",

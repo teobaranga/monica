@@ -106,7 +106,7 @@ fun JournalEntryListScreen(
                         is LoadState.NotLoading,
                         -> {
                             items(
-                                items =  lazyItems.itemSnapshotList,
+                                items = lazyItems.itemSnapshotList,
                                 key = { journalEntry ->
                                     journalEntry?.id ?: Int.MIN_VALUE
                                 },

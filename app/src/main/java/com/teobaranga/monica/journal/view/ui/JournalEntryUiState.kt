@@ -26,9 +26,9 @@ sealed interface JournalEntryUiState {
         val post = TextFieldState(initialPost)
 
         val hasChanges by derivedStateOf {
-            initialTitle.orEmpty() != title.text
-                || initialPost != post.text
-                || initialDate != date
+            initialTitle.orEmpty() != title.text ||
+                initialPost != post.text ||
+                initialDate != date
         }
 
         override fun equals(other: Any?): Boolean {

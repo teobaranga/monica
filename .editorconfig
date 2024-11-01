@@ -12,4 +12,8 @@ ktlint_standard_function-expression-body = disabled
 # Disable the class-signature rule
 # Rationale: the decision for a single or multiline class signature is context dependent
 ktlint_standard_class-signature = disabled
+# Disable the function signature rule
+# Rationale: the function signature sometimes looks better in a single line and sometimes in a multiline, irrespective
+# of the number of parameters.
+ktlint_standard_function-signature = disabled
 max_line_length = 120

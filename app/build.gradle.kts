@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     alias(libs.plugins.monica.android.application)
@@ -121,4 +122,7 @@ ktlint {
     android = true
     verbose = true
     version = "1.3.1"
+    reporters {
+        reporter(ReporterType.HTML)
+    }
 }
