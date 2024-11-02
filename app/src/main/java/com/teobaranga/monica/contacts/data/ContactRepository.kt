@@ -1,5 +1,9 @@
 package com.teobaranga.monica.contacts.data
 
+import androidx.paging.InvalidatingPagingSourceFactory
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.core.dispatcher.Dispatcher
@@ -15,21 +19,24 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.OffsetDateTime
 import javax.inject.Inject
-import javax.inject.Provider
 import javax.inject.Singleton
+
+private const val PAGE_SIZE = 10
 
 @Singleton
 internal class ContactRepository @Inject constructor(
     private val dispatcher: Dispatcher,
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
-    private val pagingSource: Provider<ContactPagingSource.Factory>,
+    private val contactPagingSourceFactory: ContactPagingSource.Factory,
     private val contactNewSynchronizer: ContactNewSynchronizer,
     private val contactUpdateSynchronizer: ContactUpdateSynchronizer,
     private val contactDeleteSynchronizer: ContactDeleteSynchronizer,
     private val contactEntityMapper: ContactEntityMapper,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
+
+    private val pagingSourceFactoryMap = mutableMapOf<OrderBy, InvalidatingPagingSourceFactory<Int, ContactEntity>>()
 
     fun syncContact(contactId: Int) {
         scope.launch(dispatcher.io) {
@@ -43,8 +50,25 @@ internal class ContactRepository @Inject constructor(
         }
     }
 
-    fun getContacts(orderBy: OrderBy): ContactPagingSource {
-        return pagingSource.get().create(orderBy)
+    fun getContactsPagingData(
+        orderBy: OrderBy,
+        config: PagingConfig = DefaultPagingConfig,
+    ): Flow<PagingData<ContactEntity>> {
+        val pagingSourceFactory = pagingSourceFactoryMap.getOrPut(orderBy) {
+            InvalidatingPagingSourceFactory {
+                contactPagingSourceFactory.create(orderBy)
+            }
+        }
+        return Pager(
+            config = config,
+            pagingSourceFactory = pagingSourceFactory,
+        ).flow
+    }
+
+    private fun invalidatePages() {
+        pagingSourceFactoryMap.values.forEach { invalidatingPagingSourceFactory ->
+            invalidatingPagingSourceFactory.invalidate()
+        }
     }
 
     fun searchContact(query: String, excludeIds: List<Int> = emptyList()): Flow<List<ContactEntity>> {
@@ -98,8 +122,10 @@ internal class ContactRepository @Inject constructor(
             syncStatus = SyncStatus.NEW,
         )
         contactDao.upsertContacts(listOf(entity))
+        invalidatePages()
         scope.launch {
             contactNewSynchronizer.sync()
+            invalidatePages()
         }
     }
 
@@ -124,8 +150,10 @@ internal class ContactRepository @Inject constructor(
             syncStatus = SyncStatus.EDITED,
         )
         contactDao.upsertContacts(listOf(updatedContact))
+        invalidatePages()
         scope.launch {
             contactUpdateSynchronizer.sync()
+            invalidatePages()
         }
     }
 
@@ -163,8 +191,10 @@ internal class ContactRepository @Inject constructor(
 
     suspend fun deleteContact(contactId: Int) {
         contactDao.setSyncStatus(contactId, SyncStatus.DELETED)
+        invalidatePages()
         scope.launch {
             contactDeleteSynchronizer.sync()
+            invalidatePages()
         }
     }
 
@@ -185,5 +215,14 @@ internal class ContactRepository @Inject constructor(
         ) : OrderBy {
             override val columnName = "datetime(updated)"
         }
+    }
+
+    companion object {
+
+        val DefaultPagingConfig = PagingConfig(
+            pageSize = PAGE_SIZE,
+            enablePlaceholders = false,
+            initialLoadSize = PAGE_SIZE,
+        )
     }
 }

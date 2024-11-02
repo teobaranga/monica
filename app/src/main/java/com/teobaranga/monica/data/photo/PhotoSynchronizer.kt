@@ -2,6 +2,7 @@ package com.teobaranga.monica.data.photo
 
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.account.AccountListener
 import com.teobaranga.monica.contacts.data.ContactPhotosResponse
 import com.teobaranga.monica.data.sync.Synchronizer
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 class PhotoSynchronizer @Inject constructor(
     private val photoApi: PhotoApi,
     private val photoDao: PhotoDao,
-) : Synchronizer {
+) : Synchronizer, AccountListener {
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
@@ -71,6 +72,10 @@ class PhotoSynchronizer @Inject constructor(
             data = data.split(',').last(),
             contactId = contact.id,
         )
+    }
+
+    override fun onSignedIn() {
+        isSyncEnabled = true
     }
 
     companion object {
