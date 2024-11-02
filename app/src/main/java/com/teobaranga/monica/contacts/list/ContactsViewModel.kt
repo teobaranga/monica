@@ -2,12 +2,13 @@ package com.teobaranga.monica.contacts.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.teobaranga.monica.contacts.data.ContactPagingSource
+import androidx.paging.map
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.data.ContactSynchronizer
+import com.teobaranga.monica.contacts.data.toExternalModel
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
@@ -21,18 +22,18 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 private const val PAGE_SIZE = 15
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 internal class ContactsViewModel @Inject constructor(
+    private val dispatcher: Dispatcher,
     userRepository: UserRepository,
     contactRepository: ContactRepository,
     private val contactSynchronizer: ContactSynchronizer,
 ) : ViewModel() {
-
-    private lateinit var pagingSource: ContactPagingSource
 
     val userAvatar = userRepository.me
         .mapLatest { me ->
@@ -41,26 +42,26 @@ internal class ContactsViewModel @Inject constructor(
         .stateIn(
             scope = viewModelScope,
             initialValue = null,
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
         )
 
-    val items = Pager(
+    val items = contactRepository.getContactsPagingData(
+        orderBy = ContactRepository.OrderBy.Name(isAscending = true),
         config = PagingConfig(
             pageSize = PAGE_SIZE,
             enablePlaceholders = false,
             initialLoadSize = PAGE_SIZE,
-        ),
-        pagingSourceFactory = {
-            contactRepository.getContacts(
-                orderBy = ContactRepository.OrderBy.Name(isAscending = true),
-            ).also {
-                pagingSource = it
-            }
-        },
+        )
     )
-        .flow
+        .mapLatest { pagingData ->
+            pagingData.map { contactEntity ->
+                contactEntity.toExternalModel()
+            }
+        }
         .onStart {
-            contactSynchronizer.sync()
+            viewModelScope.launch(dispatcher.io) {
+                contactSynchronizer.sync()
+            }
         }
         .cachedIn(viewModelScope)
 
@@ -77,7 +78,7 @@ internal class ContactsViewModel @Inject constructor(
         .stateIn(
             scope = viewModelScope,
             initialValue = _refreshState,
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
         )
 
     val state = ContactsUiState(
@@ -88,9 +89,5 @@ internal class ContactsViewModel @Inject constructor(
         viewModelScope.launch {
             contactSynchronizer.reSync()
         }
-    }
-
-    fun onEntriesChanged() {
-        pagingSource.invalidate()
     }
 }

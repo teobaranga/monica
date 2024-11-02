@@ -53,5 +53,8 @@ abstract class RoomPagingSource<T : Any>(
         }
     }
 
+    /**
+     * @param start Effectively the page index, starting from 0.
+     */
     protected abstract suspend fun getEntries(start: Int, params: LoadParams<Int>): List<T>
 }
