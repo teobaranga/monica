@@ -2,6 +2,7 @@ package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.account.AccountListener
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.sync.Synchronizer
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,7 @@ class ContactSynchronizer @Inject constructor(
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
     private val contactEntityMapper: ContactEntityMapper,
-) : Synchronizer {
+) : Synchronizer, AccountListener {
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
@@ -72,6 +73,10 @@ class ContactSynchronizer @Inject constructor(
         syncState.value = Synchronizer.State.IDLE
 
         isSyncEnabled = false
+    }
+
+    override fun onSignedIn() {
+        isSyncEnabled = true
     }
 
     companion object {

@@ -99,6 +99,7 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
 
     companion object {
 
+        // TODO: this doesn't make much sense, this Synchronizer is not a singleton
         private var isSyncEnabled = true
     }
 }

@@ -13,6 +13,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.teobaranga.monica.account.AccountListener
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.genders.data.GenderRepository
 import com.teobaranga.monica.settings.getTokenStorage
@@ -30,6 +31,7 @@ internal class SyncWorker @AssistedInject constructor(
     private val dataStore: DataStore<Preferences>,
     private val userRepository: UserRepository,
     private val genderRepository: GenderRepository,
+    private val accountListeners: Set<@JvmSuppressWildcards AccountListener>,
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
@@ -37,6 +39,10 @@ internal class SyncWorker @AssistedInject constructor(
         if (!isTokenAvailable) {
             Timber.d("Access token not available, skipping sync")
             return Result.success()
+        }
+
+        accountListeners.forEach { accountListener ->
+            accountListener.onSignedIn()
         }
 
         Timber.d("Syncing current user")

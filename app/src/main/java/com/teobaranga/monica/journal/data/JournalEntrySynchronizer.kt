@@ -2,6 +2,7 @@ package com.teobaranga.monica.journal.data
 
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.account.AccountListener
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.data.sync.Synchronizer
@@ -22,7 +23,7 @@ class JournalEntrySynchronizer @Inject constructor(
     private val journalEntryNewSynchronizer: JournalEntryNewSynchronizer,
     private val journalEntryUpdateSynchronizer: JournalEntryUpdateSynchronizer,
     private val journalEntryDeletedSynchronizer: JournalEntryDeletedSynchronizer,
-) : Synchronizer {
+) : Synchronizer, AccountListener {
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
@@ -83,6 +84,10 @@ class JournalEntrySynchronizer @Inject constructor(
         syncState.value = Synchronizer.State.IDLE
 
         isSyncEnabled = false
+    }
+
+    override fun onSignedIn() {
+        isSyncEnabled = true
     }
 
     companion object {
