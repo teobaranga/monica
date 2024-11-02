@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
@@ -21,10 +22,12 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 internal class JournalEntryListViewModel @Inject constructor(
+    private val dispatcher: Dispatcher,
     userRepository: UserRepository,
     journalRepository: JournalRepository,
     private val journalEntrySynchronizer: JournalEntrySynchronizer,
@@ -37,7 +40,7 @@ internal class JournalEntryListViewModel @Inject constructor(
         .stateIn(
             scope = viewModelScope,
             initialValue = null,
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
         )
 
     val items = journalRepository.getJournalEntriesPagingData()
@@ -47,7 +50,9 @@ internal class JournalEntryListViewModel @Inject constructor(
             }
         }
         .onStart {
-            journalEntrySynchronizer.sync()
+            viewModelScope.launch(dispatcher.io) {
+                journalEntrySynchronizer.sync()
+            }
         }
         .cachedIn(viewModelScope)
 
@@ -64,7 +69,7 @@ internal class JournalEntryListViewModel @Inject constructor(
         .stateIn(
             scope = viewModelScope,
             initialValue = _refreshState,
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
         )
 
     private fun refresh() {
