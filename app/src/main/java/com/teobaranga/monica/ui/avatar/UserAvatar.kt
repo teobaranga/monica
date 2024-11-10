@@ -1,5 +1,6 @@
 package com.teobaranga.monica.ui.avatar
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,12 +15,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.toColorInt
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import coil.request.ImageRequest
+import com.materialkolor.ktx.darken
+import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.util.compose.fromHex
+import com.teobaranga.monica.util.compose.isLight
 
 data class UserAvatar(
     val contactId: Int,
@@ -34,7 +39,13 @@ fun UserAvatar(userAvatar: UserAvatar, modifier: Modifier = Modifier, onClick: (
         modifier = modifier
             .size(32.dp)
             .clip(CircleShape)
-            .background(Color(userAvatar.color.toColorInt()))
+            .background(
+                Color.fromHex(userAvatar.color).run {
+                    // Some colours don't have enough contrast in dark mode, darken them
+                    val isLight = MaterialTheme.colorScheme.isLight()
+                    if (isLight) this else darken(2.5f)
+                },
+            )
             .then(
                 if (onClick != null) {
                     Modifier.clickable(onClick = onClick)
@@ -67,5 +78,20 @@ fun UserAvatar(userAvatar: UserAvatar, modifier: Modifier = Modifier, onClick: (
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun PreviewUserAvatar() {
+    MonicaTheme {
+        UserAvatar(
+            userAvatar = UserAvatar(
+                contactId = 1,
+                initials = "TB",
+                color = "#709512",
+                avatarUrl = null,
+            ),
+        )
     }
 }

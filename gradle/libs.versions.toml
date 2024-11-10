@@ -27,6 +27,7 @@ hilt-navigation-compose = "1.2.0"
 hilt-work = "1.2.0"
 junit = "4.13.2"
 kotlinx-coroutines = "1.9.0"
+materialKolor = "2.0.0"
 moshi = "1.15.1"
 moshi-converter = "2.11.0"
 moshix = "0.28.0"
@@ -69,6 +70,7 @@ hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hilt-w
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+material-kolor = { module = "com.materialkolor:material-kolor", version.ref = "materialKolor" }
 moshi-adapters = { group = "com.squareup.moshi", name = "moshi-adapters", version.ref = "moshi" }
 moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshi-converter" }
 moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }

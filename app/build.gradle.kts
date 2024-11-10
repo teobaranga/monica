@@ -92,6 +92,8 @@ dependencies {
 
     implementation(libs.datastore.preferences)
 
+    implementation(libs.material.kolor)
+
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
 
