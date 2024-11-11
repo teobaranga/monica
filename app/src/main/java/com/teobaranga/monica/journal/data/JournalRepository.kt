@@ -33,11 +33,17 @@ internal class JournalRepository @Inject constructor(
 
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
 
-    private val pagingSourceFactory = InvalidatingPagingSourceFactory {
-        journalPagingSourceFactory.create(OrderBy.Date(isAscending = false))
-    }
+    private val pagingSourceFactoryMap =
+        mutableMapOf<OrderBy, InvalidatingPagingSourceFactory<Int, JournalEntryEntity>>()
 
-    fun getJournalEntriesPagingData(): Flow<PagingData<JournalEntryEntity>> {
+    fun getJournalEntriesPagingData(
+        orderBy: OrderBy = OrderBy.Date(isAscending = false),
+    ): Flow<PagingData<JournalEntryEntity>> {
+        val pagingSourceFactory = pagingSourceFactoryMap.getOrPut(orderBy) {
+            InvalidatingPagingSourceFactory {
+                journalPagingSourceFactory.create(orderBy)
+            }
+        }
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
@@ -45,8 +51,14 @@ internal class JournalRepository @Inject constructor(
                 initialLoadSize = PAGE_SIZE,
             ),
             pagingSourceFactory = pagingSourceFactory,
-        )
-            .flow
+        ).flow
+    }
+
+    private fun invalidatePages() {
+        pagingSourceFactoryMap.values
+            .forEach { invalidatingPagingSourceFactory ->
+                invalidatingPagingSourceFactory.invalidate()
+            }
     }
 
     fun getJournalEntry(id: Int): Flow<JournalEntryEntity> {
@@ -59,7 +71,6 @@ internal class JournalRepository @Inject constructor(
         } else {
             insertJournalEntry(title, post, date)
         }
-        pagingSourceFactory.invalidate()
     }
 
     private suspend fun insertJournalEntry(title: String?, post: String, date: LocalDate) {
@@ -81,8 +92,10 @@ internal class JournalRepository @Inject constructor(
             syncStatus = SyncStatus.NEW,
         )
         journalDao.upsertJournalEntry(entry)
+        invalidatePages()
         scope.launch {
             journalEntryNewSynchronizer.sync()
+            invalidatePages()
         }
     }
 
@@ -96,15 +109,19 @@ internal class JournalRepository @Inject constructor(
             syncStatus = SyncStatus.EDITED,
         )
         journalDao.upsertJournalEntry(updatedEntry)
+        invalidatePages()
         scope.launch {
             journalEntryUpdateSynchronizer.sync()
+            invalidatePages()
         }
     }
 
     suspend fun deleteJournalEntry(entryId: Int) {
         journalDao.setSyncStatus(entryId, SyncStatus.DELETED)
+        invalidatePages()
         scope.launch {
             journalEntryDeletedSynchronizer.sync()
+            invalidatePages()
         }
     }
 
