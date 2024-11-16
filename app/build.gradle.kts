@@ -111,8 +111,11 @@ dependencies {
     implementation(libs.work)
     implementation(libs.hilt.work)
 
+    testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+
+    testImplementation(libs.turbine)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -127,4 +130,8 @@ ktlint {
     reporters {
         reporter(ReporterType.HTML)
     }
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }

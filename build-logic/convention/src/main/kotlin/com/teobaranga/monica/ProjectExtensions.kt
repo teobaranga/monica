@@ -39,6 +39,10 @@ fun DependencyHandlerScope.ksp(dependencyNotation: Any) {
     add("ksp", dependencyNotation)
 }
 
+fun DependencyHandlerScope.kspTest(dependencyNotation: Any) {
+    add("kspTest", dependencyNotation)
+}
+
 fun DependencyHandlerScope.coreLibraryDesugaring(dependencyNotation: Any) {
     add("coreLibraryDesugaring", dependencyNotation)
 }
