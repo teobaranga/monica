@@ -26,6 +26,7 @@ google-services = "4.4.2"
 hilt-navigation-compose = "1.2.0"
 hilt-work = "1.2.0"
 junit = "4.13.2"
+kotest = "6.0.0.M1"
 kotlinx-coroutines = "1.9.0"
 materialKolor = "2.0.0"
 moshi = "1.15.1"
@@ -37,6 +38,7 @@ retrofit = "2.11.0"
 room = "2.6.1"
 sandwich = "2.0.10"
 timber = "5.0.1"
+turbine = "1.2.0"
 androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
 lifecycle = "2.8.7"
@@ -57,6 +59,7 @@ compose-destinations-core = { group = "io.github.raamcosta.compose-destinations"
 compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations", name = "ksp", version.ref = "compose-destinations" }
 compose-placeholder = { group = "com.eygraber", name = "compose-placeholder-material3", version.ref = "compose-placeholder" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "hilt" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
@@ -68,6 +71,7 @@ hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hi
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hilt-work" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 material-kolor = { module = "com.materialkolor:material-kolor", version.ref = "materialKolor" }
@@ -84,6 +88,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 sandwich = { group = "com.github.skydoves", name = "sandwich", version.ref = "sandwich" }
 sandwich-retrofit = { group = "com.github.skydoves", name = "sandwich-retrofit", version.ref = "sandwich" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }

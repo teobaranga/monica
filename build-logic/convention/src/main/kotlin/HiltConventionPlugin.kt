@@ -17,6 +17,7 @@
 import com.android.build.gradle.api.AndroidBasePlugin
 import com.teobaranga.monica.implementation
 import com.teobaranga.monica.ksp
+import com.teobaranga.monica.kspTest
 import com.teobaranga.monica.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -29,6 +30,7 @@ class HiltConventionPlugin : Plugin<Project> {
             pluginManager.apply(libs.plugins.ksp.get().pluginId)
             dependencies {
                 ksp(libs.hilt.compiler)
+                kspTest(libs.dagger.compiler)
             }
 
             /** Add support for Android modules, based on [AndroidBasePlugin] */
