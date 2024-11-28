@@ -25,9 +25,6 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
     override suspend fun sync() {
-        if (!isSyncEnabled) {
-            return
-        }
 
         syncState.value = Synchronizer.State.REFRESHING
 
@@ -88,19 +85,11 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
         contactActivitiesDao.delete(activityIds)
 
         syncState.value = Synchronizer.State.IDLE
-
-        isSyncEnabled = false
     }
 
     @AssistedFactory
     interface Factory {
         fun create(contactId: Int): ContactActivitiesSynchronizer
-    }
-
-    companion object {
-
-        // TODO: this doesn't make much sense, this Synchronizer is not a singleton
-        private var isSyncEnabled = true
     }
 }
 
