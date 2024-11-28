@@ -1,21 +1,21 @@
 package com.teobaranga.monica.activities.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-import java.time.LocalDate
+import com.teobaranga.monica.data.adapter.LocalDateAsString
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class CreateActivityRequest(
-    @Json(name = "activity_type_id")
+    @SerialName("activity_type_id")
     val activityTypeId: Int?,
-    @Json(name = "summary")
+    @SerialName("summary")
     val summary: String,
-    @Json(name = "description")
+    @SerialName("description")
     val description: String?,
-    @Json(name = "happened_at")
-    val date: LocalDate,
-    @Json(name = "contacts")
+    @SerialName("happened_at")
+    val date: LocalDateAsString,
+    @SerialName("contacts")
     val contacts: List<Int>,
-    @Json(name = "emotions")
+    @SerialName("emotions")
     val emotions: List<Int>?,
 )

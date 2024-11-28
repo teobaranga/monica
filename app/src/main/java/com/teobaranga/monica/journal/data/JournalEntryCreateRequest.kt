@@ -1,21 +1,21 @@
 package com.teobaranga.monica.journal.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-import java.time.LocalDate
+import com.teobaranga.monica.data.adapter.LocalDateAsString
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class JournalEntryCreateRequest(
     /**
      * A title for this journal entry. Max 255 characters.
      */
-    @Json(name = "title")
+    @SerialName("title")
     val title: String?,
     /**
      * The content of the post. Max 1000000 characters.
      */
-    @Json(name = "post")
+    @SerialName("post")
     val post: String,
-    @Json(name = "date")
-    val date: LocalDate,
+    @SerialName("date")
+    val date: LocalDateAsString,
 )

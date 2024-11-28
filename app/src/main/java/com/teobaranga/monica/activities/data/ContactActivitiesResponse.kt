@@ -1,39 +1,39 @@
 package com.teobaranga.monica.activities.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import com.teobaranga.monica.contacts.data.ContactResponse
+import com.teobaranga.monica.data.adapter.LocalDateAsString
+import com.teobaranga.monica.data.adapter.OffsetDateTimeAsString
 import com.teobaranga.monica.data.common.MetaResponse
-import java.time.LocalDate
-import java.time.OffsetDateTime
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ContactActivitiesResponse(
-    @Json(name = "data")
+    @SerialName("data")
     val data: List<ContactActivity>,
-    @Json(name = "meta")
+    @SerialName("meta")
     val meta: MetaResponse,
 ) {
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class ContactActivity(
-        @Json(name = "id")
+        @SerialName("id")
         val id: Int,
-        @Json(name = "summary")
+        @SerialName("summary")
         val summary: String,
-        @Json(name = "description")
+        @SerialName("description")
         val description: String?,
-        @Json(name = "happened_at")
-        val happenedAt: LocalDate,
-        @Json(name = "attendees")
+        @SerialName("happened_at")
+        val happenedAt: LocalDateAsString,
+        @SerialName("attendees")
         val attendees: Attendees,
-        @Json(name = "created_at")
-        val created: OffsetDateTime,
-        @Json(name = "updated_at")
-        val updated: OffsetDateTime,
+        @SerialName("created_at")
+        val created: OffsetDateTimeAsString,
+        @SerialName("updated_at")
+        val updated: OffsetDateTimeAsString,
     ) {
-        @JsonClass(generateAdapter = true)
+        @Serializable
         data class Attendees(
-            @Json(name = "contacts")
+            @SerialName("contacts")
             val contacts: List<ContactResponse>,
         )
     }

@@ -43,7 +43,7 @@ class ContactSynchronizer @Inject constructor(
         while (nextPage != null) {
             val contactsResponse = contactApi.getContacts(page = nextPage, sort = "-updated_at")
                 .onFailure {
-                    Timber.w("Error while loading contacts: %s", this)
+                    Timber.e("Error while loading contacts: %s", this)
                 }
                 .getOrElse {
                     syncState.value = Synchronizer.State.IDLE

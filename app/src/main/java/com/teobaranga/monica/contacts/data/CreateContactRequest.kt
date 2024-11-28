@@ -1,34 +1,32 @@
-package com.teobaranga.monica.activities.data
+package com.teobaranga.monica.contacts.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-import com.teobaranga.monica.data.adapter.AlwaysSerializeNulls
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
-@AlwaysSerializeNulls
+@Serializable
 data class CreateContactRequest(
-    @Json(name = "first_name")
+    @SerialName("first_name")
     val firstName: String,
-    @Json(name = "last_name")
+    @SerialName("last_name")
     val lastName: String?,
-    @Json(name = "nickname")
+    @SerialName("nickname")
     val nickname: String?,
-    @Json(name = "gender_id")
+    @SerialName("gender_id")
     val genderId: Int?,
-    @Json(name = "birthdate_day")
+    @SerialName("birthdate_day")
     val birthdateDay: Int?,
-    @Json(name = "birthdate_month")
+    @SerialName("birthdate_month")
     val birthdateMonth: Int?,
-    @Json(name = "birthdate_year")
+    @SerialName("birthdate_year")
     val birthdateYear: Int?,
-    @Json(name = "birthdate_is_age_based")
+    @SerialName("birthdate_is_age_based")
     val birthdateIsAgeBased: Boolean,
-    @Json(name = "is_birthdate_known")
+    @SerialName("is_birthdate_known")
     val isBirthdateKnown: Boolean,
-    @Json(name = "birthdate_age")
+    @SerialName("birthdate_age")
     val birthdateAge: Int?,
-    @Json(name = "is_deceased")
+    @SerialName("is_deceased")
     val isDeceased: Boolean,
-    @Json(name = "is_deceased_date_known")
+    @SerialName("is_deceased_date_known")
     val isDeceasedDateKnown: Boolean,
 )

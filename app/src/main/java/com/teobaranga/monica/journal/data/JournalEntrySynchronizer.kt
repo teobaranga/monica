@@ -54,7 +54,7 @@ class JournalEntrySynchronizer @Inject constructor(
         while (nextPage != null) {
             val journalEntriesResponse = journalApi.getJournal(page = nextPage, sort = "-updated_at")
                 .onFailure {
-                    Timber.w("Error while loading journal: %s", this)
+                    Timber.e("Error while loading journal: %s", this)
                 }
                 .getOrElse {
                     syncState.value = Synchronizer.State.IDLE

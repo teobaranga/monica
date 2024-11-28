@@ -1,18 +1,18 @@
 package com.teobaranga.monica.genders.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 internal data class GendersResponse(
-    @Json(name = "data")
+    @SerialName("data")
     val data: List<Gender>,
 ) {
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Gender(
-        @Json(name = "id")
+        @SerialName("id")
         val id: Int,
-        @Json(name = "name")
+        @SerialName("name")
         val name: String,
     )
 }

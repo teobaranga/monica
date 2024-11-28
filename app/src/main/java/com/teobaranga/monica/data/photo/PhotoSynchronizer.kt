@@ -33,7 +33,7 @@ class PhotoSynchronizer @Inject constructor(
         while (nextPage != null) {
             val photosResponse = photoApi.getPhotos(page = nextPage)
                 .onFailure {
-                    Timber.w("Error while loading photos: %s", this)
+                    Timber.e("Error while loading photos: %s", this)
                 }
                 .getOrElse {
                     syncState.value = Synchronizer.State.IDLE

@@ -1,13 +1,8 @@
 package com.teobaranga.monica.data
 
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
-import com.squareup.moshi.Moshi
 import com.teobaranga.monica.MONICA_URL
 import com.teobaranga.monica.contacts.data.ContactApi
-import com.teobaranga.monica.data.adapter.AlwaysSerializeNullsFactory
-import com.teobaranga.monica.data.adapter.LocalDateAdapter
-import com.teobaranga.monica.data.adapter.OffsetDateTimeAdapter
-import com.teobaranga.monica.data.adapter.UuidAdapter
 import com.teobaranga.monica.data.photo.PhotoApi
 import com.teobaranga.monica.data.user.UserApi
 import com.teobaranga.monica.journal.data.JournalApi
@@ -15,33 +10,35 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
 
+    private val Json = Json {
+        ignoreUnknownKeys = true
+    }
+
     @Provides
     @Singleton
-    fun provideMoshiConverterFactory(): MoshiConverterFactory {
-        val moshi = Moshi.Builder()
-            .add(AlwaysSerializeNullsFactory())
-            .add(OffsetDateTimeAdapter())
-            .add(LocalDateAdapter())
-            .add(UuidAdapter())
-            .build()
-        return MoshiConverterFactory.create(moshi)
+    fun provideConverterFactory(): Converter.Factory {
+        return Json
+            .asConverterFactory("application/json; charset=UTF8".toMediaType())
     }
 
     @Provides
     @Singleton
     fun provideRetrofit(
         interceptors: Set<@JvmSuppressWildcards Interceptor>,
-        moshiConverterFactory: MoshiConverterFactory,
+        converterFactory: Converter.Factory,
     ): Retrofit {
         val client = OkHttpClient.Builder()
             .apply {
@@ -53,7 +50,7 @@ object ApiModule {
         val retrofit = Retrofit.Builder()
             .client(client)
             .baseUrl(MONICA_URL)
-            .addConverterFactory(moshiConverterFactory)
+            .addConverterFactory(converterFactory)
             .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .build()
 

@@ -4,7 +4,6 @@ import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.activities.data.ContactActivitiesResponse
 import com.teobaranga.monica.activities.data.CreateActivityRequest
 import com.teobaranga.monica.activities.data.CreateActivityResponse
-import com.teobaranga.monica.activities.data.CreateContactRequest
 import com.teobaranga.monica.data.common.DeleteResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE

@@ -1,5 +1,4 @@
 import com.teobaranga.monica.implementation
-import com.teobaranga.monica.ksp
 import com.teobaranga.monica.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -9,13 +8,13 @@ class NetworkConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply(libs.plugins.moshix.get().pluginId)
+                apply(libs.plugins.kotlinx.serialization.get().pluginId)
             }
 
             dependencies {
-                // Moshi for JSON serialization
-                implementation(libs.moshi.converter)
-                ksp(libs.moshi.kotlin.codegen)
+                // Kotlinx Serialization for JSON serialization
+                implementation(libs.kotlinx.serialization)
+                implementation(libs.retrofit.converter.kotlinx.serialization)
 
                 // Retrofit for REST API
                 implementation(libs.retrofit)

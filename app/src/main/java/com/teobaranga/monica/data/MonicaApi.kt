@@ -2,8 +2,8 @@ package com.teobaranga.monica.data
 
 import androidx.annotation.Keep
 import com.skydoves.sandwich.ApiResponse
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -17,11 +17,11 @@ const val PARAM_GRANT_TYPE = "grant_type"
 
 const val REDIRECT_URI = "https://monica.teobaranga.com/callback"
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class TokenResponse(
-    @Json(name = "access_token")
+    @SerialName("access_token")
     val accessToken: String,
-    @Json(name = "refresh_token")
+    @SerialName("refresh_token")
     val refreshToken: String,
 )
 

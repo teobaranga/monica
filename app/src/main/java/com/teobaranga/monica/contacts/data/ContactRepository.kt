@@ -42,7 +42,7 @@ internal class ContactRepository @Inject constructor(
         scope.launch(dispatcher.io) {
             val singleContactResponse = contactApi.getContact(contactId)
                 .onFailure {
-                    Timber.w("Error while loading contact %d: %s", contactId, this)
+                    Timber.e("Error while loading contact %d: %s", contactId, this)
                 }
                 .getOrNull() ?: return@launch
             val contact = contactEntityMapper(singleContactResponse.data)

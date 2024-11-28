@@ -1,58 +1,58 @@
 package com.teobaranga.monica.contacts.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-import java.time.OffsetDateTime
+import com.teobaranga.monica.data.adapter.OffsetDateTimeAsString
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ContactResponse(
-    @Json(name = "id")
+    @SerialName("id")
     val id: Int,
-    @Json(name = "first_name")
+    @SerialName("first_name")
     val firstName: String,
-    @Json(name = "last_name")
-    val lastName: String?,
-    @Json(name = "complete_name")
+    @SerialName("last_name")
+    val lastName: String? = null,
+    @SerialName("complete_name")
     val completeName: String,
-    @Json(name = "nickname")
-    val nickname: String?,
-    @Json(name = "initials")
+    @SerialName("nickname")
+    val nickname: String? = null,
+    @SerialName("initials")
     val initials: String,
-    @Json(name = "gender")
-    val gender: String?,
-    @Json(name = "information")
+    @SerialName("gender")
+    val gender: String? = null,
+    @SerialName("information")
     val info: Information,
-    @Json(name = "updated_at")
-    val updated: OffsetDateTime?,
+    @SerialName("updated_at")
+    val updated: OffsetDateTimeAsString? = null,
 ) {
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Information(
-        @Json(name = "avatar")
+        @SerialName("avatar")
         val avatar: Avatar,
-        @Json(name = "dates")
-        val dates: Dates?,
+        @SerialName("dates")
+        val dates: Dates? = null,
     ) {
-        @JsonClass(generateAdapter = true)
+        @Serializable
         data class Avatar(
-            @Json(name = "url")
+            @SerialName("url")
             val url: String?,
-            @Json(name = "default_avatar_color")
+            @SerialName("default_avatar_color")
             val color: String,
         )
 
-        @JsonClass(generateAdapter = true)
+        @Serializable
         data class Dates(
-            @Json(name = "birthdate")
+            @SerialName("birthdate")
             val birthdate: Birthdate,
         ) {
-            @JsonClass(generateAdapter = true)
+            @Serializable
             data class Birthdate(
-                @Json(name = "is_age_based")
+                @SerialName("is_age_based")
                 val isAgeBased: Boolean?,
-                @Json(name = "is_year_unknown")
+                @SerialName("is_year_unknown")
                 val isYearUnknown: Boolean?,
-                @Json(name = "date")
-                val date: OffsetDateTime?,
+                @SerialName("date")
+                val date: OffsetDateTimeAsString?,
             )
         }
     }
