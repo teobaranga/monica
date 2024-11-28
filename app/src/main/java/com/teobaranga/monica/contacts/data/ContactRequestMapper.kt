@@ -1,6 +1,5 @@
 package com.teobaranga.monica.contacts.data
 
-import com.teobaranga.monica.activities.data.CreateContactRequest
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject

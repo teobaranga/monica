@@ -1,10 +1,10 @@
 package com.teobaranga.monica.journal.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class JournalEntryResponse(
-    @Json(name = "data")
+    @SerialName("data")
     val data: JournalEntry,
 )

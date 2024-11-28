@@ -1,27 +1,27 @@
 package com.teobaranga.monica.journal.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.teobaranga.monica.data.adapter.OffsetDateTimeAsString
+import com.teobaranga.monica.data.adapter.UuidAsString
 import com.teobaranga.monica.data.common.AccountResponse
-import java.time.OffsetDateTime
-import kotlin.uuid.Uuid
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class JournalEntry(
-    @Json(name = "id")
+    @SerialName("id")
     val id: Int,
-    @Json(name = "uuid")
-    val uuid: Uuid,
-    @Json(name = "account")
+    @SerialName("uuid")
+    val uuid: UuidAsString,
+    @SerialName("account")
     val account: AccountResponse,
-    @Json(name = "title")
+    @SerialName("title")
     val title: String?,
-    @Json(name = "post")
+    @SerialName("post")
     val post: String,
-    @Json(name = "date")
-    val date: OffsetDateTime,
-    @Json(name = "created_at")
-    val created: OffsetDateTime,
-    @Json(name = "updated_at")
-    val updated: OffsetDateTime,
+    @SerialName("date")
+    val date: OffsetDateTimeAsString,
+    @SerialName("created_at")
+    val created: OffsetDateTimeAsString,
+    @SerialName("updated_at")
+    val updated: OffsetDateTimeAsString,
 )

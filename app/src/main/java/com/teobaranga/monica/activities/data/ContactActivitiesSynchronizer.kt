@@ -46,7 +46,7 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
         while (nextPage != null) {
             val contactActivitiesResponse = contactApi.getContactActivities(id = contactId, page = nextPage)
                 .onFailure {
-                    Timber.w("Error while loading contact activities: %s", this)
+                    Timber.e("Error while loading contact activities: %s", this)
                 }
                 .getOrElse {
                     syncState.value = Synchronizer.State.IDLE

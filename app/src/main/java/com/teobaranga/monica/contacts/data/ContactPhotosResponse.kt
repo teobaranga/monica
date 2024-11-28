@@ -1,25 +1,25 @@
 package com.teobaranga.monica.contacts.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import com.teobaranga.monica.data.common.MetaResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ContactPhotosResponse(
-    @Json(name = "data")
+    @SerialName("data")
     val data: List<Photo>,
-    @Json(name = "meta")
+    @SerialName("meta")
     val meta: MetaResponse,
 ) {
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Photo(
-        @Json(name = "id")
+        @SerialName("id")
         val id: Int,
-        @Json(name = "new_filename")
+        @SerialName("new_filename")
         val fileName: String,
-        @Json(name = "dataUrl")
+        @SerialName("dataUrl")
         val data: String,
-        @Json(name = "contact")
+        @SerialName("contact")
         val contact: ContactResponse,
     )
 }

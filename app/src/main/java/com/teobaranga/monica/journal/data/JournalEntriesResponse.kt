@@ -1,13 +1,13 @@
 package com.teobaranga.monica.journal.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import com.teobaranga.monica.data.common.MetaResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class JournalEntriesResponse(
-    @Json(name = "data")
+    @SerialName("data")
     val data: List<JournalEntry>,
-    @Json(name = "meta")
+    @SerialName("meta")
     val meta: MetaResponse,
 )

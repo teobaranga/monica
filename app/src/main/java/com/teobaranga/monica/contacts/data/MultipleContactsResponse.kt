@@ -1,13 +1,13 @@
 package com.teobaranga.monica.contacts.data
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import com.teobaranga.monica.data.common.MetaResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MultipleContactsResponse(
-    @Json(name = "data")
+    @SerialName("data")
     val data: List<ContactResponse>,
-    @Json(name = "meta")
+    @SerialName("meta")
     val meta: MetaResponse,
 )

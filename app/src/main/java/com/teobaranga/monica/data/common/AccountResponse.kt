@@ -1,10 +1,10 @@
 package com.teobaranga.monica.data.common
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class AccountResponse(
-    @Json(name = "id")
+    @SerialName("id")
     val id: Int,
 )

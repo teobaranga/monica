@@ -1,24 +1,24 @@
 package com.teobaranga.monica.data.user
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import com.teobaranga.monica.contacts.data.ContactResponse
-import java.time.OffsetDateTime
+import com.teobaranga.monica.data.adapter.OffsetDateTimeAsString
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MeResponse(
-    @Json(name = "data")
+    @SerialName("data")
     val data: Data,
 ) {
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Data(
-        @Json(name = "id")
+        @SerialName("id")
         val id: Int,
-        @Json(name = "first_name")
+        @SerialName("first_name")
         val firstName: String,
-        @Json(name = "me_contact")
+        @SerialName("me_contact")
         val contact: ContactResponse?,
-        @Json(name = "updated_at")
-        val updatedAt: OffsetDateTime,
+        @SerialName("updated_at")
+        val updatedAt: OffsetDateTimeAsString,
     )
 }

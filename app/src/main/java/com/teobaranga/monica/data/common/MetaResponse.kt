@@ -1,12 +1,12 @@
 package com.teobaranga.monica.data.common
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MetaResponse(
-    @Json(name = "current_page")
+    @SerialName("current_page")
     val currentPage: Int,
-    @Json(name = "last_page")
+    @SerialName("last_page")
     val lastPage: Int,
 )
