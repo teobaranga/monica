@@ -3,44 +3,17 @@ package com.teobaranga.monica.setup
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.datastore.preferences.core.edit
 import app.cash.turbine.test
-import com.teobaranga.monica.auth.AuthorizationModule
-import com.teobaranga.monica.data.ApiModule
-import com.teobaranga.monica.data.DataStoreModule
+import com.teobaranga.monica.MONICA_URL
 import com.teobaranga.monica.data.PARAM_CLIENT_ID
 import com.teobaranga.monica.data.PARAM_REDIRECT_URI
 import com.teobaranga.monica.data.PARAM_RESPONSE_TYPE
 import com.teobaranga.monica.data.REDIRECT_URI
-import com.teobaranga.monica.data.TestDataStore
 import com.teobaranga.monica.data.user.MeEntity
-import com.teobaranga.monica.data.user.UserDao
-import com.teobaranga.monica.database.TestDaosModule
 import com.teobaranga.monica.settings.tokenStorage
-import com.teobaranga.monica.work.TestWorkScheduleModule
-import dagger.Component
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import java.net.URLEncoder
-import javax.inject.Singleton
-
-@Component(
-    modules = [
-        ViewModelModule::class,
-        DispatcherModule::class,
-        DataStoreModule::class,
-        AuthorizationModule::class,
-        TestDaosModule::class,
-        ApiModule::class,
-        TestWorkScheduleModule::class,
-    ],
-)
-@Singleton
-interface SetupComponent {
-    fun setupViewModel(): SetupViewModel
-    fun userDao(): UserDao
-    fun dataStore(): TestDataStore
-}
 
 class SetupViewModelTest : BehaviorSpec(
     {
@@ -53,21 +26,31 @@ class SetupViewModelTest : BehaviorSpec(
             component.dataStore().reset()
         }
 
-        Context("user is not logged in") {
+
+        Given("logged out user") {
+
             viewModel.isLoggedIn.test {
-                awaitItem() shouldNotBeNull { this shouldBe false }
+                awaitItem() shouldBe false
             }
 
-            Given("a non-http scheme") {
+            Then("displays default server address, empty client inputs, and disabled sign in") {
+
+                viewModel.uiState.serverAddress.text shouldBe MONICA_URL
+                viewModel.uiState.clientId.text shouldBe ""
+                viewModel.uiState.clientSecret.text shouldBe ""
+                viewModel.uiState.isSignInEnabled shouldBe false
+            }
+
+            And("non-http scheme") {
 
                 viewModel.uiState.onServerAddressChanged(TextFieldValue("blah"))
                 viewModel.uiState.onClientIdChanged(TextFieldValue("2"))
 
-                When("I sign in") {
+                When("sign in") {
 
                     viewModel.onSignIn()
 
-                    Then("I get an error") {
+                    Then("no web redirection happens") {
 
                         viewModel.setupUri.test {
                             expectNoEvents()
@@ -76,14 +59,14 @@ class SetupViewModelTest : BehaviorSpec(
                 }
             }
 
-            Given("an http scheme") {
+            And("valid http scheme") {
 
                 val address = "http://test.com"
                 val clientId = "2"
                 viewModel.uiState.onServerAddressChanged(TextFieldValue(address))
                 viewModel.uiState.onClientIdChanged(TextFieldValue(clientId))
 
-                When("I sign in") {
+                When("sign in") {
 
                     Then("the setup URL is correct") {
 
@@ -102,14 +85,14 @@ class SetupViewModelTest : BehaviorSpec(
                 }
             }
 
-            Given("an http scheme with port") {
+            And("valid http scheme with port") {
 
                 val address = "http://test.com:8080"
                 val clientId = "2"
                 viewModel.uiState.onServerAddressChanged(TextFieldValue(address))
                 viewModel.uiState.onClientIdChanged(TextFieldValue(clientId))
 
-                When("I sign in") {
+                When("sign in") {
 
                     Then("the setup URL is correct") {
 
@@ -127,9 +110,21 @@ class SetupViewModelTest : BehaviorSpec(
                     }
                 }
             }
+
+            And("all inputs filled") {
+
+                viewModel.uiState.onClientIdChanged(TextFieldValue("2"))
+
+                viewModel.uiState.onClientSecretChanged(TextFieldValue("abc123"))
+
+                Then("sign in is enabled") {
+
+                    viewModel.uiState.isSignInEnabled shouldBe true
+                }
+            }
         }
 
-        Context("user is logged in") {
+        Given("logged in user") {
 
             component
                 .userDao()
@@ -143,8 +138,11 @@ class SetupViewModelTest : BehaviorSpec(
                     }
                 }
 
-            viewModel.isLoggedIn.test {
-                awaitItem() shouldNotBeNull { this shouldBe true }
+            Then("login state is correct") {
+
+                viewModel.isLoggedIn.test {
+                    awaitItem() shouldBe true
+                }
             }
         }
     },

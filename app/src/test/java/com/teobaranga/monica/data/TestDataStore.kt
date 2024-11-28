@@ -44,6 +44,7 @@ class TestDataStore @Inject constructor(
         }
         prevScope = CoroutineScope(dispatcher.io + SupervisorJob())
         dataStore = PreferenceDataStoreFactory.create(scope = prevScope) {
+            file.delete()
             file
         }
     }
