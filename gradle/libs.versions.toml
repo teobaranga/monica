@@ -4,7 +4,7 @@ minSdk = "24"
 targetSdk = "35"
 compileSdk = "35"
 
-androidGradlePlugin = "8.7.2"
+androidGradlePlugin = "8.7.3"
 androidTools = "31.7.2"
 hilt = "2.52"
 hilt-androidx = "1.2.0"
