@@ -12,19 +12,23 @@ import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.contacts.ui.toDomainBirthday
 import com.teobaranga.monica.genders.domain.Gender
 import com.teobaranga.monica.genders.domain.GetGendersUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
 private const val ID_CONTACT_UNDEFINED = -1
 
-@HiltViewModel
-internal class ContactEditViewModel @Inject constructor(
+@Inject
+@ContributesViewModel(AppScope::class)
+class ContactEditViewModel internal constructor(
+    @Assisted
     savedStateHandle: SavedStateHandle,
     private val getContactUseCase: GetContactUseCase,
     private val upsertContactUseCase: UpsertContactUseCase,

@@ -12,7 +12,7 @@ typealias OffsetDateTimeAsString =
     @Serializable(with = OffsetDateTimeSerializer::class)
     OffsetDateTime
 
-object OffsetDateTimeSerializer: KSerializer<OffsetDateTime> {
+object OffsetDateTimeSerializer : KSerializer<OffsetDateTime> {
 
     override val descriptor = PrimitiveSerialDescriptor("OffsetDateTime", PrimitiveKind.STRING)
 

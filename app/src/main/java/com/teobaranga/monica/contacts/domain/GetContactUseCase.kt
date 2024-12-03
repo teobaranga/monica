@@ -5,9 +5,10 @@ import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-internal class GetContactUseCase @Inject constructor(
+@Inject
+internal class GetContactUseCase(
     private val dispatcher: Dispatcher,
     private val contactRepository: ContactRepository,
 ) {

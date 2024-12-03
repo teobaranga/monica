@@ -4,7 +4,7 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 plugins {
     alias(libs.plugins.monica.android.application)
     alias(libs.plugins.monica.android.compose)
-    alias(libs.plugins.monica.hilt)
+    alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktlint)
@@ -81,8 +81,6 @@ dependencies {
 
     implementation(libs.compose.placeholder)
 
-    implementation(libs.hilt.navigation.compose)
-
     implementation(libs.browser)
 
     implementation(libs.coil)
@@ -109,7 +107,6 @@ dependencies {
     implementation(libs.firebase.crashlytics)
 
     implementation(libs.work)
-    implementation(libs.hilt.work)
 
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.junit)

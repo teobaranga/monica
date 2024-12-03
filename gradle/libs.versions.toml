@@ -6,8 +6,8 @@ compileSdk = "35"
 
 androidGradlePlugin = "8.7.3"
 androidTools = "31.7.3"
-hilt = "2.53.1"
-hilt-androidx = "1.2.0"
+autoservice = "1.1.1"
+autoservice-ksp = "1.2.0"
 kotlin = "2.1.0"
 ksp = "2.1.0-1.0.29"
 ktlint = "12.1.2"
@@ -23,10 +23,11 @@ datastore = "1.1.1"
 desugar-jdk-libs = "2.1.4"
 firebase-bom = "33.7.0"
 google-services = "4.4.2"
-hilt-navigation-compose = "1.2.0"
-hilt-work = "1.2.0"
 junit = "4.13.2"
 kotest = "6.0.0.M1"
+kotlin-inject = "0.7.2"
+kotlin-inject-anvil = "0.1.1"
+kotlin-poet = "2.0.0"
 kotlinx-coroutines = "1.10.1"
 kotlinx-serialization = "1.7.3"
 materialKolor = "2.0.0"
@@ -51,28 +52,31 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
+auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "autoservice" }
+auto-service-ksp = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "autoservice-ksp" }
 browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 compose-destinations-core = { group = "io.github.raamcosta.compose-destinations", name = "core", version.ref = "compose-destinations" }
 compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations", name = "ksp", version.ref = "compose-destinations" }
 compose-placeholder = { group = "com.eygraber", name = "compose-placeholder-material3", version.ref = "compose-placeholder" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "hilt" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
-hilt-compiler-androidx = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hilt-androidx" }
-hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hilt-work" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+kotlin-inject-compiler = { group = "me.tatarka.inject", name = "kotlin-inject-compiler-ksp", version.ref = "kotlin-inject" }
+kotlin-inject-runtime = { group = "me.tatarka.inject", name = "kotlin-inject-runtime", version.ref = "kotlin-inject" }
+kotlin-inject-anvil-compiler = { group = "software.amazon.lastmile.kotlin.inject.anvil", name = "compiler", version.ref = "kotlin-inject-anvil" }
+kotlin-inject-anvil-runtime = { group = "software.amazon.lastmile.kotlin.inject.anvil", name = "runtime", version.ref = "kotlin-inject-anvil" }
+kotlin-inject-anvil-runtime-optional = { group = "software.amazon.lastmile.kotlin.inject.anvil", name = "runtime-optional", version.ref = "kotlin-inject-anvil" }
+kotlin-poet = { module = "com.squareup:kotlinpoet", version.ref = "kotlin-poet" }
+kotlin-poet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlin-poet" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 material-kolor = { module = "com.materialkolor:material-kolor", version.ref = "materialKolor" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
@@ -109,8 +113,8 @@ monica-android-application = { id = "monica.android.application", version = "uns
 monica-android-feature = { id = "monica.android.feature", version = "unspecified" }
 monica-android-library = { id = "monica.android.library", version = "unspecified" }
 monica-android-compose = { id = "monica.android.compose", version = "unspecified" }
-monica-hilt = { id = "monica.hilt", version = "unspecified" }
 monica-jvm-library = { id = "monica.jvm.library", version = "unspecified" }
+monica-kotlin-inject = { id = "monica.kotlin.inject", version = "unspecified" }
 monica-network = { id = "monica.network", version = "unspecified" }
 
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -118,7 +122,6 @@ androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugi
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

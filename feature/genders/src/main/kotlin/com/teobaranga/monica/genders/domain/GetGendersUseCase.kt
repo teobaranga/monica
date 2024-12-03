@@ -5,9 +5,10 @@ import com.teobaranga.monica.genders.data.GenderRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class GetGendersUseCase @Inject constructor(
+@Inject
+class GetGendersUseCase(
     private val dispatcher: Dispatcher,
     private val genderRepository: GenderRepository,
 ) {

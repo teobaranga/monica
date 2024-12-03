@@ -6,14 +6,16 @@ import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.configuration.domain.ConfigurationDataStore
 import com.teobaranga.monica.configuration.domain.ConfigurationItem
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
-@HiltViewModel
-class ConfigurationViewModel @Inject constructor(
+@Inject
+@ContributesViewModel(AppScope::class)
+class ConfigurationViewModel(
     private val dispatcher: Dispatcher,
     private val configurationDataStore: ConfigurationDataStore,
 ) : ViewModel() {

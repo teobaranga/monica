@@ -12,17 +12,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 interface AuthorizationRepository {
 
     val isLoggedIn: StateFlow<Boolean?>
 }
 
-@Singleton
-class MonicaAuthorizationRepository @Inject constructor(
+@SingleIn(AppScope::class)
+@Inject
+@ContributesBinding(AppScope::class)
+class MonicaAuthorizationRepository(
     dispatcher: Dispatcher,
     dataStore: DataStore<Preferences>,
     userDao: UserDao,

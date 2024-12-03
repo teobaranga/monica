@@ -37,7 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -48,6 +47,7 @@ import com.ramcosta.composedestinations.generated.destinations.ContactEditDestin
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.contacts.list.model.Contact
+import com.teobaranga.monica.inject.runtime.injectedViewModel
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
@@ -63,7 +63,10 @@ import kotlinx.coroutines.flow.flowOf
 
 @Destination<ContactsNavGraph>(start = true)
 @Composable
-internal fun Contacts(navigator: DestinationsNavigator, viewModel: ContactsViewModel = hiltViewModel()) {
+internal fun Contacts(
+    navigator: DestinationsNavigator,
+    viewModel: ContactsViewModel = injectedViewModel(),
+) {
     val refreshState by viewModel.refreshState.collectAsStateWithLifecycle()
     ContactsScreen(
         searchBar = {

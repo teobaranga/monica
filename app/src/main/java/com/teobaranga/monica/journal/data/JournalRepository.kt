@@ -13,19 +13,21 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import java.time.LocalDate
 import java.time.OffsetDateTime
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.uuid.Uuid
 
 private const val PAGE_SIZE = 15
 
-@Singleton
-internal class JournalRepository @Inject constructor(
+@Inject
+@SingleIn(AppScope::class)
+internal class JournalRepository(
     dispatcher: Dispatcher,
     private val journalDao: JournalDao,
-    private val journalPagingSourceFactory: JournalPagingSource.Factory,
+    private val journalPagingSourceFactory: (OrderBy) -> JournalPagingSource,
     private val journalEntryNewSynchronizer: JournalEntryNewSynchronizer,
     private val journalEntryUpdateSynchronizer: JournalEntryUpdateSynchronizer,
     private val journalEntryDeletedSynchronizer: JournalEntryDeletedSynchronizer,
@@ -41,7 +43,7 @@ internal class JournalRepository @Inject constructor(
     ): Flow<PagingData<JournalEntryEntity>> {
         val pagingSourceFactory = pagingSourceFactoryMap.getOrPut(orderBy) {
             InvalidatingPagingSourceFactory {
-                journalPagingSourceFactory.create(orderBy)
+                journalPagingSourceFactory(orderBy)
             }
         }
         return Pager(

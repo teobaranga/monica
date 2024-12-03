@@ -7,13 +7,13 @@ import androidx.paging.map
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
+import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
 import com.teobaranga.monica.journal.data.JournalRepository
 import com.teobaranga.monica.journal.database.JournalEntryEntity
 import com.teobaranga.monica.journal.list.ui.JournalEntryListItem
 import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.user.userAvatar
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -21,12 +21,14 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@HiltViewModel
-internal class JournalEntryListViewModel @Inject constructor(
+@Inject
+@ContributesViewModel(AppScope::class)
+class JournalEntryListViewModel internal constructor(
     private val dispatcher: Dispatcher,
     userRepository: UserRepository,
     journalRepository: JournalRepository,

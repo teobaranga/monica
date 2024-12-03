@@ -4,10 +4,10 @@ import JournalNavGraph
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.teobaranga.monica.inject.runtime.injectedViewModel
 import com.teobaranga.monica.journal.view.ui.JournalEntryScreen
 import com.teobaranga.monica.journal.view.ui.JournalEntryTopAppBar
 import com.teobaranga.monica.ui.navigation.FadeDestinationStyle
@@ -19,9 +19,9 @@ import com.teobaranga.monica.ui.navigation.FadeDestinationStyle
 internal fun JournalEntry(
     navigator: DestinationsNavigator,
     entryId: Int? = null,
-    viewModel: JournalEntryViewModel = hiltViewModel<JournalEntryViewModel, JournalEntryViewModel.Factory>(
+    viewModel: JournalEntryViewModel = injectedViewModel<JournalEntryViewModel, JournalEntryViewModelFactory>(
         creationCallback = { factory ->
-            factory.create(entryId)
+            factory(entryId)
         },
     ),
 ) {

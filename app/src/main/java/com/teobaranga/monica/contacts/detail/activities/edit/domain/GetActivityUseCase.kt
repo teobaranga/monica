@@ -4,9 +4,10 @@ import com.teobaranga.monica.activities.data.ContactActivitiesRepository
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-internal class GetActivityUseCase @Inject constructor(
+@Inject
+internal class GetActivityUseCase(
     private val dispatcher: Dispatcher,
     private val contactActivitiesRepository: ContactActivitiesRepository,
     private val mapContactToActivityParticipant: MapContactToActivityParticipant,

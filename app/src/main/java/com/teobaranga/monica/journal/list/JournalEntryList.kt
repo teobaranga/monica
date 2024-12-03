@@ -13,13 +13,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.generated.destinations.JournalEntryDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.account.Account
+import com.teobaranga.monica.inject.runtime.injectedViewModel
 import com.teobaranga.monica.journal.list.ui.JournalEntryListScreen
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.avatar.UserAvatar
@@ -28,7 +28,7 @@ import com.teobaranga.monica.ui.avatar.UserAvatar
 @Composable
 internal fun JournalEntryList(
     navigator: DestinationsNavigator,
-    viewModel: JournalEntryListViewModel = hiltViewModel(),
+    viewModel: JournalEntryListViewModel = injectedViewModel(),
 ) {
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
     val refreshState by viewModel.refreshState.collectAsStateWithLifecycle()

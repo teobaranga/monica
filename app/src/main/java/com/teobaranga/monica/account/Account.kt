@@ -18,13 +18,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.teobaranga.monica.inject.runtime.injectedViewModel
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
 @Composable
-fun Account(viewModel: AccountViewModel = hiltViewModel(), onDismissRequest: () -> Unit) {
+fun Account(
+    viewModel: AccountViewModel = injectedViewModel(),
+    onDismissRequest: () -> Unit,
+) {
     AccountScreen(
         onClearAuthorization = viewModel::onClearAuthorization,
         onDismissRequest = onDismissRequest,
