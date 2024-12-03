@@ -39,10 +39,10 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.teobaranga.monica.inject.runtime.injectedViewModel
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
 import com.teobaranga.monica.ui.Zero
@@ -66,9 +66,9 @@ internal fun EditContactActivity(
     contactId: Int,
     activityId: Int?,
     viewModel: EditContactActivityViewModel =
-        hiltViewModel<EditContactActivityViewModel, EditContactActivityViewModel.Factory>(
-            creationCallback = { factory: EditContactActivityViewModel.Factory ->
-                factory.create(contactId, activityId)
+        injectedViewModel<EditContactActivityViewModel, EditContactActivityViewModelFactory>(
+            creationCallback = { factory ->
+                factory(contactId, activityId)
             },
         ),
 ) {
@@ -149,7 +149,7 @@ private fun EditContactActivity(
                     val cursorData = rememberCursorData(
                         textFieldState = uiState.details,
                         cursorVisibilityStrategy = CursorVisibilityStrategy { cursor, boundsInWindow, screenHeight, scrollState ->
-                            boundsInWindow.topLeft.y - (screenHeight - boundsInWindow.bottomRight.y)  + cursor.top > screenHeight / 2
+                            boundsInWindow.topLeft.y - (screenHeight - boundsInWindow.bottomRight.y) + cursor.top > screenHeight / 2
                         },
                     )
                     Column(

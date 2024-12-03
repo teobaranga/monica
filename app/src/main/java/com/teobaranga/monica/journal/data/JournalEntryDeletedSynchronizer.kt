@@ -3,9 +3,10 @@ package com.teobaranga.monica.journal.data
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.journal.database.JournalDao
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class JournalEntryDeletedSynchronizer @Inject constructor(
+@Inject
+class JournalEntryDeletedSynchronizer(
     private val journalApi: JournalApi,
     private val journalDao: JournalDao,
 ) {

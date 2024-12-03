@@ -28,8 +28,8 @@ class MonicaPullToRefreshState(
 @Composable
 fun MonicaPullToRefreshBox(
     state: MonicaPullToRefreshState,
-    modifier: Modifier = Modifier,
     indicator: @Composable IndicatorScope.() -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit,
 ) {
     PullToRefreshBox(
@@ -52,7 +52,7 @@ fun MonicaPullToRefreshBox(
     )
 }
 
-interface IndicatorScope: BoxScope {
+interface IndicatorScope : BoxScope {
 
     val state: MonicaPullToRefreshState
 

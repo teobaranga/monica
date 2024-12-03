@@ -3,12 +3,12 @@ package com.teobaranga.monica.contacts.data
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.database.OrderBy
 import com.teobaranga.monica.paging.RoomPagingSource
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
 
-internal class ContactPagingSource @AssistedInject constructor(
+@Inject
+class ContactPagingSource(
     dispatcher: Dispatcher,
     contactSynchronizer: ContactSynchronizer,
     private val contactDao: ContactDao,
@@ -24,10 +24,5 @@ internal class ContactPagingSource @AssistedInject constructor(
             limit = params.loadSize,
             offset = start * params.loadSize,
         ).first()
-    }
-
-    @AssistedFactory
-    internal interface Factory {
-        fun create(orderBy: ContactRepository.OrderBy): ContactPagingSource
     }
 }

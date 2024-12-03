@@ -5,12 +5,12 @@ import com.teobaranga.monica.database.OrderBy
 import com.teobaranga.monica.journal.database.JournalDao
 import com.teobaranga.monica.journal.database.JournalEntryEntity
 import com.teobaranga.monica.paging.RoomPagingSource
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
 
-internal class JournalPagingSource @AssistedInject constructor(
+@Inject
+internal class JournalPagingSource(
     dispatcher: Dispatcher,
     journalEntrySynchronizer: JournalEntrySynchronizer,
     private val journalDao: JournalDao,
@@ -27,10 +27,5 @@ internal class JournalPagingSource @AssistedInject constructor(
             limit = params.loadSize,
             offset = start * params.loadSize,
         ).first()
-    }
-
-    @AssistedFactory
-    internal interface Factory {
-        fun create(orderBy: JournalRepository.OrderBy): JournalPagingSource
     }
 }

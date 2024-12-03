@@ -4,9 +4,10 @@ import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.contacts.data.ContactRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-internal class SearchContactUseCase @Inject constructor(
+@Inject
+internal class SearchContactUseCase(
     private val contactRepository: ContactRepository,
 ) {
     operator fun invoke(query: String, excludeContacts: List<Int> = emptyList()): Flow<List<ContactEntity>> {

@@ -2,6 +2,7 @@ package com.teobaranga.monica.setup
 
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.datastore.preferences.core.edit
+import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.teobaranga.monica.MONICA_URL
 import com.teobaranga.monica.data.PARAM_CLIENT_ID
@@ -19,13 +20,12 @@ class SetupViewModelTest : BehaviorSpec(
     {
         isolationMode = IsolationMode.InstancePerLeaf
 
-        val component = DaggerSetupComponent.create()
-        val viewModel = component.setupViewModel()
+        val component = SetupComponent::class.create()
+        val viewModel = component.setupViewModel()(SavedStateHandle())
 
         afterTest {
             component.dataStore().reset()
         }
-
 
         Given("logged out user") {
 

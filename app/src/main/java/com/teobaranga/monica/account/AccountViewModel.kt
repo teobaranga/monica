@@ -7,13 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.MonicaDatabase
+import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import com.teobaranga.monica.settings.tokenStorage
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
-@HiltViewModel
-class AccountViewModel @Inject constructor(
+@Inject
+@ContributesViewModel(AppScope::class)
+class AccountViewModel(
     private val dispatcher: Dispatcher,
     private val dataStore: DataStore<Preferences>,
     private val database: MonicaDatabase,

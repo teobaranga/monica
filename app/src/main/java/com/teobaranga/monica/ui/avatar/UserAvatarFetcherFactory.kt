@@ -9,11 +9,12 @@ import coil.fetch.SourceResult
 import coil.request.Options
 import com.teobaranga.monica.contacts.data.ContactRepository
 import kotlinx.coroutines.flow.first
+import me.tatarka.inject.annotations.Inject
 import okio.Buffer
 import okio.ByteString.Companion.decodeBase64
-import javax.inject.Inject
 
-internal class UserAvatarFetcherFactory @Inject constructor(
+@Inject
+class UserAvatarFetcherFactory(
     private val contactRepository: ContactRepository,
 ) : Fetcher.Factory<UserAvatar> {
 
