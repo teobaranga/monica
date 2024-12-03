@@ -4,6 +4,7 @@ import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
+@me.tatarka.inject.annotations.Inject
 class ContactRequestMapper @Inject constructor() {
 
     operator fun invoke(entity: ContactEntity): CreateContactRequest {

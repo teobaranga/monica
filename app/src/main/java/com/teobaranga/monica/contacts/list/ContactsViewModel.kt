@@ -13,7 +13,6 @@ import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.user.userAvatar
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -21,14 +20,13 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 private const val PAGE_SIZE = 15
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@HiltViewModel
-internal class ContactsViewModel @Inject constructor(
+@me.tatarka.inject.annotations.Inject
+internal class ContactsViewModel(
     private val dispatcher: Dispatcher,
     userRepository: UserRepository,
     contactRepository: ContactRepository,

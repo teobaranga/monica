@@ -17,6 +17,8 @@ import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 import javax.inject.Singleton
 
 @Module
@@ -82,6 +84,72 @@ object ApiModule {
     }
 
     @Provides
+    @Singleton
+    fun provideJournalApi(retrofit: Retrofit): JournalApi {
+        return retrofit.create(JournalApi::class.java)
+    }
+}
+
+@ContributesTo(AppScope::class)
+interface ApiComponent {
+
+    @me.tatarka.inject.annotations.Provides
+    @Singleton
+    fun provideConverterFactory(): Converter.Factory {
+        return Json {
+            ignoreUnknownKeys = true
+        }
+            .asConverterFactory("application/json; charset=UTF8".toMediaType())
+    }
+
+    @me.tatarka.inject.annotations.Provides
+    @Singleton
+    fun provideRetrofit(
+        interceptors: Set<Interceptor>,
+        converterFactory: Converter.Factory,
+    ): Retrofit {
+        val client = OkHttpClient.Builder()
+            .apply {
+                for (interceptor in interceptors) {
+                    addInterceptor(interceptor)
+                }
+            }
+            .build()
+        val retrofit = Retrofit.Builder()
+            .client(client)
+            .baseUrl(MONICA_URL)
+            .addConverterFactory(converterFactory)
+            .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
+            .build()
+
+        return retrofit
+    }
+
+    @me.tatarka.inject.annotations.Provides
+    @Singleton
+    fun provideApi(retrofit: Retrofit): MonicaApi {
+        return retrofit.create(MonicaApi::class.java)
+    }
+
+    @me.tatarka.inject.annotations.Provides
+    @Singleton
+    fun provideUserApi(retrofit: Retrofit): UserApi {
+        return requireNotNull(retrofit.create(UserApi::class.java))
+    }
+
+    @me.tatarka.inject.annotations.Provides
+    @Singleton
+    fun provideContactApi(retrofit: Retrofit): ContactApi {
+        return retrofit.create(ContactApi::class.java)
+    }
+
+    @me.tatarka.inject.annotations.Provides
+    @Singleton
+    fun providePhotoApi(retrofit: Retrofit): PhotoApi {
+        return retrofit.create(PhotoApi::class.java)
+    }
+
+    @me.tatarka.inject.annotations.Provides
     @Singleton
     fun provideJournalApi(retrofit: Retrofit): JournalApi {
         return retrofit.create(JournalApi::class.java)

@@ -10,6 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.runBlocking
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 import javax.inject.Singleton
 
 @Module
@@ -18,6 +20,24 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun providesMonicaDatabase(
+        @ApplicationContext context: Context,
+        configurationDataStore: ConfigurationDataStore,
+    ): MonicaDatabase {
+        runBlocking {
+            if (configurationDataStore.get(ShouldClearDatabaseOnNextLaunch)) {
+                configurationDataStore.set(ShouldClearDatabaseOnNextLaunch, false)
+                context.deleteDatabase("monica")
+            }
+        }
+        return Room.databaseBuilder(context, MonicaDatabase::class.java, "monica")
+            .build()
+    }
+}
+
+@ContributesTo(AppScope::class)
+interface DatabaseComponent {
+    @me.tatarka.inject.annotations.Provides
     fun providesMonicaDatabase(
         @ApplicationContext context: Context,
         configurationDataStore: ConfigurationDataStore,

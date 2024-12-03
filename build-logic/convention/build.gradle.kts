@@ -81,6 +81,10 @@ gradlePlugin {
             id = "monica.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
+        register("kotlinInject") {
+            id = "monica.kotlin.inject"
+            implementationClass = "KotlinInjectConventionPlugin"
+        }
         register("network") {
             id = "monica.network"
             implementationClass = "NetworkConventionPlugin"

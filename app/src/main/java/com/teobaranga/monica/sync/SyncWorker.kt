@@ -1,7 +1,6 @@
 package com.teobaranga.monica.sync
 
 import android.content.Context
-import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
@@ -11,14 +10,11 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 
-@HiltWorker
-internal class SyncWorker @AssistedInject constructor(
-    @Assisted
+internal class SyncWorker(
+    @me.tatarka.inject.annotations.Assisted
     appContext: Context,
-    @Assisted
+    @me.tatarka.inject.annotations.Assisted
     workerParams: WorkerParameters,
     private val sync: SyncUseCase,
 ) : CoroutineWorker(appContext, workerParams) {

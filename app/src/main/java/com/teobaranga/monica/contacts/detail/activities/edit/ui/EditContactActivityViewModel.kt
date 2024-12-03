@@ -10,10 +10,6 @@ import com.teobaranga.monica.contacts.detail.activities.edit.domain.SearchContac
 import com.teobaranga.monica.contacts.domain.GetContactUseCase
 import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
@@ -25,19 +21,20 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel(assistedFactory = EditContactActivityViewModel.Factory::class)
-internal class EditContactActivityViewModel @AssistedInject constructor(
+@Inject
+internal class EditContactActivityViewModel(
     private val dispatcher: Dispatcher,
     private val getContactUseCase: GetContactUseCase,
     private val getActivityUseCase: GetActivityUseCase,
     private val searchContactAsActivityParticipantUseCase: SearchContactAsActivityParticipantUseCase,
     private val contactActivitiesRepository: ContactActivitiesRepository,
-    @Assisted
+    @me.tatarka.inject.annotations.Assisted
     private val contactId: Int,
-    @Assisted
+    @me.tatarka.inject.annotations.Assisted
     private val activityId: Int?,
 ) : ViewModel() {
 
@@ -128,10 +125,5 @@ internal class EditContactActivityViewModel @AssistedInject constructor(
 
     private fun getLoadedUiState(): EditContactActivityUiState.Loaded? {
         return uiState.value as? EditContactActivityUiState.Loaded
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(contactId: Int, activityId: Int?): EditContactActivityViewModel
     }
 }

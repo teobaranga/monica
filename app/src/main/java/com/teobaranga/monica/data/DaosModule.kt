@@ -26,6 +26,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -47,4 +49,20 @@ object DaosModule {
 
     @Provides
     fun providesGendersDao(database: MonicaDatabase): GendersDao = database.gendersDao()
+}
+
+@ContributesTo(AppScope::class)
+interface DaosComponent {
+
+    @me.tatarka.inject.annotations.Provides
+    fun providesUserDao(database: MonicaDatabase): UserDao = database.userDao()
+
+    @me.tatarka.inject.annotations.Provides
+    fun providesContactDao(database: MonicaDatabase): ContactDao = database.contactDao()
+
+    @me.tatarka.inject.annotations.Provides
+    fun providesGendersDao(database: MonicaDatabase): GendersDao = database.gendersDao()
+
+    @me.tatarka.inject.annotations.Provides
+    fun providesPhotoDao(database: MonicaDatabase): PhotoDao = database.photoDao()
 }

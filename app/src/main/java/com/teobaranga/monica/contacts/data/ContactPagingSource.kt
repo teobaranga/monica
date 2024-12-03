@@ -7,12 +7,15 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
+import me.tatarka.inject.annotations.Inject
 
-internal class ContactPagingSource @AssistedInject constructor(
+@Inject
+class ContactPagingSource @AssistedInject constructor(
     dispatcher: Dispatcher,
     contactSynchronizer: ContactSynchronizer,
     private val contactDao: ContactDao,
     @Assisted
+    @me.tatarka.inject.annotations.Assisted
     private val orderBy: ContactRepository.OrderBy,
 ) : RoomPagingSource<ContactEntity>(
     dispatcher = dispatcher,
