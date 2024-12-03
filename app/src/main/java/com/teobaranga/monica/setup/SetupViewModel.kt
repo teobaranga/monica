@@ -18,7 +18,6 @@ import com.teobaranga.monica.data.REDIRECT_URI
 import com.teobaranga.monica.settings.getOAuthSettings
 import com.teobaranga.monica.settings.oAuthSettings
 import com.teobaranga.monica.setup.domain.SignInUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.first
@@ -26,11 +25,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import timber.log.Timber
-import javax.inject.Inject
 
 @OptIn(SavedStateHandleSaveableApi::class)
-@HiltViewModel
-class SetupViewModel @Inject constructor(
+@me.tatarka.inject.annotations.Inject
+class SetupViewModel(
     savedStateHandle: SavedStateHandle,
     private val dispatcher: Dispatcher,
     private val dataStore: DataStore<Preferences>,

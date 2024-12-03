@@ -1,11 +1,10 @@
-package com.teobaranga.monica.journal.data
+package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.ApiResponse
-import com.teobaranga.monica.contacts.data.ContactApi
-import com.teobaranga.monica.contacts.data.ContactDao
 import com.teobaranga.monica.data.sync.SyncStatus
 import javax.inject.Inject
 
+@me.tatarka.inject.annotations.Inject
 class ContactDeleteSynchronizer @Inject constructor(
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,

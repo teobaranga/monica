@@ -4,6 +4,7 @@ import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.data.sync.SyncStatus
 import javax.inject.Inject
 
+@me.tatarka.inject.annotations.Inject
 class ContactNewSynchronizer @Inject constructor(
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,

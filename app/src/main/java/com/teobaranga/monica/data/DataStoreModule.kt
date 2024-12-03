@@ -9,16 +9,27 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 import javax.inject.Singleton
+
+private val Context.settingsDataStore by preferencesDataStore(name = "settings")
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
 
-    private val Context.settingsDataStore by preferencesDataStore(name = "settings")
-
     @Provides
     @Singleton
+    fun providesSettingsDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
+        return context.settingsDataStore
+    }
+}
+
+@ContributesTo(AppScope::class)
+interface DataStoreComponent {
+
+    @me.tatarka.inject.annotations.Provides
     fun providesSettingsDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
         return context.settingsDataStore
     }

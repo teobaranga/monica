@@ -6,12 +6,13 @@ import com.teobaranga.monica.contacts.data.toExternalModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.mapLatest
-import javax.inject.Inject
-import javax.inject.Singleton
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Singleton
-internal class UserRepository @Inject constructor(
+@SingleIn(AppScope::class)
+@me.tatarka.inject.annotations.Inject
+internal class UserRepository(
     private val userApi: UserApi,
     private val userDao: UserDao,
     private val contactRepository: ContactRepository,

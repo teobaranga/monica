@@ -8,8 +8,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import javax.inject.Inject
-import javax.inject.Singleton
 
 interface ConfigurationDataStore {
 
@@ -20,8 +22,10 @@ interface ConfigurationDataStore {
     suspend fun <T> set(item: ConfigurationItem<T>, value: T)
 }
 
-@Singleton
-internal class ConfigurationDataStoreImpl @Inject constructor(
+@me.tatarka.inject.annotations.Inject
+@ContributesBinding(AppScope::class)
+@SingleIn(AppScope::class)
+class ConfigurationDataStoreImpl @Inject constructor(
     @ApplicationContext context: Context,
 ) : ConfigurationDataStore {
 

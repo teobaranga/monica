@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.monica.android.application)
     alias(libs.plugins.monica.android.compose)
     alias(libs.plugins.monica.hilt)
+    alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktlint)

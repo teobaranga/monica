@@ -2,22 +2,17 @@ package com.teobaranga.monica.di
 
 import android.content.Context
 import androidx.work.WorkManager
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@Module
-@InstallIn(SingletonComponent::class)
-interface WorkModule {
+@ContributesTo(AppScope::class)
+interface WorkComponent {
 
-    companion object {
-
-        @[Provides Singleton]
-        fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
-            return WorkManager.getInstance(context)
-        }
+    @me.tatarka.inject.annotations.Provides
+    @SingleIn(AppScope::class)
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
+        return WorkManager.getInstance(context)
     }
 }

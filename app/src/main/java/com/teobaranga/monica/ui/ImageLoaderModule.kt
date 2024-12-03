@@ -8,14 +8,16 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal object ImageLoaderModule {
+@ContributesTo(AppScope::class)
+interface ImageLoaderComponent {
 
-    @Provides
-    @Singleton
+    @me.tatarka.inject.annotations.Provides
+    @SingleIn(AppScope::class)
     fun provideImageLoader(
         @ApplicationContext context: Context,
         userAvatarFetcherFactory: UserAvatarFetcherFactory,

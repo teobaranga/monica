@@ -5,20 +5,17 @@ import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.journal.data.JournalRepository
 import com.teobaranga.monica.journal.view.ui.JournalEntryUiState
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 import java.time.LocalDate
 
-@HiltViewModel(assistedFactory = JournalEntryViewModel.Factory::class)
-internal class JournalEntryViewModel @AssistedInject constructor(
-    @Assisted
+@Inject
+internal class JournalEntryViewModel(
+    @me.tatarka.inject.annotations.Assisted
     private val entryId: Int?,
     private val dispatcher: Dispatcher,
     private val journalRepository: JournalRepository,
@@ -79,10 +76,5 @@ internal class JournalEntryViewModel @AssistedInject constructor(
 
     private fun getLoadedState(): JournalEntryUiState.Loaded? {
         return uiState.value as? JournalEntryUiState.Loaded
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(entryId: Int?): JournalEntryViewModel
     }
 }

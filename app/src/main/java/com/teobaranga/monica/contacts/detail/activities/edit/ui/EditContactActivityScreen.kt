@@ -39,8 +39,8 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.ui.FabHeight
@@ -66,11 +66,7 @@ internal fun EditContactActivity(
     contactId: Int,
     activityId: Int?,
     viewModel: EditContactActivityViewModel =
-        hiltViewModel<EditContactActivityViewModel, EditContactActivityViewModel.Factory>(
-            creationCallback = { factory: EditContactActivityViewModel.Factory ->
-                factory.create(contactId, activityId)
-            },
-        ),
+        viewModel<EditContactActivityViewModel>(),
 ) {
     CompositionLocalProvider(
         LocalDestinationsNavigator provides navigator,

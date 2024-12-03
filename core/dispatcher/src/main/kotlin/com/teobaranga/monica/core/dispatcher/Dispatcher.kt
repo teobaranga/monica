@@ -1,24 +1,11 @@
 package com.teobaranga.monica.core.dispatcher
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Qualifier
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-annotation class DefaultDispatcher
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-annotation class MainDispatcher
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-annotation class IoDispatcher
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 interface Dispatcher {
     val default: CoroutineDispatcher
@@ -26,35 +13,28 @@ interface Dispatcher {
     val io: CoroutineDispatcher
 }
 
-@Module
-@InstallIn(SingletonComponent::class)
-object CoroutineDispatchersModule {
+typealias DefaultCoroutineDispatcher = CoroutineDispatcher
+typealias MainCoroutineDispatcher = CoroutineDispatcher
+typealias IoCoroutineDispatcher = CoroutineDispatcher
 
-    @DefaultDispatcher
-    @Provides
-    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
+@me.tatarka.inject.annotations.Inject
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class DispatcherImpl(
+    override val default: DefaultCoroutineDispatcher,
+    override val main: MainCoroutineDispatcher,
+    override val io: IoCoroutineDispatcher,
+) : Dispatcher
 
-    @MainDispatcher
-    @Provides
-    fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
+@ContributesTo(AppScope::class)
+interface DispatcherComponent {
 
-    @IoDispatcher
-    @Provides
-    fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+    @me.tatarka.inject.annotations.Provides
+    fun providesDefaultDispatcher(): DefaultCoroutineDispatcher = Dispatchers.Default
 
-    @Provides
-    fun provideDispatcher(
-        @DefaultDispatcher
-        defaultDispatcher: CoroutineDispatcher,
-        @MainDispatcher
-        mainDispatcher: CoroutineDispatcher,
-        @IoDispatcher
-        ioDispatcher: CoroutineDispatcher,
-    ): Dispatcher {
-        return object : Dispatcher {
-            override val default = defaultDispatcher
-            override val main = mainDispatcher
-            override val io = ioDispatcher
-        }
-    }
+    @me.tatarka.inject.annotations.Provides
+    fun providesMainDispatcher(): MainCoroutineDispatcher = Dispatchers.Main
+
+    @me.tatarka.inject.annotations.Provides
+    fun providesIoDispatcher(): IoCoroutineDispatcher = Dispatchers.IO
 }

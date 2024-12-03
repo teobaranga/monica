@@ -27,8 +27,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -50,11 +50,7 @@ import kotlinx.coroutines.launch
 internal fun ContactDetail(
     navigator: DestinationsNavigator,
     contactId: Int,
-    viewModel: ContactDetailViewModel = hiltViewModel<ContactDetailViewModel, ContactDetailViewModel.Factory>(
-        creationCallback = { factory: ContactDetailViewModel.Factory ->
-            factory.create(contactId)
-        },
-    ),
+    viewModel: ContactDetailViewModel = viewModel<ContactDetailViewModel>(),
 ) {
     val contactDetail by viewModel.contact.collectAsStateWithLifecycle()
     LaunchedEffect(viewModel.effects) {

@@ -15,12 +15,16 @@ import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Singleton
+@me.tatarka.inject.annotations.Inject
+@ContributesBinding(AppScope::class, multibinding = true)
 class HostSelectionInterceptor @Inject constructor(
     @ApplicationContext
     appCoroutineScope: CoroutineScope,

@@ -5,24 +5,21 @@ import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.activities.data.ContactActivitiesRepository
 import com.teobaranga.monica.activities.data.ContactActivitiesSynchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@HiltViewModel(assistedFactory = ContactActivitiesViewModel.Factory::class)
-internal class ContactActivitiesViewModel @AssistedInject constructor(
+@Inject
+internal class ContactActivitiesViewModel(
     contactActivitiesRepository: ContactActivitiesRepository,
     dispatcher: Dispatcher,
-    @Assisted
+    @me.tatarka.inject.annotations.Assisted
     private val contactId: Int,
     private val contactActivitiesSynchronizerFactory: ContactActivitiesSynchronizer.Factory,
 ) : ViewModel() {
@@ -50,9 +47,4 @@ internal class ContactActivitiesViewModel @AssistedInject constructor(
             started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
             initialValue = ContactActivitiesUiState.Loading,
         )
-
-    @AssistedFactory
-    interface Factory {
-        fun create(contactId: Int): ContactActivitiesViewModel
-    }
 }

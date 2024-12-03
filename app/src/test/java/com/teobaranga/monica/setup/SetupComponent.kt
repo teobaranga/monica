@@ -1,6 +1,5 @@
 package com.teobaranga.monica.setup
 
-import com.teobaranga.monica.auth.AuthorizationModule
 import com.teobaranga.monica.data.ApiModule
 import com.teobaranga.monica.data.DataStoreModule
 import com.teobaranga.monica.data.TestDataStore

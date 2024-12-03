@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.monica.jvm.library)
     alias(libs.plugins.monica.hilt)
+    alias(libs.plugins.monica.kotlin.inject)
 }
 
 dependencies {

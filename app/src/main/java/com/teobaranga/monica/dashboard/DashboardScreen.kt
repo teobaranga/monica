@@ -29,10 +29,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -40,6 +41,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.generated.destinations.ContactDetailDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.teobaranga.monica.MonicaApp
 import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.MonicaSearchBar
@@ -50,7 +52,9 @@ import kotlinx.coroutines.flow.flowOf
 
 @Destination<DashboardNavGraph>(start = true)
 @Composable
-internal fun Dashboard(navigator: DestinationsNavigator, viewModel: DashboardViewModel = hiltViewModel()) {
+internal fun Dashboard(navigator: DestinationsNavigator) {
+    val context = LocalContext.current
+    val viewModel: DashboardViewModel = viewModel(factory = (context.applicationContext as MonicaApp).appComponent.viewModelFactory)
     val userUiState by viewModel.userUiState.collectAsStateWithLifecycle()
     val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
     DashboardScreen(

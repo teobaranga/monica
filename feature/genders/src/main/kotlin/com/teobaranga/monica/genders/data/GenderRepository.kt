@@ -6,9 +6,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class GenderRepository @Inject internal constructor(
+@me.tatarka.inject.annotations.Inject
+class GenderRepository(
     @ApplicationContext
     private val appCoroutineScope: CoroutineScope,
     private val dispatcher: Dispatcher,

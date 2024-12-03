@@ -7,12 +7,13 @@ import com.teobaranga.monica.contacts.data.ContactPhotosResponse
 import com.teobaranga.monica.data.sync.Synchronizer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class PhotoSynchronizer @Inject constructor(
+@me.tatarka.inject.annotations.Inject
+@SingleIn(AppScope::class)
+class PhotoSynchronizer(
     private val photoApi: PhotoApi,
     private val photoDao: PhotoDao,
 ) : Synchronizer, AccountListener {
