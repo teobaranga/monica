@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import coil.ImageLoader
+import com.r0adkll.kimchi.annotations.ContributesBinding
+import com.r0adkll.kimchi.annotations.MergeComponent
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.teobaranga.monica.dashboard.DashboardViewModel
@@ -26,14 +28,12 @@ import me.tatarka.inject.annotations.Inject
 import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
-import software.amazon.lastmile.kotlin.inject.anvil.MergeComponent
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import kotlin.reflect.KClass
 
-@MergeComponent(AppScope::class)
 @SingleIn(AppScope::class)
-internal abstract class AndroidAppComponent(
+@MergeComponent(AppScope::class)
+abstract class AndroidAppComponent(
     /**
      * The Android application that is provided to this object graph.
      */
@@ -52,12 +52,12 @@ internal abstract class AndroidAppComponent(
 
     @IntoMap
     @Provides
-    protected fun provideHome(homeViewModel: () -> HomeViewModel): Pair<KClass<*>, () -> ViewModel> =
+    internal fun provideHome(homeViewModel: () -> HomeViewModel): Pair<KClass<*>, () -> ViewModel> =
         HomeViewModel::class to homeViewModel
 
     @IntoMap
     @Provides
-    protected fun provideFoo1(dashboardViewModel: () -> DashboardViewModel): Pair<KClass<*>, () -> ViewModel> =
+    internal fun provideFoo1(dashboardViewModel: () -> DashboardViewModel): Pair<KClass<*>, () -> ViewModel> =
         DashboardViewModel::class to dashboardViewModel
 }
 

@@ -1,10 +1,10 @@
 package com.teobaranga.monica.core.dispatcher
 
+import com.r0adkll.kimchi.annotations.ContributesBinding
+import com.r0adkll.kimchi.annotations.ContributesTo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 interface Dispatcher {

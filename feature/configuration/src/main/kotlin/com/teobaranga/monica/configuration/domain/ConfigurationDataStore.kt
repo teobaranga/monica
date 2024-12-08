@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import com.r0adkll.kimchi.annotations.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import javax.inject.Inject
 

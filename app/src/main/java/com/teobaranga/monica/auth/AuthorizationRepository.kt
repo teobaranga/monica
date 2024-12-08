@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import com.r0adkll.kimchi.annotations.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import timber.log.Timber
 

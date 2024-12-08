@@ -10,7 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
+import com.r0adkll.kimchi.annotations.ContributesTo
 import javax.inject.Singleton
 
 private val Context.settingsDataStore by preferencesDataStore(name = "settings")

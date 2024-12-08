@@ -3,7 +3,7 @@ package com.teobaranga.monica.work
 import androidx.work.WorkManager
 import com.teobaranga.monica.sync.SyncWorker
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import com.r0adkll.kimchi.annotations.ContributesBinding
 
 @me.tatarka.inject.annotations.Inject
 @ContributesBinding(AppScope::class)

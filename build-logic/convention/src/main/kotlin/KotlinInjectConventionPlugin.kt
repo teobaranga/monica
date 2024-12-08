@@ -13,10 +13,10 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
             pluginManager.apply(libs.plugins.ksp.get().pluginId)
             dependencies {
                 implementation(libs.kotlin.inject.runtime)
-                implementation(libs.kotlin.inject.anvil.runtime)
+                implementation(libs.kimchi.annotations)
                 implementation(libs.kotlin.inject.anvil.runtime.optional)
                 ksp(libs.kotlin.inject.compiler)
-                ksp(libs.kotlin.inject.anvil.compiler)
+                ksp(libs.kimchi.compiler)
                 kspTest(libs.kotlin.inject.compiler)
                 kspTest(libs.kotlin.inject.anvil.compiler)
             }

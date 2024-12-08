@@ -26,6 +26,7 @@ google-services = "4.4.2"
 hilt-navigation-compose = "1.2.0"
 hilt-work = "1.2.0"
 junit = "4.13.2"
+kimchi = "0.4.0"
 kotest = "6.0.0.M1"
 kotlin-inject = "0.7.2"
 kotlin-inject-anvil = "0.1.1"
@@ -71,6 +72,8 @@ hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hi
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hilt-work" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+kimchi-annotations = { group = "com.r0adkll.kimchi", name = "kimchi-annotations", version.ref = "kimchi" }
+kimchi-compiler = { group = "com.r0adkll.kimchi", name = "kimchi-compiler", version.ref = "kimchi" }
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 kotlin-inject-compiler = { group = "me.tatarka.inject", name = "kotlin-inject-compiler-ksp", version.ref = "kotlin-inject" }
 kotlin-inject-runtime = { group = "me.tatarka.inject", name = "kotlin-inject-runtime", version.ref = "kotlin-inject" }

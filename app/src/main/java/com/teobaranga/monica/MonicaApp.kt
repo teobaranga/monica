@@ -5,11 +5,12 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import kimchi.merge.com.teobaranga.monica.createAndroidAppComponent
 import javax.inject.Inject
 
 class MonicaApp : Application(), ImageLoaderFactory, Configuration.Provider {
 
-    internal val appComponent = AndroidAppComponent::class.create(this)
+    internal val appComponent = AndroidAppComponent::class.createAndroidAppComponent(this)
 
 //    @Inject
 //    lateinit var timberTrees: Set<@JvmSuppressWildcards Timber.Tree>

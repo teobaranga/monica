@@ -2,15 +2,18 @@ package com.teobaranga.monica.data
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.r0adkll.kimchi.annotations.ContributesMultibinding
 import com.teobaranga.monica.settings.getTokenStorage
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
-import javax.inject.Inject
-import javax.inject.Singleton
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@Singleton
-class OAuthInterceptor @Inject constructor(
+@SingleIn(AppScope::class)
+@me.tatarka.inject.annotations.Inject
+@ContributesMultibinding(AppScope::class)
+class OAuthInterceptor(
     private val dataStore: DataStore<Preferences>,
 ) : Interceptor {
 

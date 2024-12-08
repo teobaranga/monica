@@ -1,5 +1,6 @@
 package com.teobaranga.monica.data
 
+import com.r0adkll.kimchi.annotations.ContributesTo
 import com.skydoves.sandwich.retrofit.adapters.ApiResponseCallAdapterFactory
 import com.teobaranga.monica.MONICA_URL
 import com.teobaranga.monica.contacts.data.ContactApi
@@ -18,7 +19,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import javax.inject.Singleton
 
 @Module
@@ -103,7 +104,7 @@ interface ApiComponent {
     }
 
     @me.tatarka.inject.annotations.Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     fun provideRetrofit(
         interceptors: Set<Interceptor>,
         converterFactory: Converter.Factory,

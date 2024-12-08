@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.WorkManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
+import com.r0adkll.kimchi.annotations.ContributesTo
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @ContributesTo(AppScope::class)
