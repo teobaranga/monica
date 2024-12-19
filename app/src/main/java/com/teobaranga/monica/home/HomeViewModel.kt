@@ -2,11 +2,13 @@ package com.teobaranga.monica.home
 
 import androidx.lifecycle.ViewModel
 import com.teobaranga.monica.auth.AuthorizationRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import com.teobaranga.monica.inject.runtime.ContributesViewModel
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
-@HiltViewModel
-internal class HomeViewModel @Inject constructor(
+@Inject
+@ContributesViewModel(AppScope::class)
+class HomeViewModel internal constructor(
     authorizationRepository: AuthorizationRepository,
 ) : ViewModel() {
 

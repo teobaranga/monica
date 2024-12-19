@@ -23,14 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.teobaranga.monica.inject.runtime.injectedViewModel
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
 @Composable
 internal fun ConfigurationScreen(
     onClose: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ConfigurationViewModel = hiltViewModel(),
+    viewModel: ConfigurationViewModel = injectedViewModel(),
 ) {
     ConfigurationScreen(
         uiState = viewModel.uiState,

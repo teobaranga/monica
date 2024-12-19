@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
@@ -30,6 +29,7 @@ import com.ramcosta.composedestinations.generated.navgraphs.HomeGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
+import com.teobaranga.monica.inject.runtime.injectedViewModel
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.theme.MonicaTheme
@@ -40,7 +40,7 @@ import com.teobaranga.monica.util.compose.thenIf
 internal fun Home(
     navigator: DestinationsNavigator,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = injectedViewModel(),
 ) {
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
     LaunchedEffect(isLoggedIn) {

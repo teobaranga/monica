@@ -4,16 +4,17 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.monica.contacts.ui.Birthday
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
-@HiltViewModel(assistedFactory = BirthdayPickerViewModel.Factory::class)
-class BirthdayPickerViewModel @AssistedInject constructor(
+@Inject
+@ContributesViewModel(AppScope::class)
+class BirthdayPickerViewModel internal constructor(
     @Assisted
     val initialBirthday: Birthday?,
 ) : ViewModel() {
@@ -35,10 +36,5 @@ class BirthdayPickerViewModel @AssistedInject constructor(
                     uiState.setUnknownYear()
                 }
         }
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(initialBirthday: Birthday?): BirthdayPickerViewModel
     }
 }

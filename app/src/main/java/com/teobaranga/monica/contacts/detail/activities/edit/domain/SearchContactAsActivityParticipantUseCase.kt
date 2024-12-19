@@ -4,9 +4,10 @@ import com.teobaranga.monica.contacts.detail.activities.edit.ui.ActivityParticip
 import com.teobaranga.monica.contacts.domain.SearchContactUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-internal class SearchContactAsActivityParticipantUseCase @Inject constructor(
+@Inject
+internal class SearchContactAsActivityParticipantUseCase(
     private val searchContactUseCase: SearchContactUseCase,
     private val mapContactToActivityParticipant: MapContactToActivityParticipant,
 ) {

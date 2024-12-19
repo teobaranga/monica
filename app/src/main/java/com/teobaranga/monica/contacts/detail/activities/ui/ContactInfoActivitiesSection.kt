@@ -13,11 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.generated.destinations.EditContactActivityDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoSection
+import com.teobaranga.monica.inject.runtime.injectedViewModel
 
 data class ContactInfoActivitiesSection(
     private val contactId: Int,
@@ -27,9 +27,9 @@ data class ContactInfoActivitiesSection(
 
     @Composable
     override fun Content(modifier: Modifier, navigator: DestinationsNavigator) {
-        val viewModel = hiltViewModel<ContactActivitiesViewModel, ContactActivitiesViewModel.Factory>(
-            creationCallback = { factory: ContactActivitiesViewModel.Factory ->
-                factory.create(contactId)
+        val viewModel = injectedViewModel<ContactActivitiesViewModel, ContactActivitiesViewModelFactory>(
+            creationCallback = { factory ->
+                factory(contactId)
             },
         )
         val activitiesUiState by viewModel.contactActivities.collectAsStateWithLifecycle()

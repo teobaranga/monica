@@ -1,14 +1,15 @@
 package com.teobaranga.monica.genders.data
 
 import com.skydoves.sandwich.ApiResponse
+import com.teobaranga.monica.inject.runtime.ApplicationContext
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class GenderRepository @Inject internal constructor(
+@Inject
+class GenderRepository(
     @ApplicationContext
     private val appCoroutineScope: CoroutineScope,
     private val dispatcher: Dispatcher,

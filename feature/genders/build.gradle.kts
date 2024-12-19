@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.monica.android.feature)
-    alias(libs.plugins.monica.hilt)
+    alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
     alias(libs.plugins.ksp)
 }

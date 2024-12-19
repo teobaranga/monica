@@ -3,25 +3,29 @@ package com.teobaranga.monica.data
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.teobaranga.monica.core.dispatcher.Dispatcher
+import com.teobaranga.monica.inject.runtime.ApplicationContext
 import com.teobaranga.monica.settings.getOAuthSettings
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@Singleton
-class HostSelectionInterceptor @Inject constructor(
+@Inject
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class, multibinding = true)
+class HostSelectionInterceptor(
     @ApplicationContext
     appCoroutineScope: CoroutineScope,
     dispatcher: Dispatcher,

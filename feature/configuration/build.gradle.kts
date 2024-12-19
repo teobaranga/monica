@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.monica.android.feature)
     alias(libs.plugins.monica.android.compose)
-    alias(libs.plugins.monica.hilt)
+    alias(libs.plugins.monica.kotlin.inject)
 }
 
 android {
@@ -15,6 +15,4 @@ dependencies {
     implementation(libs.activity.compose)
 
     implementation(libs.datastore.preferences)
-
-    implementation(libs.hilt.navigation.compose)
 }

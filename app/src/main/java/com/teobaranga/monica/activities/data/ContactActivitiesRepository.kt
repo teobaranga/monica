@@ -7,13 +7,15 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import java.time.LocalDate
 import java.time.OffsetDateTime
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-internal class ContactActivitiesRepository @Inject constructor(
+@Inject
+@SingleIn(AppScope::class)
+internal class ContactActivitiesRepository(
     dispatcher: Dispatcher,
     private val contactActivitiesDao: ContactActivitiesDao,
     private val contactActivityNewSynchronizer: ContactActivityNewSynchronizer,

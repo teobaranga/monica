@@ -27,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
@@ -36,6 +35,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
+import com.teobaranga.monica.inject.runtime.injectedViewModel
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.avatar.UserAvatar
@@ -50,9 +50,9 @@ import kotlinx.coroutines.launch
 internal fun ContactDetail(
     navigator: DestinationsNavigator,
     contactId: Int,
-    viewModel: ContactDetailViewModel = hiltViewModel<ContactDetailViewModel, ContactDetailViewModel.Factory>(
-        creationCallback = { factory: ContactDetailViewModel.Factory ->
-            factory.create(contactId)
+    viewModel: ContactDetailViewModel = injectedViewModel<ContactDetailViewModel, ContactDetailViewModelFactory>(
+        creationCallback = { factory ->
+            factory(contactId)
         },
     ),
 ) {

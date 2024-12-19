@@ -11,12 +11,16 @@ import com.teobaranga.monica.journal.database.JournalEntryEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class JournalEntrySynchronizer @Inject constructor(
+@SingleIn(AppScope::class)
+@Inject
+@ContributesBinding(AppScope::class, boundType = AccountListener::class, multibinding = true)
+class JournalEntrySynchronizer(
     private val dispatcher: Dispatcher,
     private val journalApi: JournalApi,
     private val journalDao: JournalDao,

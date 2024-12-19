@@ -1,10 +1,11 @@
 package com.teobaranga.monica.contacts.data
 
+import me.tatarka.inject.annotations.Inject
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
-import javax.inject.Inject
 
-class ContactRequestMapper @Inject constructor() {
+@Inject
+class ContactRequestMapper {
 
     operator fun invoke(entity: ContactEntity): CreateContactRequest {
         return CreateContactRequest(

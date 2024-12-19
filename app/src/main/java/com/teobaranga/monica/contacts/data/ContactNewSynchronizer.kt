@@ -2,9 +2,10 @@ package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.data.sync.SyncStatus
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ContactNewSynchronizer @Inject constructor(
+@Inject
+class ContactNewSynchronizer(
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
     private val contactRequestMapper: ContactRequestMapper,
