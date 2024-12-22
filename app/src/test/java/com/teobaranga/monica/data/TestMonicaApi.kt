@@ -1,18 +1,13 @@
 package com.teobaranga.monica.data
 
 import com.skydoves.sandwich.ApiResponse
-import dagger.Binds
-import dagger.Module
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 
-@Module
-abstract class ApiModule {
-
-    @Binds
-    abstract fun provideApi(api: TestMonicaApi): MonicaApi
-}
-
-class TestMonicaApi @Inject constructor() : MonicaApi {
+@Inject
+@ContributesBinding(AppScope::class)
+class TestMonicaApi : MonicaApi {
 
     override suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse> {
         return ApiResponse.of {

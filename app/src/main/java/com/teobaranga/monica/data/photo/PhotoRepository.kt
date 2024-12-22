@@ -1,11 +1,13 @@
 package com.teobaranga.monica.data.photo
 
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
-import javax.inject.Singleton
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@Singleton
-class PhotoRepository @Inject constructor(
+@Inject
+@SingleIn(AppScope::class)
+class PhotoRepository(
     private val photoDao: PhotoDao,
 ) {
     fun getPhotos(contactId: Int): Flow<List<PhotoEntity>> {

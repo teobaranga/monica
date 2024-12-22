@@ -1,29 +1,30 @@
 package com.teobaranga.monica.setup
 
-import com.teobaranga.monica.auth.AuthorizationModule
-import com.teobaranga.monica.data.ApiModule
-import com.teobaranga.monica.data.DataStoreModule
+import androidx.lifecycle.SavedStateHandle
+import com.teobaranga.monica.core.dispatcher.DispatcherImpl
+import com.teobaranga.monica.data.ApiComponent
+import com.teobaranga.monica.data.DaosComponent
+import com.teobaranga.monica.data.DataStoreComponent
 import com.teobaranga.monica.data.TestDataStore
 import com.teobaranga.monica.data.user.UserDao
-import com.teobaranga.monica.database.TestDaosModule
-import com.teobaranga.monica.work.TestWorkScheduleModule
-import dagger.Component
-import javax.inject.Singleton
+import com.teobaranga.monica.work.WorkManagerWorkScheduler
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.MergeComponent
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@Component(
-    modules = [
-        ViewModelModule::class,
-        DispatcherModule::class,
-        DataStoreModule::class,
-        AuthorizationModule::class,
-        TestDaosModule::class,
-        ApiModule::class,
-        TestWorkScheduleModule::class,
+@MergeComponent(
+    AppScope::class,
+    exclude = [
+        WorkManagerWorkScheduler::class,
+        DispatcherImpl::class,
+        DaosComponent::class,
+        ApiComponent::class,
+        DataStoreComponent::class,
     ],
 )
-@Singleton
+@SingleIn(AppScope::class)
 interface SetupComponent {
-    fun setupViewModel(): SetupViewModel
+    fun setupViewModel(): (SavedStateHandle) -> SetupViewModel
     fun userDao(): UserDao
     fun dataStore(): TestDataStore
 }

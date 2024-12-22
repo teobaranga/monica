@@ -6,11 +6,15 @@ import com.teobaranga.monica.data.user.UserDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@Singleton
-class TestUserDao @Inject constructor() : UserDao {
+@Inject
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class TestUserDao : UserDao {
 
     private val me = MutableStateFlow<MeEntity?>(null)
 

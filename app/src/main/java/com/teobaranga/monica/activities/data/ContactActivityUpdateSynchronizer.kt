@@ -3,9 +3,10 @@ package com.teobaranga.monica.activities.data
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.data.sync.SyncStatus
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ContactActivityUpdateSynchronizer @Inject constructor(
+@Inject
+class ContactActivityUpdateSynchronizer(
     private val contactApi: ContactApi,
     private val contactActivitiesDao: ContactActivitiesDao,
 ) {

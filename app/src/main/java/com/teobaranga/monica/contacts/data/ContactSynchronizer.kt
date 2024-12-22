@@ -8,12 +8,16 @@ import com.teobaranga.monica.data.sync.Synchronizer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ContactSynchronizer @Inject constructor(
+@SingleIn(AppScope::class)
+@Inject
+@ContributesBinding(AppScope::class, AccountListener::class, multibinding = true)
+class ContactSynchronizer(
     private val dispatcher: Dispatcher,
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,

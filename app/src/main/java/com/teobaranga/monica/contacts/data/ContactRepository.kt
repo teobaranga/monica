@@ -10,25 +10,26 @@ import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.photo.ContactPhotos
 import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.genders.domain.Gender
-import com.teobaranga.monica.journal.data.ContactDeleteSynchronizer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import timber.log.Timber
 import java.time.OffsetDateTime
-import javax.inject.Inject
-import javax.inject.Singleton
 
 private const val PAGE_SIZE = 10
 
-@Singleton
-internal class ContactRepository @Inject constructor(
+@Inject
+@SingleIn(AppScope::class)
+class ContactRepository(
     private val dispatcher: Dispatcher,
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
-    private val contactPagingSourceFactory: ContactPagingSource.Factory,
+    private val contactPagingSourceFactory: (orderBy: OrderBy) -> ContactPagingSource,
     private val contactNewSynchronizer: ContactNewSynchronizer,
     private val contactUpdateSynchronizer: ContactUpdateSynchronizer,
     private val contactDeleteSynchronizer: ContactDeleteSynchronizer,
@@ -56,7 +57,7 @@ internal class ContactRepository @Inject constructor(
     ): Flow<PagingData<ContactEntity>> {
         val pagingSourceFactory = pagingSourceFactoryMap.getOrPut(orderBy) {
             InvalidatingPagingSourceFactory {
-                contactPagingSourceFactory.create(orderBy)
+                contactPagingSourceFactory(orderBy)
             }
         }
         return Pager(

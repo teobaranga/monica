@@ -12,10 +12,11 @@ import com.teobaranga.monica.settings.tokenStorage
 import com.teobaranga.monica.sync.SyncWorker
 import com.teobaranga.monica.work.WorkScheduler
 import kotlinx.coroutines.withContext
+import me.tatarka.inject.annotations.Inject
 import timber.log.Timber
-import javax.inject.Inject
 
-class SignInUseCase @Inject internal constructor(
+@Inject
+class SignInUseCase internal constructor(
     private val dispatcher: Dispatcher,
     private val monicaApi: MonicaApi,
     private val dataStore: DataStore<Preferences>,

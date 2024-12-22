@@ -5,14 +5,14 @@ import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.data.sync.Synchronizer
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.Inject
 import timber.log.Timber
 
-class ContactActivitiesSynchronizer @AssistedInject constructor(
+@Inject
+class ContactActivitiesSynchronizer(
     @Assisted
     private val contactId: Int,
     private val contactApi: ContactApi,
@@ -25,7 +25,6 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
     override suspend fun sync() {
-
         syncState.value = Synchronizer.State.REFRESHING
 
         contactActivityNewSynchronizer.sync()
@@ -85,11 +84,6 @@ class ContactActivitiesSynchronizer @AssistedInject constructor(
         contactActivitiesDao.delete(activityIds)
 
         syncState.value = Synchronizer.State.IDLE
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(contactId: Int): ContactActivitiesSynchronizer
     }
 }
 

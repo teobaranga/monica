@@ -73,13 +73,13 @@ gradlePlugin {
             id = "monica.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"
         }
-        register("hilt") {
-            id = "monica.hilt"
-            implementationClass = "HiltConventionPlugin"
-        }
         register("jvmLibrary") {
             id = "monica.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
+        }
+        register("kotlinInject") {
+            id = "monica.kotlin.inject"
+            implementationClass = "KotlinInjectConventionPlugin"
         }
         register("network") {
             id = "monica.network"

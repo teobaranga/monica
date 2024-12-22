@@ -2,9 +2,10 @@ package com.teobaranga.monica.contacts.data
 
 import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.genders.data.GenderRepository
-import javax.inject.Inject
+import me.tatarka.inject.annotations.Inject
 
-class ContactEntityMapper @Inject constructor(
+@Inject
+class ContactEntityMapper(
     private val genderRepository: GenderRepository,
 ) {
 
