@@ -13,7 +13,6 @@ import com.teobaranga.monica.data.photo.PhotoSynchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import com.teobaranga.monica.user.userAvatar
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onStart
@@ -25,7 +24,6 @@ import kotlin.time.Duration.Companion.seconds
 
 private const val PAGE_SIZE = 10
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Inject
 @ContributesViewModel(AppScope::class)
 class DashboardViewModel internal constructor(

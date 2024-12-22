@@ -6,7 +6,6 @@ import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.inject.runtime.ApplicationContext
 import com.teobaranga.monica.settings.getOAuthSettings
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.mapLatest
@@ -21,7 +20,6 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import timber.log.Timber
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Inject
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class, multibinding = true)

@@ -14,7 +14,6 @@ import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.user.userAvatar
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
@@ -27,7 +26,6 @@ import kotlin.time.Duration.Companion.seconds
 
 private const val PAGE_SIZE = 15
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Inject
 @ContributesViewModel(AppScope::class)
 class ContactsViewModel internal constructor(
