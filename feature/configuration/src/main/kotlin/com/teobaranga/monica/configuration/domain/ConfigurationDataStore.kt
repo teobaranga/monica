@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import com.teobaranga.monica.inject.runtime.ApplicationContext
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
@@ -37,7 +36,6 @@ class ConfigurationDataStoreImpl(
         return dataStore.data.first()[item.key] ?: item.default
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun <T> getAsFlow(item: ConfigurationItem<T>): Flow<T> {
         return dataStore.data.mapLatest { it[item.key] ?: item.default }
     }

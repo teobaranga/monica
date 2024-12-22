@@ -1,10 +1,8 @@
 package com.teobaranga.monica.database.adapter
 
 import androidx.room.TypeConverter
-import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalUuidApi::class)
 object UuidAdapter {
 
     @TypeConverter

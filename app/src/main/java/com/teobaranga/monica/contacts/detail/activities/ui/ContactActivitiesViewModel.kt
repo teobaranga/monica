@@ -6,7 +6,6 @@ import com.teobaranga.monica.activities.data.ContactActivitiesRepository
 import com.teobaranga.monica.activities.data.ContactActivitiesSynchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.inject.runtime.ContributesViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onStart
@@ -17,7 +16,6 @@ import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Inject
 @ContributesViewModel(AppScope::class)
 class ContactActivitiesViewModel internal constructor(

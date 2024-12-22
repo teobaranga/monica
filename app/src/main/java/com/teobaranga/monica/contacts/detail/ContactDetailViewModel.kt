@@ -11,7 +11,6 @@ import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
 import com.teobaranga.monica.genders.data.GenderRepository
 import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import com.teobaranga.monica.ui.avatar.UserAvatar
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
@@ -21,8 +20,8 @@ import kotlinx.coroutines.flow.stateIn
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import kotlin.time.Duration.Companion.seconds
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Inject
 @ContributesViewModel(AppScope::class)
 class ContactDetailViewModel internal constructor(
@@ -72,7 +71,7 @@ class ContactDetailViewModel internal constructor(
         }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
             initialValue = null,
         )
 
