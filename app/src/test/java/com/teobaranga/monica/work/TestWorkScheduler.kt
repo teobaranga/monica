@@ -5,7 +5,10 @@ import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 
 @Inject
-@ContributesBinding(AppScope::class)
+@ContributesBinding(
+    scope = AppScope::class,
+    replaces = [WorkManagerWorkScheduler::class],
+)
 class TestWorkScheduler : WorkScheduler {
 
     override fun schedule(workName: String) {

@@ -9,7 +9,10 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 // For some reason, kotlin-inject (or anvil) doesn't generate the correct binding when using @ContributesBinding,
 // possibly because the provided type is generic. Create this component for now and investigate this further.
 
-@ContributesTo(AppScope::class)
+@ContributesTo(
+    scope = AppScope::class,
+    replaces = [DataStoreComponent::class],
+)
 interface TestDataStoreComponent {
 
     @Provides

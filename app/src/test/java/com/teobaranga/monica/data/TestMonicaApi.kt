@@ -6,7 +6,10 @@ import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 
 @Inject
-@ContributesBinding(AppScope::class)
+@ContributesBinding(
+    scope = AppScope::class,
+    replaces = [ApiComponent::class],
+)
 class TestMonicaApi : MonicaApi {
 
     override suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse> {

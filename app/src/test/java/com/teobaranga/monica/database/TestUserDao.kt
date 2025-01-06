@@ -1,5 +1,6 @@
 package com.teobaranga.monica.database
 
+import com.teobaranga.monica.data.DaosComponent
 import com.teobaranga.monica.data.user.MeEntity
 import com.teobaranga.monica.data.user.MeFullDetails
 import com.teobaranga.monica.data.user.UserDao
@@ -13,7 +14,10 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @Inject
 @SingleIn(AppScope::class)
-@ContributesBinding(AppScope::class)
+@ContributesBinding(
+    scope = AppScope::class,
+    replaces = [DaosComponent::class],
+)
 class TestUserDao : UserDao {
 
     private val me = MutableStateFlow<MeEntity?>(null)
