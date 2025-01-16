@@ -41,7 +41,7 @@ turbine = "1.2.0"
 androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
 lifecycle = "2.8.7"
-activity-compose = "1.9.3"
+activity-compose = "1.10.0"
 work = "2.10.0"
 
 [libraries]
