@@ -2,8 +2,8 @@ package com.teobaranga.monica.journal.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import com.teobaranga.monica.journal.data.JournalRepository
 import com.teobaranga.monica.journal.view.ui.JournalEntryUiState
 import kotlinx.coroutines.flow.SharingStarted

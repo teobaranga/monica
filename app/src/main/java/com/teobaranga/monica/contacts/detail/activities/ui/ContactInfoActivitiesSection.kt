@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.generated.destinations.EditContactActivityDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoSection
-import com.teobaranga.monica.inject.runtime.injectedViewModel
 
 data class ContactInfoActivitiesSection(
     private val contactId: Int,

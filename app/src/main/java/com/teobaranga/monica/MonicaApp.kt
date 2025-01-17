@@ -5,17 +5,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.work.Configuration
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOwner
+import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
 import com.teobaranga.monica.di.AndroidAppComponent
 import com.teobaranga.monica.di.create
-import com.teobaranga.monica.inject.runtime.ViewModelFactoryOwner
 import com.teobaranga.monica.sync.SyncWorker
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import timber.log.Timber
+import kotlin.reflect.KClass
 
 class MonicaApp :
     Application(),
     ImageLoaderFactory,
     Configuration.Provider,
-    ViewModelFactoryOwner {
+    ScopedViewModelFactoryProvider {
 
     /**
      * DI component for the entire app. Should not be publicly exposed because this class is not available
@@ -40,6 +43,14 @@ class MonicaApp :
             .setWorkerFactory(appComponent.workerFactory)
             .build()
 
-    override val viewModelFactory: ViewModelProvider.Factory
-        get() = appComponent.viewModelFactory
+    override fun getViewModelFactoryOwner(scope: KClass<out Any>): ViewModelFactoryOwner {
+        return when (scope) {
+            AppScope::class -> object : ViewModelFactoryOwner {
+                override val viewModelFactory: ViewModelProvider.Factory
+                    get() = appComponent.viewModelFactory
+            }
+
+            else -> error("Unknown scope $scope")
+        }
+    }
 }

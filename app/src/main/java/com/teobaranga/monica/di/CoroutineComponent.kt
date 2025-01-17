@@ -1,7 +1,7 @@
 package com.teobaranga.monica.di
 
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.inject.runtime.ApplicationContext
+import com.teobaranga.monica.core.inject.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import me.tatarka.inject.annotations.Provides

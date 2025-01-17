@@ -2,7 +2,7 @@ package com.teobaranga.monica.ui
 
 import android.content.Context
 import coil.ImageLoader
-import com.teobaranga.monica.inject.runtime.ApplicationContext
+import com.teobaranga.monica.core.inject.ApplicationContext
 import com.teobaranga.monica.ui.avatar.UserAvatarFetcherFactory
 import me.tatarka.inject.annotations.Provides
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope

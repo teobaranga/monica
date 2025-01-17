@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.teobaranga.monica.configuration.domain.ConfigurationDataStore
 import com.teobaranga.monica.configuration.domain.ConfigurationItem.ShouldClearDatabaseOnNextLaunch
-import com.teobaranga.monica.inject.runtime.ApplicationContext
+import com.teobaranga.monica.core.inject.ApplicationContext
 import kotlinx.coroutines.runBlocking
 import me.tatarka.inject.annotations.Provides
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope

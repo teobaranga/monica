@@ -1,4 +1,4 @@
-package com.teobaranga.monica.inject.runtime
+package com.teobaranga.monica.core.inject
 
 import me.tatarka.inject.annotations.Qualifier
 

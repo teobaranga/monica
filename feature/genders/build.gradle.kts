@@ -11,6 +11,7 @@ android {
 
 dependencies {
     implementation(project(":core:dispatcher"))
+    implementation(project(":core:inject"))
 
     // Storage
     implementation(libs.room.runtime)

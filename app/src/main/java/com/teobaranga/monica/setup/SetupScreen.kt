@@ -35,9 +35,9 @@ import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.generated.destinations.SetupDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.R
 import com.teobaranga.monica.data.PARAM_CODE
-import com.teobaranga.monica.inject.runtime.injectedViewModel
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.keyboardAsState
