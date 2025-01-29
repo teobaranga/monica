@@ -36,8 +36,7 @@ jobs:
       - name: Setup Firebase
         run: |
           # Decode the google-services.json from secrets
-          echo ${{ secrets.GOOGLE_SERVICES_JSON }} > google-services_base64.txt
-          base64 -d -i google-services_base64.txt -o app/google-services.json
+          echo ${{ secrets.GOOGLE_SERVICES_JSON }} | base64 -d -i > app/google-services.json
       - name: Assemble
         run: ./gradlew assemble --stacktrace
       - name: Upload APK (debug)
