@@ -37,6 +37,7 @@ official instance, you'd go to https://app.monicahq.com/settings/api. Tap on **C
 
 **Name**: anything that identifies the app, eg. `Android`  
 **Redirect URL**: `https://monica.teobaranga.com/callback` - This is used to redirect back to the app after OAuth login
+and doesn't depend on whether monica is self-hosted or official.
 
 Once you create the client, you'll be given a Client ID and Client Secret. You'll need to enter these into the app:
 
