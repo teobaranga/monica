@@ -5,9 +5,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.MonicaDatabase
-import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import com.teobaranga.monica.settings.tokenStorage
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject

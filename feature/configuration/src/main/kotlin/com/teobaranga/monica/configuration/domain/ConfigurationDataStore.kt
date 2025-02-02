@@ -3,7 +3,7 @@ package com.teobaranga.monica.configuration.domain
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
-import com.teobaranga.monica.inject.runtime.ApplicationContext
+import com.teobaranga.monica.core.inject.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest

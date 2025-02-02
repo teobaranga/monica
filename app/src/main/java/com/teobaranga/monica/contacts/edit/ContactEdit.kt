@@ -6,8 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
-import com.teobaranga.monica.inject.runtime.injectedViewModel
 
 data class ContactEditNavArgs(
     val contactId: Int? = null,

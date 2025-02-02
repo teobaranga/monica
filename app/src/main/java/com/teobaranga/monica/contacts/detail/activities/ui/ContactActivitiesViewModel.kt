@@ -2,10 +2,10 @@ package com.teobaranga.monica.contacts.detail.activities.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.activities.data.ContactActivitiesRepository
 import com.teobaranga.monica.activities.data.ContactActivitiesSynchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onStart

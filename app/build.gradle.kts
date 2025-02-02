@@ -69,6 +69,7 @@ android {
 dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:dispatcher"))
+    implementation(project(":core:inject"))
     implementation(project(":feature:configuration"))
     implementation(project(":feature:genders"))
 

@@ -4,13 +4,13 @@ import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.activities.data.ContactActivitiesRepository
 import com.teobaranga.monica.contacts.detail.activities.edit.domain.GetActivityUseCase
 import com.teobaranga.monica.contacts.detail.activities.edit.domain.SearchContactAsActivityParticipantUseCase
 import com.teobaranga.monica.contacts.domain.GetContactUseCase
 import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow

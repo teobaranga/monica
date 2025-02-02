@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
-import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
 import com.teobaranga.monica.journal.data.JournalRepository
 import com.teobaranga.monica.journal.database.JournalEntryEntity

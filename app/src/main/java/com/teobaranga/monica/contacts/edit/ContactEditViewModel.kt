@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramcosta.composedestinations.generated.navArgs
+import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.contacts.detail.toUiBirthday
 import com.teobaranga.monica.contacts.domain.DeleteContactUseCase
 import com.teobaranga.monica.contacts.domain.GetContactUseCase
@@ -12,7 +13,6 @@ import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.contacts.ui.toDomainBirthday
 import com.teobaranga.monica.genders.domain.Gender
 import com.teobaranga.monica.genders.domain.GetGendersUseCase
-import com.teobaranga.monica.inject.runtime.ContributesViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow

@@ -3,7 +3,7 @@ package com.teobaranga.monica.data
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.inject.runtime.ApplicationContext
+import com.teobaranga.monica.core.inject.ApplicationContext
 import com.teobaranga.monica.settings.getOAuthSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest

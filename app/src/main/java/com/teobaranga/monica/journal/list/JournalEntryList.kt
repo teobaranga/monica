@@ -18,8 +18,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.generated.destinations.JournalEntryDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
-import com.teobaranga.monica.inject.runtime.injectedViewModel
 import com.teobaranga.monica.journal.list.ui.JournalEntryListScreen
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.avatar.UserAvatar
