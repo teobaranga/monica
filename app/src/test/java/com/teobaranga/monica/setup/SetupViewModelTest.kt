@@ -18,7 +18,7 @@ import java.net.URLEncoder
 
 class SetupViewModelTest : BehaviorSpec(
     {
-        isolationMode = IsolationMode.InstancePerLeaf
+        isolationMode = IsolationMode.InstancePerRoot
 
         val component = SetupComponent::class.create()
         val viewModel = component.setupViewModel()(SavedStateHandle())
