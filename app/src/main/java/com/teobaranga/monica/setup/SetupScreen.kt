@@ -5,9 +5,9 @@ import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -34,6 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.core.util.Consumer
@@ -52,6 +54,8 @@ import com.teobaranga.monica.util.compose.keyboardAsState
 import kotlinx.coroutines.flow.collectLatest
 
 private const val SETUP_INFO_URL = "https://github.com/teobaranga/monica?tab=readme-ov-file#setup"
+
+private val logoFontFamily = FontFamily(Font(R.font.eb_garamond_variable))
 
 @Destination<RootGraph>
 @Composable
@@ -121,17 +125,11 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
                 .systemBarsPadding()
                 .imePadding(),
         ) {
-            Image(
+            Logo(
                 modifier = Modifier
-                    .widthIn(max = 192.dp)
-                    .padding(top = 20.dp)
-                    .align(Alignment.CenterHorizontally),
-                painter = painterResource(R.drawable.monica),
-                contentDescription = null,
-            )
-            Spacer(
-                modifier = Modifier
-                    .weight(1f),
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .weight(1f)
             )
             SetupSectionTitle(
                 modifier = Modifier
@@ -204,6 +202,30 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
                 },
             )
         }
+    }
+}
+
+@Composable
+private fun Logo(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Image(
+            modifier = Modifier
+                .widthIn(max = 192.dp)
+                .padding(top = 20.dp)
+                .align(Alignment.CenterHorizontally),
+            painter = painterResource(R.drawable.monica),
+            contentDescription = null,
+        )
+
+        Text(
+            text = "MONICA",
+            style = MaterialTheme.typography.displayLarge,
+            fontFamily = logoFontFamily,
+        )
     }
 }
 
