@@ -11,7 +11,6 @@ import com.teobaranga.monica.contacts.detail.activities.edit.domain.SearchContac
 import com.teobaranga.monica.contacts.domain.GetContactUseCase
 import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
@@ -41,8 +40,6 @@ class EditContactActivityViewModel internal constructor(
     @Assisted
     private val activityId: Int?,
 ) : ViewModel() {
-
-    private val participantQuery = MutableSharedFlow<String>(extraBufferCapacity = 1)
 
     private val participantResults: StateFlow<List<ActivityParticipant>> = snapshotFlow {
         (uiState.value as? EditContactActivityUiState.Loaded)?.participantSearch?.text?.toString()
@@ -121,10 +118,6 @@ class EditContactActivityViewModel internal constructor(
         viewModelScope.launch(dispatcher.io) {
             contactActivitiesRepository.deleteActivity(activityId)
         }
-    }
-
-    private fun onParticipantSearch(query: String) {
-        participantQuery.tryEmit(query)
     }
 
     private fun getLoadedUiState(): EditContactActivityUiState.Loaded? {
