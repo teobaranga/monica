@@ -1,10 +1,12 @@
 package com.teobaranga.monica.setup
 
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +16,11 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -43,6 +49,8 @@ import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.keyboardAsState
 import kotlinx.coroutines.flow.collectLatest
+
+private const val SETUP_INFO_URL = "https://github.com/teobaranga/monica?tab=readme-ov-file#setup"
 
 @Destination<RootGraph>
 @Composable
@@ -124,10 +132,9 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
                 modifier = Modifier
                     .weight(1f),
             )
-            Text(
+            SetupSectionTitle(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp),
-                text = "OAuth 2.0 Setup",
+                    .padding(start = 20.dp, end = 8.dp)
             )
             OutlinedTextField(
                 modifier = Modifier
@@ -196,6 +203,40 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
                 },
             )
         }
+    }
+}
+
+@Composable
+private fun SetupSectionTitle(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            modifier = Modifier
+                .weight(1f),
+            text = "OAuth 2.0 Setup",
+        )
+
+        SetupInfoButton()
+    }
+}
+
+@Composable
+private fun SetupInfoButton() {
+    val context = LocalContext.current
+    IconButton(
+        onClick = {
+            val intent = CustomTabsIntent.Builder()
+                .setShowTitle(true)
+                .build()
+            intent.launchUrl(context, Uri.parse(SETUP_INFO_URL))
+        },
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Info,
+            contentDescription = "OAuth 2.0 setup information",
+        )
     }
 }
 
