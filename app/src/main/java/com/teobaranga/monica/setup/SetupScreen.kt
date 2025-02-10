@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -103,96 +104,98 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .systemBarsPadding()
-            .imePadding(),
-    ) {
-        Image(
-            modifier = Modifier
-                .widthIn(max = 192.dp)
-                .padding(top = 20.dp)
-                .align(Alignment.CenterHorizontally),
-            painter = painterResource(R.drawable.monica),
-            contentDescription = null,
-        )
-        Spacer(
-            modifier = Modifier
-                .weight(1f),
-        )
-        Text(
-            modifier = Modifier
-                .padding(horizontal = 20.dp),
-            text = "OAuth 2.0 Setup",
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp)
-                .padding(horizontal = 20.dp),
-            value = uiState.serverAddress,
-            onValueChange = {
-                uiState.onServerAddressChanged(it)
-            },
-            singleLine = true,
-            label = {
-                Text(text = "Server Address")
-            },
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp)
-                .padding(horizontal = 20.dp),
-            value = uiState.clientId,
-            onValueChange = {
-                uiState.onClientIdChanged(it)
-            },
-            singleLine = true,
-            label = {
-                Text(text = "Client ID")
-            },
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp)
-                .padding(horizontal = 20.dp),
-            value = uiState.clientSecret,
-            onValueChange = {
-                uiState.onClientSecretChanged(it)
-            },
-            label = {
-                Text(text = "Client Secret")
-            },
-        )
-        uiState.error?.let {
+    Surface {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .systemBarsPadding()
+                .imePadding(),
+        ) {
+            Image(
+                modifier = Modifier
+                    .widthIn(max = 192.dp)
+                    .padding(top = 20.dp)
+                    .align(Alignment.CenterHorizontally),
+                painter = painterResource(R.drawable.monica),
+                contentDescription = null,
+            )
+            Spacer(
+                modifier = Modifier
+                    .weight(1f),
+            )
             Text(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp),
+                text = "OAuth 2.0 Setup",
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+                    .padding(horizontal = 20.dp),
+                value = uiState.serverAddress,
+                onValueChange = {
+                    uiState.onServerAddressChanged(it)
+                },
+                singleLine = true,
+                label = {
+                    Text(text = "Server Address")
+                },
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+                    .padding(horizontal = 20.dp),
+                value = uiState.clientId,
+                onValueChange = {
+                    uiState.onClientIdChanged(it)
+                },
+                singleLine = true,
+                label = {
+                    Text(text = "Client ID")
+                },
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+                    .padding(horizontal = 20.dp),
+                value = uiState.clientSecret,
+                onValueChange = {
+                    uiState.onClientSecretChanged(it)
+                },
+                label = {
+                    Text(text = "Client Secret")
+                },
+            )
+            uiState.error?.let {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 12.dp),
+                    text = when (it) {
+                        UiState.Error.ConfigurationError -> "Please check your configuration"
+                    },
+                    color = Color.Red,
+                )
+            }
+            Button(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
-                    .padding(top = 12.dp),
-                text = when (it) {
-                    UiState.Error.ConfigurationError -> "Please check your configuration"
+                    .padding(top = 12.dp, bottom = 20.dp),
+                onClick = onSignIn,
+                enabled = uiState.isSignInEnabled,
+                content = {
+                    Text(
+                        text = "Sign In",
+                    )
                 },
-                color = Color.Red,
             )
         }
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(top = 12.dp, bottom = 20.dp),
-            onClick = onSignIn,
-            enabled = uiState.isSignInEnabled,
-            content = {
-                Text(
-                    text = "Sign In",
-                )
-            },
-        )
     }
 }
 
