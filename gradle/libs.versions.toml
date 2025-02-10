@@ -10,15 +10,15 @@ autoservice = "1.1.1"
 autoservice-ksp = "1.2.0"
 kotlin = "2.1.10"
 ksp = "2.1.10-1.0.29"
-ktlint = "12.1.2"
 browser = "1.8.0"
 coil = "2.7.0"
 compose-bom = "2025.01.01"
 compose-destinations = "2.1.0-beta16"
 compose-placeholder = "1.0.9"
-compose-rules-ktlint = "0.4.22"
+compose-rules = "0.4.22"
 core-ktx = "1.15.0"
 crashlytics = "3.0.3"
+detekt = "1.23.7"
 datastore = "1.1.2"
 desugar-jdk-libs = "2.1.4"
 firebase-bom = "33.9.0"
@@ -108,7 +108,7 @@ compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-compose-rules-ktlint = { group = "io.nlopez.compose.rules", name = "ktlint", version.ref = "compose-rules-ktlint"  }
+compose-rules = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "compose-rules"  }
 work = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work"  }
 
 [plugins]
@@ -125,8 +125,8 @@ androidApplication = { id = "com.android.application", version.ref = "androidGra
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }

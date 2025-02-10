@@ -1,5 +1,4 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     alias(libs.plugins.monica.android.application)
@@ -7,9 +6,9 @@ plugins {
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.ktlint)
     alias(libs.plugins.google.services)
     alias(libs.plugins.crashlytics)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -118,16 +117,7 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    ktlintRuleset(libs.compose.rules.ktlint)
-}
-
-ktlint {
-    android = true
-    verbose = true
-    version = "1.3.1"
-    reporters {
-        reporter(ReporterType.HTML)
-    }
+    detektPlugins(libs.compose.rules)
 }
 
 tasks.withType<Test>().configureEach {
