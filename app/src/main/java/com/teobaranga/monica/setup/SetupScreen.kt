@@ -21,6 +21,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -139,7 +140,7 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp)
+                    .padding(top = 8.dp)
                     .padding(horizontal = 20.dp),
                 value = uiState.serverAddress,
                 onValueChange = {
@@ -216,6 +217,7 @@ private fun SetupSectionTitle(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .weight(1f),
             text = "OAuth 2.0 Setup",
+            style = MaterialTheme.typography.labelLarge,
         )
 
         SetupInfoButton()
