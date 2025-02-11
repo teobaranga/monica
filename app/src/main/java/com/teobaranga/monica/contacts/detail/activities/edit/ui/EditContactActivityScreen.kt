@@ -54,6 +54,7 @@ import com.teobaranga.monica.ui.text.startVerticalLineShape
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.CursorData
 import com.teobaranga.monica.util.compose.CursorVisibilityStrategy
+import com.teobaranga.monica.util.compose.debounce
 import com.teobaranga.monica.util.compose.keepCursorVisible
 import com.teobaranga.monica.util.compose.rememberCursorData
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -119,7 +120,7 @@ private fun EditContactActivity(
                 modifier = Modifier
                     .navigationBarsPadding()
                     .imePadding(),
-                onClick = {
+                onClick = debounce {
                     onSave()
                     onBack()
                 },
