@@ -15,19 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 
-@Stable
-class ConfirmExitDialogState {
-
-    var shouldConfirm by mutableStateOf(false)
-
-    var isConfirming by mutableStateOf(false)
-}
-
-@Composable
-fun rememberConfirmExitDialogState(): ConfirmExitDialogState {
-    return remember { ConfirmExitDialogState() }
-}
-
 @Composable
 fun ConfirmExitDialog(
     state: ConfirmExitDialogState,
@@ -95,4 +82,17 @@ fun ConfirmExitDialog(
             },
         )
     }
+}
+
+@Stable
+class ConfirmExitDialogState {
+
+    var shouldConfirm by mutableStateOf(false)
+
+    var isConfirming by mutableStateOf(false)
+}
+
+@Composable
+fun rememberConfirmExitDialogState(): ConfirmExitDialogState {
+    return remember { ConfirmExitDialogState() }
 }

@@ -8,17 +8,19 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -29,7 +31,6 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.teobaranga.monica.ui.FabPadding
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.plus
@@ -94,8 +95,9 @@ fun JournalEntryListScreen(
                             exit = fadeOut() + scaleOut(targetScale = 0.95f),
                         ),
                     state = lazyListState,
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = contentPadding + PaddingValues(vertical = 16.dp),
+                    contentPadding = contentPadding
+                        + PaddingValues(vertical = 16.dp)
+                        + PaddingValues(bottom = 72.dp),
                 ) {
                     when (lazyItems.loadState.refresh) {
                         is LoadState.Error -> {
@@ -105,22 +107,29 @@ fun JournalEntryListScreen(
                         is LoadState.Loading,
                         is LoadState.NotLoading,
                         -> {
-                            items(
+                            itemsIndexed(
                                 items = lazyItems.itemSnapshotList,
-                                key = { journalEntry ->
+                                key = { index, journalEntry ->
                                     journalEntry?.id ?: Int.MIN_VALUE
                                 },
-                            ) { journalEntry ->
+                            ) { index, journalEntry ->
                                 if (journalEntry != null) {
                                     JournalItem(
                                         modifier = Modifier
-                                            .padding(horizontal = FabPadding)
+                                            .clickable {
+                                                onEntryClick(journalEntry.id)
+                                            }
+                                            .padding(horizontal = 28.dp)
                                             .animateItem(),
                                         journalEntry = journalEntry,
-                                        onClick = {
-                                            onEntryClick(journalEntry.id)
-                                        },
                                     )
+                                    if (index != lazyItems.itemSnapshotList.lastIndex) {
+                                        HorizontalDivider(
+                                            modifier = Modifier
+                                                .padding(horizontal = 28.dp, vertical = 4.dp),
+                                            color = MaterialTheme.colorScheme.outlineVariant,
+                                        )
+                                    }
                                 }
                             }
                         }

@@ -1,11 +1,13 @@
 package com.teobaranga.monica.setup
 
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -14,8 +16,14 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -26,6 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.core.util.Consumer
@@ -42,6 +52,10 @@ import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.keyboardAsState
 import kotlinx.coroutines.flow.collectLatest
+
+private const val SETUP_INFO_URL = "https://github.com/teobaranga/monica?tab=readme-ov-file#setup"
+
+private val logoFontFamily = FontFamily(Font(R.font.eb_garamond_variable))
 
 @Destination<RootGraph>
 @Composable
@@ -103,12 +117,100 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
         }
     }
 
+    Surface {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .systemBarsPadding()
+                .imePadding(),
+        ) {
+            Logo(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .weight(1f)
+            )
+            SetupSectionTitle(
+                modifier = Modifier
+                    .padding(start = 20.dp, end = 8.dp)
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+                    .padding(horizontal = 20.dp),
+                value = uiState.serverAddress,
+                onValueChange = {
+                    uiState.onServerAddressChanged(it)
+                },
+                singleLine = true,
+                label = {
+                    Text(text = "Server Address")
+                },
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+                    .padding(horizontal = 20.dp),
+                value = uiState.clientId,
+                onValueChange = {
+                    uiState.onClientIdChanged(it)
+                },
+                singleLine = true,
+                label = {
+                    Text(text = "Client ID")
+                },
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+                    .padding(horizontal = 20.dp),
+                value = uiState.clientSecret,
+                onValueChange = {
+                    uiState.onClientSecretChanged(it)
+                },
+                label = {
+                    Text(text = "Client Secret")
+                },
+            )
+            uiState.error?.let {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 12.dp),
+                    text = when (it) {
+                        UiState.Error.ConfigurationError -> "Please check your configuration"
+                    },
+                    color = Color.Red,
+                )
+            }
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 12.dp, bottom = 20.dp),
+                onClick = onSignIn,
+                enabled = uiState.isSignInEnabled,
+                content = {
+                    Text(
+                        text = "Sign In",
+                    )
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun Logo(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .systemBarsPadding()
-            .imePadding(),
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
     ) {
         Image(
             modifier = Modifier
@@ -118,80 +220,46 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
             painter = painterResource(R.drawable.monica),
             contentDescription = null,
         )
-        Spacer(
-            modifier = Modifier
-                .weight(1f),
+
+        Text(
+            text = "MONICA",
+            style = MaterialTheme.typography.displayLarge,
+            fontFamily = logoFontFamily,
         )
+    }
+}
+
+@Composable
+private fun SetupSectionTitle(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Text(
             modifier = Modifier
-                .padding(horizontal = 20.dp),
+                .weight(1f),
             text = "OAuth 2.0 Setup",
+            style = MaterialTheme.typography.labelLarge,
         )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp)
-                .padding(horizontal = 20.dp),
-            value = uiState.serverAddress,
-            onValueChange = {
-                uiState.onServerAddressChanged(it)
-            },
-            singleLine = true,
-            label = {
-                Text(text = "Server Address")
-            },
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp)
-                .padding(horizontal = 20.dp),
-            value = uiState.clientId,
-            onValueChange = {
-                uiState.onClientIdChanged(it)
-            },
-            singleLine = true,
-            label = {
-                Text(text = "Client ID")
-            },
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp)
-                .padding(horizontal = 20.dp),
-            value = uiState.clientSecret,
-            onValueChange = {
-                uiState.onClientSecretChanged(it)
-            },
-            label = {
-                Text(text = "Client Secret")
-            },
-        )
-        uiState.error?.let {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(top = 12.dp),
-                text = when (it) {
-                    UiState.Error.ConfigurationError -> "Please check your configuration"
-                },
-                color = Color.Red,
-            )
-        }
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(top = 12.dp, bottom = 20.dp),
-            onClick = onSignIn,
-            enabled = uiState.isSignInEnabled,
-            content = {
-                Text(
-                    text = "Sign In",
-                )
-            },
+
+        SetupInfoButton()
+    }
+}
+
+@Composable
+private fun SetupInfoButton() {
+    val context = LocalContext.current
+    IconButton(
+        onClick = {
+            val intent = CustomTabsIntent.Builder()
+                .setShowTitle(true)
+                .build()
+            intent.launchUrl(context, Uri.parse(SETUP_INFO_URL))
+        },
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Info,
+            contentDescription = "OAuth 2.0 setup information",
         )
     }
 }

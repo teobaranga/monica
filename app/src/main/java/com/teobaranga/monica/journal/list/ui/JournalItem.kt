@@ -3,8 +3,8 @@ package com.teobaranga.monica.journal.list.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,32 +17,36 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun JournalItem(journalEntry: JournalEntryListItem, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Card(
+fun JournalItem(journalEntry: JournalEntryListItem, modifier: Modifier = Modifier) {
+    Column(
         modifier = modifier
-            .fillMaxWidth(),
-        onClick = onClick,
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
     ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp),
-        ) {
-            Text(
-                text = journalEntry.post,
-                maxLines = 5,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            val dateFormatter = remember { DateTimeFormatter.ofPattern("MM/dd/yyyy - EEEE") }
+        val dateFormatter = remember { DateTimeFormatter.ofPattern("EEEE, MMMM dd yyyy") }
+        Text(
+            text = dateFormatter.format(journalEntry.date),
+            maxLines = 1,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        journalEntry.title?.let { title ->
             Text(
                 modifier = Modifier
-                    .padding(top = 12.dp),
-                text = dateFormatter.format(journalEntry.date),
+                    .padding(top = 4.dp),
+                text = title,
                 maxLines = 1,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.bodyLarge,
             )
         }
+        Text(
+            modifier = Modifier
+                .padding(top = 4.dp),
+            text = journalEntry.post,
+            maxLines = 4,
+            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.bodyMedium,
+        )
     }
 }
 
@@ -50,23 +54,24 @@ fun JournalItem(journalEntry: JournalEntryListItem, onClick: () -> Unit, modifie
 @Composable
 private fun PreviewJournalItem() {
     MonicaTheme {
-        JournalItem(
-            modifier = Modifier
-                .padding(20.dp),
-            journalEntry = JournalEntryListItem(
-                id = 1,
-                title = null,
-                post = """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            | incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            | exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                            | dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                            | Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                            | mollit anim id est laborum.
-                            | 
-                """.trimMargin(),
-                date = LocalDate.now(),
-            ),
-            onClick = { },
-        )
+        Surface {
+            JournalItem(
+                modifier = Modifier
+                    .padding(16.dp),
+                journalEntry = JournalEntryListItem(
+                    id = 1,
+                    title = "My day",
+                    post = """
+                    |Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    |incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    |exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                    |dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    |Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                    |mollit anim id est laborum.
+                    """.trimMargin().replace('\n', ' '),
+                    date = LocalDate.now(),
+                ),
+            )
+        }
     }
 }

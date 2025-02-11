@@ -24,6 +24,8 @@ import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
+private const val MAX_PREVIEW_CHARS = 300
+
 @Inject
 @ContributesViewModel(AppScope::class)
 class JournalEntryListViewModel internal constructor(
@@ -82,7 +84,11 @@ class JournalEntryListViewModel internal constructor(
         return JournalEntryListItem(
             id = id,
             title = title,
-            post = post,
+            post = post
+                // We don't need the full post
+                .take(MAX_PREVIEW_CHARS)
+                // Remove blank lines, they can show up as "..." and that's not useful
+                .replace("\n\n", "\n"),
             date = date,
         )
     }

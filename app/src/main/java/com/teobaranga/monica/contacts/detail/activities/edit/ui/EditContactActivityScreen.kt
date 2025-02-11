@@ -4,7 +4,6 @@ import ContactsNavGraph
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -54,6 +53,7 @@ import com.teobaranga.monica.ui.text.startVerticalLineShape
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.CursorData
 import com.teobaranga.monica.util.compose.CursorVisibilityStrategy
+import com.teobaranga.monica.util.compose.debounce
 import com.teobaranga.monica.util.compose.keepCursorVisible
 import com.teobaranga.monica.util.compose.rememberCursorData
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -119,7 +119,7 @@ private fun EditContactActivity(
                 modifier = Modifier
                     .navigationBarsPadding()
                     .imePadding(),
-                onClick = {
+                onClick = debounce {
                     onSave()
                     onBack()
                 },
@@ -146,43 +146,54 @@ private fun EditContactActivity(
                 }
 
                 is EditContactActivityUiState.Loaded -> {
-                    val cursorData = rememberCursorData(
-                        textFieldState = uiState.details,
-                        cursorVisibilityStrategy = CursorVisibilityStrategy { cursor, boundsInWindow, screenHeight, scrollState ->
-                            boundsInWindow.topLeft.y - (screenHeight - boundsInWindow.bottomRight.y) + cursor.top > screenHeight / 2
-                        },
-                    )
-                    Column(
+                    EditContactActivityScreenLoaded(
                         modifier = Modifier
                             .padding(contentPadding)
-                            .fillMaxWidth()
-                            .verticalScroll(cursorData.scrollState),
-                    ) {
-                        SummarySection(
-                            modifier = Modifier
-                                .padding(top = 24.dp),
-                            uiState = uiState,
-                        )
-
-                        ParticipantsSection(
-                            modifier = Modifier
-                                .padding(top = 20.dp),
-                            uiState = uiState,
-                        )
-
-                        DetailsSection(
-                            modifier = Modifier
-                                .padding(top = 20.dp)
-                                .navigationBarsPadding()
-                                .imePadding()
-                                .padding(bottom = FabPadding + FabHeight),
-                            textFieldState = uiState.details,
-                            cursorData = cursorData,
-                        )
-                    }
+                            .fillMaxWidth(),
+                        uiState = uiState,
+                    )
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun EditContactActivityScreenLoaded(
+    uiState: EditContactActivityUiState.Loaded,
+    modifier: Modifier = Modifier,
+) {
+    val cursorData = rememberCursorData(
+        textFieldState = uiState.details,
+        cursorVisibilityStrategy = CursorVisibilityStrategy { cursor, boundsInWindow, screenHeight, scrollState ->
+            boundsInWindow.topLeft.y - (screenHeight - boundsInWindow.bottomRight.y) + cursor.top > screenHeight / 2
+        },
+    )
+    Column(
+        modifier = modifier
+            .verticalScroll(cursorData.scrollState),
+    ) {
+        SummarySection(
+            modifier = Modifier
+                .padding(top = 24.dp),
+            uiState = uiState,
+        )
+
+        ParticipantsSection(
+            modifier = Modifier
+                .padding(top = 20.dp),
+            uiState = uiState,
+        )
+
+        DetailsSection(
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .navigationBarsPadding()
+                .imePadding()
+                .padding(bottom = FabPadding + FabHeight),
+            textFieldState = uiState.details,
+            cursorData = cursorData,
+        )
     }
 }
 
@@ -234,7 +245,6 @@ private fun SummarySection(uiState: EditContactActivityUiState.Loaded, modifier:
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DetailsSection(
     textFieldState: TextFieldState,

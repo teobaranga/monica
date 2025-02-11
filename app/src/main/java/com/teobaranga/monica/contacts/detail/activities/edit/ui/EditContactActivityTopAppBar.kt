@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.teobaranga.monica.util.compose.debounce
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +43,7 @@ fun EditContactActivityTopAppBar(
         },
         navigationIcon = {
             IconButton(
-                onClick = onBack,
+                onClick = debounce(action = onBack),
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -90,14 +91,14 @@ private fun DeleteAlertDialog(onConfirm: () -> Unit, onCancel: () -> Unit, modif
         },
         confirmButton = {
             TextButton(
-                onClick = onConfirm,
+                onClick = debounce(action = onConfirm),
             ) {
                 Text(text = "Confirm")
             }
         },
         dismissButton = {
             TextButton(
-                onClick = onCancel,
+                onClick = debounce(action = onCancel),
             ) {
                 Text(text = "Cancel")
             }
