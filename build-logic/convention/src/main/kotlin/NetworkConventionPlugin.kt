@@ -22,6 +22,7 @@ class NetworkConventionPlugin : Plugin<Project> {
                 // Sandwich for a nicer way to handle network responses
                 implementation(libs.sandwich)
                 implementation(libs.sandwich.retrofit)
+                implementation(libs.sandwich.retrofit.serialization)
             }
         }
     }
