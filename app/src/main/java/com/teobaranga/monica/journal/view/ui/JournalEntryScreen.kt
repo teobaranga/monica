@@ -1,7 +1,6 @@
 package com.teobaranga.monica.journal.view.ui
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,11 +39,11 @@ import com.teobaranga.monica.ui.text.MonicaTextFieldDefaults
 import com.teobaranga.monica.ui.text.startVerticalLineShape
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.CursorVisibilityStrategy
+import com.teobaranga.monica.util.compose.debounce
 import com.teobaranga.monica.util.compose.keepCursorVisible
 import com.teobaranga.monica.util.compose.rememberCursorData
 import java.time.LocalDate
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun JournalEntryScreen(
     uiState: JournalEntryUiState,
@@ -60,7 +59,7 @@ fun JournalEntryScreen(
                 modifier = Modifier
                     .navigationBarsPadding()
                     .imePadding(),
-                onClick = onSave,
+                onClick = debounce(action = onSave),
             ) {
                 Icon(
                     imageVector = Icons.Default.Done,
@@ -94,96 +93,131 @@ fun JournalEntryScreen(
                         positiveText = "Keep editing",
                         negativeText = "Exit",
                     )
-                    Column(
+                    JournalEntryScreenLoaded(
                         modifier = Modifier
                             .padding(contentPadding)
                             .consumeWindowInsets(contentPadding)
                             .imePadding()
                             .navigationBarsPadding()
                             .padding(bottom = FabHeight),
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 24.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .weight(1f),
-                                text = "How was your day?",
-                                style = MaterialTheme.typography.titleMedium,
-                            )
-                            DateButton(
-                                date = uiState.date,
-                                onDateSelect = { date ->
-                                    uiState.date = date
-                                },
-                            )
-                        }
-                        val titleInteractionSource = remember { MutableInteractionSource() }
-                        MonicaTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 24.dp),
-                            interactionSource = titleInteractionSource,
-                            state = uiState.title,
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                            placeholder = {
-                                Text(
-                                    text = "Title (optional)",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                )
-                            },
-                            lineLimits = TextFieldLineLimits.SingleLine,
-                            shape = MonicaTextFieldDefaults.startVerticalLineShape(titleInteractionSource),
-                            keyboardOptions = KeyboardOptions(
-                                capitalization = KeyboardCapitalization.Sentences,
-                                autoCorrectEnabled = true,
-                                keyboardType = KeyboardType.Text,
-                            ),
-                        )
-
-                        val postInteractionSource = remember { MutableInteractionSource() }
-                        val cursorData = rememberCursorData(
-                            textFieldState = uiState.post,
-                            cursorVisibilityStrategy = CursorVisibilityStrategy { cursor, boundsInWindow, screenHeight, scrollState ->
-                                boundsInWindow.topLeft.y - scrollState.value + cursor.top - cursor.height > screenHeight / 2 + FabHeight.roundToPx()
-                            },
-                        )
-                        MonicaTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f)
-                                .padding(24.dp)
-                                .keepCursorVisible(cursorData),
-                            interactionSource = postInteractionSource,
-                            state = uiState.post,
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                            placeholder = {
-                                Text(
-                                    text = "Entry",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                )
-                            },
-                            shape = MonicaTextFieldDefaults.startVerticalLineShape(postInteractionSource),
-                            keyboardOptions = KeyboardOptions(
-                                capitalization = KeyboardCapitalization.Sentences,
-                                autoCorrectEnabled = true,
-                                keyboardType = KeyboardType.Text,
-                            ),
-                            onTextLayout = cursorData.textLayoutResult,
-                            scrollState = cursorData.scrollState,
-                            contentPadding = OutlinedTextFieldDefaults.contentPadding(
-                                top = 0.dp,
-                                bottom = 0.dp,
-                            ),
-                        )
-                    }
+                        uiState = uiState,
+                    )
                 }
             }
         }
     }
+}
+
+@Composable
+private fun JournalEntryScreenLoaded(
+    uiState: JournalEntryUiState.Loaded,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                modifier = Modifier
+                    .weight(1f),
+                text = "How was your day?",
+                style = MaterialTheme.typography.titleMedium,
+            )
+            DateButton(
+                date = uiState.date,
+                onDateSelect = { date ->
+                    uiState.date = date
+                },
+            )
+        }
+
+        TitleTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            uiState = uiState,
+        )
+
+        PostTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(24.dp),
+            uiState = uiState,
+        )
+    }
+}
+
+@Composable
+private fun TitleTextField(
+    uiState: JournalEntryUiState.Loaded,
+    modifier: Modifier = Modifier,
+) {
+    val titleInteractionSource = remember { MutableInteractionSource() }
+    MonicaTextField(
+        modifier = modifier,
+        interactionSource = titleInteractionSource,
+        state = uiState.title,
+        textStyle = MaterialTheme.typography.bodyMedium,
+        placeholder = {
+            Text(
+                text = "Title (optional)",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        lineLimits = TextFieldLineLimits.SingleLine,
+        shape = MonicaTextFieldDefaults.startVerticalLineShape(titleInteractionSource),
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Sentences,
+            autoCorrectEnabled = true,
+            keyboardType = KeyboardType.Text,
+        ),
+    )
+}
+
+@Composable
+private fun PostTextField(
+    uiState: JournalEntryUiState.Loaded,
+    modifier: Modifier = Modifier,
+) {
+    val postInteractionSource = remember { MutableInteractionSource() }
+    val cursorData = rememberCursorData(
+        textFieldState = uiState.post,
+        cursorVisibilityStrategy = CursorVisibilityStrategy { cursor, boundsInWindow, screenHeight, scrollState ->
+            val threshold = screenHeight / 2 + FabHeight.roundToPx()
+            boundsInWindow.topLeft.y - scrollState.value + cursor.top - cursor.height > threshold
+        },
+    )
+    MonicaTextField(
+        modifier = modifier
+            .keepCursorVisible(cursorData),
+        interactionSource = postInteractionSource,
+        state = uiState.post,
+        textStyle = MaterialTheme.typography.bodyMedium,
+        placeholder = {
+            Text(
+                text = "Entry",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        shape = MonicaTextFieldDefaults.startVerticalLineShape(postInteractionSource),
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Sentences,
+            autoCorrectEnabled = true,
+            keyboardType = KeyboardType.Text,
+        ),
+        onTextLayout = cursorData.textLayoutResult,
+        scrollState = cursorData.scrollState,
+        contentPadding = OutlinedTextFieldDefaults.contentPadding(
+            top = 0.dp,
+            bottom = 0.dp,
+        ),
+    )
 }
 
 @PreviewPixel4
