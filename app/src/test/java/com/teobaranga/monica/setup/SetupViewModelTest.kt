@@ -11,11 +11,13 @@ import com.teobaranga.monica.data.PARAM_RESPONSE_TYPE
 import com.teobaranga.monica.data.REDIRECT_URI
 import com.teobaranga.monica.data.user.MeEntity
 import com.teobaranga.monica.settings.tokenStorage
+import io.kotest.common.KotestInternal
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import java.net.URLEncoder
 
+@OptIn(KotestInternal::class)
 class SetupViewModelTest : BehaviorSpec(
     {
         isolationMode = IsolationMode.InstancePerRoot

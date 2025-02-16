@@ -12,6 +12,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import java.time.LocalDate
 import java.time.OffsetDateTime
+import kotlin.uuid.Uuid
 
 @Inject
 @SingleIn(AppScope::class)
@@ -56,6 +57,7 @@ internal class ContactActivitiesRepository(
         val createdDate = OffsetDateTime.now()
         val entity = ContactActivityEntity(
             activityId = activityId,
+            uuid = Uuid.random(),
             title = title,
             description = description,
             date = date,

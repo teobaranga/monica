@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import timber.log.Timber
+import kotlin.uuid.Uuid
 
 @Inject
 class ContactActivitiesSynchronizer(
@@ -24,7 +25,16 @@ class ContactActivitiesSynchronizer(
 
     override val syncState = MutableStateFlow(Synchronizer.State.IDLE)
 
+    suspend fun reSync() {
+        syncMap[contactId] = false
+        sync()
+    }
+
     override suspend fun sync() {
+        if (syncMap.getOrPut(contactId) { false }) {
+            return
+        }
+
         syncState.value = Synchronizer.State.REFRESHING
 
         contactActivityNewSynchronizer.sync()
@@ -50,7 +60,9 @@ class ContactActivitiesSynchronizer(
                 }
             val contactActivityEntities = contactActivitiesResponse.data
                 .map {
-                    it.toEntity()
+                    it.toEntity(
+                        getUuid = { contactActivitiesDao.getUuid(it.id)}
+                    )
                 }
             val contactActivitiesCrossRefs = contactActivitiesResponse.data
                 .flatMap { activity ->
@@ -84,12 +96,20 @@ class ContactActivitiesSynchronizer(
         contactActivitiesDao.delete(activityIds)
 
         syncState.value = Synchronizer.State.IDLE
+
+        syncMap[contactId] = true
+    }
+
+    companion object {
+
+        private val syncMap = mutableMapOf<Int, Boolean>()
     }
 }
 
-fun ContactActivitiesResponse.ContactActivity.toEntity(): ContactActivityEntity {
+suspend fun ContactActivitiesResponse.ContactActivity.toEntity(getUuid: suspend () -> Uuid?): ContactActivityEntity {
     return ContactActivityEntity(
         activityId = id,
+        uuid = getUuid() ?: Uuid.parse(uuid),
         title = summary,
         description = description,
         date = happenedAt,

@@ -32,6 +32,7 @@ kotlin-poet = "2.0.0"
 kotlinx-coroutines = "1.10.1"
 kotlinx-serialization = "1.8.0"
 materialKolor = "2.0.2"
+mockk = "1.13.16"
 okhttp = "4.12.0"
 paging = "3.3.6"
 retrofit = "2.11.0"
@@ -82,6 +83,7 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 material-kolor = { module = "com.materialkolor:material-kolor", version.ref = "materialKolor" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }

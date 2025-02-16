@@ -7,6 +7,7 @@ import com.teobaranga.monica.data.common.DeleteResponse
 import com.teobaranga.monica.data.common.ERROR_CODE_DATA_UNAVAILABLE
 import com.teobaranga.monica.data.common.ErrorResponse
 import com.teobaranga.monica.data.sync.SyncStatus
+import kotlinx.serialization.SerializationException
 import me.tatarka.inject.annotations.Inject
 import timber.log.Timber
 
@@ -27,12 +28,14 @@ class ContactDeleteSynchronizer(
                         contactDao.delete(listOf(data.id))
                     }
                     .suspendOnError {
-                        val error = deserializeErrorBody<DeleteResponse, ErrorResponse>()?.error
+                        val error = try {
+                            deserializeErrorBody<DeleteResponse, ErrorResponse>()?.error
+                        } catch (e: SerializationException) {
+                            Timber.e(e, "Error deserializing error response for contact $contactId")
+                            null
+                        }
                         if (error != null) {
-                            Timber.e(
-                                "Error deleting contact $contactId: " +
-                                    "${error.errorCode} - ${error.message.joinToString()}"
-                            )
+                            Timber.e("Error deleting contact $contactId: ${error.errorCode} - ${error.message}")
 
                             if (error.errorCode == ERROR_CODE_DATA_UNAVAILABLE) {
                                 // The contact has already been deleted

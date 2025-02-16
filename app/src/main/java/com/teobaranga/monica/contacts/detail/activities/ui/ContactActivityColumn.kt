@@ -34,6 +34,7 @@ import com.teobaranga.monica.ui.datetime.LocalDateFormatter
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.LocalDate
+import kotlin.uuid.Uuid
 
 @Composable
 internal fun ContactActivitiesColumn(
@@ -49,12 +50,12 @@ internal fun ContactActivitiesColumn(
     ) {
         itemsIndexed(
             items = uiState.activities,
-            key = { _, item -> item.id },
+            key = { _, item -> item.uuid },
             contentType = { _, _ -> "activity" },
         ) { index, item ->
             ContactActivity(
-                activity = item,
                 modifier = Modifier
+                    .animateItem()
                     .clickable(
                         onClick = {
                             onActivityClick(item.id)
@@ -62,6 +63,7 @@ internal fun ContactActivitiesColumn(
                     )
                     .fillMaxWidth()
                     .padding(all = 24.dp),
+                activity = item,
             )
             if (index < uiState.activities.lastIndex) {
                 HorizontalDivider(
@@ -146,6 +148,7 @@ private fun PreviewContactActivity() {
                 .padding(horizontal = 24.dp, vertical = 24.dp),
             activity = ContactActivity(
                 id = 1,
+                uuid = Uuid.random(),
                 title = "Poker Night",
                 description = "It was fun",
                 date = LocalDate.now(),

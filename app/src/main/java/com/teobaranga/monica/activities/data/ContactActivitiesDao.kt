@@ -7,6 +7,7 @@ import androidx.room.Transaction
 import androidx.room.Upsert
 import com.teobaranga.monica.data.sync.SyncStatus
 import kotlinx.coroutines.flow.Flow
+import kotlin.uuid.Uuid
 
 @Dao
 abstract class ContactActivitiesDao {
@@ -72,4 +73,7 @@ abstract class ContactActivitiesDao {
 
     @Query("SELECT max(activityId) FROM contact_activity")
     abstract suspend fun getMaxId(): Int
+
+    @Query("SELECT uuid FROM contact_activity WHERE activityId = :activityId")
+    abstract suspend fun getUuid(activityId: Int): Uuid?
 }

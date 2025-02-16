@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8f5c9627290729c59c019a6fc8d557c6",
+    "identityHash": "4aea3122dc91481ce391cebdd90a29b5",
     "entities": [
       {
         "tableName": "me",
@@ -136,12 +136,18 @@
       },
       {
         "tableName": "contact_activity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`activityId` INTEGER NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `date` TEXT NOT NULL, `created` TEXT NOT NULL, `updated` TEXT NOT NULL, `syncStatus` TEXT NOT NULL, PRIMARY KEY(`activityId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`activityId` INTEGER NOT NULL, `uuid` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `date` TEXT NOT NULL, `created` TEXT NOT NULL, `updated` TEXT NOT NULL, `syncStatus` TEXT NOT NULL, PRIMARY KEY(`activityId`))",
         "fields": [
           {
             "fieldPath": "activityId",
             "columnName": "activityId",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uuid",
+            "columnName": "uuid",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -357,7 +363,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8f5c9627290729c59c019a6fc8d557c6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4aea3122dc91481ce391cebdd90a29b5')"
     ]
   }
 }
