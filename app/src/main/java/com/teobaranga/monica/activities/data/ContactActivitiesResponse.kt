@@ -18,6 +18,8 @@ data class ContactActivitiesResponse(
     data class ContactActivity(
         @SerialName("id")
         val id: Int,
+        @SerialName("uuid")
+        val uuid: String,
         @SerialName("summary")
         val summary: String,
         @SerialName("description")

@@ -1,8 +1,15 @@
 package com.teobaranga.monica.contacts.data
 
-import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.retrofit.serialization.deserializeErrorBody
+import com.skydoves.sandwich.suspendOnError
+import com.skydoves.sandwich.suspendOnSuccess
+import com.teobaranga.monica.data.common.DeleteResponse
+import com.teobaranga.monica.data.common.ERROR_CODE_DATA_UNAVAILABLE
+import com.teobaranga.monica.data.common.ErrorResponse
 import com.teobaranga.monica.data.sync.SyncStatus
+import kotlinx.serialization.SerializationException
 import me.tatarka.inject.annotations.Inject
+import timber.log.Timber
 
 @Inject
 class ContactDeleteSynchronizer(
@@ -13,19 +20,29 @@ class ContactDeleteSynchronizer(
     suspend fun sync() {
         // TODO check for network before syncing
 
-        val deletedContacts = contactDao.getBySyncStatus(SyncStatus.DELETED)
+        contactDao.getBySyncStatus(SyncStatus.DELETED)
+            .forEach { deletedContact ->
+                val contactId = deletedContact.contactId
+                contactApi.deleteContact(contactId)
+                    .suspendOnSuccess {
+                        contactDao.delete(listOf(data.id))
+                    }
+                    .suspendOnError {
+                        val error = try {
+                            deserializeErrorBody<DeleteResponse, ErrorResponse>()?.error
+                        } catch (e: SerializationException) {
+                            Timber.e(e, "Error deserializing error response for contact $contactId")
+                            null
+                        }
+                        if (error != null) {
+                            Timber.e("Error deleting contact $contactId: ${error.errorCode} - ${error.message}")
 
-        for (deletedContact in deletedContacts) {
-            val contactId = deletedContact.contactId
-            when (val response = contactApi.deleteContact(contactId)) {
-                is ApiResponse.Success -> {
-                    contactDao.delete(listOf(contactId))
-                }
-
-                else -> {
-                    println("ERROR $response")
-                }
+                            if (error.errorCode == ERROR_CODE_DATA_UNAVAILABLE) {
+                                // The contact has already been deleted
+                                contactDao.delete(listOf(contactId))
+                            }
+                        }
+                    }
             }
-        }
     }
 }

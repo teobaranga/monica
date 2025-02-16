@@ -29,7 +29,9 @@ class ContactActivityNewSynchronizer(
             )
             when (response) {
                 is ApiResponse.Success -> {
-                    val entity = response.data.data.toEntity()
+                    val entity = response.data.data.toEntity(
+                        getUuid = { newEntry.activity.uuid },
+                    )
                     val crossRefs = response.data.data.attendees.contacts
                         .distinctBy { contact ->
                             contact.id

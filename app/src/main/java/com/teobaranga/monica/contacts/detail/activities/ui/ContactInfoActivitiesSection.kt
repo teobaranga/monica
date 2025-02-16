@@ -18,6 +18,7 @@ import com.ramcosta.composedestinations.generated.destinations.EditContactActivi
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoSection
+import com.teobaranga.monica.ui.Zero
 
 data class ContactInfoActivitiesSection(
     private val contactId: Int,
@@ -51,18 +52,18 @@ data class ContactInfoActivitiesSection(
                     }
                 }
             },
-            contentWindowInsets = WindowInsets(0, 0, 0, 0),
+            contentWindowInsets = WindowInsets.Zero,
         ) { contentPadding ->
             Crossfade(
-                targetState = activitiesUiState,
+                targetState = activitiesUiState::class,
                 label = "Contact Activities",
-            ) { uiState ->
-                when (uiState) {
-                    is ContactActivitiesUiState.Loading -> {
+            ) { uiStateClass ->
+                when (uiStateClass) {
+                    ContactActivitiesUiState.Loading::class -> {
                         ContactActivityPlaceholder()
                     }
 
-                    is ContactActivitiesUiState.Empty -> {
+                    ContactActivitiesUiState.Empty::class -> {
                         ContactActivityEmpty(
                             modifier = Modifier
                                 .padding(contentPadding)
@@ -70,11 +71,11 @@ data class ContactInfoActivitiesSection(
                         )
                     }
 
-                    is ContactActivitiesUiState.Loaded -> {
+                    ContactActivitiesUiState.Loaded::class -> {
                         ContactActivitiesColumn(
                             modifier = Modifier
                                 .padding(contentPadding),
-                            uiState = uiState,
+                            uiState = activitiesUiState as ContactActivitiesUiState.Loaded,
                             onActivityClick = { activityId ->
                                 navigator.navigate(
                                     EditContactActivityDestination(
