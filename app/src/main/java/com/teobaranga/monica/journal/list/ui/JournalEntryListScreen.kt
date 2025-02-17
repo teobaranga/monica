@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -22,6 +24,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,6 +44,11 @@ import com.teobaranga.monica.util.compose.ScrollToTopEffect
 import com.teobaranga.monica.util.compose.keepScrollOnSizeChanged
 import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDate
+import java.time.YearMonth
+import java.time.format.DateTimeFormatter
+
+private val monthFormatter = DateTimeFormatter.ofPattern("MMMM")
+private val monthYearFormatter = DateTimeFormatter.ofPattern("MMMM yyyy")
 
 @Composable
 fun JournalEntryListScreen(
@@ -52,8 +60,7 @@ fun JournalEntryListScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        modifier = modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         topBar = searchBar,
         floatingActionButton = {
             FloatingActionButton(
@@ -85,7 +92,11 @@ fun JournalEntryListScreen(
             ) {
                 ScrollToTopEffect(
                     lazyListState = lazyListState,
-                    getFirstId = { lazyItems.itemSnapshotList.items.firstOrNull()?.id },
+                    getFirstId = {
+                        lazyItems.itemSnapshotList.items
+                            .filterIsInstance<JournalEntryListItem.Entry>()
+                            .firstOrNull()?.id
+                    },
                 )
 
                 LazyColumn(
@@ -107,35 +118,92 @@ fun JournalEntryListScreen(
                         is LoadState.Loading,
                         is LoadState.NotLoading,
                         -> {
-                            itemsIndexed(
-                                items = lazyItems.itemSnapshotList,
-                                key = { index, journalEntry ->
-                                    journalEntry?.id ?: Int.MIN_VALUE
-                                },
-                            ) { index, journalEntry ->
-                                if (journalEntry != null) {
-                                    JournalItem(
-                                        modifier = Modifier
-                                            .clickable {
-                                                onEntryClick(journalEntry.id)
-                                            }
-                                            .padding(horizontal = 28.dp)
-                                            .animateItem(),
-                                        journalEntry = journalEntry,
-                                    )
-                                    if (index != lazyItems.itemSnapshotList.lastIndex) {
-                                        HorizontalDivider(
-                                            modifier = Modifier
-                                                .padding(horizontal = 28.dp, vertical = 4.dp),
-                                            color = MaterialTheme.colorScheme.outlineVariant,
-                                        )
-                                    }
-                                }
-                            }
+                            journalEntryListItems(
+                                lazyItems = lazyItems,
+                                onEntryClick = onEntryClick,
+                            )
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+private fun LazyListScope.journalEntryListItems(
+    lazyItems: LazyPagingItems<JournalEntryListItem>,
+    onEntryClick: (id: Int) -> Unit,
+) {
+    itemsIndexed(items = lazyItems.itemSnapshotList, key = { index, journalEntry ->
+        when (journalEntry) {
+            is JournalEntryListItem.Entry -> journalEntry.id
+            is JournalEntryListItem.SectionTitle -> YearMonth.of(
+                journalEntry.year ?: 0, journalEntry.month
+            )
+
+            is JournalEntryListItem.Divider -> "divider_$index"
+            null -> Int.MIN_VALUE
+        }
+    }, contentType = { index, journalEntryItem ->
+        when (journalEntryItem) {
+            is JournalEntryListItem.Entry -> "entry"
+            is JournalEntryListItem.SectionTitle -> "section_title"
+            is JournalEntryListItem.Divider -> "divider"
+            null -> "null"
+        }
+    }) { index, journalEntry ->
+        JournalEntryListItem(
+            journalEntry = journalEntry,
+            onEntryClick = onEntryClick,
+        )
+    }
+}
+
+@Composable
+private fun LazyItemScope.JournalEntryListItem(
+    journalEntry: JournalEntryListItem?,
+    onEntryClick: (id: Int) -> Unit,
+) {
+    when (journalEntry) {
+        is JournalEntryListItem.Entry -> {
+            JournalItem(
+                modifier = Modifier
+                    .clickable {
+                        onEntryClick(journalEntry.id)
+                    }
+                    .padding(horizontal = 28.dp)
+                    .animateItem(),
+                journalEntry = journalEntry,
+            )
+        }
+
+        is JournalEntryListItem.SectionTitle -> {
+            Text(
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .padding(start = 26.dp),
+                text = when {
+                    journalEntry.year != null -> monthYearFormatter.format(
+                        YearMonth.of(
+                            journalEntry.year, journalEntry.month
+                        )
+                    )
+
+                    else -> monthFormatter.format(journalEntry.month)
+                },
+                style = MaterialTheme.typography.titleLarge,
+            )
+        }
+
+        is JournalEntryListItem.Divider -> {
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 28.dp, vertical = 4.dp),
+                color = MaterialTheme.colorScheme.outlineVariant,
+            )
+        }
+
+        null -> {
+            // Nothing to render
         }
     }
 }
@@ -146,8 +214,8 @@ private fun PreviewJournalScreen() {
     MonicaTheme {
         val journalItems = flowOf(
             PagingData.from(
-                listOf(
-                    JournalEntryListItem(
+                listOf<JournalEntryListItem>(
+                    JournalEntryListItem.Entry(
                         id = 1,
                         title = null,
                         post = """Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -166,8 +234,7 @@ private fun PreviewJournalScreen() {
         JournalEntryListScreen(
             searchBar = {
                 MonicaSearchBar(
-                    modifier = Modifier
-                        .padding(top = 16.dp),
+                    modifier = Modifier.padding(top = 16.dp),
                     userAvatar = { },
                     onSearch = { },
                 )
