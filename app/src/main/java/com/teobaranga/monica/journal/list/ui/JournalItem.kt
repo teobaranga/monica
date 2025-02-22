@@ -17,7 +17,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun JournalItem(journalEntry: JournalEntryListItem, modifier: Modifier = Modifier) {
+fun JournalItem(journalEntry: JournalEntryListItem.Entry, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -58,7 +58,7 @@ private fun PreviewJournalItem() {
             JournalItem(
                 modifier = Modifier
                     .padding(16.dp),
-                journalEntry = JournalEntryListItem(
+                journalEntry = JournalEntryListItem.Entry(
                     id = 1,
                     title = "My day",
                     post = """

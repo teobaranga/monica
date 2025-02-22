@@ -3,6 +3,7 @@ package com.teobaranga.monica.journal.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import androidx.paging.insertSeparators
 import androidx.paging.map
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.core.dispatcher.Dispatcher
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import java.time.Year
 import kotlin.time.Duration.Companion.seconds
 
 private const val MAX_PREVIEW_CHARS = 300
@@ -47,9 +49,31 @@ class JournalEntryListViewModel internal constructor(
 
     val items = journalRepository.getJournalEntriesPagingData()
         .mapLatest { pagingData ->
-            pagingData.map { journalEntryEntity ->
-                journalEntryEntity.toUiModel()
-            }
+            pagingData
+                .map { journalEntryEntity ->
+                    journalEntryEntity.toUiModel()
+                }
+                .insertSeparators { before, after ->
+                    return@insertSeparators when {
+                        before == null && after is JournalEntryListItem.Entry -> {
+                            JournalEntryListItem.SectionTitle(
+                                month = after.date.month,
+                                year = null,
+                            )
+                        }
+                        before is JournalEntryListItem.Entry && after is JournalEntryListItem.Entry -> {
+                            if (before.date.month != after.date.month) {
+                                JournalEntryListItem.SectionTitle(
+                                    month = after.date.month,
+                                    year = after.date.year.takeIf { it != Year.now().value },
+                                )
+                            } else {
+                                JournalEntryListItem.Divider
+                            }
+                        }
+                        else -> null
+                    }
+                }
         }
         .onStart {
             viewModelScope.launch(dispatcher.io) {
@@ -81,7 +105,7 @@ class JournalEntryListViewModel internal constructor(
     }
 
     private fun JournalEntryEntity.toUiModel(): JournalEntryListItem {
-        return JournalEntryListItem(
+        return JournalEntryListItem.Entry(
             id = id,
             title = title,
             post = post
