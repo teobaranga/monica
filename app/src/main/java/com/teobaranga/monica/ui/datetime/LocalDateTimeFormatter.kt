@@ -27,7 +27,7 @@ fun rememberLocalizedDateTimeFormatter(
             /* locale = */ locale,
         )
         if (!includeYear) {
-            format = format.replace(", [yY]+$".toRegex(), "")
+            format = format.replace(",* [yY]+$".toRegex(), "")
         }
         DateTimeFormatter.ofPattern(format)
     }
