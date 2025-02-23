@@ -12,8 +12,6 @@ import com.ramcosta.composedestinations.generated.NavGraphs
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.LocalViewModelFactoryOwner
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOwner
 import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
-import com.teobaranga.monica.ui.datetime.LocalMonthDayFormatter
-import com.teobaranga.monica.ui.datetime.getMonthDayFormatter
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
@@ -27,7 +25,6 @@ class MainActivity : ComponentActivity() {
                 dynamicColor = false,
             ) {
                 CompositionLocalProvider(
-                    LocalMonthDayFormatter provides getMonthDayFormatter(),
                     LocalViewModelFactoryOwner provides getViewModelFactoryOwner(),
                 ) {
                     DestinationsNavHost(

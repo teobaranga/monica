@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.ui.Birthday
-import com.teobaranga.monica.ui.datetime.getMonthDayFormatter
+import com.teobaranga.monica.ui.datetime.rememberLocalizedDateTimeFormatter
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.MonthDay
 import java.time.OffsetDateTime
@@ -63,7 +63,7 @@ internal fun BirthdaySection(birthday: Birthday?, onBirthdayChange: () -> Unit, 
                     }
 
                     is Birthday.UnknownYear -> {
-                        val monthDayFormatter = getMonthDayFormatter(dateStyle = FormatStyle.LONG)
+                        val monthDayFormatter = rememberLocalizedDateTimeFormatter(includeYear = false)
                         birthday.monthDay.format(monthDayFormatter)
                     }
 

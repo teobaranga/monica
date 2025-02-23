@@ -1,6 +1,7 @@
 package com.teobaranga.monica.ui.datetime
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalConfiguration
 import java.time.chrono.Chronology
@@ -12,22 +13,22 @@ val LocalDateFormatter = staticCompositionLocalOf<DateTimeFormatter> {
     DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
 }
 
-val LocalMonthDayFormatter = staticCompositionLocalOf<DateTimeFormatter> {
-    error("CompositionLocal LocalMonthDayFormatter not present")
-}
-
 @Composable
-fun getMonthDayFormatter(dateStyle: FormatStyle = FormatStyle.MEDIUM): DateTimeFormatter {
+fun rememberLocalizedDateTimeFormatter(
+    dateStyle: FormatStyle = FormatStyle.LONG,
+    includeYear: Boolean = true,
+): DateTimeFormatter {
     val locale = LocalConfiguration.current.locales[0]
-    val format = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
-        /* dateStyle = */ dateStyle,
-        /* timeStyle = */ null,
-        /* chrono = */ Chronology.ofLocale(locale),
-        /* locale = */ locale,
-    ).filterNot {
-        // Remove year
-        val lowercaseChar = it.lowercaseChar()
-        lowercaseChar == 'y' || lowercaseChar == ','
-    }.trim()
-    return DateTimeFormatter.ofPattern(format)
+    return remember(locale, dateStyle, includeYear) {
+        var format = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
+            /* dateStyle = */ dateStyle,
+            /* timeStyle = */ null,
+            /* chrono = */ Chronology.ofLocale(locale),
+            /* locale = */ locale,
+        )
+        if (!includeYear) {
+            format = format.replace(", [yY]+$".toRegex(), "")
+        }
+        DateTimeFormatter.ofPattern(format)
+    }
 }
