@@ -17,12 +17,27 @@ import java.time.ZoneOffset
 class BirthdayPickerUiState(initialBirthday: Birthday?) {
 
     var birthday by mutableStateOf(initialBirthday)
+        private set
 
-    val age = Age()
+    val age = if (initialBirthday is Birthday.AgeBased) {
+        Age(initialBirthday.age)
+    } else {
+        Age()
+    }
 
-    val unknownYear = UnknownYear()
+    val unknownYear = if (initialBirthday is Birthday.UnknownYear) {
+        UnknownYear(initialBirthday.monthDay)
+    } else {
+        UnknownYear()
+    }
 
-    var fullBirthDate: LocalDate by mutableStateOf(LocalDate.now())
+    var fullBirthDate: LocalDate by mutableStateOf(
+        if (initialBirthday is Birthday.Full) {
+            initialBirthday.date.toLocalDate()
+        } else {
+            LocalDate.now()
+        }
+    )
 
     val isError by derivedStateOf {
         when {
@@ -53,9 +68,9 @@ class BirthdayPickerUiState(initialBirthday: Birthday?) {
     }
 
     @Stable
-    class Age {
+    class Age(age: Int = 18) {
 
-        val ageTextFieldState = TextFieldState("18")
+        val ageTextFieldState = TextFieldState(age.toString())
 
         val birthday by derivedStateOf {
             try {
@@ -71,11 +86,11 @@ class BirthdayPickerUiState(initialBirthday: Birthday?) {
     }
 
     @Stable
-    class UnknownYear {
+    class UnknownYear(monthDay: MonthDay = MonthDay.now()) {
 
-        var month by mutableStateOf(MonthDay.now().month)
+        var month by mutableStateOf(monthDay.month)
 
-        val dayTextFieldState = TextFieldState(MonthDay.now().dayOfMonth.toString())
+        val dayTextFieldState = TextFieldState(monthDay.dayOfMonth.toString())
 
         val birthday by derivedStateOf {
             try {
