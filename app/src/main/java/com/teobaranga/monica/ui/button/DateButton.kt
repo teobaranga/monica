@@ -18,7 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.teobaranga.monica.ui.datetime.LocalDateFormatter
+import com.teobaranga.monica.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.Instant
 import java.time.LocalDate
@@ -38,7 +38,7 @@ fun DateButton(date: LocalDate, onDateSelect: (LocalDate) -> Unit, modifier: Mod
             imageVector = Icons.Default.Today,
             contentDescription = null,
         )
-        val formatter = LocalDateFormatter.current
+        val formatter = rememberLocalizedDateFormatter()
         Text(
             modifier = Modifier
                 .padding(start = 8.dp),

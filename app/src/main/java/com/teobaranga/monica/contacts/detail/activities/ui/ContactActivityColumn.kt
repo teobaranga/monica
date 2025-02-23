@@ -30,7 +30,7 @@ import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
 import com.teobaranga.monica.ui.avatar.UserAvatar
-import com.teobaranga.monica.ui.datetime.LocalDateFormatter
+import com.teobaranga.monica.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.LocalDate
@@ -100,7 +100,7 @@ private fun ContactActivity(activity: ContactActivity, modifier: Modifier = Modi
                 .padding(top = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            val localDateFormatter = LocalDateFormatter.current
+            val localDateFormatter = rememberLocalizedDateFormatter()
             Icon(
                 imageVector = Icons.Outlined.CalendarMonth,
                 tint = MaterialTheme.colorScheme.secondary,
