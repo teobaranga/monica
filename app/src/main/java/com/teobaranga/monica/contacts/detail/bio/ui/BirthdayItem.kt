@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.ui.Birthday
-import com.teobaranga.monica.ui.datetime.LocalDateFormatter
+import com.teobaranga.monica.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.ui.datetime.rememberLocalizedDateTimeFormatter
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
@@ -34,7 +34,7 @@ internal fun BirthdayItem(birthday: Birthday, modifier: Modifier = Modifier) {
             }
 
             is Birthday.Full -> {
-                val dateFormatter = LocalDateFormatter.current
+                val dateFormatter = rememberLocalizedDateFormatter()
                 "This person was born on ${birthday.date.format(dateFormatter)} (${birthday.age} years old)"
             }
 

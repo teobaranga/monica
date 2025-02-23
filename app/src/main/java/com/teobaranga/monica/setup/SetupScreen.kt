@@ -2,6 +2,7 @@ package com.teobaranga.monica.setup
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
@@ -55,7 +56,15 @@ import kotlinx.coroutines.flow.collectLatest
 
 private const val SETUP_INFO_URL = "https://github.com/teobaranga/monica?tab=readme-ov-file#setup"
 
-private val logoFontFamily = FontFamily(Font(R.font.eb_garamond_variable))
+private val logoFontFamily = FontFamily(
+    Font(
+        resId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            R.font.eb_garamond_variable
+        } else {
+            R.font.eb_garamond_regular
+        },
+    )
+)
 
 @Destination<RootGraph>
 @Composable
