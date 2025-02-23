@@ -28,7 +28,7 @@ import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BirthdayPicker(
+internal fun BirthdayPicker(
     birthday: Birthday?,
     onBirthdaySelect: (Birthday?) -> Unit,
     onDismissRequest: () -> Unit,

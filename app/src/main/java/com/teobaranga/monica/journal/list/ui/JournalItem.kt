@@ -7,14 +7,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.ui.PreviewPixel4
+import com.teobaranga.monica.ui.datetime.rememberLocalizedDateTimeFormatter
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @Composable
 fun JournalItem(journalEntry: JournalEntryListItem.Entry, modifier: Modifier = Modifier) {
@@ -23,7 +23,7 @@ fun JournalItem(journalEntry: JournalEntryListItem.Entry, modifier: Modifier = M
             .fillMaxWidth()
             .padding(vertical = 12.dp),
     ) {
-        val dateFormatter = remember { DateTimeFormatter.ofPattern("EEEE, MMMM dd yyyy") }
+        val dateFormatter = rememberLocalizedDateTimeFormatter(dateStyle = FormatStyle.FULL)
         Text(
             text = dateFormatter.format(journalEntry.date),
             maxLines = 1,
