@@ -12,7 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.ui.datetime.rememberLocalizedDateFormatter
-import com.teobaranga.monica.ui.datetime.rememberLocalizedDateTimeFormatter
 import com.teobaranga.monica.ui.theme.MonicaTheme
 
 @Composable
@@ -39,7 +38,7 @@ internal fun BirthdayItem(birthday: Birthday, modifier: Modifier = Modifier) {
             }
 
             is Birthday.UnknownYear -> {
-                val monthDayFormatter = rememberLocalizedDateTimeFormatter(includeYear = false)
+                val monthDayFormatter = rememberLocalizedDateFormatter(includeYear = false)
                 "This person was born on ${birthday.monthDay.format(monthDayFormatter)}"
             }
         },

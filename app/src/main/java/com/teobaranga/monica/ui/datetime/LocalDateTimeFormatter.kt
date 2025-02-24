@@ -8,17 +8,11 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.time.format.FormatStyle
 
+/**
+ * Returns a [DateTimeFormatter] that formats dates according to the user's locale.
+ */
 @Composable
 fun rememberLocalizedDateFormatter(
-    dateStyle: FormatStyle = FormatStyle.MEDIUM,
-): DateTimeFormatter {
-    return remember(dateStyle) {
-        DateTimeFormatter.ofLocalizedDate(dateStyle)
-    }
-}
-
-@Composable
-fun rememberLocalizedDateTimeFormatter(
     dateStyle: FormatStyle = FormatStyle.LONG,
     includeYear: Boolean = true,
 ): DateTimeFormatter {
@@ -31,7 +25,9 @@ fun rememberLocalizedDateTimeFormatter(
             /* locale = */ locale,
         )
         if (!includeYear) {
-            format = format.replace(",* [yY]+$".toRegex(), "")
+            format = format
+                .replace("(,*|\'de\') [yY]+$".toRegex(), "")
+                .trim()
         }
         DateTimeFormatter.ofPattern(format)
     }
