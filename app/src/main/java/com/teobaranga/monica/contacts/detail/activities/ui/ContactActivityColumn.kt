@@ -34,6 +34,7 @@ import com.teobaranga.monica.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.LocalDate
+import java.time.format.FormatStyle
 import kotlin.uuid.Uuid
 
 @Composable
@@ -100,7 +101,7 @@ private fun ContactActivity(activity: ContactActivity, modifier: Modifier = Modi
                 .padding(top = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            val localDateFormatter = rememberLocalizedDateFormatter()
+            val localDateFormatter = rememberLocalizedDateFormatter(dateStyle = FormatStyle.MEDIUM)
             Icon(
                 imageVector = Icons.Outlined.CalendarMonth,
                 tint = MaterialTheme.colorScheme.secondary,

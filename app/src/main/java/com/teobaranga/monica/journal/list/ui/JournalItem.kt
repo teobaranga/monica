@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.ui.PreviewPixel4
-import com.teobaranga.monica.ui.datetime.rememberLocalizedDateTimeFormatter
+import com.teobaranga.monica.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import java.time.LocalDate
 import java.time.format.FormatStyle
@@ -23,7 +23,7 @@ fun JournalItem(journalEntry: JournalEntryListItem.Entry, modifier: Modifier = M
             .fillMaxWidth()
             .padding(vertical = 12.dp),
     ) {
-        val dateFormatter = rememberLocalizedDateTimeFormatter(dateStyle = FormatStyle.FULL)
+        val dateFormatter = rememberLocalizedDateFormatter(dateStyle = FormatStyle.FULL)
         Text(
             text = dateFormatter.format(journalEntry.date),
             maxLines = 1,

@@ -63,6 +63,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    testOptions.unitTests {
+        isIncludeAndroidResources = true
+        all { test ->
+            test.systemProperties["robolectric.logging.enabled"] = "true"
+        }
+    }
 }
 
 dependencies {
@@ -110,11 +117,17 @@ dependencies {
 
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.junit)
+    // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
+    testImplementation(libs.junit.vintage)
     testImplementation(libs.kotlinx.coroutines.test)
 
     testImplementation(libs.turbine)
 
     testImplementation(libs.mockk)
+
+    // Robolectric UI tests
+    testImplementation(libs.robolectric)
+    testImplementation(libs.compose.ui.test.junit4)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
