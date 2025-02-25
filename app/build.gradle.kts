@@ -82,7 +82,6 @@ dependencies {
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.compose)
-    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.activity.compose)
     implementation(libs.androidx.compose.material.icons)
@@ -100,7 +99,6 @@ dependencies {
 
     implementation(libs.material.kolor)
 
-    implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
 
     debugImplementation(libs.okhttp.logging.interceptor)
@@ -126,12 +124,7 @@ dependencies {
 
     testImplementation(libs.mockk)
 
-    // Robolectric UI tests
-    testImplementation(libs.robolectric)
-    testImplementation(libs.compose.ui.test.junit4)
-
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
 
     detektPlugins(libs.compose.rules)
 }
