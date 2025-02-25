@@ -8,6 +8,7 @@ androidGradlePlugin = "8.8.1"
 androidTools = "31.8.1"
 autoservice = "1.1.1"
 autoservice-ksp = "1.2.0"
+dependency-analysis = "2.10.1"
 kotlin = "2.1.10"
 ksp = "2.1.10-1.0.30"
 browser = "1.8.0"
@@ -132,6 +133,7 @@ androidApplication = { id = "com.android.application", version.ref = "androidGra
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
