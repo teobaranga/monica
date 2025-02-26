@@ -4,7 +4,7 @@ minSdk = "24"
 targetSdk = "35"
 compileSdk = "35"
 
-androidGradlePlugin = "8.8.1"
+androidGradlePlugin = "8.8.2"
 androidTools = "31.8.1"
 autoservice = "1.1.1"
 autoservice-ksp = "1.2.0"
