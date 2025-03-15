@@ -20,14 +20,16 @@
 import com.android.build.gradle.LibraryExtension
 import com.teobaranga.monica.configureKotlinAndroid
 import com.teobaranga.monica.libs
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
-class AndroidLibraryConventionPlugin : Plugin<Project> {
+@Suppress("unused") // Registered as a plugin in build.gradle.kts
+class AndroidLibraryConventionPlugin : MonicaPlugin() {
 
     override fun apply(target: Project) {
+        super.apply(target)
+
         with(target) {
             with(pluginManager) {
                 apply(libs.plugins.androidLibrary.get().pluginId)
@@ -41,7 +43,11 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 testOptions.animationsDisabled = true
                 // The resource prefix is derived from the module name,
                 // so resources inside ":core:module1" must be prefixed with "core_module1_"
-                resourcePrefix = path.split("""\W""".toRegex()).drop(1).distinct().joinToString(separator = "_").lowercase() + "_"
+                resourcePrefix = path.split("""\W""".toRegex())
+                    .drop(1)
+                    .distinct()
+                    .joinToString(separator = "_")
+                    .lowercase() + "_"
             }
             dependencies {
                 // Add common library dependencies here

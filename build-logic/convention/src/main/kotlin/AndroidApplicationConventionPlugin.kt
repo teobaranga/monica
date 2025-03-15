@@ -20,13 +20,15 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.teobaranga.monica.configureKotlinAndroid
 import com.teobaranga.monica.libs
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-class AndroidApplicationConventionPlugin : Plugin<Project> {
+@Suppress("unused") // Registered as a plugin in build.gradle.kts
+class AndroidApplicationConventionPlugin : MonicaPlugin() {
 
     override fun apply(target: Project) {
+        super.apply(target)
+
         with(target) {
             with(pluginManager) {
                 apply(libs.plugins.androidApplication.get().pluginId)
@@ -36,7 +38,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = libs.versions.targetSdk.get().toInt()
-                @Suppress("UnstableApiUsage")
                 testOptions.animationsDisabled = true
             }
         }
