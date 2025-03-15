@@ -1,6 +1,6 @@
 package com.teobaranga.monica.contacts.data
 
-import com.teobaranga.monica.data.sync.SyncStatus
+import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.genders.data.GenderRepository
 import me.tatarka.inject.annotations.Inject
 

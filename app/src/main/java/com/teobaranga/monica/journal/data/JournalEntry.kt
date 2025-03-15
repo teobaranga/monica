@@ -1,8 +1,8 @@
 package com.teobaranga.monica.journal.data
 
-import com.teobaranga.monica.data.adapter.OffsetDateTimeAsString
-import com.teobaranga.monica.data.adapter.UuidAsString
-import com.teobaranga.monica.data.common.AccountResponse
+import com.teobaranga.monica.core.data.AccountResponse
+import com.teobaranga.monica.core.data.adapter.OffsetDateTimeAsString
+import com.teobaranga.monica.core.data.adapter.UuidAsString
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

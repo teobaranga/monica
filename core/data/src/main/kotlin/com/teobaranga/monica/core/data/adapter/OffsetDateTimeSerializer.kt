@@ -1,4 +1,4 @@
-package com.teobaranga.monica.data.adapter
+package com.teobaranga.monica.core.data.adapter
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable

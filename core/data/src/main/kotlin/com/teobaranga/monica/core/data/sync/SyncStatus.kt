@@ -1,4 +1,4 @@
-package com.teobaranga.monica.data.sync
+package com.teobaranga.monica.core.data.sync
 
 enum class SyncStatus {
     NEW,

@@ -1,9 +1,9 @@
-package com.teobaranga.monica.paging
+package com.teobaranga.monica.core.data.local
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.data.sync.Synchronizer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel

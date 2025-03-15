@@ -1,6 +1,6 @@
 package com.teobaranga.monica.activities.data
 
-import com.teobaranga.monica.data.adapter.LocalDateAsString
+import com.teobaranga.monica.core.data.adapter.LocalDateAsString
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
