@@ -5,8 +5,8 @@ import com.teobaranga.monica.activities.data.ContactActivityCrossRef
 import com.teobaranga.monica.activities.data.ContactActivityEntity
 import com.teobaranga.monica.activities.data.ContactActivityWithParticipants
 import com.teobaranga.monica.contacts.data.ContactEntity
+import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.data.DaosComponent
-import com.teobaranga.monica.data.sync.SyncStatus
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow

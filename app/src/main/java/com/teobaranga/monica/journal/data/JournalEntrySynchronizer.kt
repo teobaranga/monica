@@ -3,9 +3,9 @@ package com.teobaranga.monica.journal.data
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.account.AccountListener
+import com.teobaranga.monica.core.data.sync.SyncStatus
+import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.data.sync.SyncStatus
-import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.journal.database.JournalDao
 import com.teobaranga.monica.journal.database.JournalEntryEntity
 import kotlinx.coroutines.flow.MutableStateFlow

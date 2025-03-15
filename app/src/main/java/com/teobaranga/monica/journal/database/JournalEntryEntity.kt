@@ -2,7 +2,7 @@ package com.teobaranga.monica.journal.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.teobaranga.monica.data.sync.SyncStatus
+import com.teobaranga.monica.core.data.sync.SyncStatus
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import kotlin.uuid.Uuid

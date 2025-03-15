@@ -7,9 +7,9 @@ import androidx.room.Transaction
 import androidx.room.Upsert
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.teobaranga.monica.core.data.local.OrderBy
+import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.data.photo.ContactPhotos
-import com.teobaranga.monica.data.sync.SyncStatus
-import com.teobaranga.monica.database.OrderBy
 import kotlinx.coroutines.flow.Flow
 
 @Dao

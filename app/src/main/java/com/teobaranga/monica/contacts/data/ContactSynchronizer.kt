@@ -3,8 +3,8 @@ package com.teobaranga.monica.contacts.data
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.account.AccountListener
+import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.data.sync.Synchronizer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext

@@ -1,7 +1,7 @@
 package com.teobaranga.monica.journal.data
 
 import com.skydoves.sandwich.ApiResponse
-import com.teobaranga.monica.data.sync.SyncStatus
+import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.journal.database.JournalDao
 import me.tatarka.inject.annotations.Inject
 

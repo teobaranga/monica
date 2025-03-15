@@ -6,9 +6,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.photo.ContactPhotos
-import com.teobaranga.monica.data.sync.SyncStatus
 import com.teobaranga.monica.genders.domain.Gender
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
