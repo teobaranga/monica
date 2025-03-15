@@ -38,7 +38,6 @@ class AndroidApplicationConventionPlugin : MonicaPlugin() {
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = libs.versions.targetSdk.get().toInt()
-                @Suppress("UnstableApiUsage")
                 testOptions.animationsDisabled = true
             }
         }
