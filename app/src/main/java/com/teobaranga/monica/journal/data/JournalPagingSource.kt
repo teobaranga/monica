@@ -1,10 +1,10 @@
 package com.teobaranga.monica.journal.data
 
+import com.teobaranga.monica.core.data.local.OrderBy
+import com.teobaranga.monica.core.data.local.RoomPagingSource
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.database.OrderBy
 import com.teobaranga.monica.journal.database.JournalDao
 import com.teobaranga.monica.journal.database.JournalEntryEntity
-import com.teobaranga.monica.paging.RoomPagingSource
 import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject

@@ -6,8 +6,8 @@ import androidx.paging.cachedIn
 import androidx.paging.insertSeparators
 import androidx.paging.map
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
+import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
 import com.teobaranga.monica.journal.data.JournalRepository
@@ -61,6 +61,7 @@ class JournalEntryListViewModel internal constructor(
                                 year = null,
                             )
                         }
+
                         before is JournalEntryListItem.Entry && after is JournalEntryListItem.Entry -> {
                             if (before.date.month != after.date.month) {
                                 JournalEntryListItem.SectionTitle(
@@ -71,6 +72,7 @@ class JournalEntryListViewModel internal constructor(
                                 JournalEntryListItem.Divider
                             }
                         }
+
                         else -> null
                     }
                 }

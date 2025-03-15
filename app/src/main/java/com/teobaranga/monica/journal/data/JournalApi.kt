@@ -1,7 +1,7 @@
 package com.teobaranga.monica.journal.data
 
 import com.skydoves.sandwich.ApiResponse
-import com.teobaranga.monica.data.common.DeleteResponse
+import com.teobaranga.monica.core.data.DeleteResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

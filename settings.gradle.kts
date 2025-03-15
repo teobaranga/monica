@@ -16,8 +16,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "Monica"
 include(":app")
-include(":core:ui")
+include(":core:data")
 include(":core:dispatcher")
 include(":core:inject")
+include(":core:ui")
 include(":feature:configuration")
 include(":feature:genders")

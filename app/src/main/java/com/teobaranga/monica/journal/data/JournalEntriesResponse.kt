@@ -1,6 +1,6 @@
 package com.teobaranga.monica.journal.data
 
-import com.teobaranga.monica.data.common.MetaResponse
+import com.teobaranga.monica.core.data.MetaResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
