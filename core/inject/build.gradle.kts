@@ -7,6 +7,13 @@ plugins {
 
 group = "com.teobaranga.monica.core.inject"
 
+monica {
+    optIn {
+        experimentalCoroutinesApi = false
+        flowPreview = false
+    }
+}
+
 dependencies {
     implementation(libs.kotlin.inject.runtime)
     implementation(libs.kotlin.inject.viewmodel.runtime.compose)

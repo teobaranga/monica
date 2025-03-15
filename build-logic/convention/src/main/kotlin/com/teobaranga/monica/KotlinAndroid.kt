@@ -26,6 +26,7 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
@@ -92,8 +93,17 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
         freeCompilerArgs.addAll(
             "-Xcontext-receivers",
             "-opt-in=kotlin.uuid.ExperimentalUuidApi",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=kotlinx.coroutines.FlowPreview",
         )
+
+        extensions.findByType<MonicaExtension>()?.let { monicaExtension ->
+            afterEvaluate {
+                if (monicaExtension.optIn.experimentalCoroutinesApi) {
+                    freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+                }
+                if (monicaExtension.optIn.flowPreview) {
+                    freeCompilerArgs.add("-opt-in=kotlinx.coroutines.FlowPreview")
+                }
+            }
+        }
     }
 }

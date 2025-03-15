@@ -20,14 +20,16 @@
 import com.android.build.gradle.LibraryExtension
 import com.teobaranga.monica.configureKotlinAndroid
 import com.teobaranga.monica.libs
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
-class AndroidLibraryConventionPlugin : Plugin<Project> {
+@Suppress("unused") // Registered as a plugin in build.gradle.kts
+class AndroidLibraryConventionPlugin : MonicaPlugin() {
 
     override fun apply(target: Project) {
+        super.apply(target)
+
         with(target) {
             with(pluginManager) {
                 apply(libs.plugins.androidLibrary.get().pluginId)
