@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.google.gms.googleservices.GoogleServicesPlugin
 
 plugins {
     alias(libs.plugins.monica.android.application)
@@ -71,6 +72,10 @@ android {
             test.systemProperties["robolectric.logging.enabled"] = "true"
         }
     }
+}
+
+googleServices {
+    missingGoogleServicesStrategy = GoogleServicesPlugin.MissingGoogleServicesStrategy.WARN
 }
 
 dependencies {
