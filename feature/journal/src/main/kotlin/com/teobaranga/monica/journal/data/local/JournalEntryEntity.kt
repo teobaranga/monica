@@ -1,4 +1,4 @@
-package com.teobaranga.monica.journal.database
+package com.teobaranga.monica.journal.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

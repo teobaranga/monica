@@ -11,7 +11,7 @@ import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
 import com.teobaranga.monica.journal.data.JournalRepository
-import com.teobaranga.monica.journal.database.JournalEntryEntity
+import com.teobaranga.monica.journal.data.local.JournalEntryEntity
 import com.teobaranga.monica.journal.list.ui.JournalEntryListItem
 import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.user.userAvatar

@@ -2,7 +2,8 @@ package com.teobaranga.monica.journal.data
 
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.core.data.sync.SyncStatus
-import com.teobaranga.monica.journal.database.JournalDao
+import com.teobaranga.monica.journal.data.local.JournalDao
+import com.teobaranga.monica.journal.data.remote.JournalApi
 import me.tatarka.inject.annotations.Inject
 
 @Inject
