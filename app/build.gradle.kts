@@ -127,8 +127,13 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
 
     detektPlugins(libs.compose.rules)
+    detektPlugins(libs.detekt.formatting)
 }
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+}
+
+detekt {
+    autoCorrect = true
 }

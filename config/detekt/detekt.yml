@@ -1,3 +1,11 @@
+formatting:
+  active: true
+  android: true
+  autoCorrect: true
+  ImportOrdering:
+    active: true
+    autoCorrect: true
+
 build:
   maxIssues: 0
   excludeCorrectable: false
