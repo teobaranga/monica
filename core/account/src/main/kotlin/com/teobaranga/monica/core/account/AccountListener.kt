@@ -1,4 +1,4 @@
-package com.teobaranga.monica.account
+package com.teobaranga.monica.core.account
 
 interface AccountListener {
 

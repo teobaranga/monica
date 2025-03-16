@@ -2,8 +2,8 @@ package com.teobaranga.monica.data.photo
 
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.onFailure
-import com.teobaranga.monica.account.AccountListener
 import com.teobaranga.monica.contacts.data.ContactPhotosResponse
+import com.teobaranga.monica.core.account.AccountListener
 import com.teobaranga.monica.core.data.sync.Synchronizer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first

@@ -79,6 +79,7 @@ googleServices {
 }
 
 dependencies {
+    implementation(project(":core:account"))
     implementation(project(":core:data"))
     implementation(project(":core:dispatcher"))
     implementation(project(":core:inject"))
