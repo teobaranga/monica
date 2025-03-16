@@ -16,6 +16,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Monica"
 include(":app")
+include(":core:account")
 include(":core:data")
 include(":core:dispatcher")
 include(":core:inject")
