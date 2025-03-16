@@ -6,8 +6,10 @@ import com.teobaranga.monica.core.account.AccountListener
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.journal.database.JournalDao
-import com.teobaranga.monica.journal.database.JournalEntryEntity
+import com.teobaranga.monica.journal.data.local.JournalDao
+import com.teobaranga.monica.journal.data.local.JournalEntryEntity
+import com.teobaranga.monica.journal.data.remote.JournalApi
+import com.teobaranga.monica.journal.data.remote.JournalEntry
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext

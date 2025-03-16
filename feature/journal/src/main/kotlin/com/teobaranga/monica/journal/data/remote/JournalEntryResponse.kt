@@ -1,4 +1,4 @@
-package com.teobaranga.monica.journal.data
+package com.teobaranga.monica.journal.data.remote
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
