@@ -86,6 +86,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":feature:configuration"))
     implementation(project(":feature:genders"))
+    implementation(project(":feature:journal"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.compose)

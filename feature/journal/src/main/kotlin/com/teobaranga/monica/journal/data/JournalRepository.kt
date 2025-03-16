@@ -6,8 +6,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.journal.database.JournalDao
-import com.teobaranga.monica.journal.database.JournalEntryEntity
+import com.teobaranga.monica.journal.data.local.JournalDao
+import com.teobaranga.monica.journal.data.local.JournalEntryEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +24,7 @@ private const val PAGE_SIZE = 15
 
 @Inject
 @SingleIn(AppScope::class)
-internal class JournalRepository(
+class JournalRepository(
     dispatcher: Dispatcher,
     private val journalDao: JournalDao,
     private val journalPagingSourceFactory: (OrderBy) -> JournalPagingSource,

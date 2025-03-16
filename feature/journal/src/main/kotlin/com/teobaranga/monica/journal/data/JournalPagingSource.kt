@@ -3,14 +3,14 @@ package com.teobaranga.monica.journal.data
 import com.teobaranga.monica.core.data.local.OrderBy
 import com.teobaranga.monica.core.data.local.RoomPagingSource
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.journal.database.JournalDao
-import com.teobaranga.monica.journal.database.JournalEntryEntity
+import com.teobaranga.monica.journal.data.local.JournalDao
+import com.teobaranga.monica.journal.data.local.JournalEntryEntity
 import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-internal class JournalPagingSource(
+class JournalPagingSource(
     dispatcher: Dispatcher,
     journalEntrySynchronizer: JournalEntrySynchronizer,
     private val journalDao: JournalDao,
