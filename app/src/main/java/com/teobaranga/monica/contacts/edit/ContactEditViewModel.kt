@@ -3,7 +3,7 @@ package com.teobaranga.monica.contacts.edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ramcosta.composedestinations.generated.navArgs
+import androidx.navigation.toRoute
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.contacts.detail.toUiBirthday
 import com.teobaranga.monica.contacts.domain.DeleteContactUseCase
@@ -36,7 +36,7 @@ class ContactEditViewModel internal constructor(
     private val getGendersUseCase: GetGendersUseCase,
 ) : ViewModel() {
 
-    private val navArgs = savedStateHandle.navArgs<ContactEditNavArgs>()
+    private val navArgs = savedStateHandle.toRoute<ContactEditRoute>()
 
     val uiState = flow {
         val contact = if (navArgs.contactId != null) {

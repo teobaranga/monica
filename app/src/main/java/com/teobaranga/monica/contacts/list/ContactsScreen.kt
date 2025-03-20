@@ -1,6 +1,5 @@
 package com.teobaranga.monica.contacts.list
 
-import ContactsNavGraph
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -41,16 +40,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.generated.destinations.ContactDetailDestination
-import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
+import com.teobaranga.monica.contacts.detail.ContactDetailRoute
+import com.teobaranga.monica.contacts.edit.ContactEditRoute
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.ui.navigation.LocalNavigator
 import com.teobaranga.monica.ui.plus
 import com.teobaranga.monica.ui.preview.contactAlice
 import com.teobaranga.monica.ui.preview.contactBob
@@ -61,12 +59,11 @@ import com.teobaranga.monica.util.compose.ScrollToTopEffect
 import com.teobaranga.monica.util.compose.keepScrollOnSizeChanged
 import kotlinx.coroutines.flow.flowOf
 
-@Destination<ContactsNavGraph>(start = true)
 @Composable
 internal fun Contacts(
-    navigator: DestinationsNavigator,
     viewModel: ContactsViewModel = injectedViewModel(),
 ) {
+    val navigator = LocalNavigator.current
     val refreshState by viewModel.refreshState.collectAsStateWithLifecycle()
     ContactsScreen(
         searchBar = {
@@ -107,10 +104,10 @@ internal fun Contacts(
         uiState = viewModel.state,
         refreshState = refreshState,
         onContactSelect = { contactId ->
-            navigator.navigate(ContactDetailDestination(contactId))
+            navigator.navigate(ContactDetailRoute(contactId))
         },
         onContactAdd = {
-            navigator.navigate(ContactEditDestination())
+            navigator.navigate(ContactEditRoute())
         },
     )
 }

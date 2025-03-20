@@ -2,8 +2,10 @@ package com.teobaranga.monica.contacts.detail.activities.edit.ui
 
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.activities.data.ContactActivitiesRepository
 import com.teobaranga.monica.contacts.detail.activities.edit.domain.GetActivityUseCase
@@ -30,16 +32,16 @@ import kotlin.time.Duration.Companion.seconds
 @Inject
 @ContributesViewModel(AppScope::class)
 class EditContactActivityViewModel internal constructor(
+    @Assisted
+    private val savedStateHandle: SavedStateHandle,
     private val dispatcher: Dispatcher,
     private val getContactUseCase: GetContactUseCase,
     private val getActivityUseCase: GetActivityUseCase,
     private val searchContactAsActivityParticipantUseCase: SearchContactAsActivityParticipantUseCase,
     private val contactActivitiesRepository: ContactActivitiesRepository,
-    @Assisted
-    private val contactId: Int,
-    @Assisted
-    private val activityId: Int?,
 ) : ViewModel() {
+
+    val contactActivityEditRoute = savedStateHandle.toRoute<ContactActivityEditRoute>()
 
     private val participantResults: StateFlow<List<ActivityParticipant>> = snapshotFlow {
         (uiState.value as? EditContactActivityUiState.Loaded)?.participantSearch?.text?.toString()
@@ -74,8 +76,8 @@ class EditContactActivityViewModel internal constructor(
         val uiState = EditContactActivityUiState.Loaded(
             participantResults = participantResults,
         )
-        if (activityId != null) {
-            val activity = getActivityUseCase(activityId)
+        if (contactActivityEditRoute.activityId != null) {
+            val activity = getActivityUseCase(contactActivityEditRoute.activityId)
             uiState.apply {
                 summary.setTextAndPlaceCursorAtEnd(activity.summary)
                 details.setTextAndPlaceCursorAtEnd(activity.details.orEmpty())
@@ -83,7 +85,7 @@ class EditContactActivityViewModel internal constructor(
                 participants.addAll(activity.participants)
             }
         } else {
-            val contact = getContactUseCase(contactId)
+            val contact = getContactUseCase(contactActivityEditRoute.contactId)
             val contactParticipant = ActivityParticipant.Contact(
                 contactId = contact.contactId,
                 name = contact.completeName,
@@ -102,7 +104,7 @@ class EditContactActivityViewModel internal constructor(
         val uiState = getLoadedUiState() ?: return
         viewModelScope.launch(dispatcher.io) {
             contactActivitiesRepository.upsertActivity(
-                activityId = activityId,
+                activityId = contactActivityEditRoute.activityId,
                 title = uiState.summary.text.toString(),
                 description = uiState.details.text.toString().takeUnless { it.isEmpty() },
                 date = uiState.date,
@@ -112,11 +114,11 @@ class EditContactActivityViewModel internal constructor(
     }
 
     fun onDelete() {
-        if (activityId == null) {
+        if (contactActivityEditRoute.activityId == null) {
             return
         }
         viewModelScope.launch(dispatcher.io) {
-            contactActivitiesRepository.deleteActivity(activityId)
+            contactActivitiesRepository.deleteActivity(contactActivityEditRoute.activityId)
         }
     }
 

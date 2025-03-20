@@ -1,6 +1,5 @@
 package com.teobaranga.monica.dashboard
 
-import DashboardNavGraph
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -36,24 +35,22 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.generated.destinations.ContactDetailDestination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
+import com.teobaranga.monica.contacts.detail.ContactDetailRoute
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.ui.navigation.LocalNavigator
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.flow.flowOf
 
-@Destination<DashboardNavGraph>(start = true)
 @Composable
 internal fun Dashboard(
-    navigator: DestinationsNavigator,
     viewModel: DashboardViewModel = injectedViewModel(),
 ) {
+    val navigator = LocalNavigator.current
     val userUiState by viewModel.userUiState.collectAsStateWithLifecycle()
     val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
     DashboardScreen(
@@ -89,7 +86,7 @@ internal fun Dashboard(
         userUiState = userUiState,
         recentContacts = recentContacts,
         onContactSelect = { contactId ->
-            navigator.navigate(ContactDetailDestination(contactId))
+            navigator.navigate(ContactDetailRoute(contactId))
         },
     )
 }

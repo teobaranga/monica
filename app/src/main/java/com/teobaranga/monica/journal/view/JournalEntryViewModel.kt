@@ -1,7 +1,9 @@
 package com.teobaranga.monica.journal.view
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.journal.data.JournalRepository
@@ -20,16 +22,18 @@ import java.time.LocalDate
 @ContributesViewModel(AppScope::class)
 class JournalEntryViewModel internal constructor(
     @Assisted
-    private val entryId: Int?,
+    private val savedStateHandle: SavedStateHandle,
     private val dispatcher: Dispatcher,
     private val journalRepository: JournalRepository,
 ) : ViewModel() {
 
+    val journalEntryRoute = savedStateHandle.toRoute<JournalEntryRoute>()
+
     val uiState = flow<JournalEntryUiState> {
-        val entry = if (entryId == null) {
+        val entry = if (journalEntryRoute.entryId == null) {
             null
         } else {
-            journalRepository.getJournalEntry(entryId).firstOrNull()
+            journalRepository.getJournalEntry(journalEntryRoute.entryId).firstOrNull()
         }
         val uiState = if (entry == null) {
             getEmptyState()
@@ -52,7 +56,7 @@ class JournalEntryViewModel internal constructor(
         viewModelScope.launch(dispatcher.io) {
             val uiState = getLoadedState() ?: return@launch
             journalRepository.upsertJournalEntry(
-                entryId = entryId,
+                entryId = journalEntryRoute.entryId,
                 title = uiState.title.text.toString().takeUnless { it.isBlank() },
                 post = uiState.post.text.toString(),
                 date = uiState.date,
@@ -61,11 +65,11 @@ class JournalEntryViewModel internal constructor(
     }
 
     fun onDelete() {
-        if (entryId == null) {
+        if (journalEntryRoute.entryId == null) {
             return
         }
         viewModelScope.launch(dispatcher.io) {
-            journalRepository.deleteJournalEntry(entryId)
+            journalRepository.deleteJournalEntry(journalEntryRoute.entryId)
         }
     }
 

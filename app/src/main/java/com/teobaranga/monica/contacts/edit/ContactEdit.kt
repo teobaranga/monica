@@ -1,27 +1,17 @@
 package com.teobaranga.monica.contacts.edit
 
-import ContactsNavGraph
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
+import com.teobaranga.monica.ui.navigation.LocalNavigator
 
-data class ContactEditNavArgs(
-    val contactId: Int? = null,
-    val contactName: String? = null,
-)
-
-@Destination<ContactsNavGraph>(
-    navArgs = ContactEditNavArgs::class,
-)
 @Composable
 internal fun ContactEdit(
-    navigator: DestinationsNavigator,
     viewModel: ContactEditViewModel = injectedViewModel(),
 ) {
+    val navigator = LocalNavigator.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     ContactEditScreen(
         uiState = uiState,

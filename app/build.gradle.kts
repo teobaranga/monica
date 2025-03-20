@@ -97,8 +97,7 @@ dependencies {
 
     implementation(libs.coil)
 
-    implementation(libs.compose.destinations.core)
-    ksp(libs.compose.destinations.ksp)
+    implementation(libs.jetbrains.navigation)
 
     implementation(libs.datastore.preferences)
 

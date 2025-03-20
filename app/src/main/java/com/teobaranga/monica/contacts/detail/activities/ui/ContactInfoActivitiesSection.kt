@@ -14,11 +14,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ramcosta.composedestinations.generated.destinations.EditContactActivityDestination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
+import com.teobaranga.monica.contacts.detail.activities.edit.ui.ContactActivityEditRoute
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoSection
 import com.teobaranga.monica.ui.Zero
+import com.teobaranga.monica.ui.navigation.LocalNavigator
 
 data class ContactInfoActivitiesSection(
     private val contactId: Int,
@@ -27,7 +27,8 @@ data class ContactInfoActivitiesSection(
     override val title: String = "Activities"
 
     @Composable
-    override fun Content(modifier: Modifier, navigator: DestinationsNavigator) {
+    override fun Content(modifier: Modifier) {
+        val navigator = LocalNavigator.current
         val viewModel = injectedViewModel<ContactActivitiesViewModel, ContactActivitiesViewModelFactory>(
             creationCallback = { factory ->
                 factory(contactId)
@@ -42,7 +43,7 @@ data class ContactInfoActivitiesSection(
                         modifier = Modifier
                             .navigationBarsPadding(),
                         onClick = {
-                            navigator.navigate(EditContactActivityDestination(contactId = contactId, activityId = null))
+                            navigator.navigate(ContactActivityEditRoute(contactId = contactId, activityId = null))
                         },
                     ) {
                         Icon(
@@ -78,7 +79,7 @@ data class ContactInfoActivitiesSection(
                             uiState = activitiesUiState as ContactActivitiesUiState.Loaded,
                             onActivityClick = { activityId ->
                                 navigator.navigate(
-                                    EditContactActivityDestination(
+                                    ContactActivityEditRoute(
                                         contactId = contactId,
                                         activityId = activityId,
                                     ),

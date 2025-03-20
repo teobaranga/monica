@@ -1,8 +1,8 @@
 package com.teobaranga.monica.ui.navigation
 
 import androidx.compose.runtime.compositionLocalOf
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import androidx.navigation.NavHostController
 
-val LocalDestinationsNavigator = compositionLocalOf<DestinationsNavigator> {
+val LocalNavigator = compositionLocalOf<NavHostController> {
     error("No navigator provided")
 }

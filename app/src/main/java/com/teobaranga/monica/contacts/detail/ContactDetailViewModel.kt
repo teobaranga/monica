@@ -1,7 +1,9 @@
 package com.teobaranga.monica.contacts.detail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.contacts.data.ContactRepository
@@ -27,14 +29,16 @@ import kotlin.time.Duration.Companion.seconds
 class ContactDetailViewModel internal constructor(
     contactRepository: ContactRepository,
     @Assisted
-    private val contactId: Int,
+    private val savedStateHandle: SavedStateHandle,
     private val genderRepository: GenderRepository,
 ) : ViewModel() {
+
+    private val contactDetailRoute = savedStateHandle.toRoute<ContactDetailRoute>()
 
     private val _effects = MutableSharedFlow<ContactDetailEffect>()
     val effects = _effects.asSharedFlow()
 
-    val contact = contactRepository.getContact(contactId)
+    val contact = contactRepository.getContact(contactDetailRoute.contactId)
         .catch {
             // TODO this is not great, better handle when a contact is deleted
             System.err.println(it)
@@ -42,12 +46,12 @@ class ContactDetailViewModel internal constructor(
         }
         .mapLatest { contact ->
             ContactDetail(
-                id = contactId,
+                id = contactDetailRoute.contactId,
                 fullName = contact.getTitleName(),
                 infoSections = listOf(
                     ContactInfoBioSection(
                         userAvatar = UserAvatar(
-                            contactId = contactId,
+                            contactId = contactDetailRoute.contactId,
                             initials = contact.initials,
                             color = contact.avatar.color,
                             avatarUrl = contact.avatar.url,
@@ -63,7 +67,7 @@ class ContactDetailViewModel internal constructor(
                         birthday = contact.birthdate?.toUiBirthday(),
                         gender = contact.genderId?.let { genderRepository.getById(it) }?.name,
                     ),
-                    ContactInfoActivitiesSection(contactId),
+                    ContactInfoActivitiesSection(contactDetailRoute.contactId),
                     ContactInfoContactSection,
                     ContactInfoRelationshipsSection,
                 ),
