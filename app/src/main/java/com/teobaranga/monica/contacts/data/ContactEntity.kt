@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.teobaranga.monica.contacts.list.model.Contact
 import com.teobaranga.monica.contacts.list.userAvatar
-import com.teobaranga.monica.data.sync.SyncStatus
+import com.teobaranga.monica.core.data.sync.SyncStatus
 import java.time.OffsetDateTime
 
 @Entity(tableName = "contacts")

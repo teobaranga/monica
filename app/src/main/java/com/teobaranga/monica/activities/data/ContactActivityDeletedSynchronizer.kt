@@ -4,10 +4,10 @@ import com.skydoves.sandwich.retrofit.serialization.deserializeErrorBody
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
 import com.teobaranga.monica.contacts.data.ContactApi
-import com.teobaranga.monica.data.common.DeleteResponse
-import com.teobaranga.monica.data.common.ERROR_CODE_DATA_UNAVAILABLE
-import com.teobaranga.monica.data.common.ErrorResponse
-import com.teobaranga.monica.data.sync.SyncStatus
+import com.teobaranga.monica.core.data.DeleteResponse
+import com.teobaranga.monica.core.data.ERROR_CODE_DATA_UNAVAILABLE
+import com.teobaranga.monica.core.data.ErrorResponse
+import com.teobaranga.monica.core.data.sync.SyncStatus
 import kotlinx.serialization.SerializationException
 import me.tatarka.inject.annotations.Inject
 import timber.log.Timber
