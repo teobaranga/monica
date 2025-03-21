@@ -1,7 +1,5 @@
 package com.teobaranga.monica.contacts.detail.activities.edit.ui
 
-import ContactsNavGraph
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -28,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -39,14 +36,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.ui.FabHeight
 import com.teobaranga.monica.ui.FabPadding
 import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.button.DateButton
-import com.teobaranga.monica.ui.navigation.LocalDestinationsNavigator
+import com.teobaranga.monica.ui.navigation.LocalNavigator
 import com.teobaranga.monica.ui.text.MonicaTextField
 import com.teobaranga.monica.ui.text.MonicaTextFieldDefaults
 import com.teobaranga.monica.ui.text.startVerticalLineShape
@@ -59,43 +54,28 @@ import com.teobaranga.monica.util.compose.rememberCursorData
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination<ContactsNavGraph>
 @Composable
 internal fun EditContactActivity(
-    navigator: DestinationsNavigator,
-    contactId: Int,
-    activityId: Int?,
-    viewModel: EditContactActivityViewModel =
-        injectedViewModel<EditContactActivityViewModel, EditContactActivityViewModelFactory>(
-            creationCallback = { factory ->
-                factory(contactId, activityId)
-            },
-        ),
+    viewModel: EditContactActivityViewModel = injectedViewModel<EditContactActivityViewModel>(),
 ) {
-    CompositionLocalProvider(
-        LocalDestinationsNavigator provides navigator,
-    ) {
-        val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        EditContactActivity(
-            uiState = uiState,
-            topAppBar = { topAppBarScrollBehaviour ->
-                EditContactActivityTopAppBar(
-                    isEdit = activityId != null,
-                    onBack = {
-                        onBackPressedDispatcher?.onBackPressed()
-                    },
-                    onDelete = {
-                        viewModel.onDelete()
-                        navigator.popBackStack()
-                    },
-                    scrollBehavior = topAppBarScrollBehaviour,
-                )
-            },
-            onSave = viewModel::onSave,
-            onBack = navigator::popBackStack,
-        )
-    }
+    val navigator = LocalNavigator.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    EditContactActivity(
+        uiState = uiState,
+        topAppBar = { topAppBarScrollBehaviour ->
+            EditContactActivityTopAppBar(
+                isEdit = viewModel.contactActivityEditRoute.activityId != null,
+                onBack = navigator::popBackStack,
+                onDelete = {
+                    viewModel.onDelete()
+                    navigator.popBackStack()
+                },
+                scrollBehavior = topAppBarScrollBehaviour,
+            )
+        },
+        onSave = viewModel::onSave,
+        onBack = navigator::popBackStack,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -44,9 +44,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
+import com.teobaranga.monica.contacts.edit.ContactEditRoute
 import com.teobaranga.monica.ui.avatar.UserAvatar
-import com.teobaranga.monica.ui.navigation.LocalDestinationsNavigator
+import com.teobaranga.monica.ui.navigation.LocalNavigator
 import com.teobaranga.monica.ui.text.MonicaTextField
 import com.teobaranga.monica.ui.text.MonicaTextFieldDefaults
 import com.teobaranga.monica.ui.text.startVerticalLineShape
@@ -142,14 +142,14 @@ private fun ParticipantDropdownMenu(
                     }
 
                     is ActivityParticipant.New -> {
-                        val navigator = LocalDestinationsNavigator.current
+                        val navigator = LocalNavigator.current
                         DropdownMenuItem(
                             text = {
                                 Text(text = "Add \"${result.name}\"")
                             },
                             onClick = {
                                 // Keep the dropdown open
-                                navigator.navigate(ContactEditDestination(contactName = result.name))
+                                navigator.navigate(ContactEditRoute(contactName = result.name))
                             },
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                         )

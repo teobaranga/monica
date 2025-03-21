@@ -1,6 +1,5 @@
 package com.teobaranga.monica.journal.list
 
-import JournalNavGraph
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -15,21 +14,19 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.generated.destinations.JournalEntryDestination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.journal.list.ui.JournalEntryListScreen
+import com.teobaranga.monica.journal.view.JournalEntryRoute
 import com.teobaranga.monica.ui.MonicaSearchBar
 import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.ui.navigation.LocalNavigator
 
-@Destination<JournalNavGraph>(start = true)
 @Composable
 internal fun JournalEntryList(
-    navigator: DestinationsNavigator,
     viewModel: JournalEntryListViewModel = injectedViewModel(),
 ) {
+    val navigator = LocalNavigator.current
     val lazyItems = viewModel.items.collectAsLazyPagingItems()
     val refreshState by viewModel.refreshState.collectAsStateWithLifecycle()
     JournalEntryListScreen(
@@ -71,10 +68,10 @@ internal fun JournalEntryList(
         lazyItems = lazyItems,
         refreshState = refreshState,
         onEntryClick = { id ->
-            navigator.navigate(JournalEntryDestination(id))
+            navigator.navigate(JournalEntryRoute(id))
         },
         onEntryAdd = {
-            navigator.navigate(JournalEntryDestination())
+            navigator.navigate(JournalEntryRoute())
         },
     )
 }

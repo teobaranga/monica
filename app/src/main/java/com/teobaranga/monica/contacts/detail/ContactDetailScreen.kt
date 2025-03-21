@@ -1,6 +1,5 @@
 package com.teobaranga.monica.contacts.detail
 
-import ContactsNavGraph
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -28,34 +27,23 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.generated.destinations.ContactEditDestination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
+import com.teobaranga.monica.contacts.edit.ContactEditRoute
 import com.teobaranga.monica.ui.PreviewPixel4
 import com.teobaranga.monica.ui.Zero
 import com.teobaranga.monica.ui.avatar.UserAvatar
-import com.teobaranga.monica.ui.navigation.FadeDestinationStyle
+import com.teobaranga.monica.ui.navigation.LocalNavigator
 import com.teobaranga.monica.ui.theme.MonicaTheme
 import kotlinx.coroutines.launch
 
-@Destination<ContactsNavGraph>(
-    style = FadeDestinationStyle::class,
-)
 @Composable
 internal fun ContactDetail(
-    navigator: DestinationsNavigator,
-    contactId: Int,
-    viewModel: ContactDetailViewModel = injectedViewModel<ContactDetailViewModel, ContactDetailViewModelFactory>(
-        creationCallback = { factory ->
-            factory(contactId)
-        },
-    ),
+    viewModel: ContactDetailViewModel = injectedViewModel<ContactDetailViewModel>(),
 ) {
+    val navigator = LocalNavigator.current
     val contactDetail by viewModel.contact.collectAsStateWithLifecycle()
     LaunchedEffect(viewModel.effects) {
         viewModel.effects.collect { effect ->
@@ -78,7 +66,6 @@ internal fun ContactDetail(
             else -> {
                 ContactDetailScreen(
                     contactDetail = contactDetail,
-                    navigator = navigator,
                 )
             }
         }
@@ -87,7 +74,8 @@ internal fun ContactDetail(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ContactDetailScreen(contactDetail: ContactDetail, navigator: DestinationsNavigator) {
+private fun ContactDetailScreen(contactDetail: ContactDetail) {
+    val navigator = LocalNavigator.current
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -109,7 +97,7 @@ private fun ContactDetailScreen(contactDetail: ContactDetail, navigator: Destina
                 actions = {
                     IconButton(
                         onClick = {
-                            navigator.navigate(ContactEditDestination(contactDetail.id))
+                            navigator.navigate(ContactEditRoute(contactDetail.id))
                         },
                     ) {
                         Icon(
@@ -157,7 +145,6 @@ private fun ContactDetailScreen(contactDetail: ContactDetail, navigator: Destina
                 val contactInfoSection = contactDetail.infoSections[page]
                 contactInfoSection.Content(
                     modifier = Modifier,
-                    navigator = navigator,
                 )
             }
         }
@@ -204,7 +191,6 @@ private fun PreviewContactDetailScreen() {
                     ContactInfoRelationshipsSection,
                 ),
             ),
-            navigator = EmptyDestinationsNavigator,
         )
     }
 }
