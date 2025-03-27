@@ -9,8 +9,8 @@ import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.data.ContactSynchronizer
 import com.teobaranga.monica.contacts.data.toExternalModel
+import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.data.sync.Synchronizer
 import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.user.userAvatar
