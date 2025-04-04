@@ -11,9 +11,9 @@ import com.teobaranga.monica.contacts.data.ContactSynchronizer
 import com.teobaranga.monica.contacts.data.toExternalModel
 import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.data.user.UserRepository
-import com.teobaranga.monica.ui.pulltorefresh.MonicaPullToRefreshState
-import com.teobaranga.monica.user.userAvatar
+import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshState
+import com.teobaranga.monica.user.data.local.IUserRepository
+import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
@@ -30,14 +30,14 @@ private const val PAGE_SIZE = 15
 @ContributesViewModel(AppScope::class)
 class ContactsViewModel internal constructor(
     private val dispatcher: Dispatcher,
-    userRepository: UserRepository,
+    userRepository: IUserRepository,
     contactRepository: ContactRepository,
     private val contactSynchronizer: ContactSynchronizer,
 ) : ViewModel() {
 
     val userAvatar = userRepository.me
         .mapLatest { me ->
-            me.contact?.avatar ?: me.userAvatar
+            me.contact?.avatar ?: UserAvatar.default(me.firstName)
         }
         .stateIn(
             scope = viewModelScope,

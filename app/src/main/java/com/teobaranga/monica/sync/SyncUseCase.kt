@@ -4,9 +4,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.work.ListenableWorker
 import com.teobaranga.monica.core.account.AccountListener
-import com.teobaranga.monica.data.user.UserRepository
 import com.teobaranga.monica.genders.data.GenderRepository
-import com.teobaranga.monica.settings.getTokenStorage
+import com.teobaranga.monica.account.settings.getTokenStorage
+import com.teobaranga.monica.user.data.local.IUserRepository
 import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Inject
 import timber.log.Timber
@@ -14,7 +14,7 @@ import timber.log.Timber
 @Inject
 internal class SyncUseCase(
     private val dataStore: DataStore<Preferences>,
-    private val userRepository: UserRepository,
+    private val userRepository: IUserRepository,
     private val genderRepository: GenderRepository,
     private val accountListeners: Set<AccountListener>,
 ) {

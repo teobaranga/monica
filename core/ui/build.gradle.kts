@@ -6,3 +6,10 @@ plugins {
 android {
     namespace = "com.teobaranga.monica.core.ui"
 }
+
+dependencies {
+    implementation(libs.activity.compose)
+    implementation(libs.androidx.compose.material.icons)
+
+    implementation(libs.jetbrains.navigation)
+}

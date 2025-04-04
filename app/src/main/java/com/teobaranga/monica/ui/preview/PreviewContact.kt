@@ -1,7 +1,7 @@
 package com.teobaranga.monica.ui.preview
 
-import com.teobaranga.monica.contacts.list.model.Contact
-import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.contact.Contact
+import com.teobaranga.monica.useravatar.UserAvatar
 
 internal val contactAlice = Contact(
     id = 1,

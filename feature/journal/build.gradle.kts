@@ -1,5 +1,8 @@
+import com.teobaranga.monica.implementation
+
 plugins {
     alias(libs.plugins.monica.android.feature)
+    alias(libs.plugins.monica.android.compose)
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
     alias(libs.plugins.ksp)
@@ -14,6 +17,10 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:dispatcher"))
     implementation(project(":core:inject"))
+    implementation(project(":core:ui"))
+    implementation(project(":component:user_avatar"))
+    implementation(project(":feature:account"))
+    implementation(project(":feature:user-api"))
 
     // Storage
     implementation(libs.room.runtime)
@@ -22,5 +29,7 @@ dependencies {
 
     implementation(libs.timber)
 
-    implementation(libs.paging.common)
+    implementation(libs.paging.compose)
+
+    implementation(libs.jetbrains.navigation)
 }

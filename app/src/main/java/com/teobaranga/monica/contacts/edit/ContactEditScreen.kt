@@ -36,10 +36,10 @@ import com.teobaranga.monica.contacts.edit.birthday.BirthdaySection
 import com.teobaranga.monica.contacts.edit.gender.GenderSection
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
-import com.teobaranga.monica.ui.PreviewPixel4
-import com.teobaranga.monica.ui.Zero
-import com.teobaranga.monica.ui.text.MonicaTextField
-import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.core.ui.Zero
+import com.teobaranga.monica.core.ui.preview.PreviewPixel4
+import com.teobaranga.monica.core.ui.text.MonicaTextField
+import com.teobaranga.monica.core.ui.theme.MonicaTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

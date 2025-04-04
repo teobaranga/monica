@@ -2,7 +2,7 @@ package com.teobaranga.monica.data
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.teobaranga.monica.settings.getTokenStorage
+import com.teobaranga.monica.account.settings.getTokenStorage
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import me.tatarka.inject.annotations.Inject

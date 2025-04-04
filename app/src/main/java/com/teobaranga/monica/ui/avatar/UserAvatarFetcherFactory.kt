@@ -8,6 +8,7 @@ import coil.fetch.Fetcher
 import coil.fetch.SourceResult
 import coil.request.Options
 import com.teobaranga.monica.contacts.data.ContactRepository
+import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Inject
 import okio.Buffer
