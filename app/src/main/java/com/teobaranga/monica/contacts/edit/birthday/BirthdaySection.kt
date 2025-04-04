@@ -17,8 +17,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.ui.Birthday
-import com.teobaranga.monica.ui.datetime.rememberLocalizedDateFormatter
-import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
+import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import java.time.MonthDay
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter

@@ -5,7 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
-import com.teobaranga.monica.ui.navigation.LocalNavigator
+import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 
 @Composable
 internal fun ContactEdit(

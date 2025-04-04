@@ -1,6 +1,6 @@
 package com.teobaranga.monica.contacts.detail.activities.edit.ui
 
-import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.useravatar.UserAvatar
 
 sealed interface ActivityParticipant {
 

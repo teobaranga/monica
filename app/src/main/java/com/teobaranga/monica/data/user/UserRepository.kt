@@ -3,21 +3,25 @@ package com.teobaranga.monica.data.user
 import com.skydoves.sandwich.getOrNull
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.data.toExternalModel
+import com.teobaranga.monica.user.data.local.IUserRepository
+import com.teobaranga.monica.user.data.local.Me
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.mapLatest
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@SingleIn(AppScope::class)
 @Inject
-internal class UserRepository(
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class UserRepository(
     private val userApi: UserApi,
     private val userDao: UserDao,
     private val contactRepository: ContactRepository,
-) {
+): IUserRepository {
 
-    val me = userDao.getMe()
+    override val me = userDao.getMe()
         .filterNotNull()
         .mapLatest { meFullDetails ->
             Me(
@@ -26,7 +30,7 @@ internal class UserRepository(
             )
         }
 
-    suspend fun sync() {
+    override suspend fun sync() {
         val meResponse = userApi.getMe().getOrNull()
         if (meResponse != null) {
             val contactId = meResponse.data.contact?.id

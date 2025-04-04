@@ -1,7 +1,7 @@
 package com.teobaranga.monica.contacts.list
 
 import com.teobaranga.monica.contacts.data.ContactEntity
-import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.useravatar.UserAvatar
 
 val ContactEntity.userAvatar: UserAvatar
     get() = UserAvatar(

@@ -12,7 +12,7 @@ import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
 import com.teobaranga.monica.genders.data.GenderRepository
-import com.teobaranga.monica.ui.avatar.UserAvatar
+import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow

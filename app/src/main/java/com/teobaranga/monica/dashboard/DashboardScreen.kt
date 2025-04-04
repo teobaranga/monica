@@ -37,13 +37,13 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
+import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contacts.detail.ContactDetailRoute
-import com.teobaranga.monica.contacts.list.model.Contact
-import com.teobaranga.monica.ui.MonicaSearchBar
-import com.teobaranga.monica.ui.PreviewPixel4
-import com.teobaranga.monica.ui.avatar.UserAvatar
-import com.teobaranga.monica.ui.navigation.LocalNavigator
-import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import com.teobaranga.monica.core.ui.preview.PreviewPixel4
+import com.teobaranga.monica.core.ui.searchbar.MonicaSearchBar
+import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.flow.flowOf
 
 @Composable

@@ -2,6 +2,7 @@ package com.teobaranga.monica.data
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.teobaranga.monica.configuration.domain.ConfigurationDataStore
 import com.teobaranga.monica.configuration.domain.ConfigurationItem.ShouldClearDatabaseOnNextLaunch
 import com.teobaranga.monica.core.inject.ApplicationContext
@@ -29,4 +30,8 @@ interface DatabaseComponent {
         return Room.databaseBuilder(context, MonicaDatabase::class.java, "monica")
             .build()
     }
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun providesRooomDatabase(database: MonicaDatabase): RoomDatabase = database
 }

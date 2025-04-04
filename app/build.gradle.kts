@@ -79,11 +79,19 @@ googleServices {
 }
 
 dependencies {
-    implementation(project(":core:ui"))
+    implementation(project(":core:account"))
+    implementation(project(":core:data"))
     implementation(project(":core:dispatcher"))
     implementation(project(":core:inject"))
+    implementation(project(":core:ui"))
+    implementation(project(":component:user_avatar"))
+    implementation(project(":feature:account"))
     implementation(project(":feature:configuration"))
+    implementation(project(":feature:contact-api"))
     implementation(project(":feature:genders"))
+    implementation(project(":feature:journal"))
+    implementation(project(":feature:user"))
+    implementation(project(":feature:user-api"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.compose)

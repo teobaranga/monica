@@ -36,7 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.teobaranga.monica.contacts.ui.Birthday
-import com.teobaranga.monica.ui.text.MonicaTextField
+import com.teobaranga.monica.core.ui.text.MonicaTextField
 import java.time.Month
 import java.time.format.TextStyle
 

@@ -37,20 +37,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
-import com.teobaranga.monica.ui.FabHeight
-import com.teobaranga.monica.ui.FabPadding
-import com.teobaranga.monica.ui.Zero
-import com.teobaranga.monica.ui.button.DateButton
-import com.teobaranga.monica.ui.navigation.LocalNavigator
-import com.teobaranga.monica.ui.text.MonicaTextField
-import com.teobaranga.monica.ui.text.MonicaTextFieldDefaults
-import com.teobaranga.monica.ui.text.startVerticalLineShape
-import com.teobaranga.monica.ui.theme.MonicaTheme
-import com.teobaranga.monica.util.compose.CursorData
-import com.teobaranga.monica.util.compose.CursorVisibilityStrategy
-import com.teobaranga.monica.util.compose.debounce
-import com.teobaranga.monica.util.compose.keepCursorVisible
-import com.teobaranga.monica.util.compose.rememberCursorData
+import com.teobaranga.monica.core.ui.FabHeight
+import com.teobaranga.monica.core.ui.FabPadding
+import com.teobaranga.monica.core.ui.Zero
+import com.teobaranga.monica.core.ui.button.DateButton
+import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import com.teobaranga.monica.core.ui.text.MonicaTextField
+import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
+import com.teobaranga.monica.core.ui.text.startVerticalLineShape
+import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import com.teobaranga.monica.core.ui.util.CursorData
+import com.teobaranga.monica.core.ui.util.CursorVisibilityStrategy
+import com.teobaranga.monica.core.ui.util.debounce
+import com.teobaranga.monica.core.ui.util.keepCursorVisible
+import com.teobaranga.monica.core.ui.util.rememberCursorData
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)

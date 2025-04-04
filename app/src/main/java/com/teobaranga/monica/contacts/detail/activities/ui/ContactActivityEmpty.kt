@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.R
-import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.core.ui.theme.MonicaTheme
 
 @Composable
 internal fun ContactActivityEmpty(modifier: Modifier = Modifier) {

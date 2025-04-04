@@ -21,7 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.ui.Birthday
-import com.teobaranga.monica.ui.text.MonicaTextField
+import com.teobaranga.monica.core.ui.text.MonicaTextField
 
 @Composable
 internal fun AgeBasedBirthday(uiState: BirthdayPickerUiState, modifier: Modifier = Modifier) {

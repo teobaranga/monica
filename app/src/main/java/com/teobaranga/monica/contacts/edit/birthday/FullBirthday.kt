@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.ui.Birthday
-import com.teobaranga.monica.ui.button.DateButton
+import com.teobaranga.monica.core.ui.button.DateButton
 
 @Composable
 internal fun FullBirthday(uiState: BirthdayPickerUiState, modifier: Modifier = Modifier) {

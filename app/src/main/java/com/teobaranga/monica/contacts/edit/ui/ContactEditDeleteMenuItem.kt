@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.teobaranga.monica.ui.OverflowMenuScope
+import com.teobaranga.monica.core.ui.OverflowMenuScope
 
 @Composable
 internal fun OverflowMenuScope.ContactEditDeleteMenuItem(onDelete: () -> Unit, modifier: Modifier = Modifier) {

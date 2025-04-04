@@ -10,7 +10,7 @@ import com.teobaranga.monica.data.PARAM_REDIRECT_URI
 import com.teobaranga.monica.data.PARAM_RESPONSE_TYPE
 import com.teobaranga.monica.data.REDIRECT_URI
 import com.teobaranga.monica.data.user.MeEntity
-import com.teobaranga.monica.settings.tokenStorage
+import com.teobaranga.monica.account.settings.tokenStorage
 import io.kotest.common.KotestInternal
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec

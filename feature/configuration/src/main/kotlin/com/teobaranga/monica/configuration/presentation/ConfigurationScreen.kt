@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
-import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.core.ui.theme.MonicaTheme
 
 @Composable
 internal fun ConfigurationScreen(

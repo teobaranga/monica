@@ -22,8 +22,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
+import com.teobaranga.monica.core.ui.text.MonicaTextField
 import com.teobaranga.monica.genders.domain.Gender
-import com.teobaranga.monica.ui.text.MonicaTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
