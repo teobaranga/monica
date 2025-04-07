@@ -10,7 +10,7 @@ android {
 dependencies {
     implementation(project(":core:ui"))
 
-    implementation(libs.coil)
+    implementation(libs.coil.compose)
 
     implementation(libs.material.kolor)
 }
