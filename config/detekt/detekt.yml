@@ -52,11 +52,11 @@ console-reports:
 output-reports:
   active: true
   exclude:
-  # - 'TxtOutputReport'
-  # - 'XmlOutputReport'
+   - 'TxtOutputReport'
+   - 'XmlOutputReport'
+   - 'SarifOutputReport'
   # - 'HtmlOutputReport'
   # - 'MdOutputReport'
-  # - 'SarifOutputReport'
 
 comments:
   active: true
@@ -919,3 +919,4 @@ Compose:
     active: true
     # -- You can optionally add your own ViewModel factories here
     # viewModelFactories: hiltViewModel,potatoViewModel
+    viewModelFactories: injectedViewModel
