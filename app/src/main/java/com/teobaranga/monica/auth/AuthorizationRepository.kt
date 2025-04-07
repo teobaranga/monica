@@ -17,6 +17,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import timber.log.Timber
+import kotlin.time.Duration.Companion.seconds
 
 interface AuthorizationRepository {
 
@@ -49,7 +50,7 @@ class MonicaAuthorizationRepository(
         }
         .stateIn(
             scope = scope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
             initialValue = null,
         )
 }
