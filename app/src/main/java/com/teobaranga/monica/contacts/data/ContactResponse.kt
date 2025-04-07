@@ -1,6 +1,6 @@
 package com.teobaranga.monica.contacts.data
 
-import com.teobaranga.monica.data.adapter.OffsetDateTimeAsString
+import com.teobaranga.monica.core.data.adapter.OffsetDateTimeAsString
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

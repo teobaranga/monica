@@ -33,14 +33,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contacts.ContactsRoute
+import com.teobaranga.monica.core.ui.Zero
+import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import com.teobaranga.monica.core.ui.preview.PreviewPixel4
+import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.dashboard.DashboardRoute
-import com.teobaranga.monica.journal.JournalEntriesRoute
+import com.teobaranga.monica.journal.list.JournalEntriesRoute
 import com.teobaranga.monica.setup.SetupRoute
-import com.teobaranga.monica.ui.PreviewPixel4
-import com.teobaranga.monica.ui.Zero
-import com.teobaranga.monica.ui.navigation.LocalNavigator
 import com.teobaranga.monica.ui.navigation.TopLevelRoute
-import com.teobaranga.monica.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.thenIf
 
 val topLevelRoutes = listOf(

@@ -5,7 +5,7 @@ import com.teobaranga.monica.MONICA_URL
 import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.data.photo.PhotoApi
 import com.teobaranga.monica.data.user.UserApi
-import com.teobaranga.monica.journal.data.JournalApi
+import com.teobaranga.monica.journal.data.remote.JournalApi
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Provides
 import okhttp3.Interceptor

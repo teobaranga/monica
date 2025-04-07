@@ -2,8 +2,8 @@ package com.teobaranga.monica.contacts.detail.activities.ui
 
 import androidx.compose.runtime.Immutable
 import com.teobaranga.monica.activities.data.ContactActivityWithParticipants
+import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contacts.data.toExternalModel
-import com.teobaranga.monica.contacts.list.model.Contact
 import java.time.LocalDate
 import kotlin.uuid.Uuid
 

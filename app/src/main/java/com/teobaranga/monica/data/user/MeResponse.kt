@@ -1,7 +1,7 @@
 package com.teobaranga.monica.data.user
 
 import com.teobaranga.monica.contacts.data.ContactResponse
-import com.teobaranga.monica.data.adapter.OffsetDateTimeAsString
+import com.teobaranga.monica.core.data.adapter.OffsetDateTimeAsString
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

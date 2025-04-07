@@ -3,6 +3,7 @@ package com.teobaranga.monica.ui.datetime
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runAndroidComposeUiTest
+import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

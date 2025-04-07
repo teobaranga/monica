@@ -5,7 +5,7 @@ import androidx.room.Query
 import androidx.room.RewriteQueriesToDropUnusedColumns
 import androidx.room.Transaction
 import androidx.room.Upsert
-import com.teobaranga.monica.data.sync.SyncStatus
+import com.teobaranga.monica.core.data.sync.SyncStatus
 import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.Uuid
 

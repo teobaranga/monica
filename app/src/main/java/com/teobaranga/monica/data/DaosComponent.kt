@@ -21,7 +21,7 @@ import com.teobaranga.monica.contacts.data.ContactDao
 import com.teobaranga.monica.data.photo.PhotoDao
 import com.teobaranga.monica.data.user.UserDao
 import com.teobaranga.monica.genders.data.GendersDao
-import com.teobaranga.monica.journal.database.JournalDao
+import com.teobaranga.monica.journal.data.local.JournalDao
 import me.tatarka.inject.annotations.Provides
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo

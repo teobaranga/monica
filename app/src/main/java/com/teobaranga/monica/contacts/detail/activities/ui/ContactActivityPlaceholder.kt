@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.eygraber.compose.placeholder.PlaceholderHighlight
 import com.eygraber.compose.placeholder.material3.fade
 import com.eygraber.compose.placeholder.material3.placeholder
-import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.core.ui.theme.MonicaTheme
 
 @Composable
 internal fun ContactActivityPlaceholder(modifier: Modifier = Modifier) {

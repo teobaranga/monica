@@ -17,8 +17,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contacts.detail.activities.edit.ui.ContactActivityEditRoute
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoSection
-import com.teobaranga.monica.ui.Zero
-import com.teobaranga.monica.ui.navigation.LocalNavigator
+import com.teobaranga.monica.core.ui.Zero
+import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 
 data class ContactInfoActivitiesSection(
     private val contactId: Int,

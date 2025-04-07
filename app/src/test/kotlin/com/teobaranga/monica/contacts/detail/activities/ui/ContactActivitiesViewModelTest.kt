@@ -2,7 +2,7 @@ package com.teobaranga.monica.contacts.detail.activities.ui
 
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.activities.data.ContactActivitiesResponse
-import com.teobaranga.monica.data.common.MetaResponse
+import com.teobaranga.monica.core.data.remote.MetaResponse
 import io.kotest.common.KotestInternal
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec

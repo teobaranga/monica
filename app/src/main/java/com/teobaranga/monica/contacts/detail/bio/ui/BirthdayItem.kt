@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.ui.Birthday
-import com.teobaranga.monica.ui.datetime.rememberLocalizedDateFormatter
-import com.teobaranga.monica.ui.theme.MonicaTheme
+import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
+import com.teobaranga.monica.core.ui.theme.MonicaTheme
 
 @Composable
 internal fun BirthdayItem(birthday: Birthday, modifier: Modifier = Modifier) {

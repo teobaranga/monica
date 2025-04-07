@@ -45,11 +45,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.monica.contacts.edit.ContactEditRoute
-import com.teobaranga.monica.ui.avatar.UserAvatar
-import com.teobaranga.monica.ui.navigation.LocalNavigator
-import com.teobaranga.monica.ui.text.MonicaTextField
-import com.teobaranga.monica.ui.text.MonicaTextFieldDefaults
-import com.teobaranga.monica.ui.text.startVerticalLineShape
+import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import com.teobaranga.monica.core.ui.text.MonicaTextField
+import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
+import com.teobaranga.monica.core.ui.text.startVerticalLineShape
+import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.launch
 
 @Composable
