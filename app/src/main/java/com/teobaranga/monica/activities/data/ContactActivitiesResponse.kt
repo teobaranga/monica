@@ -1,9 +1,9 @@
 package com.teobaranga.monica.activities.data
 
 import com.teobaranga.monica.contacts.data.ContactResponse
-import com.teobaranga.monica.core.data.MetaResponse
 import com.teobaranga.monica.core.data.adapter.LocalDateAsString
 import com.teobaranga.monica.core.data.adapter.OffsetDateTimeAsString
+import com.teobaranga.monica.core.data.remote.MetaResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -2,9 +2,9 @@ package com.teobaranga.monica.auth
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.teobaranga.monica.account.settings.getTokenStorage
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.user.UserDao
-import com.teobaranga.monica.account.settings.getTokenStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.SharingStarted

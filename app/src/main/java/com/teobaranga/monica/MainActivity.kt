@@ -12,9 +12,9 @@ import androidx.navigation.compose.rememberNavController
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.LocalViewModelFactoryOwner
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOwner
 import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
-import com.teobaranga.monica.home.HomeRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import com.teobaranga.monica.home.HomeRoute
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
 class MainActivity : ComponentActivity() {

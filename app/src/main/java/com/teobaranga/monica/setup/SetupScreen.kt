@@ -43,11 +43,11 @@ import androidx.core.util.Consumer
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.R
+import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import com.teobaranga.monica.core.ui.preview.PreviewPixel4
+import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.data.PARAM_CODE
 import com.teobaranga.monica.home.HomeRoute
-import com.teobaranga.monica.core.ui.preview.PreviewPixel4
-import com.teobaranga.monica.core.ui.navigation.LocalNavigator
-import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.util.compose.keyboardAsState
 import kotlinx.coroutines.flow.collectLatest
 

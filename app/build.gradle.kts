@@ -90,7 +90,6 @@ dependencies {
     implementation(project(":feature:contact-api"))
     implementation(project(":feature:genders"))
     implementation(project(":feature:journal"))
-    implementation(project(":feature:user"))
     implementation(project(":feature:user-api"))
 
     implementation(libs.core.ktx)
@@ -108,8 +107,6 @@ dependencies {
     implementation(libs.jetbrains.navigation)
 
     implementation(libs.datastore.preferences)
-
-    implementation(libs.material.kolor)
 
     implementation(libs.paging.compose)
 

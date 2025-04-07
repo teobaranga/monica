@@ -3,9 +3,9 @@ package com.teobaranga.monica.sync
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.work.ListenableWorker
+import com.teobaranga.monica.account.settings.getTokenStorage
 import com.teobaranga.monica.core.account.AccountListener
 import com.teobaranga.monica.genders.data.GenderRepository
-import com.teobaranga.monica.account.settings.getTokenStorage
 import com.teobaranga.monica.user.data.local.IUserRepository
 import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Inject

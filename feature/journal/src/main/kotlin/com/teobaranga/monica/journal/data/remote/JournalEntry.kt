@@ -1,6 +1,6 @@
 package com.teobaranga.monica.journal.data.remote
 
-import com.teobaranga.monica.core.data.AccountResponse
+import com.teobaranga.monica.core.data.remote.AccountResponse
 import com.teobaranga.monica.core.data.adapter.OffsetDateTimeAsString
 import com.teobaranga.monica.core.data.adapter.UuidAsString
 import kotlinx.serialization.SerialName
