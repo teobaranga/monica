@@ -110,8 +110,6 @@ dependencies {
 
     implementation(libs.paging.compose)
 
-    debugImplementation(libs.okhttp.logging.interceptor)
-
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)

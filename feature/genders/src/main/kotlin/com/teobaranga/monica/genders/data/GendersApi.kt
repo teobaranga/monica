@@ -1,10 +1,17 @@
 package com.teobaranga.monica.genders.data
 
 import com.skydoves.sandwich.ApiResponse
-import retrofit2.http.GET
+import com.skydoves.sandwich.ktor.getApiResponse
+import io.ktor.client.HttpClient
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-interface GendersApi {
+@Inject
+@SingleIn(AppScope::class)
+class GendersApi(private val httpClient: HttpClient) {
 
-    @GET("api/genders")
-    suspend fun getGenders(): ApiResponse<GendersResponse>
+    suspend fun getGenders(): ApiResponse<GendersResponse> {
+        return httpClient.getApiResponse("api/genders")
+    }
 }

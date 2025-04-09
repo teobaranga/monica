@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.monica.android.feature)
     alias(libs.plugins.monica.android.compose)
     alias(libs.plugins.monica.kotlin.inject)
+    alias(libs.plugins.monica.network)
 }
 
 android {

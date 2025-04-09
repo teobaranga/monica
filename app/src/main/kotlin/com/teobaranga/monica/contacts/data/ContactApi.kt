@@ -1,57 +1,79 @@
 package com.teobaranga.monica.contacts.data
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.ktor.deleteApiResponse
+import com.skydoves.sandwich.ktor.getApiResponse
+import com.skydoves.sandwich.ktor.postApiResponse
+import com.skydoves.sandwich.ktor.putApiResponse
 import com.teobaranga.monica.activities.data.ContactActivitiesResponse
 import com.teobaranga.monica.activities.data.CreateActivityRequest
 import com.teobaranga.monica.activities.data.CreateActivityResponse
 import com.teobaranga.monica.core.data.remote.DeleteResponse
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
-import retrofit2.http.Query
+import io.ktor.client.HttpClient
+import io.ktor.client.request.parameter
+import io.ktor.client.request.setBody
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-interface ContactApi {
+@Inject
+@SingleIn(AppScope::class)
+class ContactApi(private val httpClient: HttpClient) {
 
-    @GET("api/contacts")
     suspend fun getContacts(
-        @Query("page") page: Int? = null,
-        @Query("sort") sort: String? = null,
-    ): ApiResponse<MultipleContactsResponse>
+        page: Int? = null,
+        sort: String? = null,
+    ): ApiResponse<MultipleContactsResponse> {
+        return httpClient.getApiResponse("api/contacts") {
+            parameter("page", page)
+            parameter("sort", sort)
+        }
+    }
 
-    @GET("api/contacts/{id}")
-    suspend fun getContact(@Path("id") id: Int): ApiResponse<SingleContactResponse>
+    suspend fun getContact(id: Int): ApiResponse<SingleContactResponse> {
+        return httpClient.getApiResponse("api/contacts/$id")
+    }
 
-    @POST("api/contacts")
-    suspend fun createContact(@Body request: CreateContactRequest): ApiResponse<SingleContactResponse>
+    suspend fun createContact(request: CreateContactRequest): ApiResponse<SingleContactResponse> {
+        return httpClient.getApiResponse("api/contacts") {
+            setBody(request)
+        }
+    }
 
-    @PUT("api/contacts/{id}")
-    suspend fun updateContact(
-        @Path("id") id: Int,
-        @Body request: CreateContactRequest,
-    ): ApiResponse<SingleContactResponse>
+    suspend fun updateContact(id: Int, request: CreateContactRequest): ApiResponse<SingleContactResponse> {
+        return httpClient.putApiResponse("api/contacts/$id") {
+            setBody(request)
+        }
+    }
 
-    @DELETE("api/contacts/{id}")
-    suspend fun deleteContact(@Path("id") id: Int): ApiResponse<DeleteResponse>
+    suspend fun deleteContact(id: Int): ApiResponse<DeleteResponse> {
+        return httpClient.deleteApiResponse("api/contacts/$id")
+    }
 
-    @GET("api/contacts/{id}/activities")
     suspend fun getContactActivities(
-        @Path("id") id: Int,
-        @Query("limit") limit: Int? = null,
-        @Query("page") page: Int? = null,
-    ): ApiResponse<ContactActivitiesResponse>
+        id: Int,
+        limit: Int? = null,
+        page: Int? = null,
+    ): ApiResponse<ContactActivitiesResponse> {
+        return httpClient.getApiResponse("api/contacts/$id/activities") {
+            parameter("limit", limit)
+            parameter("page", page)
+        }
+    }
 
-    @POST("api/activities")
-    suspend fun createActivity(@Body request: CreateActivityRequest): ApiResponse<CreateActivityResponse>
+    suspend fun createActivity(request: CreateActivityRequest): ApiResponse<CreateActivityResponse> {
+        return httpClient.postApiResponse("api/activities") {
+            setBody(request)
+        }
+    }
 
-    @PUT("api/activities/{id}")
-    suspend fun updateActivity(
-        @Path("id") id: Int,
-        @Body request: CreateActivityRequest,
-    ): ApiResponse<CreateActivityResponse>
+    suspend fun updateActivity(id: Int, request: CreateActivityRequest): ApiResponse<CreateActivityResponse> {
+        return httpClient.putApiResponse("api/activities/$id") {
+            setBody(request)
+        }
+    }
 
-    @DELETE("api/activities/{id}")
-    suspend fun deleteActivity(@Path("id") id: Int): ApiResponse<DeleteResponse>
+    suspend fun deleteActivity(id: Int): ApiResponse<DeleteResponse> {
+        return httpClient.deleteApiResponse("api/activities/$id")
+    }
 }
