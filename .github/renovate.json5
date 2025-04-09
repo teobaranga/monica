@@ -10,5 +10,14 @@
     "renovate[bot]@users.noreply.github.com",
     "github-actions[bot]@users.noreply.github.com",
     "41898282+github-actions[bot]@users.noreply.github.com"
-  ]
+  ],
+  "ignoreDeps": [
+    "monica.android.application",
+    "monica.android.feature",
+    "monica.android.library",
+    "monica.android.compose",
+    "monica.jvm.library",
+    "monica.kotlin.inject",
+    "monica.network",
+  ],
 }
