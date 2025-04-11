@@ -2,11 +2,16 @@ package com.teobaranga.monica.data
 
 import androidx.annotation.Keep
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.ktor.apiResponseOf
+import io.ktor.client.HttpClient
+import io.ktor.client.request.forms.submitForm
+import io.ktor.http.parameters
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import retrofit2.http.FieldMap
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 const val PARAM_CLIENT_ID = "client_id"
 const val PARAM_CLIENT_SECRET = "client_secret"
@@ -45,8 +50,24 @@ class TokenRequest(
 }
 
 interface MonicaApi {
+    suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse>
+}
 
-    @FormUrlEncoded
-    @POST("oauth/token")
-    suspend fun getAccessToken(@FieldMap tokenRequest: TokenRequest): ApiResponse<TokenResponse>
+@Inject
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class MonicaApiImpl(private val httpClient: HttpClient) : MonicaApi {
+
+    override suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse> {
+        return apiResponseOf {
+            httpClient.submitForm(
+                url = "oauth/token",
+                formParameters = parameters {
+                    tokenRequest.forEach { (key, value) ->
+                        append(key, value)
+                    }
+                },
+            )
+        }
+    }
 }

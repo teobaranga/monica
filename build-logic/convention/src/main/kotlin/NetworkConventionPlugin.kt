@@ -12,17 +12,19 @@ class NetworkConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
+                // Ktor for networking
+                implementation(libs.ktor.client.auth)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.okhttp)
+                implementation(libs.ktor.serialization.kotlinx.json)
+
                 // Kotlinx Serialization for JSON serialization
                 implementation(libs.kotlinx.serialization)
-                implementation(libs.retrofit.converter.kotlinx.serialization)
-
-                // Retrofit for REST API
-                implementation(libs.retrofit)
 
                 // Sandwich for a nicer way to handle network responses
                 implementation(libs.sandwich)
-                implementation(libs.sandwich.retrofit)
-                implementation(libs.sandwich.retrofit.serialization)
+                implementation(libs.sandwich.ktor)
             }
         }
     }

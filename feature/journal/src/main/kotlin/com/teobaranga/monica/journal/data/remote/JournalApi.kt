@@ -1,41 +1,51 @@
 package com.teobaranga.monica.journal.data.remote
 
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.ktor.deleteApiResponse
+import com.skydoves.sandwich.ktor.getApiResponse
+import com.skydoves.sandwich.ktor.postApiResponse
+import com.skydoves.sandwich.ktor.putApiResponse
 import com.teobaranga.monica.core.data.remote.DeleteResponse
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
-import retrofit2.http.Query
+import io.ktor.client.HttpClient
+import io.ktor.client.request.parameter
+import io.ktor.client.request.setBody
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-interface JournalApi {
+@Inject
+@SingleIn(AppScope::class)
+class JournalApi(private val httpClient: HttpClient) {
 
-    @GET("api/journal")
-    suspend fun getJournal(
-        @Query("page") page: Int? = null,
-        @Query("sort") sort: String? = null,
-    ): ApiResponse<JournalEntriesResponse>
+    suspend fun getJournal(page: Int? = null, sort: String? = null): ApiResponse<JournalEntriesResponse> {
+        return httpClient.getApiResponse("api/journal") {
+            parameter("page", page)
+            parameter("sort", sort)
+        }
+    }
 
     /**
      * Create a journal entry.
      */
-    @POST("api/journal")
-    suspend fun createJournalEntry(@Body request: JournalEntryCreateRequest): ApiResponse<JournalEntryResponse>
+    suspend fun createJournalEntry(request: JournalEntryCreateRequest): ApiResponse<JournalEntryResponse> {
+        return httpClient.postApiResponse("api/journal") {
+            setBody(request)
+        }
+    }
 
     /**
      * Update a journal entry.
      */
-    @PUT("api/journal/{id}")
-    suspend fun updateJournalEntry(
-        @Path("id") id: Int,
-        @Body request: JournalEntryCreateRequest,
-    ): ApiResponse<JournalEntryResponse>
+    suspend fun updateJournalEntry(id: Int, request: JournalEntryCreateRequest): ApiResponse<JournalEntryResponse> {
+        return httpClient.putApiResponse("api/journal/$id") {
+            setBody(request)
+        }
+    }
 
     /**
      * Delete a journal entry.
      */
-    @DELETE("api/journal/{id}")
-    suspend fun deleteJournalEntry(@Path("id") id: Int): ApiResponse<DeleteResponse>
+    suspend fun deleteJournalEntry(id: Int): ApiResponse<DeleteResponse> {
+        return httpClient.deleteApiResponse("api/journal/$id")
+    }
 }

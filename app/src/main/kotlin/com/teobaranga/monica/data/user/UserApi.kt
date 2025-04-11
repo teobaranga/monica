@@ -1,10 +1,17 @@
 package com.teobaranga.monica.data.user
 
 import com.skydoves.sandwich.ApiResponse
-import retrofit2.http.GET
+import com.skydoves.sandwich.ktor.getApiResponse
+import io.ktor.client.HttpClient
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-interface UserApi {
+@Inject
+@SingleIn(AppScope::class)
+class UserApi(private val httpClient: HttpClient) {
 
-    @GET("api/me")
-    suspend fun getMe(): ApiResponse<MeResponse>
+    suspend fun getMe(): ApiResponse<MeResponse> {
+        return httpClient.getApiResponse("api/me")
+    }
 }

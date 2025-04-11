@@ -1,14 +1,14 @@
 package com.teobaranga.monica.activities.data
 
-import com.skydoves.sandwich.retrofit.serialization.deserializeErrorBody
+import com.skydoves.sandwich.ktor.bodyString
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
 import com.teobaranga.monica.contacts.data.ContactApi
-import com.teobaranga.monica.core.data.remote.DeleteResponse
 import com.teobaranga.monica.core.data.remote.ERROR_CODE_DATA_UNAVAILABLE
 import com.teobaranga.monica.core.data.remote.ErrorResponse
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Inject
 import timber.log.Timber
 
@@ -16,6 +16,7 @@ import timber.log.Timber
 class ContactActivityDeletedSynchronizer(
     private val contactApi: ContactApi,
     private val contactActivitiesDao: ContactActivitiesDao,
+    private val json: Json,
 ) {
 
     suspend fun sync() {
@@ -30,7 +31,7 @@ class ContactActivityDeletedSynchronizer(
                     }
                     .suspendOnError {
                         val error = try {
-                            deserializeErrorBody<DeleteResponse, ErrorResponse>()?.error
+                            json.decodeFromString<ErrorResponse>(bodyString()).error
                         } catch (e: SerializationException) {
                             Timber.e(e, "Error deserializing error response for activity $activityId")
                             null

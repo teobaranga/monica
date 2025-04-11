@@ -8,7 +8,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 @Inject
 @ContributesBinding(
     scope = AppScope::class,
-    replaces = [ApiComponent::class],
+    replaces = [MonicaApiImpl::class],
 )
 class TestMonicaApi : MonicaApi {
 
