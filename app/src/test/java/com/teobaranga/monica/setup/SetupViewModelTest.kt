@@ -4,6 +4,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
+import com.diamondedge.logging.FixedLogLevel
+import com.diamondedge.logging.KmLogging
+import com.diamondedge.logging.PrintLogger
 import com.teobaranga.monica.MONICA_URL
 import com.teobaranga.monica.account.settings.tokenStorage
 import com.teobaranga.monica.data.PARAM_CLIENT_ID
@@ -148,4 +151,12 @@ class SetupViewModelTest : BehaviorSpec(
             }
         }
     },
-)
+) {
+
+    companion object {
+
+        init {
+            KmLogging.setLoggers(PrintLogger(FixedLogLevel(true)))
+        }
+    }
+}

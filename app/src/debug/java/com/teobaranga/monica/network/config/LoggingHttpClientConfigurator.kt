@@ -1,5 +1,6 @@
 package com.teobaranga.monica.network.config
 
+import com.diamondedge.logging.logging
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -8,7 +9,6 @@ import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
-import timber.log.Timber
 
 @Inject
 @SingleIn(AppScope::class)
@@ -19,10 +19,14 @@ class LoggingHttpClientConfigurator: HttpClientConfigurator {
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {
-                    Timber.d("HttpLogging: %s", message)
+                    log.d { message }
                 }
             }
             level = LogLevel.BODY
         }
+    }
+
+    companion object {
+        private val log = logging("HttpLogging")
     }
 }

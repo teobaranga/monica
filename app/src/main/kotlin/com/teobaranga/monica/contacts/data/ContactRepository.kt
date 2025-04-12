@@ -4,7 +4,9 @@ import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.diamondedge.logging.logging
 import com.skydoves.sandwich.getOrNull
+import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.dispatcher.Dispatcher
@@ -18,7 +20,6 @@ import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
-import timber.log.Timber
 import java.time.OffsetDateTime
 
 private const val PAGE_SIZE = 10
@@ -43,7 +44,7 @@ class ContactRepository(
         scope.launch(dispatcher.io) {
             val singleContactResponse = contactApi.getContact(contactId)
                 .onFailure {
-                    Timber.e("Error while loading contact %d: %s", contactId, this)
+                    log.e { "Error while loading contact $contactId: ${message()}" }
                 }
                 .getOrNull() ?: return@launch
             val contact = contactEntityMapper(singleContactResponse.data)
@@ -219,6 +220,8 @@ class ContactRepository(
     }
 
     companion object {
+
+        private val log = logging()
 
         val DefaultPagingConfig = PagingConfig(
             pageSize = PAGE_SIZE,

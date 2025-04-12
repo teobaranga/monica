@@ -1,6 +1,8 @@
 package com.teobaranga.monica.activities.data
 
+import com.diamondedge.logging.logging
 import com.skydoves.sandwich.getOrElse
+import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.core.data.sync.SyncStatus
@@ -9,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import timber.log.Timber
 import kotlin.uuid.Uuid
 
 @Inject
@@ -52,7 +53,7 @@ class ContactActivitiesSynchronizer(
         while (nextPage != null) {
             val contactActivitiesResponse = contactApi.getContactActivities(id = contactId, page = nextPage)
                 .onFailure {
-                    Timber.e("Error while loading contact activities: %s", this)
+                    log.e { "Error while loading contact activities: ${message()}" }
                 }
                 .getOrElse {
                     syncState.value = Synchronizer.State.IDLE
@@ -101,6 +102,8 @@ class ContactActivitiesSynchronizer(
     }
 
     companion object {
+
+        private val log = logging()
 
         private val syncMap = mutableMapOf<Int, Boolean>()
     }

@@ -3,13 +3,13 @@ package com.teobaranga.monica.sync
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.work.ListenableWorker
+import com.diamondedge.logging.logging
 import com.teobaranga.monica.account.settings.getTokenStorage
 import com.teobaranga.monica.core.account.AccountListener
 import com.teobaranga.monica.genders.data.GenderRepository
 import com.teobaranga.monica.user.data.local.IUserRepository
 import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Inject
-import timber.log.Timber
 
 @Inject
 internal class SyncUseCase(
@@ -21,7 +21,7 @@ internal class SyncUseCase(
     suspend operator fun invoke(): ListenableWorker.Result {
         val isTokenAvailable = dataStore.data.first().getTokenStorage().accessToken != null
         if (!isTokenAvailable) {
-            Timber.d("Access token not available, skipping sync")
+            log.d { "Access token not available, skipping sync" }
             return ListenableWorker.Result.success()
         }
 
@@ -29,13 +29,17 @@ internal class SyncUseCase(
             accountListener.onSignedIn()
         }
 
-        Timber.d("Syncing current user")
+        log.d { "Syncing current user" }
         userRepository.sync()
 
-        Timber.d("Syncing genders")
+        log.d { "Syncing genders" }
         // TODO is this the best place? probably not
         genderRepository.fetchLatestGenders()
 
         return ListenableWorker.Result.success()
+    }
+
+    companion object {
+        private val log = logging()
     }
 }

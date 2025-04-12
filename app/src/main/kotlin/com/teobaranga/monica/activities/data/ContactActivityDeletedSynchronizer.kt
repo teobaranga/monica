@@ -1,5 +1,6 @@
 package com.teobaranga.monica.activities.data
 
+import com.diamondedge.logging.logging
 import com.skydoves.sandwich.ktor.bodyString
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
@@ -10,7 +11,6 @@ import com.teobaranga.monica.core.data.sync.SyncStatus
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Inject
-import timber.log.Timber
 
 @Inject
 class ContactActivityDeletedSynchronizer(
@@ -33,11 +33,11 @@ class ContactActivityDeletedSynchronizer(
                         val error = try {
                             json.decodeFromString<ErrorResponse>(bodyString()).error
                         } catch (e: SerializationException) {
-                            Timber.e(e, "Error deserializing error response for activity $activityId")
+                            log.e(e) { "Error deserializing error response for activity $activityId"}
                             null
                         }
                         if (error != null) {
-                            Timber.e("Error deleting activity $activityId: ${error.errorCode} - ${error.message}")
+                            log.e { "Error deleting activity $activityId: ${error.errorCode} - ${error.message}" }
 
                             if (error.errorCode == ERROR_CODE_DATA_UNAVAILABLE) {
                                 // The activity has already been deleted
@@ -46,5 +46,10 @@ class ContactActivityDeletedSynchronizer(
                         }
                     }
             }
+    }
+
+    companion object {
+
+        private val log = logging()
     }
 }
