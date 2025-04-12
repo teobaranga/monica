@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
+import com.diamondedge.logging.logging
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.auth.AuthorizationRepository
 import com.teobaranga.monica.core.dispatcher.Dispatcher
@@ -28,7 +29,6 @@ import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import timber.log.Timber
 
 @OptIn(SavedStateHandleSaveableApi::class)
 @Inject
@@ -98,10 +98,10 @@ class SetupViewModel(
 
     fun onAuthorizationCode(code: String?) {
         if (code == null) {
-            Timber.w("Received null authorization code")
+            log.w { "Received null authorization code" }
             return
         }
-        Timber.d("Authorization code: $code")
+        log.d { "Authorization code: $code" }
         viewModelScope.launch(dispatcher.io) {
             withContext(dispatcher.main) {
                 uiState.isSigningIn = true
@@ -117,5 +117,9 @@ class SetupViewModel(
                 }
             }
         }
+    }
+
+    companion object {
+        private val log = logging()
     }
 }

@@ -1,5 +1,6 @@
 package com.teobaranga.monica.contacts.data
 
+import com.diamondedge.logging.logging
 import com.skydoves.sandwich.ktor.bodyString
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
@@ -9,7 +10,6 @@ import com.teobaranga.monica.core.data.sync.SyncStatus
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Inject
-import timber.log.Timber
 
 @Inject
 class ContactDeleteSynchronizer(
@@ -32,11 +32,11 @@ class ContactDeleteSynchronizer(
                         val error = try {
                             json.decodeFromString<ErrorResponse>(bodyString()).error
                         } catch (e: SerializationException) {
-                            Timber.e(e, "Error deserializing error response for contact $contactId")
+                            log.e(e) { "Error deserializing error response for contact $contactId"}
                             null
                         }
                         if (error != null) {
-                            Timber.e("Error deleting contact $contactId: ${error.errorCode} - ${error.message}")
+                            log.e { "Error deleting contact $contactId: ${error.errorCode} - ${error.message}" }
 
                             if (error.errorCode == ERROR_CODE_DATA_UNAVAILABLE) {
                                 // The contact has already been deleted
@@ -45,5 +45,10 @@ class ContactDeleteSynchronizer(
                         }
                     }
             }
+    }
+
+    companion object {
+
+        private val log = logging()
     }
 }

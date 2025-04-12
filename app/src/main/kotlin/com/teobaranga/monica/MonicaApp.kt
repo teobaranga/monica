@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.work.Configuration
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import com.diamondedge.logging.KmLogging
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOwner
 import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
 import com.teobaranga.monica.di.AndroidAppComponent
 import com.teobaranga.monica.di.create
 import com.teobaranga.monica.sync.SyncWorker
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import timber.log.Timber
 import kotlin.reflect.KClass
 
 class MonicaApp :
@@ -29,7 +29,7 @@ class MonicaApp :
     override fun onCreate() {
         super.onCreate()
 
-        Timber.plant(*appComponent.timberTrees.toTypedArray())
+        KmLogging.setLoggers(*appComponent.loggers.toTypedArray())
 
         appComponent.workScheduler.schedule(SyncWorker.WORK_NAME)
     }

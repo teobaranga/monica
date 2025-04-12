@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import com.teobaranga.monica.core.inject.ApplicationContext
-import com.teobaranga.monica.log.TimberOwner
+import com.teobaranga.monica.log.LoggerOwner
 import com.teobaranga.monica.ui.CoilOwner
 import com.teobaranga.monica.work.WorkerFactoryOwner
 import me.tatarka.inject.annotations.Provides
@@ -20,7 +20,7 @@ abstract class AndroidAppComponent(
      * The Android application that is provided to this object graph.
      */
     @get:Provides val application: Application,
-) : CoilOwner, WorkerFactoryOwner, TimberOwner {
+) : CoilOwner, WorkerFactoryOwner, LoggerOwner {
 
     @ForScope(AppScope::class)
     abstract val viewModelFactory: ViewModelProvider.Factory

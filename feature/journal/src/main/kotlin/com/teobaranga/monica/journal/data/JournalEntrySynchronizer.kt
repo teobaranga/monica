@@ -1,6 +1,8 @@
 package com.teobaranga.monica.journal.data
 
+import com.diamondedge.logging.logging
 import com.skydoves.sandwich.getOrElse
+import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.core.account.AccountListener
 import com.teobaranga.monica.core.data.sync.SyncStatus
@@ -17,7 +19,6 @@ import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
-import timber.log.Timber
 
 @SingleIn(AppScope::class)
 @Inject
@@ -60,7 +61,7 @@ class JournalEntrySynchronizer(
         while (nextPage != null) {
             val journalEntriesResponse = journalApi.getJournal(page = nextPage, sort = "-updated_at")
                 .onFailure {
-                    Timber.e("Error while loading journal: %s", this)
+                    log.e { "Error while loading journal: ${message()}" }
                 }
                 .getOrElse {
                     syncState.value = Synchronizer.State.IDLE
@@ -97,6 +98,8 @@ class JournalEntrySynchronizer(
     }
 
     companion object {
+
+        private val log = logging()
 
         private var isSyncEnabled = true
     }

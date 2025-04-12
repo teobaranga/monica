@@ -2,6 +2,7 @@ package com.teobaranga.monica.auth
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.diamondedge.logging.logging
 import com.teobaranga.monica.account.settings.getTokenStorage
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.user.UserDao
@@ -16,7 +17,6 @@ import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
-import timber.log.Timber
 import kotlin.time.Duration.Companion.seconds
 
 interface AuthorizationRepository {
@@ -46,11 +46,15 @@ class MonicaAuthorizationRepository(
         }
     }
         .onEach {
-            Timber.d("User logged in: $it")
+            log.d { "User logged in: $it" }
         }
         .stateIn(
             scope = scope,
             started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
             initialValue = null,
         )
+
+    companion object {
+        private val log = logging()
+    }
 }
