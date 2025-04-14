@@ -25,12 +25,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
-            arg("room.incremental", "true")
-            arg("room.generateKotlin", "true")
-        }
     }
 
     signingConfigs {
@@ -76,6 +70,10 @@ android {
 
 googleServices {
     missingGoogleServicesStrategy = GoogleServicesPlugin.MissingGoogleServicesStrategy.WARN
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 dependencies {
