@@ -21,10 +21,14 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contacts.ui.Birthday
+import com.teobaranga.monica.core.datetime.LocalSystemClock
+import com.teobaranga.monica.core.datetime.todayMonthDay
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -153,7 +157,11 @@ private fun PreviewBirthdayPicker() {
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         runBlocking { sheetState.show() }
         BirthdayPicker(
-            uiState = BirthdayPickerUiState(initialBirthday = null),
+            uiState = BirthdayPickerUiState(
+                initialBirthday = null,
+                nowLocalDate = LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()),
+                nowMonthDay = LocalSystemClock.current.todayMonthDay(TimeZone.currentSystemDefault()),
+            ),
             sheetState = sheetState,
             onBirthdaySelect = { },
             onDismissRequest = { },

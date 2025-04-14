@@ -17,10 +17,10 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
-import java.time.OffsetDateTime
 
 private const val PAGE_SIZE = 10
 
@@ -28,6 +28,7 @@ private const val PAGE_SIZE = 10
 @SingleIn(AppScope::class)
 class ContactRepository(
     private val dispatcher: Dispatcher,
+    private val clock: Clock,
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
     private val contactPagingSourceFactory: (orderBy: OrderBy) -> ContactPagingSource,
@@ -108,7 +109,7 @@ class ContactRepository(
         birthdate: ContactEntity.Birthdate?,
     ) {
         val localId = contactDao.getMaxId() + 1
-        val createdDate = OffsetDateTime.now()
+        val createdDate = clock.now()
         val entity = ContactEntity(
             contactId = localId,
             firstName = firstName,
@@ -148,7 +149,7 @@ class ContactRepository(
             initials = getInitials(firstName, lastName),
             genderId = gender?.id,
             birthdate = birthdate,
-            updated = OffsetDateTime.now(),
+            updated = clock.now(),
             syncStatus = SyncStatus.EDITED,
         )
         contactDao.upsertContacts(listOf(updatedContact))

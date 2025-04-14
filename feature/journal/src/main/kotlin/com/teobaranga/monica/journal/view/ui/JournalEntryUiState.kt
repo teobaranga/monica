@@ -6,7 +6,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 sealed interface JournalEntryUiState {
     data object Loading : JournalEntryUiState

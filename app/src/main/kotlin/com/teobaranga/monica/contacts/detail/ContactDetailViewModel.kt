@@ -11,6 +11,7 @@ import com.teobaranga.monica.contacts.detail.activities.ui.ContactInfoActivities
 import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
+import com.teobaranga.monica.contacts.edit.birthday.BirthdayMapper
 import com.teobaranga.monica.genders.data.GenderRepository
 import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -31,6 +32,7 @@ class ContactDetailViewModel internal constructor(
     @Assisted
     private val savedStateHandle: SavedStateHandle,
     private val genderRepository: GenderRepository,
+    private val birthdayMapper: BirthdayMapper,
 ) : ViewModel() {
 
     private val contactDetailRoute = savedStateHandle.toRoute<ContactDetailRoute>()
@@ -64,7 +66,7 @@ class ContactDetailViewModel internal constructor(
                             }
                         },
                         nickname = contact.nickname?.let { "($it)" },
-                        birthday = contact.birthdate?.toUiBirthday(),
+                        birthday = contact.birthdate?.let { birthdayMapper.toUi(it) },
                         gender = contact.genderId?.let { genderRepository.getById(it) }?.name,
                     ),
                     ContactInfoActivitiesSection(contactDetailRoute.contactId),

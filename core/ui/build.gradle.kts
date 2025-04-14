@@ -8,6 +8,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:datetime"))
+
     implementation(libs.activity.compose)
     implementation(libs.androidx.compose.material.icons)
 

@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import java.time.LocalDate
 
 @Inject
 @ContributesViewModel(AppScope::class)
@@ -25,6 +25,7 @@ class JournalEntryViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val dispatcher: Dispatcher,
     private val journalRepository: JournalRepository,
+    private val getNowLocalDate: () -> LocalDate,
 ) : ViewModel() {
 
     val journalEntryRoute = savedStateHandle.toRoute<JournalEntryRoute>()
@@ -78,7 +79,7 @@ class JournalEntryViewModel(
             id = -1,
             initialTitle = null,
             initialPost = "",
-            initialDate = LocalDate.now(),
+            initialDate = getNowLocalDate(),
         )
     }
 

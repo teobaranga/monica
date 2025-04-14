@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
@@ -34,6 +35,7 @@ import kotlin.time.Duration.Companion.seconds
 class EditContactActivityViewModel internal constructor(
     @Assisted
     private val savedStateHandle: SavedStateHandle,
+    private val getNowLocalDate: () -> LocalDate,
     private val dispatcher: Dispatcher,
     private val getContactUseCase: GetContactUseCase,
     private val getActivityUseCase: GetActivityUseCase,
@@ -74,6 +76,7 @@ class EditContactActivityViewModel internal constructor(
 
     val uiState: StateFlow<EditContactActivityUiState> = flow {
         val uiState = EditContactActivityUiState.Loaded(
+            initialDate = getNowLocalDate(),
             participantResults = participantResults,
         )
         if (contactActivityEditRoute.activityId != null) {

@@ -1,6 +1,6 @@
 package com.teobaranga.monica.journal.data.remote
 
-import com.teobaranga.monica.core.data.adapter.LocalDateAsString
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,5 +17,5 @@ data class JournalEntryCreateRequest(
     @SerialName("post")
     val post: String,
     @SerialName("date")
-    val date: LocalDateAsString,
+    val date: LocalDate,
 )

@@ -13,11 +13,11 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
-import java.time.LocalDate
-import java.time.OffsetDateTime
 import kotlin.uuid.Uuid
 
 private const val PAGE_SIZE = 15
@@ -26,6 +26,7 @@ private const val PAGE_SIZE = 15
 @SingleIn(AppScope::class)
 class JournalRepository(
     dispatcher: Dispatcher,
+    private val getNow: () -> Instant,
     private val journalDao: JournalDao,
     private val journalPagingSourceFactory: (OrderBy) -> JournalPagingSource,
     private val journalEntryNewSynchronizer: JournalEntryNewSynchronizer,
@@ -82,7 +83,7 @@ class JournalRepository(
          * Insert response into Room, should ideally have a similar ID but keep a map of local to remote ID
          */
         val localId = journalDao.getMaxId() + 1
-        val createdDate = OffsetDateTime.now()
+        val createdDate = getNow()
         val entry = JournalEntryEntity(
             id = localId,
             uuid = Uuid.random(),
@@ -107,7 +108,7 @@ class JournalRepository(
             title = title,
             post = post,
             date = date,
-            updated = OffsetDateTime.now(),
+            updated = getNow(),
             syncStatus = SyncStatus.EDITED,
         )
         journalDao.upsertJournalEntry(updatedEntry)

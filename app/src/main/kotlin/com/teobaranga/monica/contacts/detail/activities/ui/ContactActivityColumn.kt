@@ -27,13 +27,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contact.Contact
+import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.FabHeight
 import com.teobaranga.monica.core.ui.FabPadding
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.useravatar.UserAvatar
-import java.time.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.todayIn
 import java.time.format.FormatStyle
 import kotlin.uuid.Uuid
 
@@ -110,7 +113,7 @@ private fun ContactActivity(activity: ContactActivity, modifier: Modifier = Modi
             Text(
                 modifier = Modifier
                     .padding(start = 8.dp),
-                text = localDateFormatter.format(activity.date),
+                text = activity.date.toJavaLocalDate().format(localDateFormatter),
                 style = MaterialTheme.typography.bodySmall,
             )
         }
@@ -152,7 +155,7 @@ private fun PreviewContactActivity() {
                 uuid = Uuid.random(),
                 title = "Poker Night",
                 description = "It was fun",
-                date = LocalDate.now(),
+                date = LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()),
                 participants = listOf(
                     Contact(
                         id = 1,

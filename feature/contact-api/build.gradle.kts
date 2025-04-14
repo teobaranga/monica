@@ -14,5 +14,6 @@ monica {
 }
 
 dependencies {
+    implementation(project(":core:datetime"))
     implementation(project(":component:user_avatar"))
 }

@@ -2,35 +2,29 @@ package com.teobaranga.monica.contacts.detail.activities.ui
 
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.activities.data.ContactActivitiesResponse
+import com.teobaranga.monica.contacts.ContactComponent
+import com.teobaranga.monica.contacts.TEST_CONTACT_ID
+import com.teobaranga.monica.contacts.create
 import com.teobaranga.monica.core.data.remote.MetaResponse
-import io.kotest.common.KotestInternal
-import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.config.DefaultTestConfig
 import io.kotest.core.test.testCoroutineScheduler
 import io.kotest.engine.coroutines.backgroundScope
 import io.mockk.coEvery
 import io.mockk.coVerify
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.setMain
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
-private const val TEST_CONTACT_ID = 123
-
-@OptIn(KotestInternal::class)
 class ContactActivitiesViewModelTest : BehaviorSpec(
     {
         defaultTestConfig = DefaultTestConfig(coroutineTestScope = true)
-        isolationMode = IsolationMode.InstancePerRoot
-        Dispatchers.setMain(UnconfinedTestDispatcher())
 
-        val component = ContactActivitiesComponent::class.create()
-        val viewModel = component.viewModel()(TEST_CONTACT_ID)
-        val contactApi = component.api()
+        val component = ContactComponent::class.create()
+        val viewModel = component.contactActivitiesViewModel()(TEST_CONTACT_ID)
+        val contactApi = component.contactApi()
 
         Given("activities collected") {
 

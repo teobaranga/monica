@@ -3,8 +3,8 @@ package com.teobaranga.monica.activities.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.teobaranga.monica.core.data.sync.SyncStatus
-import java.time.LocalDate
-import java.time.OffsetDateTime
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlin.uuid.Uuid
 
 @Entity(tableName = "contact_activity")
@@ -21,7 +21,7 @@ data class ContactActivityEntity(
     val title: String,
     val description: String?,
     val date: LocalDate,
-    val created: OffsetDateTime,
-    val updated: OffsetDateTime,
+    val created: Instant,
+    val updated: Instant,
     val syncStatus: SyncStatus,
 )

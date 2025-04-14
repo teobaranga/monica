@@ -1,6 +1,7 @@
 package com.teobaranga.monica.data
 
 import com.teobaranga.monica.contacts.data.ContactApi
+import com.teobaranga.monica.genders.data.GendersApi
 import com.teobaranga.monica.network.NetworkComponent
 import io.mockk.mockk
 import kotlinx.serialization.json.Json
@@ -26,4 +27,8 @@ interface TestNetworkComponent {
     @Provides
     @SingleIn(AppScope::class)
     fun provideContactApi(): ContactApi = mockk<ContactApi>()
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun provideGendersApi(): GendersApi = mockk<GendersApi>()
 }
