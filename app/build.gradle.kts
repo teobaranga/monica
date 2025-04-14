@@ -80,6 +80,7 @@ ksp {
 dependencies {
     implementation(project(":core:account"))
     implementation(project(":core:data"))
+    implementation(project(":core:datetime"))
     implementation(project(":core:dispatcher"))
     implementation(project(":core:inject"))
     implementation(project(":core:ui"))

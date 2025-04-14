@@ -7,6 +7,7 @@ import androidx.paging.insertSeparators
 import androidx.paging.map
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.core.data.sync.Synchronizer
+import com.teobaranga.monica.core.datetime.Year
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
@@ -23,7 +24,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import java.time.Year
 import kotlin.time.Duration.Companion.seconds
 
 private const val MAX_PREVIEW_CHARS = 300

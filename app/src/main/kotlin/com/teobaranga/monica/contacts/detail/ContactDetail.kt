@@ -4,9 +4,11 @@ import androidx.compose.runtime.Immutable
 import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoSection
 import com.teobaranga.monica.contacts.ui.Birthday
-import java.time.MonthDay
-import java.time.OffsetDateTime
-import java.time.temporal.ChronoUnit
+import com.teobaranga.monica.core.datetime.MonthDay
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.yearsUntil
 
 @Immutable
 data class ContactDetail(
@@ -18,13 +20,13 @@ data class ContactDetail(
 fun ContactEntity.Birthdate.toUiBirthday(): Birthday {
     return when {
         isAgeBased -> {
-            val age = ChronoUnit.YEARS.between(date, OffsetDateTime.now()).toInt()
+            val age = date.yearsUntil(Clock.System.now(), TimeZone.currentSystemDefault())
             Birthday.AgeBased(age)
         }
 
         isYearUnknown -> {
-            val monthDay = MonthDay.from(date)
-            Birthday.UnknownYear(monthDay)
+            val localDate = date.toLocalDateTime(TimeZone.currentSystemDefault()).date
+            Birthday.UnknownYear(MonthDay.from(localDate))
         }
 
         else -> {

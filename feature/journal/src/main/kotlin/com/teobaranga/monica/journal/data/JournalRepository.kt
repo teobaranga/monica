@@ -13,11 +13,11 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
-import java.time.LocalDate
-import java.time.OffsetDateTime
 import kotlin.uuid.Uuid
 
 private const val PAGE_SIZE = 15
@@ -82,7 +82,7 @@ class JournalRepository(
          * Insert response into Room, should ideally have a similar ID but keep a map of local to remote ID
          */
         val localId = journalDao.getMaxId() + 1
-        val createdDate = OffsetDateTime.now()
+        val createdDate = Clock.System.now()
         val entry = JournalEntryEntity(
             id = localId,
             uuid = Uuid.random(),
@@ -107,7 +107,7 @@ class JournalRepository(
             title = title,
             post = post,
             date = date,
-            updated = OffsetDateTime.now(),
+            updated = Clock.System.now(),
             syncStatus = SyncStatus.EDITED,
         )
         journalDao.upsertJournalEntry(updatedEntry)

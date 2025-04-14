@@ -1,8 +1,8 @@
 package com.teobaranga.monica.journal.list.ui
 
 import androidx.compose.runtime.Stable
-import java.time.LocalDate
-import java.time.Month
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
 
 sealed interface JournalEntryListItem {
 

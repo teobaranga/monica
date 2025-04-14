@@ -15,4 +15,5 @@ monica {
 
 dependencies {
     implementation(project(":component:user_avatar"))
+    implementation(libs.kotlinx.datetime)
 }

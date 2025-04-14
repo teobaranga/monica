@@ -13,6 +13,9 @@ import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toLocalDateTime
 
 @Composable
 internal fun BirthdayItem(birthday: Birthday, modifier: Modifier = Modifier) {
@@ -34,12 +37,12 @@ internal fun BirthdayItem(birthday: Birthday, modifier: Modifier = Modifier) {
 
             is Birthday.Full -> {
                 val dateFormatter = rememberLocalizedDateFormatter()
-                "This person was born on ${birthday.date.format(dateFormatter)} (${birthday.age} years old)"
+                "This person was born on ${dateFormatter.format(birthday.date.toLocalDateTime(TimeZone.currentSystemDefault()).toJavaLocalDateTime())} (${birthday.age} years old)"
             }
 
             is Birthday.UnknownYear -> {
                 val monthDayFormatter = rememberLocalizedDateFormatter(includeYear = false)
-                "This person was born on ${birthday.monthDay.format(monthDayFormatter)}"
+                "This person was born on ${birthday.monthDay.toJavaMonthDay().format(monthDayFormatter)}"
             }
         },
     )

@@ -1,9 +1,9 @@
 package com.teobaranga.monica.activities.data
 
 import com.teobaranga.monica.contacts.data.ContactResponse
-import com.teobaranga.monica.core.data.adapter.LocalDateAsString
-import com.teobaranga.monica.core.data.adapter.OffsetDateTimeAsString
 import com.teobaranga.monica.core.data.remote.MetaResponse
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -25,13 +25,13 @@ data class ContactActivitiesResponse(
         @SerialName("description")
         val description: String?,
         @SerialName("happened_at")
-        val happenedAt: LocalDateAsString,
+        val happenedAt: LocalDate,
         @SerialName("attendees")
         val attendees: Attendees,
         @SerialName("created_at")
-        val created: OffsetDateTimeAsString,
+        val created: Instant,
         @SerialName("updated_at")
-        val updated: OffsetDateTimeAsString,
+        val updated: Instant,
     ) {
         @Serializable
         data class Attendees(

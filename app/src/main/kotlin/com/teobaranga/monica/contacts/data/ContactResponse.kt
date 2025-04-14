@@ -1,6 +1,6 @@
 package com.teobaranga.monica.contacts.data
 
-import com.teobaranga.monica.core.data.adapter.OffsetDateTimeAsString
+import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -23,7 +23,7 @@ data class ContactResponse(
     @SerialName("information")
     val info: Information,
     @SerialName("updated_at")
-    val updated: OffsetDateTimeAsString? = null,
+    val updated: Instant? = null,
 ) {
     @Serializable
     data class Information(
@@ -52,7 +52,7 @@ data class ContactResponse(
                 @SerialName("is_year_unknown")
                 val isYearUnknown: Boolean?,
                 @SerialName("date")
-                val date: OffsetDateTimeAsString?,
+                val date: Instant?,
             )
         }
     }

@@ -1,6 +1,6 @@
 package com.teobaranga.monica.activities.data
 
-import com.teobaranga.monica.core.data.adapter.LocalDateAsString
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,7 +13,7 @@ data class CreateActivityRequest(
     @SerialName("description")
     val description: String?,
     @SerialName("happened_at")
-    val date: LocalDateAsString,
+    val date: LocalDate,
     @SerialName("contacts")
     val contacts: List<Int>,
     @SerialName("emotions")

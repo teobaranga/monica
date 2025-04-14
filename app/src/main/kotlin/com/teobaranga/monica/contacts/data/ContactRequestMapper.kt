@@ -1,8 +1,10 @@
 package com.teobaranga.monica.contacts.data
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.yearsUntil
 import me.tatarka.inject.annotations.Inject
-import java.time.OffsetDateTime
-import java.time.temporal.ChronoUnit
 
 @Inject
 class ContactRequestMapper {
@@ -25,22 +27,22 @@ class ContactRequestMapper {
     }
 
     private fun ContactEntity.getBirthdateDay(): Int? {
-        return birthdate?.date?.dayOfMonth
+        return birthdate?.date?.toLocalDateTime(TimeZone.currentSystemDefault())?.dayOfMonth
     }
 
     private fun ContactEntity.getBirthdateMonth(): Int? {
-        return birthdate?.date?.monthValue
+        return birthdate?.date?.toLocalDateTime(TimeZone.currentSystemDefault())?.monthNumber
     }
 
     private fun ContactEntity.getBirthdateYear(): Int? {
         return birthdate?.run {
-            date.year.takeIf { !isYearUnknown }
+            date.toLocalDateTime(TimeZone.currentSystemDefault()).year.takeIf { !isYearUnknown }
         }
     }
 
     private fun ContactEntity.getBirthdateAge(): Int? {
         return birthdate?.date?.run {
-            ChronoUnit.YEARS.between(this, OffsetDateTime.now()).toInt()
+            yearsUntil(Clock.System.now(), TimeZone.currentSystemDefault())
         }
     }
 }

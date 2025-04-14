@@ -18,6 +18,7 @@ rootProject.name = "Monica"
 include(":app")
 include(":core:account")
 include(":core:data")
+include(":core:datetime")
 include(":core:dispatcher")
 include(":core:inject")
 include(":core:ui")

@@ -1,0 +1,39 @@
+package com.teobaranga.monica.core.datetime
+
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+
+class MonthDay private constructor(
+    val month: Month,
+    val dayOfMonth: Int,
+) {
+
+    fun toJavaMonthDay(): java.time.MonthDay {
+        return java.time.MonthDay.of(month.value, dayOfMonth)
+    }
+
+    companion object {
+
+        private const val MAX_DAY = 31
+
+        fun of(month: Month, day: Int): MonthDay {
+            require(day in 1..MAX_DAY) { "Day must be between 1 and $MAX_DAY" }
+            return MonthDay(month, day)
+        }
+
+        fun from(localDate: LocalDate): MonthDay {
+            return MonthDay(
+                month = localDate.month,
+                dayOfMonth = localDate.dayOfMonth,
+            )
+        }
+
+        fun now(): MonthDay {
+            val localDate = Clock.System.now().toLocalDateTime(TimeZone.Companion.currentSystemDefault()).date
+            return from(localDate)
+        }
+    }
+}
