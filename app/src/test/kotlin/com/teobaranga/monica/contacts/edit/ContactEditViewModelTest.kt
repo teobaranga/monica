@@ -14,15 +14,11 @@ import com.teobaranga.monica.datetime.InstantExt.yearsUntilToday
 import com.teobaranga.monica.genders.data.genderFemale
 import com.teobaranga.monica.genders.data.genderMale
 import com.teobaranga.monica.genders.data.toDomain
-import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.config.DefaultTestConfig
 import io.kotest.matchers.shouldBe
 import io.mockk.coVerify
 import io.mockk.every
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.Instant
 import java.time.Month
 
@@ -31,8 +27,6 @@ private const val TEST_CONTACT_ID = 123
 class ContactEditViewModelTest : BehaviorSpec(
     {
         defaultTestConfig = DefaultTestConfig(coroutineTestScope = true)
-        isolationMode = IsolationMode.InstancePerRoot
-        Dispatchers.setMain(UnconfinedTestDispatcher())
 
         val component = ContactComponent::class.create()
 
