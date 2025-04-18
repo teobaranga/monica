@@ -27,7 +27,11 @@ class TestContactDao : ContactDao() {
     }
 
     override fun getContacts(entityIds: List<Int>): Flow<List<ContactEntity>> {
-        TODO("Not yet implemented")
+        synchronized(contacts) {
+            return contacts.mapNotNull { contacts ->
+                contacts.values.toList()
+            }
+        }
     }
 
     override fun getContactIds(): Flow<List<Int>> {
@@ -61,7 +65,11 @@ class TestContactDao : ContactDao() {
     }
 
     override suspend fun delete(entityIds: List<Int>) {
-        TODO("Not yet implemented")
+        synchronized(contacts) {
+            for (id in entityIds) {
+                contacts.value.remove(id)
+            }
+        }
     }
 
     override suspend fun getMaxId(): Int {
@@ -69,13 +77,19 @@ class TestContactDao : ContactDao() {
     }
 
     override suspend fun getBySyncStatus(status: SyncStatus): List<ContactEntity> {
-        TODO("Not yet implemented")
+        synchronized(contacts) {
+            return contacts.value.values.filter { it.syncStatus == status }
+        }
     }
 
     override suspend fun setSyncStatus(
         contactId: Int,
         syncStatus: SyncStatus,
     ) {
-        TODO("Not yet implemented")
+        synchronized(contacts) {
+            contacts.value.computeIfPresent(contactId) { contactId, contact ->
+                contact.copy(syncStatus = syncStatus)
+            }
+        }
     }
 }

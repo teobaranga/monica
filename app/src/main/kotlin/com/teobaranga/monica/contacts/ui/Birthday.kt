@@ -2,6 +2,7 @@ package com.teobaranga.monica.contacts.ui
 
 import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.core.datetime.MonthDay
+import com.teobaranga.monica.datetime.InstantExt.yearsUntilToday
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
@@ -11,8 +12,7 @@ import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.format.char
 import kotlinx.datetime.format.format
 import kotlinx.datetime.minus
-import kotlinx.datetime.toLocalDateTime
-import kotlinx.datetime.yearsUntil
+import kotlinx.datetime.todayIn
 
 private val monthDayFormat = DateTimeComponents.Format {
     monthNumber()
@@ -29,7 +29,7 @@ sealed interface Birthday {
     data class Full(val date: Instant) : Birthday {
 
         val age: Int
-            get() = date.yearsUntil(Clock.System.now(), TimeZone.currentSystemDefault())
+            get() = date.yearsUntilToday()
     }
 }
 
@@ -38,9 +38,7 @@ fun Birthday.toDomainBirthday(): ContactEntity.Birthdate {
         is Birthday.AgeBased -> ContactEntity.Birthdate(
             isAgeBased = true,
             isYearUnknown = false,
-            date = Clock.System.now()
-                .toLocalDateTime(TimeZone.currentSystemDefault())
-                .date
+            date = Clock.System.todayIn(TimeZone.currentSystemDefault())
                 .minus(age.toLong(), DateTimeUnit.YEAR)
                 .atStartOfDayIn(TimeZone.currentSystemDefault()),
         )
