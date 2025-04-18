@@ -62,6 +62,7 @@ android {
 
     testOptions.unitTests {
         isIncludeAndroidResources = true
+        isReturnDefaultValues = true
         all { test ->
             test.systemProperties["robolectric.logging.enabled"] = "true"
         }
@@ -120,6 +121,9 @@ dependencies {
     implementation(libs.work)
 
     testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.extensions.htmlreporter)
+    testImplementation(libs.kotest.extensions.junitxml)
+    testImplementation(libs.kotest.extensions.allure)
     testImplementation(libs.junit)
     // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
     testImplementation(libs.junit.vintage)
@@ -137,6 +141,11 @@ dependencies {
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+    reports {
+        html.required.set(false)
+        junitXml.required.set(false)
+    }
+    systemProperty("gradle.build.dir", project.layout.buildDirectory.asFile.get())
 }
 
 detekt {
