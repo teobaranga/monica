@@ -9,6 +9,8 @@ import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.contacts.data.newContactEntity
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.contacts.ui.Birthday
+import com.teobaranga.monica.core.datetime.MonthDay
+import com.teobaranga.monica.datetime.InstantExt.yearsUntilToday
 import com.teobaranga.monica.genders.data.genderFemale
 import com.teobaranga.monica.genders.data.genderMale
 import com.teobaranga.monica.genders.data.toDomain
@@ -21,10 +23,8 @@ import io.mockk.every
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.yearsUntil
+import java.time.Month
 
 private const val TEST_CONTACT_ID = 123
 
@@ -85,7 +85,7 @@ class ContactEditViewModelTest : BehaviorSpec(
 
             component.gendersDao().upsertGenders(listOf(genderMale, genderFemale))
 
-            And("blank birthday") {
+            And("birthday is blank") {
                 component.contactDao().upsertContacts(listOf(validContact.copy(birthdate = null)))
 
                 Then("state is loaded correctly") {
@@ -106,7 +106,7 @@ class ContactEditViewModelTest : BehaviorSpec(
                 }
             }
 
-            And("full birthday") {
+            And("birthday is fully known") {
                 component.contactDao().upsertContacts(
                     listOf(
                         validContact.copy(
@@ -137,7 +137,7 @@ class ContactEditViewModelTest : BehaviorSpec(
                 }
             }
 
-            And("age-based birthday") {
+            And("birthday is age-based") {
                 component.contactDao().upsertContacts(
                     listOf(
                         validContact.copy(
@@ -162,7 +162,38 @@ class ContactEditViewModelTest : BehaviorSpec(
                             nickname = validContact.nickname,
                             initialGender = genderMale.toDomain(),
                             genders = listOf(genderMale.toDomain(), genderFemale.toDomain()),
-                            initialBirthday = Birthday.AgeBased(birthdate.yearsUntil(Clock.System.now(), TimeZone.currentSystemDefault())),
+                            initialBirthday = Birthday.AgeBased(birthdate.yearsUntilToday()),
+                        )
+                    }
+                }
+            }
+
+            And("birthday is only day and month") {
+                component.contactDao().upsertContacts(
+                    listOf(
+                        validContact.copy(
+                            birthdate = ContactEntity.Birthdate(
+                                isAgeBased = false,
+                                isYearUnknown = true,
+                                date = birthdate,
+                            ),
+                        )
+                    )
+                )
+
+                Then("state is loaded correctly") {
+
+                    val viewModel = component.contactEditViewModel()(savedStateHandle)
+
+                    viewModel.uiState.test {
+                        awaitItem() shouldBe ContactEditUiState.Loaded(
+                            id = validContact.contactId,
+                            firstName = validContact.firstName,
+                            lastName = validContact.lastName,
+                            nickname = validContact.nickname,
+                            initialGender = genderMale.toDomain(),
+                            genders = listOf(genderMale.toDomain(), genderFemale.toDomain()),
+                            initialBirthday = Birthday.UnknownYear(MonthDay.of(Month.JUNE, 1)),
                         )
                     }
                 }
@@ -181,5 +212,3 @@ private val validContact = newContactEntity(
     birthdate = null,
     genderId = genderMale.genderId,
 )
-
-// ContactEntity.Birthdate(isAgeBased = false, isYearUnknown = false, date = birthdate)

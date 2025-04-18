@@ -15,6 +15,28 @@ class MonthDay private constructor(
         return java.time.MonthDay.of(month.value, dayOfMonth)
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MonthDay
+
+        if (dayOfMonth != other.dayOfMonth) return false
+        if (month != other.month) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = dayOfMonth
+        result = 31 * result + month.hashCode()
+        return result
+    }
+
+    override fun toString(): String {
+        return "MonthDay(month=$month, dayOfMonth=$dayOfMonth)"
+    }
+
     companion object {
 
         private const val MAX_DAY = 31

@@ -41,6 +41,10 @@ data class ContactEntity(
         val url: String?,
         val color: String,
     )
+
+    /**
+     * note: [isAgeBased] is mutually exclusive with [isYearUnknown].
+     */
     data class Birthdate(
         val isAgeBased: Boolean,
         val isYearUnknown: Boolean,
