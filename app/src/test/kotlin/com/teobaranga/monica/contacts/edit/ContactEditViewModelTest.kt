@@ -7,6 +7,8 @@ import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.contacts.ContactComponent
 import com.teobaranga.monica.contacts.create
 import com.teobaranga.monica.contacts.data.ContactEntity
+import com.teobaranga.monica.contacts.data.ContactResponse
+import com.teobaranga.monica.contacts.data.SingleContactResponse
 import com.teobaranga.monica.contacts.data.newContactEntity
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.contacts.ui.Birthday
@@ -59,21 +61,21 @@ class ContactEditViewModelTest : BehaviorSpec(
             }
 
             When("delete") {
+                viewModel.uiState.first()
 
                 viewModel.onDelete()
 
                 Then("nothing happens") {
-                    val contactApi = component.contactApi()
                     coVerify(exactly = 0) { contactApi.deleteContact(any()) }
                 }
             }
 
             When("save") {
+                viewModel.uiState.first()
 
                 viewModel.onSave()
 
                 Then("nothing happens") {
-                    val contactApi = component.contactApi()
                     coVerify(exactly = 0) { contactApi.createContact(request = any()) }
                     coVerify(exactly = 0) { contactApi.updateContact(id = any(), request = any()) }
                 }
@@ -82,12 +84,13 @@ class ContactEditViewModelTest : BehaviorSpec(
 
         Given("valid contact id") {
             val savedStateHandle = SavedStateHandle()
-            every { savedStateHandle.toRoute<ContactEditRoute>() } returns ContactEditRoute(contactId = TEST_CONTACT_ID)
+            every { savedStateHandle.toRoute<ContactEditRoute>() } returns
+                ContactEditRoute(contactId = validContact.contactId)
 
             component.gendersDao().upsertGenders(listOf(genderMale, genderFemale))
 
             And("birthday is blank") {
-                component.contactDao().upsertContacts(listOf(validContact.copy(birthdate = null)))
+                contactDao.upsertContacts(listOf(validContact.copy(birthdate = null)))
 
                 Then("state is loaded correctly") {
 
@@ -108,7 +111,7 @@ class ContactEditViewModelTest : BehaviorSpec(
             }
 
             And("birthday is fully known") {
-                component.contactDao().upsertContacts(
+                contactDao.upsertContacts(
                     listOf(
                         validContact.copy(
                             birthdate = ContactEntity.Birthdate(
@@ -139,7 +142,7 @@ class ContactEditViewModelTest : BehaviorSpec(
             }
 
             And("birthday is age-based") {
-                component.contactDao().upsertContacts(
+                contactDao.upsertContacts(
                     listOf(
                         validContact.copy(
                             birthdate = ContactEntity.Birthdate(
@@ -170,7 +173,7 @@ class ContactEditViewModelTest : BehaviorSpec(
             }
 
             And("birthday is only day and month") {
-                component.contactDao().upsertContacts(
+                contactDao.upsertContacts(
                     listOf(
                         validContact.copy(
                             birthdate = ContactEntity.Birthdate(
@@ -201,33 +204,92 @@ class ContactEditViewModelTest : BehaviorSpec(
             }
 
             When("delete completes successfully") {
-                component.contactDao().upsertContacts(listOf(validContact))
-                coEvery { contactApi.deleteContact(TEST_CONTACT_ID) } returns ApiResponse.of {
-                    DeleteResponse(deleted = true, id = TEST_CONTACT_ID)
+                contactDao.upsertContacts(listOf(validContact))
+                coEvery { contactApi.deleteContact(validContact.contactId) } returns ApiResponse.of {
+                    DeleteResponse(deleted = true, id = validContact.contactId)
                 }
 
                 val viewModel = component.contactEditViewModel()(savedStateHandle)
+                viewModel.uiState.first()
 
                 viewModel.onDelete()
 
                 Then("contact is deleted") {
-                    coVerify { contactApi.deleteContact(TEST_CONTACT_ID) }
-                    contactDao.getContacts(listOf(TEST_CONTACT_ID)).first() shouldBe emptyList()
+                    coVerify { contactApi.deleteContact(validContact.contactId) }
+                    contactDao.getContacts(listOf(validContact.contactId)).first() shouldBe emptyList()
                 }
             }
 
             When("delete fails") {
-                component.contactDao().upsertContacts(listOf(validContact))
-                coEvery { contactApi.deleteContact(TEST_CONTACT_ID) } returns
+                contactDao.upsertContacts(listOf(validContact))
+                coEvery { contactApi.deleteContact(validContact.contactId) } returns
                     ApiResponse.exception(Throwable("Something went wrong"))
 
                 val viewModel = component.contactEditViewModel()(savedStateHandle)
+                viewModel.uiState.first()
 
                 viewModel.onDelete()
 
                 Then("contact is marked as deleted") {
-                    coVerify { contactApi.deleteContact(TEST_CONTACT_ID) }
-                    contactDao.getContact(TEST_CONTACT_ID).first().syncStatus shouldBe SyncStatus.DELETED
+                    coVerify { contactApi.deleteContact(validContact.contactId) }
+                    contactDao.getContact(validContact.contactId).first().syncStatus shouldBe SyncStatus.DELETED
+                }
+            }
+
+            When("save fails") {
+                contactDao.upsertContacts(listOf(validContact))
+
+                coEvery { contactApi.updateContact(validContact.contactId, any()) } returns
+                    ApiResponse.exception(Throwable("Something went wrong"))
+
+                val viewModel = component.contactEditViewModel()(savedStateHandle)
+                viewModel.uiState.first()
+
+                viewModel.onSave()
+
+                Then("contact is marked as edited") {
+                    coVerify { contactApi.updateContact(validContact.contactId, any()) }
+                    contactDao.getContact(validContact.contactId).first().syncStatus shouldBe SyncStatus.EDITED
+                }
+            }
+
+            When("save succeeds") {
+                contactDao.upsertContacts(listOf(validContact))
+
+                coEvery { contactApi.updateContact(validContact.contactId, any()) } returns
+                    ApiResponse.of {
+                        SingleContactResponse(ContactResponse(
+                            id = validContact.contactId,
+                            firstName = "Jane",
+                            lastName = "Doe",
+                            completeName = "Jane Doe",
+                            initials = "JD",
+                            gender = genderFemale.name,
+                            info = ContactResponse.Information(
+                                avatar = ContactResponse.Information.Avatar(
+                                    url = validContact.avatar.url,
+                                    color = validContact.avatar.color,
+                                )
+                            ),
+                        ))
+                    }
+
+                val viewModel = component.contactEditViewModel()(savedStateHandle)
+                viewModel.uiState.first()
+
+                viewModel.onSave()
+
+                Then("contact is up to date") {
+                    coVerify { contactApi.updateContact(validContact.contactId, any()) }
+                    contactDao.getContact(validContact.contactId).first() shouldBe validContact.copy(
+                        firstName = "Jane",
+                        lastName = "Doe",
+                        completeName = "Jane Doe",
+                        initials = "JD",
+                        nickname = null,
+                        genderId = genderFemale.genderId,
+                        syncStatus = SyncStatus.UP_TO_DATE,
+                    )
                 }
             }
         }

@@ -31,7 +31,9 @@ class TestGendersDao : GendersDao() {
     }
 
     override suspend fun getGenderByName(name: String): GenderEntity? {
-        TODO("Not yet implemented")
+        synchronized(genders) {
+            return genders.value.values.firstOrNull { it.name == name }
+        }
     }
 
     override suspend fun upsertGenders(entities: List<GenderEntity>) {
