@@ -1,7 +1,7 @@
 package com.teobaranga.monica.database.adapter
 
 import androidx.room.TypeConverter
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 object LocalDateAdapter {
 

@@ -7,11 +7,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.teobaranga.monica.contacts.ui.Birthday
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.MonthDay
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
+import com.teobaranga.monica.core.datetime.MonthDay
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 
 @Stable
 class BirthdayPickerUiState(initialBirthday: Birthday?) {
@@ -33,9 +35,9 @@ class BirthdayPickerUiState(initialBirthday: Birthday?) {
 
     var fullBirthDate: LocalDate by mutableStateOf(
         if (initialBirthday is Birthday.Full) {
-            initialBirthday.date.toLocalDate()
+            initialBirthday.date.toLocalDateTime(TimeZone.currentSystemDefault()).date
         } else {
-            LocalDate.now()
+            Clock.System.todayIn(TimeZone.currentSystemDefault())
         }
     )
 
@@ -64,7 +66,7 @@ class BirthdayPickerUiState(initialBirthday: Birthday?) {
     }
 
     fun setFull() {
-        birthday = Birthday.Full(OffsetDateTime.of(fullBirthDate, LocalTime.MIN, ZoneOffset.UTC))
+        birthday = Birthday.Full(fullBirthDate.atStartOfDayIn(TimeZone.currentSystemDefault()))
     }
 
     @Stable
@@ -94,9 +96,8 @@ class BirthdayPickerUiState(initialBirthday: Birthday?) {
 
         val birthday by derivedStateOf {
             try {
-                val month = "%02d".format(month.value)
-                val day = "%02d".format(dayTextFieldState.text.toString().toInt())
-                Birthday.UnknownYear(MonthDay.parse("--$month-$day"))
+                val day = dayTextFieldState.text.toString().toInt()
+                Birthday.UnknownYear(MonthDay.of(month, day))
             } catch (_: Exception) {
                 // User enter some invalid month/day combination
                 null

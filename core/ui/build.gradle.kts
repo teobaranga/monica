@@ -12,4 +12,6 @@ dependencies {
     implementation(libs.androidx.compose.material.icons)
 
     implementation(libs.jetbrains.navigation)
+
+    implementation(libs.kotlinx.datetime)
 }

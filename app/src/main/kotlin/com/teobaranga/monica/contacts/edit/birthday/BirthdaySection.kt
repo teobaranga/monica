@@ -17,10 +17,16 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.ui.Birthday
+import com.teobaranga.monica.core.datetime.MonthDay
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
-import java.time.MonthDay
-import java.time.OffsetDateTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.minus
+import kotlinx.datetime.toJavaInstant
+import kotlinx.datetime.todayIn
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -59,12 +65,12 @@ internal fun BirthdaySection(birthday: Birthday?, onBirthdayChange: () -> Unit, 
 
                     is Birthday.Full -> {
                         val dateFormatter = remember { DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG) }
-                        "${birthday.date.format(dateFormatter)} (${birthday.age} years old)"
+                        "${dateFormatter.format(birthday.date.toJavaInstant())} (${birthday.age} years old)"
                     }
 
                     is Birthday.UnknownYear -> {
                         val monthDayFormatter = rememberLocalizedDateFormatter(includeYear = false)
-                        birthday.monthDay.format(monthDayFormatter)
+                        birthday.monthDay.toJavaMonthDay().format(monthDayFormatter)
                     }
 
                     null -> {
@@ -77,11 +83,14 @@ internal fun BirthdaySection(birthday: Birthday?, onBirthdayChange: () -> Unit, 
 }
 
 private class BirthdayPreviewParameterProvider : PreviewParameterProvider<Birthday?> {
+
+    private val localDate = Clock.System.todayIn(TimeZone.currentSystemDefault())
+
     override val values = sequenceOf(
         null,
         Birthday.AgeBased(23),
-        Birthday.UnknownYear(MonthDay.now()),
-        Birthday.Full(OffsetDateTime.now().minusYears(23L)),
+        Birthday.UnknownYear(MonthDay.from(localDate)),
+        Birthday.Full(localDate.minus(23, DateTimeUnit.YEAR).atStartOfDayIn(TimeZone.currentSystemDefault())),
     )
 }
 

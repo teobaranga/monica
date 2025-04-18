@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import com.teobaranga.monica.activities.data.ContactActivityWithParticipants
 import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contacts.data.toExternalModel
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 import kotlin.uuid.Uuid
 
 @Immutable

@@ -9,6 +9,7 @@ import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.genders.domain.Gender
 
 sealed interface ContactEditUiState {
+
     data object Loading : ContactEditUiState
 
     @Stable
@@ -52,6 +53,17 @@ sealed interface ContactEditUiState {
             result = 31 * result + (birthday?.hashCode() ?: 0)
             result = 31 * result + (gender?.hashCode() ?: 0)
             return result
+        }
+
+        override fun toString(): String {
+            return "Loaded(" +
+                "id=$id, " +
+                "firstName=$firstName, " +
+                "lastName=$lastName, " +
+                "nickname=$nickname, " +
+                "gender=$gender, " +
+                "birthday=$birthday, " +
+                "genders=$genders)"
         }
     }
 }

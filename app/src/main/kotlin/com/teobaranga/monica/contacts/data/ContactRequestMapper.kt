@@ -1,8 +1,8 @@
 package com.teobaranga.monica.contacts.data
 
+import com.teobaranga.monica.datetime.InstantExt.toSystemLocalDateTime
+import com.teobaranga.monica.datetime.InstantExt.yearsUntilToday
 import me.tatarka.inject.annotations.Inject
-import java.time.OffsetDateTime
-import java.time.temporal.ChronoUnit
 
 @Inject
 class ContactRequestMapper {
@@ -25,22 +25,20 @@ class ContactRequestMapper {
     }
 
     private fun ContactEntity.getBirthdateDay(): Int? {
-        return birthdate?.date?.dayOfMonth
+        return birthdate?.date?.toSystemLocalDateTime()?.dayOfMonth
     }
 
     private fun ContactEntity.getBirthdateMonth(): Int? {
-        return birthdate?.date?.monthValue
+        return birthdate?.date?.toSystemLocalDateTime()?.monthNumber
     }
 
     private fun ContactEntity.getBirthdateYear(): Int? {
         return birthdate?.run {
-            date.year.takeIf { !isYearUnknown }
+            date.toSystemLocalDateTime().year.takeIf { !isYearUnknown }
         }
     }
 
     private fun ContactEntity.getBirthdateAge(): Int? {
-        return birthdate?.date?.run {
-            ChronoUnit.YEARS.between(this, OffsetDateTime.now()).toInt()
-        }
+        return birthdate?.date?.yearsUntilToday()
     }
 }

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.core.data.sync.SyncStatus
-import java.time.OffsetDateTime
+import kotlinx.datetime.Instant
 
 @Entity(tableName = "contacts")
 data class ContactEntity(
@@ -34,17 +34,21 @@ data class ContactEntity(
     @Embedded(prefix = "birthdate_")
     val birthdate: Birthdate?,
     val genderId: Int?,
-    val updated: OffsetDateTime?,
+    val updated: Instant?,
     val syncStatus: SyncStatus,
 ) {
     data class Avatar(
         val url: String?,
         val color: String,
     )
+
+    /**
+     * note: [isAgeBased] is mutually exclusive with [isYearUnknown].
+     */
     data class Birthdate(
         val isAgeBased: Boolean,
         val isYearUnknown: Boolean,
-        val date: OffsetDateTime,
+        val date: Instant,
     )
 }
 
