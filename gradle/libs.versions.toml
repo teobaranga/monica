@@ -86,6 +86,9 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 junit-vintage = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit-vintage" }
 kmlogging = { group = "com.diamondedge", name = "logging", version.ref = "kmlogging" }
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+kotest-extensions-htmlreporter = { group = "io.kotest", name = "kotest-extensions-htmlreporter", version.ref = "kotest" }
+kotest-extensions-junitxml = { group = "io.kotest", name = "kotest-extensions-junitxml", version.ref = "kotest" }
+kotest-extensions-allure = { group = "io.kotest", name = "kotest-extensions-allure", version.ref = "kotest" }
 kotlin-inject-anvil-compiler = { group = "software.amazon.lastmile.kotlin.inject.anvil", name = "compiler", version.ref = "kotlin-inject-anvil" }
 kotlin-inject-anvil-runtime = { group = "software.amazon.lastmile.kotlin.inject.anvil", name = "runtime", version.ref = "kotlin-inject-anvil" }
 kotlin-inject-anvil-runtime-optional = { group = "software.amazon.lastmile.kotlin.inject.anvil", name = "runtime-optional", version.ref = "kotlin-inject-anvil" }
