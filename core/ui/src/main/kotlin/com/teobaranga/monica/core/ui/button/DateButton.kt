@@ -27,6 +27,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,7 +90,7 @@ fun DateButton(date: LocalDate, onDateSelect: (LocalDate) -> Unit, modifier: Mod
 private fun PreviewDateButton() {
     MonicaTheme {
         DateButton(
-            date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
+            date = Clock.System.todayIn(TimeZone.currentSystemDefault()),
             onDateSelect = { },
         )
     }

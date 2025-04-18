@@ -45,7 +45,7 @@ import com.teobaranga.monica.core.ui.util.keepScrollOnSizeChanged
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
@@ -234,7 +234,7 @@ private fun PreviewJournalScreen() {
                             | mollit anim id est laborum.
                             | 
                         """.trimMargin(),
-                        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
+                        date = Clock.System.todayIn(TimeZone.currentSystemDefault()),
                     ),
                 ),
             ),

@@ -36,7 +36,7 @@ import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDate
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 import java.time.format.FormatStyle
 import kotlin.uuid.Uuid
 
@@ -155,7 +155,7 @@ private fun PreviewContactActivity() {
                 uuid = Uuid.random(),
                 title = "Poker Night",
                 description = "It was fun",
-                date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
+                date = Clock.System.todayIn(TimeZone.currentSystemDefault()),
                 participants = listOf(
                     Contact(
                         id = 1,

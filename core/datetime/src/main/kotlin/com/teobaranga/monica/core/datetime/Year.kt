@@ -2,7 +2,7 @@ package com.teobaranga.monica.core.datetime
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 
 class Year private constructor(
     val value: Int,
@@ -14,8 +14,8 @@ class Year private constructor(
          * Returns the current year.
          */
         fun now(): Year {
-            val localDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-            return Year(localDateTime.year)
+            val localDate = Clock.System.todayIn(TimeZone.currentSystemDefault())
+            return Year(localDate.year)
         }
     }
 }

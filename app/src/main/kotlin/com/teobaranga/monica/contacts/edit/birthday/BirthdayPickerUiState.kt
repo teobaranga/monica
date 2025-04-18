@@ -13,6 +13,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 
 @Stable
 class BirthdayPickerUiState(initialBirthday: Birthday?) {
@@ -36,7 +37,7 @@ class BirthdayPickerUiState(initialBirthday: Birthday?) {
         if (initialBirthday is Birthday.Full) {
             initialBirthday.date.toLocalDateTime(TimeZone.currentSystemDefault()).date
         } else {
-            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+            Clock.System.todayIn(TimeZone.currentSystemDefault())
         }
     )
 

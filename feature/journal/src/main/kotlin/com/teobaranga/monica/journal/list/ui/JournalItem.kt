@@ -16,7 +16,7 @@ import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDate
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 import java.time.format.FormatStyle
 
 @Composable
@@ -72,7 +72,7 @@ private fun PreviewJournalItem() {
                     |Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
                     |mollit anim id est laborum.
                     """.trimMargin().replace('\n', ' '),
-                    date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
+                    date = Clock.System.todayIn(TimeZone.currentSystemDefault()),
                 ),
             )
         }

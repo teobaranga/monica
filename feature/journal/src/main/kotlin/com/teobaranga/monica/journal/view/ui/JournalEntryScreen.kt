@@ -43,7 +43,7 @@ import com.teobaranga.monica.core.ui.util.keepCursorVisible
 import com.teobaranga.monica.core.ui.util.rememberCursorData
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 
 @Composable
 fun JournalEntryScreen(
@@ -230,7 +230,7 @@ private fun PreviewJournalEntryScreen() {
                 id = 1,
                 initialTitle = null,
                 initialPost = "Hello World!",
-                initialDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
+                initialDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
             ),
             topBar = {
                 JournalEntryTopAppBar(

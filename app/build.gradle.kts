@@ -62,7 +62,6 @@ android {
 
     testOptions.unitTests {
         isIncludeAndroidResources = true
-        isReturnDefaultValues = true
         all { test ->
             test.systemProperties["robolectric.logging.enabled"] = "true"
         }

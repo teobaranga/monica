@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 
 sealed interface EditContactActivityUiState {
 
@@ -21,7 +21,7 @@ sealed interface EditContactActivityUiState {
         val participantResults: StateFlow<List<ActivityParticipant>>,
     ) : EditContactActivityUiState {
 
-        var date: LocalDate by mutableStateOf(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date)
+        var date: LocalDate by mutableStateOf(Clock.System.todayIn(TimeZone.currentSystemDefault()))
 
         val participantSearch = TextFieldState()
 
