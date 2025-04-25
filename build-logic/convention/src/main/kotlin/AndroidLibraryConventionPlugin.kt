@@ -20,9 +20,12 @@
 import com.android.build.gradle.LibraryExtension
 import com.teobaranga.monica.configureKotlinAndroid
 import com.teobaranga.monica.libs
+import com.teobaranga.monica.testImplementation
 import org.gradle.api.Project
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.withType
 
 @Suppress("unused") // Registered as a plugin in build.gradle.kts
 class AndroidLibraryConventionPlugin : MonicaPlugin() {
@@ -38,9 +41,20 @@ class AndroidLibraryConventionPlugin : MonicaPlugin() {
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
+
                 defaultConfig.targetSdk = libs.versions.targetSdk.get().toInt()
                 defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-                testOptions.animationsDisabled = true
+
+                testOptions {
+                    animationsDisabled = true
+                    unitTests {
+                        isIncludeAndroidResources = true
+                        all { test ->
+                            test.systemProperties["robolectric.logging.enabled"] = "true"
+                        }
+                    }
+                }
+
                 // The resource prefix is derived from the module name,
                 // so resources inside ":core:module1" must be prefixed with "core_module1_"
                 resourcePrefix = path.split("""\W""".toRegex())
@@ -49,8 +63,31 @@ class AndroidLibraryConventionPlugin : MonicaPlugin() {
                     .joinToString(separator = "_")
                     .lowercase() + "_"
             }
+
             dependencies {
                 // Add common library dependencies here
+
+                testImplementation(libs.kotest.runner.junit5)
+                testImplementation(libs.kotest.extensions.htmlreporter)
+                testImplementation(libs.kotest.extensions.junitxml)
+                testImplementation(libs.kotest.extensions.allure)
+
+                testImplementation(libs.junit)
+
+                testImplementation(libs.kotlinx.coroutines.test)
+
+                testImplementation(libs.turbine)
+
+                testImplementation(libs.mockk)
+            }
+
+            tasks.withType<Test>().configureEach {
+                useJUnitPlatform()
+                reports {
+                    html.required.set(false)
+                    junitXml.required.set(false)
+                }
+                systemProperty("gradle.build.dir", project.layout.buildDirectory.asFile.get())
             }
         }
     }

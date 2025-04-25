@@ -32,7 +32,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                // Add common feature libs here
+                // Add feature-specific dependencies here.
             }
         }
     }

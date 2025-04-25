@@ -69,6 +69,7 @@ class JournalRepository(
     }
 
     suspend fun upsertJournalEntry(entryId: Int?, title: String?, post: String, date: LocalDate) {
+        require(post.isNotBlank()) { "Journal entry cannot be empty" }
         if (entryId != null) {
             updateJournalEntry(entryId, title, post, date)
         } else {

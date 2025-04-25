@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import kotlinx.datetime.LocalDate
 
 sealed interface JournalEntryUiState {
+
     data object Loading : JournalEntryUiState
 
     @Stable
@@ -47,6 +48,10 @@ sealed interface JournalEntryUiState {
             result = 31 * result + post.hashCode()
             result = 31 * result + date.hashCode()
             return result
+        }
+
+        override fun toString(): String {
+            return "Loaded(id=$id, date=$date, title=$title, post=$post, hasChanges=$hasChanges)"
         }
     }
 }

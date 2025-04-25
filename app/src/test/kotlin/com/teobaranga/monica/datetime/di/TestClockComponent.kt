@@ -1,6 +1,7 @@
 package com.teobaranga.monica.datetime.di
 
 import com.teobaranga.monica.core.datetime.di.ClockComponent
+import com.teobaranga.monica.datetime.FixedClock
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import me.tatarka.inject.annotations.Provides
@@ -17,10 +18,6 @@ interface TestClockComponent {
 
     @Provides
     fun clock(): Clock {
-        return object : Clock {
-            override fun now(): Instant {
-                return testNow
-            }
-        }
+        return FixedClock(testNow)
     }
 }

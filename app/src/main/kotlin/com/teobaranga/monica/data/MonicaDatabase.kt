@@ -12,12 +12,12 @@ import com.teobaranga.monica.data.photo.PhotoDao
 import com.teobaranga.monica.data.photo.PhotoEntity
 import com.teobaranga.monica.data.user.MeEntity
 import com.teobaranga.monica.data.user.UserDao
-import com.teobaranga.monica.database.adapter.LocalDateAdapter
 import com.teobaranga.monica.database.adapter.InstantAdapter
+import com.teobaranga.monica.database.adapter.LocalDateAdapter
 import com.teobaranga.monica.database.adapter.UuidAdapter
 import com.teobaranga.monica.genders.data.GenderEntity
 import com.teobaranga.monica.genders.data.GendersDao
-import com.teobaranga.monica.journal.data.local.JournalDao
+import com.teobaranga.monica.journal.data.local.JournalDatabaseOwner
 import com.teobaranga.monica.journal.data.local.JournalEntryEntity
 
 @Database(
@@ -38,11 +38,10 @@ import com.teobaranga.monica.journal.data.local.JournalEntryEntity
     LocalDateAdapter::class,
     UuidAdapter::class,
 )
-abstract class MonicaDatabase : RoomDatabase() {
+abstract class MonicaDatabase : RoomDatabase(), JournalDatabaseOwner {
     abstract fun userDao(): UserDao
     abstract fun contactDao(): ContactDao
     abstract fun contactActivitiesDao(): ContactActivitiesDao
     abstract fun photoDao(): PhotoDao
-    abstract fun journalDao(): JournalDao
     abstract fun gendersDao(): GendersDao
 }

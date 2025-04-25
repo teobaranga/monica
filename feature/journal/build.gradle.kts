@@ -1,5 +1,3 @@
-import com.teobaranga.monica.implementation
-
 plugins {
     alias(libs.plugins.monica.android.feature)
     alias(libs.plugins.monica.android.compose)

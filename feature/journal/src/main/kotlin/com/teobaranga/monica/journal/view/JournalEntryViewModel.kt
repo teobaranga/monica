@@ -56,6 +56,10 @@ class JournalEntryViewModel(
     fun onSave() {
         viewModelScope.launch(dispatcher.io) {
             val uiState = getLoadedState() ?: return@launch
+            if (uiState.post.text.isBlank()) {
+                // TODO: show error
+                return@launch
+            }
             journalRepository.upsertJournalEntry(
                 entryId = journalEntryRoute.entryId,
                 title = uiState.title.text.toString().takeUnless { it.isBlank() },
