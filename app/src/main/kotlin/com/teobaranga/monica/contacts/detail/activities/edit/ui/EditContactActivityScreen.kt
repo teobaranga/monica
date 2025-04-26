@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
+import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.FabHeight
 import com.teobaranga.monica.core.ui.FabPadding
 import com.teobaranga.monica.core.ui.Zero
@@ -47,11 +48,12 @@ import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
 import com.teobaranga.monica.core.ui.text.startVerticalLineShape
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.util.CursorData
-import com.teobaranga.monica.core.ui.util.CursorVisibilityStrategy
 import com.teobaranga.monica.core.ui.util.debounce
 import com.teobaranga.monica.core.ui.util.keepCursorVisible
 import com.teobaranga.monica.core.ui.util.rememberCursorData
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -145,7 +147,7 @@ private fun EditContactActivityScreenLoaded(
 ) {
     val cursorData = rememberCursorData(
         textFieldState = uiState.details,
-        cursorVisibilityStrategy = CursorVisibilityStrategy { cursor, boundsInWindow, screenHeight, scrollState ->
+        cursorVisibilityStrategy = { cursor, boundsInWindow, screenHeight, scrollState ->
             boundsInWindow.topLeft.y - (screenHeight - boundsInWindow.bottomRight.y) + cursor.top > screenHeight / 2
         },
     )
@@ -274,6 +276,7 @@ private fun PreviewEditContactActivityLoadedScreen() {
     MonicaTheme {
         EditContactActivity(
             uiState = EditContactActivityUiState.Loaded(
+                initialDate = LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()),
                 participantResults = MutableStateFlow(emptyList()),
             ),
             topAppBar = { },

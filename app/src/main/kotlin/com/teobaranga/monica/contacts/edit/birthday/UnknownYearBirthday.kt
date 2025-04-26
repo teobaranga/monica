@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.core.ui.text.MonicaTextField
-import java.time.Month
+import kotlinx.datetime.Month
 import java.time.format.TextStyle
 
 @Composable

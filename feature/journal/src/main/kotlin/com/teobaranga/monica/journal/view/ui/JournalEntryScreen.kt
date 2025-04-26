@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.ConfirmExitDialog
 import com.teobaranga.monica.core.ui.FabHeight
 import com.teobaranga.monica.core.ui.Zero
@@ -38,11 +39,11 @@ import com.teobaranga.monica.core.ui.text.MonicaTextField
 import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
 import com.teobaranga.monica.core.ui.text.startVerticalLineShape
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
-import com.teobaranga.monica.core.ui.util.CursorVisibilityStrategy
 import com.teobaranga.monica.core.ui.util.debounce
 import com.teobaranga.monica.core.ui.util.keepCursorVisible
 import com.teobaranga.monica.core.ui.util.rememberCursorData
-import java.time.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
 
 @Composable
 fun JournalEntryScreen(
@@ -188,7 +189,7 @@ private fun PostTextField(
     val postInteractionSource = remember { MutableInteractionSource() }
     val cursorData = rememberCursorData(
         textFieldState = uiState.post,
-        cursorVisibilityStrategy = CursorVisibilityStrategy { cursor, boundsInWindow, screenHeight, scrollState ->
+        cursorVisibilityStrategy = { cursor, boundsInWindow, screenHeight, scrollState ->
             val threshold = screenHeight / 2 + FabHeight.roundToPx()
             boundsInWindow.topLeft.y - scrollState.value + cursor.top - cursor.height > threshold
         },
@@ -229,7 +230,7 @@ private fun PreviewJournalEntryScreen() {
                 id = 1,
                 initialTitle = null,
                 initialPost = "Hello World!",
-                initialDate = LocalDate.now(),
+                initialDate = LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()),
             ),
             topBar = {
                 JournalEntryTopAppBar(

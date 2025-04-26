@@ -18,11 +18,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneOffset
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,22 +47,24 @@ fun DateButton(date: LocalDate, onDateSelect: (LocalDate) -> Unit, modifier: Mod
         Text(
             modifier = Modifier
                 .padding(start = 8.dp),
-            text = date.format(formatter),
+            text = date.toJavaLocalDate().format(formatter),
         )
     }
     if (showDatePickerDialog) {
         val datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = date
-                .atStartOfDay()
-                .toInstant(ZoneOffset.UTC)
-                .toEpochMilli(),
+                .atStartOfDayIn(TimeZone.currentSystemDefault())
+                .toEpochMilliseconds(),
         )
         DatePickerDialog(
             confirmButton = {
                 TextButton(
                     onClick = {
                         datePickerState.selectedDateMillis?.let {
-                            onDateSelect(LocalDate.ofInstant(Instant.ofEpochMilli(it), ZoneOffset.UTC))
+                            val date = Instant.fromEpochMilliseconds(it)
+                                .toLocalDateTime(TimeZone.currentSystemDefault())
+                                .date
+                            onDateSelect(date)
                         }
                         showDatePickerDialog = false
                     },
@@ -83,7 +90,7 @@ fun DateButton(date: LocalDate, onDateSelect: (LocalDate) -> Unit, modifier: Mod
 private fun PreviewDateButton() {
     MonicaTheme {
         DateButton(
-            date = LocalDate.now(),
+            date = LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()),
             onDateSelect = { },
         )
     }

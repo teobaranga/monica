@@ -7,14 +7,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.teobaranga.monica.contacts.ui.Birthday
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.MonthDay
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
+import com.teobaranga.monica.core.datetime.MonthDay
+import kotlinx.datetime.LocalDate
 
 @Stable
-class BirthdayPickerUiState(initialBirthday: Birthday?) {
+class BirthdayPickerUiState(
+    initialBirthday: Birthday?,
+    nowLocalDate: LocalDate,
+    nowMonthDay: MonthDay,
+) {
 
     var birthday by mutableStateOf(initialBirthday)
         private set
@@ -28,14 +29,14 @@ class BirthdayPickerUiState(initialBirthday: Birthday?) {
     val unknownYear = if (initialBirthday is Birthday.UnknownYear) {
         UnknownYear(initialBirthday.monthDay)
     } else {
-        UnknownYear()
+        UnknownYear(nowMonthDay)
     }
 
     var fullBirthDate: LocalDate by mutableStateOf(
         if (initialBirthday is Birthday.Full) {
-            initialBirthday.date.toLocalDate()
+            initialBirthday.date
         } else {
-            LocalDate.now()
+            nowLocalDate
         }
     )
 
@@ -64,7 +65,7 @@ class BirthdayPickerUiState(initialBirthday: Birthday?) {
     }
 
     fun setFull() {
-        birthday = Birthday.Full(OffsetDateTime.of(fullBirthDate, LocalTime.MIN, ZoneOffset.UTC))
+        birthday = Birthday.Full(fullBirthDate)
     }
 
     @Stable
@@ -86,7 +87,7 @@ class BirthdayPickerUiState(initialBirthday: Birthday?) {
     }
 
     @Stable
-    class UnknownYear(monthDay: MonthDay = MonthDay.now()) {
+    class UnknownYear(monthDay: MonthDay) {
 
         var month by mutableStateOf(monthDay.month)
 
@@ -94,9 +95,8 @@ class BirthdayPickerUiState(initialBirthday: Birthday?) {
 
         val birthday by derivedStateOf {
             try {
-                val month = "%02d".format(month.value)
-                val day = "%02d".format(dayTextFieldState.text.toString().toInt())
-                Birthday.UnknownYear(MonthDay.parse("--$month-$day"))
+                val day = dayTextFieldState.text.toString().toInt()
+                Birthday.UnknownYear(MonthDay.of(month, day))
             } catch (_: Exception) {
                 // User enter some invalid month/day combination
                 null

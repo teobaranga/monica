@@ -7,17 +7,18 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
-import java.time.LocalDate
-import java.time.OffsetDateTime
 import kotlin.uuid.Uuid
 
 @Inject
 @SingleIn(AppScope::class)
 internal class ContactActivitiesRepository(
     dispatcher: Dispatcher,
+    private val clock: Clock,
     private val contactActivitiesDao: ContactActivitiesDao,
     private val contactActivityNewSynchronizer: ContactActivityNewSynchronizer,
     private val contactActivityUpdateSynchronizer: ContactActivityUpdateSynchronizer,
@@ -54,7 +55,7 @@ internal class ContactActivitiesRepository(
          * Insert response into Room, should ideally have a similar ID but keep a map of local to remote ID
          */
         val activityId = contactActivitiesDao.getMaxId() + 1
-        val createdDate = OffsetDateTime.now()
+        val createdDate = clock.now()
         val entity = ContactActivityEntity(
             activityId = activityId,
             uuid = Uuid.random(),
@@ -94,7 +95,7 @@ internal class ContactActivitiesRepository(
             title = title,
             description = description,
             date = date,
-            updated = OffsetDateTime.now(),
+            updated = clock.now(),
             syncStatus = SyncStatus.EDITED,
         )
         val crossRefs = participants

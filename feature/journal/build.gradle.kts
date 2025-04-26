@@ -1,5 +1,3 @@
-import com.teobaranga.monica.implementation
-
 plugins {
     alias(libs.plugins.monica.android.feature)
     alias(libs.plugins.monica.android.compose)
@@ -15,6 +13,7 @@ android {
 dependencies {
     implementation(project(":core:account"))
     implementation(project(":core:data"))
+    implementation(project(":core:datetime"))
     implementation(project(":core:dispatcher"))
     implementation(project(":core:inject"))
     implementation(project(":core:ui"))

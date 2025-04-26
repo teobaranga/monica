@@ -62,7 +62,6 @@ android {
 
     testOptions.unitTests {
         isIncludeAndroidResources = true
-        isReturnDefaultValues = true
         all { test ->
             test.systemProperties["robolectric.logging.enabled"] = "true"
         }
@@ -80,6 +79,7 @@ ksp {
 dependencies {
     implementation(project(":core:account"))
     implementation(project(":core:data"))
+    implementation(project(":core:datetime"))
     implementation(project(":core:dispatcher"))
     implementation(project(":core:inject"))
     implementation(project(":core:ui"))

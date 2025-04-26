@@ -7,6 +7,7 @@ import androidx.paging.insertSeparators
 import androidx.paging.map
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.core.data.sync.Synchronizer
+import com.teobaranga.monica.core.datetime.Year
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
@@ -23,7 +24,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import java.time.Year
 import kotlin.time.Duration.Companion.seconds
 
 private const val MAX_PREVIEW_CHARS = 300
@@ -35,6 +35,7 @@ class JournalEntryListViewModel(
     userRepository: IUserRepository,
     journalRepository: JournalRepository,
     private val journalEntrySynchronizer: JournalEntrySynchronizer,
+    private val getNowYear: () -> Year,
 ) : ViewModel() {
 
     val userAvatar = userRepository.me
@@ -54,7 +55,8 @@ class JournalEntryListViewModel(
                     journalEntryEntity.toUiModel()
                 }
                 .insertSeparators { before, after ->
-                    return@insertSeparators when {
+                    val currentYear = getNowYear()
+                    when {
                         before == null && after is JournalEntryListItem.Entry -> {
                             JournalEntryListItem.SectionTitle(
                                 month = after.date.month,
@@ -66,7 +68,7 @@ class JournalEntryListViewModel(
                             if (before.date.month != after.date.month) {
                                 JournalEntryListItem.SectionTitle(
                                     month = after.date.month,
-                                    year = after.date.year.takeIf { it != Year.now().value },
+                                    year = after.date.year.takeIf { it != currentYear },
                                 )
                             } else {
                                 JournalEntryListItem.Divider

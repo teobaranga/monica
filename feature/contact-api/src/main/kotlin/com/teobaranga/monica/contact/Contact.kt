@@ -1,7 +1,7 @@
 package com.teobaranga.monica.contact
 
 import com.teobaranga.monica.useravatar.UserAvatar
-import java.time.OffsetDateTime
+import kotlinx.datetime.Instant
 
 data class Contact(
     val id: Int,
@@ -10,5 +10,5 @@ data class Contact(
     val completeName: String,
     val initials: String,
     val avatar: UserAvatar,
-    val updated: OffsetDateTime?,
+    val updated: Instant?,
 )

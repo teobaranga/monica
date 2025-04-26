@@ -11,41 +11,57 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
+
+interface JournalApi {
+
+    suspend fun getJournal(page: Int? = null, sort: String? = null): ApiResponse<JournalEntriesResponse>
+
+    /**
+     * Create a journal entry.
+     */
+    suspend fun createJournalEntry(request: JournalEntryCreateRequest): ApiResponse<JournalEntryResponse>
+
+    /**
+     * Update a journal entry.
+     */
+    suspend fun updateJournalEntry(id: Int, request: JournalEntryCreateRequest): ApiResponse<JournalEntryResponse>
+
+    /**
+     * Delete a journal entry.
+     */
+    suspend fun deleteJournalEntry(id: Int): ApiResponse<DeleteResponse>
+}
 
 @Inject
 @SingleIn(AppScope::class)
-class JournalApi(private val httpClient: HttpClient) {
+@ContributesBinding(AppScope::class)
+class JournalApiImpl(private val httpClient: HttpClient) : JournalApi {
 
-    suspend fun getJournal(page: Int? = null, sort: String? = null): ApiResponse<JournalEntriesResponse> {
+    override suspend fun getJournal(page: Int?, sort: String?): ApiResponse<JournalEntriesResponse> {
         return httpClient.getApiResponse("api/journal") {
             parameter("page", page)
             parameter("sort", sort)
         }
     }
 
-    /**
-     * Create a journal entry.
-     */
-    suspend fun createJournalEntry(request: JournalEntryCreateRequest): ApiResponse<JournalEntryResponse> {
+    override suspend fun createJournalEntry(request: JournalEntryCreateRequest): ApiResponse<JournalEntryResponse> {
         return httpClient.postApiResponse("api/journal") {
             setBody(request)
         }
     }
 
-    /**
-     * Update a journal entry.
-     */
-    suspend fun updateJournalEntry(id: Int, request: JournalEntryCreateRequest): ApiResponse<JournalEntryResponse> {
+    override suspend fun updateJournalEntry(
+        id: Int,
+        request: JournalEntryCreateRequest,
+    ): ApiResponse<JournalEntryResponse> {
         return httpClient.putApiResponse("api/journal/$id") {
             setBody(request)
         }
     }
 
-    /**
-     * Delete a journal entry.
-     */
-    suspend fun deleteJournalEntry(id: Int): ApiResponse<DeleteResponse> {
+    override suspend fun deleteJournalEntry(id: Int): ApiResponse<DeleteResponse> {
         return httpClient.deleteApiResponse("api/journal/$id")
     }
 }

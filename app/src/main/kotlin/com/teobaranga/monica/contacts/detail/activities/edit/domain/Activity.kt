@@ -1,7 +1,7 @@
 package com.teobaranga.monica.contacts.detail.activities.edit.domain
 
 import com.teobaranga.monica.contacts.detail.activities.edit.ui.ActivityParticipant
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 data class Activity(
     val summary: String,

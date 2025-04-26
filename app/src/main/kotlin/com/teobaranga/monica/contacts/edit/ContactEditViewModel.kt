@@ -5,12 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
-import com.teobaranga.monica.contacts.detail.toUiBirthday
 import com.teobaranga.monica.contacts.domain.DeleteContactUseCase
 import com.teobaranga.monica.contacts.domain.GetContactUseCase
 import com.teobaranga.monica.contacts.domain.UpsertContactUseCase
+import com.teobaranga.monica.contacts.edit.birthday.BirthdayMapper
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
-import com.teobaranga.monica.contacts.ui.toDomainBirthday
 import com.teobaranga.monica.genders.domain.Gender
 import com.teobaranga.monica.genders.domain.GetGendersUseCase
 import kotlinx.coroutines.flow.SharingStarted
@@ -34,6 +33,7 @@ class ContactEditViewModel internal constructor(
     private val upsertContactUseCase: UpsertContactUseCase,
     private val deleteContactUseCase: DeleteContactUseCase,
     private val getGendersUseCase: GetGendersUseCase,
+    private val birthdayMapper: BirthdayMapper,
 ) : ViewModel() {
 
     private val navArgs = savedStateHandle.toRoute<ContactEditRoute>()
@@ -58,7 +58,7 @@ class ContactEditViewModel internal constructor(
                 nickname = contact.nickname,
                 initialGender = genders.firstOrNull { it.id == contact.genderId },
                 genders = genders,
-                initialBirthday = contact.birthdate?.toUiBirthday(),
+                initialBirthday = contact.birthdate?.let { birthdayMapper.toUi(it) },
             )
         }
         emit(state)
@@ -78,7 +78,7 @@ class ContactEditViewModel internal constructor(
                 lastName = uiState.lastName.text,
                 nickname = uiState.nickname.text,
                 gender = uiState.gender,
-                birthdate = uiState.birthday?.toDomainBirthday(),
+                birthdate = uiState.birthday?.let { birthdayMapper.toDomain(it) },
             )
         }
     }

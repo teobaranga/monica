@@ -34,6 +34,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshBox
@@ -43,7 +44,8 @@ import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.util.ScrollToTopEffect
 import com.teobaranga.monica.core.ui.util.keepScrollOnSizeChanged
 import kotlinx.coroutines.flow.flowOf
-import java.time.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
@@ -134,24 +136,32 @@ private fun LazyListScope.journalEntryListItems(
     lazyItems: LazyPagingItems<JournalEntryListItem>,
     onEntryClick: (id: Int) -> Unit,
 ) {
-    itemsIndexed(items = lazyItems.itemSnapshotList, key = { index, journalEntry ->
-        when (journalEntry) {
-            is JournalEntryListItem.Entry -> journalEntry.id
-            is JournalEntryListItem.SectionTitle -> YearMonth.of(
-                journalEntry.year ?: 0, journalEntry.month
-            )
+    itemsIndexed(
+        items = lazyItems.itemSnapshotList,
+        key = { index, journalEntry ->
+            when (journalEntry) {
+                is JournalEntryListItem.Entry -> journalEntry.id
+                is JournalEntryListItem.SectionTitle -> buildString {
+                    if (journalEntry.year != null) {
+                        append(journalEntry.year)
+                        append(" ")
+                    }
+                    append(journalEntry.month)
+                }
 
-            is JournalEntryListItem.Divider -> "divider_$index"
-            null -> Int.MIN_VALUE
-        }
-    }, contentType = { index, journalEntryItem ->
-        when (journalEntryItem) {
-            is JournalEntryListItem.Entry -> "entry"
-            is JournalEntryListItem.SectionTitle -> "section_title"
-            is JournalEntryListItem.Divider -> "divider"
-            null -> "null"
-        }
-    }) { index, journalEntry ->
+                is JournalEntryListItem.Divider -> "divider_$index"
+                null -> Int.MIN_VALUE
+            }
+        },
+        contentType = { index, journalEntryItem ->
+            when (journalEntryItem) {
+                is JournalEntryListItem.Entry -> "entry"
+                is JournalEntryListItem.SectionTitle -> "section_title"
+                is JournalEntryListItem.Divider -> "divider"
+                null -> "null"
+            }
+        },
+    ) { index, journalEntry ->
         JournalEntryListItem(
             journalEntry = journalEntry,
             onEntryClick = onEntryClick,
@@ -184,9 +194,7 @@ private fun LazyItemScope.JournalEntryListItem(
                     .padding(start = 26.dp),
                 text = when {
                     journalEntry.year != null -> monthYearFormatter.format(
-                        YearMonth.of(
-                            journalEntry.year, journalEntry.month
-                        )
+                        YearMonth.of(journalEntry.year, journalEntry.month)
                     )
 
                     else -> monthFormatter.format(journalEntry.month)
@@ -226,7 +234,7 @@ private fun PreviewJournalScreen() {
                             | mollit anim id est laborum.
                             | 
                         """.trimMargin(),
-                        date = LocalDate.now(),
+                        date = LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()),
                     ),
                 ),
             ),

@@ -1,8 +1,8 @@
 package com.teobaranga.monica.journal.data.remote
 
-import com.teobaranga.monica.core.data.remote.AccountResponse
-import com.teobaranga.monica.core.data.adapter.OffsetDateTimeAsString
 import com.teobaranga.monica.core.data.adapter.UuidAsString
+import com.teobaranga.monica.core.data.remote.AccountResponse
+import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -19,9 +19,9 @@ data class JournalEntry(
     @SerialName("post")
     val post: String,
     @SerialName("date")
-    val date: OffsetDateTimeAsString,
+    val date: Instant,
     @SerialName("created_at")
-    val created: OffsetDateTimeAsString,
+    val created: Instant,
     @SerialName("updated_at")
-    val updated: OffsetDateTimeAsString,
+    val updated: Instant,
 )

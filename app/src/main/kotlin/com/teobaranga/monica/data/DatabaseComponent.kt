@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 import com.teobaranga.monica.configuration.domain.ConfigurationDataStore
 import com.teobaranga.monica.configuration.domain.ConfigurationItem.ShouldClearDatabaseOnNextLaunch
 import com.teobaranga.monica.core.inject.ApplicationContext
+import com.teobaranga.monica.journal.data.local.JournalDatabaseOwner
 import kotlinx.coroutines.runBlocking
 import me.tatarka.inject.annotations.Provides
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
@@ -34,4 +35,8 @@ interface DatabaseComponent {
     @Provides
     @SingleIn(AppScope::class)
     fun providesRooomDatabase(database: MonicaDatabase): RoomDatabase = database
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun providesJournalDatabaseOwner(database: MonicaDatabase): JournalDatabaseOwner = database
 }

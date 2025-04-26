@@ -1,13 +1,12 @@
 package com.teobaranga.monica.contacts.ui
 
-import com.teobaranga.monica.contacts.data.ContactEntity
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.Month
-import java.time.MonthDay
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
-import java.time.temporal.ChronoUnit
+import androidx.compose.runtime.Composable
+import com.teobaranga.monica.core.datetime.LocalSystemClock
+import com.teobaranga.monica.core.datetime.MonthDay
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
+import kotlinx.datetime.yearsUntil
 
 sealed interface Birthday {
 
@@ -15,38 +14,10 @@ sealed interface Birthday {
 
     data class UnknownYear(val monthDay: MonthDay) : Birthday
 
-    data class Full(val date: OffsetDateTime) : Birthday {
+    data class Full(val date: LocalDate) : Birthday {
 
         val age: Int
-            get() = ChronoUnit.YEARS.between(date, OffsetDateTime.now()).toInt()
-    }
-}
-
-fun Birthday.toDomainBirthday(): ContactEntity.Birthdate {
-    return when (this) {
-        is Birthday.AgeBased -> ContactEntity.Birthdate(
-            isAgeBased = true,
-            isYearUnknown = false,
-            date = OffsetDateTime.now().minusYears(age.toLong())
-                .withMonth(Month.JANUARY.value)
-                .withDayOfMonth(1)
-                .truncatedTo(ChronoUnit.HOURS),
-        )
-
-        is Birthday.UnknownYear -> ContactEntity.Birthdate(
-            isAgeBased = false,
-            isYearUnknown = true,
-            date = OffsetDateTime.of(
-                LocalDate.now().withMonth(monthDay.monthValue).withDayOfMonth(monthDay.dayOfMonth),
-                LocalTime.MIDNIGHT,
-                ZoneOffset.UTC,
-            ),
-        )
-
-        is Birthday.Full -> ContactEntity.Birthdate(
-            isAgeBased = false,
-            isYearUnknown = false,
-            date = date,
-        )
+            @Composable
+            get() = date.yearsUntil(LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()))
     }
 }

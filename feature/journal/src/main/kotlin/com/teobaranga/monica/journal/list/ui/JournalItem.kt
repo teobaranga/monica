@@ -10,10 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
-import java.time.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.todayIn
 import java.time.format.FormatStyle
 
 @Composable
@@ -25,7 +28,7 @@ fun JournalItem(journalEntry: JournalEntryListItem.Entry, modifier: Modifier = M
     ) {
         val dateFormatter = rememberLocalizedDateFormatter(dateStyle = FormatStyle.FULL)
         Text(
-            text = dateFormatter.format(journalEntry.date),
+            text = journalEntry.date.toJavaLocalDate().format(dateFormatter),
             maxLines = 1,
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -69,7 +72,7 @@ private fun PreviewJournalItem() {
                     |Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
                     |mollit anim id est laborum.
                     """.trimMargin().replace('\n', ' '),
-                    date = LocalDate.now(),
+                    date = LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()),
                 ),
             )
         }

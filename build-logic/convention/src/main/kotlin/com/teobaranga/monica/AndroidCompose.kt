@@ -53,6 +53,8 @@ internal fun Project.configureAndroidCompose(
             // Robolectric UI tests
             testImplementation(libs.robolectric)
             testImplementation(libs.compose.ui.test)
+            // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
+            testImplementation(libs.junit.vintage)
         }
     }
 

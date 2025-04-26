@@ -14,7 +14,7 @@ import java.util.Locale
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
 @OptIn(ExperimentalTestApi::class)
-class LocalDateTimeFormatterTest(
+class LocalizedDateFormatterTest(
     private val locale: String,
     private val withYear: Boolean,
     private val expected: String,
