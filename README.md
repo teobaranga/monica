@@ -3,6 +3,8 @@
 Monica
 ==================
 
+Testing testing
+
 This app serves as an offline-first Android client for the awesome [monica](https://github.com/monicahq/monica) personal relationship management system.
 
 This project is not affiliated or endorsed by the official Monica maintainers.
