@@ -19,6 +19,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Setup composite build caching
+        uses: actions/cache@v4
+        with:
+          path: |
+            build-logic/build
+            build-logic/convention/build
+          key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
+
       - uses: gradle/actions/setup-gradle@v4
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
