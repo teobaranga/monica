@@ -122,7 +122,6 @@ dependencies {
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.extensions.htmlreporter)
     testImplementation(libs.kotest.extensions.junitxml)
-    testImplementation(libs.kotest.extensions.allure)
     testImplementation(libs.junit)
     // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
     testImplementation(libs.junit.vintage)
