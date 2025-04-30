@@ -47,6 +47,24 @@ jobs:
       - name: Run local tests
         run: ./gradlew testDebug
 
+      - name: Generate coverage output
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "COVERAGE=$(./gradlew -q testDebugUnitTest koverLineCoverage -Pkover koverXmlReport)" >> $GITHUB_ENV
+
+      - name: Update dynamic badge gist
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        if: github.ref == 'refs/heads/main'
+        with:
+          auth: ${{secrets.GIST_SECRET}}
+          gistID: 446173b9ad64f83674608016425ee4aa
+          filename: monica-coverage-badge.json
+          label: coverage
+          message: ${{env.COVERAGE}}%
+          valColorRange: ${{env.COVERAGE}}
+          minColorRange: 0
+          maxColorRange: 100
+
       - name: Assemble
         run: ./gradlew assemble --stacktrace
 
