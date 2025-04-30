@@ -1,3 +1,5 @@
+![coverage badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teobaranga/446173b9ad64f83674608016425ee4aa/raw/monica-coverage-badge.json)
+
 Monica
 ==================
 
