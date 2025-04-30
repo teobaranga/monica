@@ -70,7 +70,6 @@ class AndroidLibraryConventionPlugin : MonicaPlugin() {
                 testImplementation(libs.kotest.runner.junit5)
                 testImplementation(libs.kotest.extensions.htmlreporter)
                 testImplementation(libs.kotest.extensions.junitxml)
-                testImplementation(libs.kotest.extensions.allure)
 
                 testImplementation(libs.junit)
 
