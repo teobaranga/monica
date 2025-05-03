@@ -1,6 +1,3 @@
-import com.teobaranga.monica.implementation
-import com.teobaranga.monica.libs
-
 plugins {
     alias(libs.plugins.monica.jvm.library)
     alias(libs.plugins.kotlinx.serialization)

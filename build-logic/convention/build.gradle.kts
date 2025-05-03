@@ -77,6 +77,10 @@ gradlePlugin {
             id = "monica.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
+        register("kmp") {
+            id = "monica.kmp"
+            implementationClass = "KotlinMultiplatformConventionPlugin"
+        }
         register("kotlinInject") {
             id = "monica.kotlin.inject"
             implementationClass = "KotlinInjectConventionPlugin"

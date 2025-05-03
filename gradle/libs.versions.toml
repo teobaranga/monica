@@ -131,6 +131,7 @@ monica-android-library = { id = "monica.android.library", version = "unspecified
 monica-android-compose = { id = "monica.android.compose", version = "unspecified" }
 monica-jvm-library = { id = "monica.jvm.library", version = "unspecified" }
 monica-kotlin-inject = { id = "monica.kotlin.inject", version = "unspecified" }
+monica-kmp = { id = "monica.kmp", version = "unspecified" }
 monica-network = { id = "monica.network", version = "unspecified" }
 
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -141,5 +142,6 @@ dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.r
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
