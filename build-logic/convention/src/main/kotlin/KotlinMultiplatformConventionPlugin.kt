@@ -7,7 +7,6 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 /**
  * Pure Kotlin multiplatform library.
@@ -36,8 +35,6 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
     iosX64()
     iosSimulatorArm64()
 
-    configureCommonMainKsp()
-
     // Treat all Kotlin warnings as errors (disabled by default)
     // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
     val warningsAsErrors: String? by project
@@ -57,18 +54,6 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
                     freeCompilerArgs.add("-opt-in=kotlinx.coroutines.FlowPreview")
                 }
             }
-        }
-    }
-}
-
-private fun KotlinMultiplatformExtension.configureCommonMainKsp() {
-    sourceSets.named("commonMain").configure {
-        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-    }
-
-    project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-        if (name != "kspCommonMainKotlinMetadata") {
-            dependsOn("kspCommonMainKotlinMetadata")
         }
     }
 }

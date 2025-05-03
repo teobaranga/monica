@@ -8,6 +8,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 @Suppress("unused")
 class KotlinInjectConventionPlugin : Plugin<Project> {
@@ -16,7 +17,6 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply(libs.plugins.ksp.get().pluginId)
             extensions.findByType<KotlinMultiplatformExtension>()?.run {
-                println("kmp $project")
                 sourceSets.commonMain.dependencies {
                     implementation(libs.kotlin.inject.runtime)
                     implementation(libs.kotlin.inject.anvil.runtime)
@@ -31,8 +31,9 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
                     kspCommonMainMetadata(libs.kotlin.inject.anvil.compiler)
                     kspCommonMainMetadata(libs.kotlin.inject.viewmodel.compiler)
                 }
+
+                configureCommonMainKsp()
             } ?: dependencies {
-                println("standard $project")
                 implementation(libs.kotlin.inject.runtime)
                 implementation(libs.kotlin.inject.anvil.runtime)
                 implementation(libs.kotlin.inject.anvil.runtime.optional)
@@ -49,5 +50,17 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
 
     private fun DependencyHandler.kspCommonMainMetadata(dependencyNotation: Any) {
         add("kspCommonMainMetadata", dependencyNotation)
+    }
+}
+
+private fun KotlinMultiplatformExtension.configureCommonMainKsp() {
+    sourceSets.named("commonMain").configure {
+        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+    }
+
+    project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
+        if (name != "kspCommonMainKotlinMetadata") {
+            dependsOn("kspCommonMainKotlinMetadata")
+        }
     }
 }
