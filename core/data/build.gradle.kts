@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.monica.jvm.library)
+    alias(libs.plugins.monica.kmp)
     alias(libs.plugins.kotlinx.serialization)
 }
 
@@ -11,11 +11,17 @@ monica {
     }
 }
 
-dependencies {
-    implementation(project(":core:dispatcher"))
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(project(":core:dispatcher"))
 
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.serialization)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.serialization)
 
-    implementation(libs.paging.common)
+                implementation(libs.paging.common)
+            }
+        }
+    }
 }
