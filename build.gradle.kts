@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.kotlinAndroid) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.kotlinx.serialization) apply false
     alias(libs.plugins.ksp) apply false
 }
