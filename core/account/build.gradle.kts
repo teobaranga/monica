@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.monica.jvm.library)
+    alias(libs.plugins.monica.kmp)
 }
 
 group = "com.teobaranga.monica.core.account"
