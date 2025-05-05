@@ -11,13 +11,9 @@ class MonthDay private constructor(
     val dayOfMonth: Int,
 ) {
 
-    fun toJavaMonthDay(): java.time.MonthDay {
-        return java.time.MonthDay.of(month.value, dayOfMonth)
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other == null || this::class != other::class) return false
 
         other as MonthDay
 

@@ -30,6 +30,7 @@ datastore = "1.1.7"
 desugar-jdk-libs = "2.1.5"
 espresso-core = "3.6.1"
 firebase-bom = "33.14.0"
+jetbrains-compose = "1.8.1"
 jetbrains-navigation = "2.9.0-beta02"
 junit = "4.13.2"
 junit-vintage = "5.12.2"
@@ -70,7 +71,7 @@ compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = 
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-placeholder = { group = "com.eygraber", name = "compose-placeholder-material3", version.ref = "compose-placeholder" }
 compose-rules = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "compose-rules"  }
-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+compose-runtime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "jetbrains-compose" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 compose-ui-test = { group = "androidx.compose.ui", name = "ui-test" }

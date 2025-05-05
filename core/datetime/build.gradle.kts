@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.monica.jvm.library)
+    alias(libs.plugins.monica.kmp)
     alias(libs.plugins.monica.kotlin.inject)
 }
 
@@ -12,10 +12,15 @@ monica {
     }
 }
 
-dependencies {
-    implementation(project(":core:inject"))
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(project(":core:inject"))
 
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.runtime)
-    api(libs.kotlinx.datetime)
+                implementation(libs.compose.runtime)
+                api(libs.kotlinx.datetime)
+            }
+        }
+    }
 }
