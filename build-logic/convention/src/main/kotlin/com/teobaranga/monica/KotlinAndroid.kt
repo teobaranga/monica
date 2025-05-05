@@ -22,7 +22,6 @@ package com.teobaranga.monica
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
@@ -60,20 +59,6 @@ internal fun Project.configureKotlinAndroid(
     dependencies {
         coreLibraryDesugaring(libs.desugar.jdk.libs)
     }
-}
-
-/**
- * Configure base Kotlin options for JVM (non-Android)
- */
-internal fun Project.configureKotlinJvm() {
-    extensions.configure<JavaPluginExtension> {
-        // Java 11+ APIs available through desugaring
-        // https://developer.android.com/studio/write/java11-default-support-table
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    configureKotlin<KotlinJvmProjectExtension>()
 }
 
 /**

@@ -73,10 +73,6 @@ gradlePlugin {
             id = "monica.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"
         }
-        register("jvmLibrary") {
-            id = "monica.jvm.library"
-            implementationClass = "JvmLibraryConventionPlugin"
-        }
         register("kmp") {
             id = "monica.kmp"
             implementationClass = "KotlinMultiplatformConventionPlugin"
