@@ -19,11 +19,10 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.dp
 
 /**
  * The strategy used to determine if the cursor is at risk of being behind the keyboard.
@@ -106,7 +105,7 @@ fun Modifier.keepCursorVisible(cursorData: CursorData): Modifier {
     var isFocused by remember { mutableStateOf(false) }
     val density = LocalDensity.current
     val screenHeight = with(density) {
-        LocalConfiguration.current.screenHeightDp.dp.roundToPx()
+        LocalWindowInfo.current.containerSize.height
     }
     val keyboardHeight by rememberUpdatedState(WindowInsets.ime.getBottom(density))
     var boundsInWindow by remember { mutableStateOf(Rect.Zero) }

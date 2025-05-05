@@ -6,6 +6,7 @@ import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.provideDelegate
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
@@ -29,7 +30,11 @@ class KotlinMultiplatformConventionPlugin : MonicaPlugin() {
 
 private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatformExtension> {
 
-    jvm()
+    jvm {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
+    }
 
     iosArm64()
     iosX64()

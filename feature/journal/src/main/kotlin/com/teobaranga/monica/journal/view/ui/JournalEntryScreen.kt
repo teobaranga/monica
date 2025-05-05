@@ -93,6 +93,9 @@ fun JournalEntryScreen(
                         text = "You have unsaved changes. Are you sure you want to exit?",
                         positiveText = "Keep editing",
                         negativeText = "Exit",
+                        onExit = {
+                            // TODO
+                        },
                     )
                     JournalEntryScreenLoaded(
                         modifier = Modifier

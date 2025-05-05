@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
@@ -25,9 +24,9 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
-import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,7 +46,7 @@ fun DateButton(date: LocalDate, onDateSelect: (LocalDate) -> Unit, modifier: Mod
         Text(
             modifier = Modifier
                 .padding(start = 8.dp),
-            text = date.toJavaLocalDate().format(formatter),
+            text = formatter.format(date),
         )
     }
     if (showDatePickerDialog) {
@@ -85,7 +84,7 @@ fun DateButton(date: LocalDate, onDateSelect: (LocalDate) -> Unit, modifier: Mod
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun PreviewDateButton() {
     MonicaTheme {

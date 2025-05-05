@@ -17,14 +17,12 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.core.datetime.MonthDay
-import com.teobaranga.monica.core.datetime.toJavaMonthDay
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
-import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.todayIn
 
 @Composable
@@ -62,12 +60,12 @@ internal fun BirthdaySection(birthday: Birthday?, onBirthdayChange: () -> Unit, 
 
                     is Birthday.Full -> {
                         val dateFormatter = rememberLocalizedDateFormatter()
-                        "${dateFormatter.format(birthday.date.toJavaLocalDate())} (${birthday.age} years old)"
+                        "${dateFormatter.format(birthday.date)} (${birthday.age} years old)"
                     }
 
                     is Birthday.UnknownYear -> {
                         val monthDayFormatter = rememberLocalizedDateFormatter(includeYear = false)
-                        birthday.monthDay.toJavaMonthDay().format(monthDayFormatter)
+                        monthDayFormatter.format(birthday.monthDay)
                     }
 
                     null -> {

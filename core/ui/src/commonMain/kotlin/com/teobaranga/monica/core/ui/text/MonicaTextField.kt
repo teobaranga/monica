@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.takeOrElse
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextLayoutResult
@@ -117,7 +116,7 @@ fun MonicaTextField(
             } else {
                 modifier
             }
-                .defaultErrorSemantics(isError, stringResource(androidx.compose.ui.R.string.default_error_message))
+                .defaultErrorSemantics(isError, "Invalid input") // TODO: string resource
                 .defaultMinSize(
                     minWidth = OutlinedTextFieldDefaults.MinWidth,
                     minHeight = OutlinedTextFieldDefaults.MinHeight,
