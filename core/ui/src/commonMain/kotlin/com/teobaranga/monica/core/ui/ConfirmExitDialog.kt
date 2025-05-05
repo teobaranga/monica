@@ -1,7 +1,5 @@
 package com.teobaranga.monica.core.ui
 
-import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -12,21 +10,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.graphics.vector.ImageVector
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ConfirmExitDialog(
     state: ConfirmExitDialogState,
     text: String,
     positiveText: String,
     negativeText: String,
+    onExit: () -> Unit,
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
     title: String? = null,
 ) {
-    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-
     BackHandler(state.shouldConfirm && !state.isConfirming) {
         state.isConfirming = true
     }
@@ -69,7 +69,7 @@ fun ConfirmExitDialog(
                 TextButton(
                     onClick = {
                         state.isConfirming = false
-                        backDispatcher?.onBackPressed()
+                        onExit()
                     },
                 ) {
                     Text(

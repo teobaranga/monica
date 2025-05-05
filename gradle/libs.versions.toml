@@ -13,6 +13,8 @@ crashlytics = "3.0.3"
 dependency-analysis = "2.17.0"
 detekt = "1.23.8"
 google-services = "4.4.2"
+jetbrains-compose = "1.8.1"
+jetbrains-lifecycle = "2.9.0-beta01"
 ksp = "2.1.21-2.0.1"
 kotlin = "2.1.21"
 
@@ -30,7 +32,6 @@ datastore = "1.1.7"
 desugar-jdk-libs = "2.1.5"
 espresso-core = "3.6.1"
 firebase-bom = "33.14.0"
-jetbrains-compose = "1.8.1"
 jetbrains-navigation = "2.9.0-beta02"
 junit = "4.13.2"
 junit-vintage = "5.12.2"
@@ -58,6 +59,7 @@ work = "2.10.1"
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+jetbrains-compose-gradlePlugin = { module = "org.jetbrains.compose:org.jetbrains.compose.gradle.plugin", version.ref = "jetbrains-compose" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 # Features & components
@@ -84,6 +86,10 @@ desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", ver
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+# https://github.com/JetBrains/compose-multiplatform-core/pull/1868
+jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version = "1.8.0-alpha03" }
+jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.8.0-alpha03" }
+jetbrains-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle" }
 jetbrains-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "jetbrains-navigation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 junit-vintage = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit-vintage" }
@@ -130,6 +136,7 @@ monica-android-application = { id = "monica.android.application", version = "uns
 monica-android-feature = { id = "monica.android.feature", version = "unspecified" }
 monica-android-library = { id = "monica.android.library", version = "unspecified" }
 monica-android-compose = { id = "monica.android.compose", version = "unspecified" }
+monica-cmp = { id = "monica.cmp", version = "unspecified" }
 monica-kotlin-inject = { id = "monica.kotlin.inject", version = "unspecified" }
 monica-kmp = { id = "monica.kmp", version = "unspecified" }
 monica-network = { id = "monica.network", version = "unspecified" }
@@ -141,6 +148,7 @@ crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlyti
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

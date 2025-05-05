@@ -14,6 +14,7 @@ dependencies {
     implementation(project(":core:inject"))
 
     implementation(libs.activity.compose)
+    implementation(libs.androidx.compose.material.icons)
 
     implementation(libs.datastore.preferences)
 }
