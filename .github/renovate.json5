@@ -16,7 +16,7 @@
     "monica.android.feature",
     "monica.android.library",
     "monica.android.compose",
-    "monica.jvm.library",
+    "monica.kmp",
     "monica.kotlin.inject",
     "monica.network",
   ],

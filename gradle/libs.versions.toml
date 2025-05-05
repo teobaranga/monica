@@ -130,7 +130,6 @@ monica-android-application = { id = "monica.android.application", version = "uns
 monica-android-feature = { id = "monica.android.feature", version = "unspecified" }
 monica-android-library = { id = "monica.android.library", version = "unspecified" }
 monica-android-compose = { id = "monica.android.compose", version = "unspecified" }
-monica-jvm-library = { id = "monica.jvm.library", version = "unspecified" }
 monica-kotlin-inject = { id = "monica.kotlin.inject", version = "unspecified" }
 monica-kmp = { id = "monica.kmp", version = "unspecified" }
 monica-network = { id = "monica.network", version = "unspecified" }
