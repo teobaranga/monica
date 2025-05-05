@@ -2,7 +2,7 @@ package com.teobaranga.monica.core.ui.datetime
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.intl.Locale
 import java.time.chrono.Chronology
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
@@ -16,7 +16,7 @@ fun rememberLocalizedDateFormatter(
     dateStyle: FormatStyle = FormatStyle.LONG,
     includeYear: Boolean = true,
 ): DateTimeFormatter {
-    val locale = LocalConfiguration.current.locales[0]
+    val locale = Locale.current.platformLocale
     return remember(locale, dateStyle, includeYear) {
         var format = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
             /* dateStyle = */ dateStyle,

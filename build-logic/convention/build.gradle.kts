@@ -46,6 +46,7 @@ dependencies {
     compileOnly(libs.android.tools.common)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
+    compileOnly(libs.jetbrains.compose.gradlePlugin)
 }
 
 tasks {
@@ -76,6 +77,10 @@ gradlePlugin {
         register("kmp") {
             id = "monica.kmp"
             implementationClass = "KotlinMultiplatformConventionPlugin"
+        }
+        register("cmp") {
+            id = "monica.cmp"
+            implementationClass = "ComposeMultiplatformConventionPlugin"
         }
         register("kotlinInject") {
             id = "monica.kotlin.inject"

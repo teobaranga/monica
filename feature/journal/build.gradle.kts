@@ -21,6 +21,8 @@ dependencies {
     implementation(project(":feature:account"))
     implementation(project(":feature:user-api"))
 
+    implementation(libs.androidx.compose.material.icons)
+
     // Storage
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
