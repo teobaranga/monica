@@ -5,8 +5,8 @@ targetSdk = "35"
 compileSdk = "35"
 
 # Included build
-androidGradlePlugin = "8.9.2"
-androidTools = "31.9.2"
+androidGradlePlugin = "8.10.0"
+androidTools = "31.10.0"
 
 # Plugins
 crashlytics = "3.0.3"
@@ -30,7 +30,7 @@ datastore = "1.1.4"
 desugar-jdk-libs = "2.1.5"
 espresso-core = "3.6.1"
 firebase-bom = "33.13.0"
-jetbrains-navigation = "2.9.0-alpha17"
+jetbrains-navigation = "2.9.0-beta01"
 junit = "4.13.2"
 junit-vintage = "5.12.2"
 kmlogging = "2.0.3"
