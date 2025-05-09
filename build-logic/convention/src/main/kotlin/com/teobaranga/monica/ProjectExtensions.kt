@@ -18,6 +18,7 @@ package com.teobaranga.monica
 
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
+import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 
 val Project.libs
@@ -35,18 +36,12 @@ fun DependencyHandlerScope.testImplementation(dependencyNotation: Any) {
     add("testImplementation", dependencyNotation)
 }
 
-fun DependencyHandlerScope.androidTestImplementation(dependencyNotation: Any) {
-    add("androidTestImplementation", dependencyNotation)
-}
-
-fun DependencyHandlerScope.ksp(dependencyNotation: Any) {
-    add("ksp", dependencyNotation)
-}
-
-fun DependencyHandlerScope.kspTest(dependencyNotation: Any) {
-    add("kspTest", dependencyNotation)
-}
-
 fun DependencyHandlerScope.coreLibraryDesugaring(dependencyNotation: Any) {
     add("coreLibraryDesugaring", dependencyNotation)
+}
+
+fun <T: Any> DependencyHandler.addAll(configurationName: String, dependencies: Array<T>) {
+    for (dependency in dependencies) {
+        add(configurationName, dependency)
+    }
 }

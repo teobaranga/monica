@@ -1,16 +1,89 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.google.gms.googleservices.GoogleServicesPlugin
+import com.teobaranga.monica.InjectHandler
+import com.teobaranga.monica.libs
 
 plugins {
+    alias(libs.plugins.monica.cmp)
     alias(libs.plugins.monica.android.application)
-    alias(libs.plugins.monica.android.compose)
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.detekt)
+}
+
+kotlin {
+    applyDefaultHierarchyTemplate()
+
+    androidTarget()
+
+    sourceSets {
+        androidMain {
+            dependencies {
+                implementation(libs.work)
+
+                implementation(libs.browser)
+
+                implementation(project.dependencies.platform(libs.firebase.bom))
+                implementation(libs.firebase.crashlytics)
+            }
+        }
+        androidUnitTest {
+            // TODO run tests in common source set
+            dependencies {
+                implementation(libs.kotest.runner.junit5)
+                implementation(libs.kotest.extensions.htmlreporter)
+                implementation(libs.kotest.extensions.junitxml)
+                implementation(libs.junit)
+                // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
+                implementation(libs.junit.vintage)
+                implementation(libs.kotlinx.coroutines.test)
+
+                implementation(libs.turbine)
+
+                implementation(libs.mockk)
+            }
+        }
+        commonMain {
+            dependencies {
+                implementation(project(":core:account"))
+                implementation(project(":core:data"))
+                implementation(project(":core:datetime"))
+                implementation(project(":core:dispatcher"))
+                implementation(project(":core:inject"))
+                implementation(project(":core:paging"))
+                implementation(project(":core:ui"))
+                implementation(project(":component:user_avatar"))
+                implementation(project(":feature:account"))
+                implementation(project(":feature:configuration"))
+                implementation(project(":feature:contact-api"))
+                implementation(project(":feature:genders"))
+                implementation(project(":feature:journal"))
+                implementation(project(":feature:user-api"))
+
+                implementation(libs.compose.placeholder)
+
+                implementation(libs.coil)
+
+                implementation(libs.jetbrains.navigation)
+
+                implementation(libs.datastore.preferences)
+
+                implementation(libs.room.runtime)
+
+                implementation(libs.kmlogging)
+            }
+        }
+    }
+}
+
+dependencies {
+    add("kspAndroid", libs.room.compiler)
+
+    detektPlugins(libs.compose.rules)
+    detektPlugins(libs.detekt.formatting)
 }
 
 android {
@@ -76,67 +149,6 @@ ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
 
-dependencies {
-    implementation(project(":core:account"))
-    implementation(project(":core:data"))
-    implementation(project(":core:datetime"))
-    implementation(project(":core:dispatcher"))
-    implementation(project(":core:inject"))
-    implementation(project(":core:ui"))
-    implementation(project(":component:user_avatar"))
-    implementation(project(":feature:account"))
-    implementation(project(":feature:configuration"))
-    implementation(project(":feature:contact-api"))
-    implementation(project(":feature:genders"))
-    implementation(project(":feature:journal"))
-    implementation(project(":feature:user-api"))
-
-    implementation(libs.core.ktx)
-    implementation(libs.lifecycle.runtime.compose)
-    implementation(libs.lifecycle.viewmodel.compose)
-    implementation(libs.activity.compose)
-    implementation(libs.androidx.compose.material.icons)
-
-    implementation(libs.compose.placeholder)
-
-    implementation(libs.browser)
-
-    implementation(libs.coil)
-
-    implementation(libs.jetbrains.navigation)
-
-    implementation(libs.datastore.preferences)
-
-    implementation(libs.paging.compose)
-
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-
-    implementation(libs.kmlogging)
-
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.crashlytics)
-
-    implementation(libs.work)
-
-    testImplementation(libs.kotest.runner.junit5)
-    testImplementation(libs.kotest.extensions.htmlreporter)
-    testImplementation(libs.kotest.extensions.junitxml)
-    testImplementation(libs.junit)
-    // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
-    testImplementation(libs.junit.vintage)
-    testImplementation(libs.kotlinx.coroutines.test)
-
-    testImplementation(libs.turbine)
-
-    testImplementation(libs.mockk)
-
-    androidTestImplementation(libs.androidx.test.ext.junit)
-
-    detektPlugins(libs.compose.rules)
-    detektPlugins(libs.detekt.formatting)
-}
-
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     reports {
@@ -148,4 +160,10 @@ tasks.withType<Test>().configureEach {
 
 detekt {
     autoCorrect = true
+}
+
+monica {
+    inject {
+        injectIn = InjectHandler.Target.SEPARATE
+    }
 }

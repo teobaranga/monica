@@ -1,22 +1,28 @@
 plugins {
-    alias(libs.plugins.monica.android.feature)
-    alias(libs.plugins.monica.android.compose)
+    alias(libs.plugins.monica.cmp)
+    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
 }
 
-android {
-    namespace = "com.teobaranga.monica.account"
+kotlin {
+    androidTarget()
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(project(":core:ui"))
+                implementation(project(":core:dispatcher"))
+                implementation(project(":core:inject"))
+
+                implementation(libs.datastore.preferences)
+
+                implementation(libs.room.runtime)
+            }
+        }
+    }
 }
 
-dependencies {
-    implementation(project(":core:ui"))
-    implementation(project(":core:dispatcher"))
-    implementation(project(":core:inject"))
-
-    implementation(libs.activity.compose)
-
-    implementation(libs.datastore.preferences)
-
-    implementation(libs.room.runtime)
+android {
+    namespace = "com.teobaranga.monica.account"
 }

@@ -14,7 +14,7 @@ dependency-analysis = "2.17.0"
 detekt = "1.23.8"
 google-services = "4.4.2"
 jetbrains-compose = "1.8.1"
-jetbrains-lifecycle = "2.9.0-beta01"
+jetbrains-lifecycle = "2.9.0"
 ksp = "2.1.21-2.0.1"
 kotlin = "2.1.21"
 
@@ -22,7 +22,7 @@ kotlin = "2.1.21"
 activity-compose = "1.10.1"
 androidx-test-ext-junit = "1.2.1"
 browser = "1.8.0"
-coil = "2.7.0"
+coil = "3.2.0"
 compose-bom = "2025.05.01"
 compose-destinations = "2.1.0"
 compose-placeholder = "1.0.11"
@@ -67,8 +67,7 @@ activity-compose = { group = "androidx.activity", name = "activity-compose", ver
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
-coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-placeholder = { group = "com.eygraber", name = "compose-placeholder-material3", version.ref = "compose-placeholder" }
@@ -133,9 +132,7 @@ work = { group = "androidx.work", name = "work-runtime", version.ref = "work"  }
 [plugins]
 # Plugins defined by this project
 monica-android-application = { id = "monica.android.application", version = "unspecified" }
-monica-android-feature = { id = "monica.android.feature", version = "unspecified" }
 monica-android-library = { id = "monica.android.library", version = "unspecified" }
-monica-android-compose = { id = "monica.android.compose", version = "unspecified" }
 monica-cmp = { id = "monica.cmp", version = "unspecified" }
 monica-kotlin-inject = { id = "monica.kotlin.inject", version = "unspecified" }
 monica-kmp = { id = "monica.kmp", version = "unspecified" }

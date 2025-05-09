@@ -1,8 +1,9 @@
-
+import com.teobaranga.monica.debugImplementation
 import com.teobaranga.monica.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.compose.ExperimentalComposeLibrary
@@ -31,7 +32,14 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                         dependencies {
                             implementation(project(":core:datetime"))
 
-                            implementation(libs.jetbrains.compose.material3)
+                            implementation(libs.jetbrains.compose.material3.get().module.toString()) {
+                                // Enforce a downgrade of Jetbrains Compose Material3. The latest version doesn't have
+                                // access to newer Material3 API that this app added before CMP, eg. OutlinedTextField
+                                // with TextFieldState.
+                                version {
+                                    strictly(libs.jetbrains.compose.material3.get().version!!)
+                                }
+                            }
                             implementation(libs.jetbrains.compose.ui.backhandler)
                             implementation(libs.jetbrains.lifecycle.runtime.compose)
                             implementation(compose.ui)
@@ -44,13 +52,26 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                             implementation(libs.jetbrains.navigation)
                         }
                     }
-                    commonTest {
-                        dependencies {
-                            // Robolectric UI tests
-                            implementation(libs.robolectric)
-                            implementation(compose.uiTest)
-                            // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
-                            implementation(libs.junit.vintage)
+                    afterEvaluate {
+                        findByName("androidUnitTest")?.run {
+                            dependencies {
+                                // Robolectric UI tests
+                                implementation(libs.robolectric)
+                                implementation(compose.uiTest)
+                                // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
+                                implementation(libs.junit.vintage)
+                            }
+                            project.dependencies {
+                                debugImplementation(libs.compose.ui.test.manifest)
+                            }
+                        }
+                    }
+                }
+
+                afterEvaluate {
+                    if (sourceSets.findByName("androidMain") != null) {
+                        target.dependencies {
+                            debugImplementation(compose.uiTooling)
                         }
                     }
                 }
