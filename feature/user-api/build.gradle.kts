@@ -1,19 +1,21 @@
 plugins {
-    alias(libs.plugins.monica.android.feature)
+    alias(libs.plugins.monica.kmp)
 }
 
-android {
-    namespace = "com.teobaranga.monica.user"
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(project(":feature:contact-api"))
+
+                implementation(libs.kotlinx.coroutines.core)
+            }
+        }
+    }
 }
 
 monica {
     optIn {
         flowPreview = false
     }
-}
-
-dependencies {
-    api(project(":feature:contact-api"))
-
-    implementation(libs.kotlinx.coroutines.core)
 }

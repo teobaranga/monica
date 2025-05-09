@@ -1,9 +1,10 @@
-import com.teobaranga.monica.implementation
 import com.teobaranga.monica.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.configure
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
+@Suppress("unused")
 class NetworkConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
@@ -11,20 +12,30 @@ class NetworkConventionPlugin : Plugin<Project> {
                 apply(libs.plugins.kotlinx.serialization.get().pluginId)
             }
 
-            dependencies {
-                // Ktor for networking
-                implementation(libs.ktor.client.auth)
-                implementation(libs.ktor.client.content.negotiation)
-                implementation(libs.ktor.client.logging)
-                implementation(libs.ktor.client.okhttp)
-                implementation(libs.ktor.serialization.kotlinx.json)
+            extensions.configure<KotlinMultiplatformExtension> {
+                with(sourceSets) {
+                    jvmMain {
+                        dependencies {
+                            implementation(libs.ktor.client.okhttp)
+                        }
+                    }
+                    commonMain {
+                        dependencies {
+                            // Ktor for networking
+                            implementation(libs.ktor.client.auth)
+                            implementation(libs.ktor.client.content.negotiation)
+                            implementation(libs.ktor.client.logging)
+                            implementation(libs.ktor.serialization.kotlinx.json)
 
-                // Kotlinx Serialization for JSON serialization
-                implementation(libs.kotlinx.serialization)
+                            // Kotlinx Serialization for JSON serialization
+                            implementation(libs.kotlinx.serialization)
 
-                // Sandwich for a nicer way to handle network responses
-                implementation(libs.sandwich)
-                implementation(libs.sandwich.ktor)
+                            // Sandwich for a nicer way to handle network responses
+                            implementation(libs.sandwich)
+                            implementation(libs.sandwich.ktor)
+                        }
+                    }
+                }
             }
         }
     }

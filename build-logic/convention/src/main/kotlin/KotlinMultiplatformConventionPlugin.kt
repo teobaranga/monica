@@ -4,7 +4,6 @@ import com.teobaranga.monica.libs
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -43,20 +42,21 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
     // Treat all Kotlin warnings as errors (disabled by default)
     // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
     val warningsAsErrors: String? by project
-    compilerOptions {
+    compilerOptions compilerOptions@{
         allWarningsAsErrors = warningsAsErrors.toBoolean()
         freeCompilerArgs.addAll(
             "-Xcontext-receivers",
+            "-Xexpect-actual-classes",
             "-opt-in=kotlin.uuid.ExperimentalUuidApi",
         )
 
-        extensions.findByType<MonicaExtension>()?.let { monicaExtension ->
-            afterEvaluate {
-                if (monicaExtension.optIn.experimentalCoroutinesApi) {
-                    freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+        afterEvaluate {
+            project.extensions.configure<MonicaExtension> {
+                if (optIn.experimentalCoroutinesApi) {
+                    this@compilerOptions.optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
                 }
-                if (monicaExtension.optIn.flowPreview) {
-                    freeCompilerArgs.add("-opt-in=kotlinx.coroutines.FlowPreview")
+                if (optIn.flowPreview) {
+                    this@compilerOptions.optIn.add("kotlinx.coroutines.FlowPreview")
                 }
             }
         }

@@ -1,9 +1,16 @@
 plugins {
-    alias(libs.plugins.monica.android.feature)
+    alias(libs.plugins.monica.kmp)
 }
 
-android {
-    namespace = "com.teobaranga.monica.contact"
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(project(":core:datetime"))
+                implementation(project(":component:user_avatar"))
+            }
+        }
+    }
 }
 
 monica {
@@ -11,9 +18,4 @@ monica {
         experimentalCoroutinesApi = false
         flowPreview = false
     }
-}
-
-dependencies {
-    implementation(project(":core:datetime"))
-    implementation(project(":component:user_avatar"))
 }
