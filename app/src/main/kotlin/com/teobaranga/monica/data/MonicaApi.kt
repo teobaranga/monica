@@ -56,11 +56,11 @@ interface MonicaApi {
 @Inject
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
-class MonicaApiImpl(private val httpClient: HttpClient) : MonicaApi {
+class MonicaApiImpl(private val httpClient: () -> HttpClient) : MonicaApi {
 
     override suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse> {
         return apiResponseOf {
-            httpClient.submitForm(
+            httpClient().submitForm(
                 url = "oauth/token",
                 formParameters = parameters {
                     tokenRequest.forEach { (key, value) ->

@@ -9,9 +9,9 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @Inject
 @SingleIn(AppScope::class)
-class UserApi(private val httpClient: HttpClient) {
+class UserApi(private val httpClient: () -> HttpClient) {
 
     suspend fun getMe(): ApiResponse<MeResponse> {
-        return httpClient.getApiResponse("api/me")
+        return httpClient().getApiResponse("api/me")
     }
 }
