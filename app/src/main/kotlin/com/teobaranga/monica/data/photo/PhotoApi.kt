@@ -11,15 +11,15 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @Inject
 @SingleIn(AppScope::class)
-class PhotoApi(private val httpClient: HttpClient) {
+class PhotoApi(private val httpClient: () -> HttpClient) {
 
     suspend fun getPhotos(page: Int? = null): ApiResponse<ContactPhotosResponse> {
-        return httpClient.getApiResponse("api/photos") {
+        return httpClient().getApiResponse("api/photos") {
             parameter("page", page)
         }
     }
 
     suspend fun getPhotos(id: Int): ApiResponse<ContactPhotosResponse> {
-        return httpClient.getApiResponse("api/contacts/$id/photos")
+        return httpClient().getApiResponse("api/contacts/$id/photos")
     }
 }
