@@ -37,17 +37,17 @@ interface JournalApi {
 @Inject
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
-class JournalApiImpl(private val httpClient: HttpClient) : JournalApi {
+class JournalApiImpl(private val httpClient: () -> HttpClient) : JournalApi {
 
     override suspend fun getJournal(page: Int?, sort: String?): ApiResponse<JournalEntriesResponse> {
-        return httpClient.getApiResponse("api/journal") {
+        return httpClient().getApiResponse("api/journal") {
             parameter("page", page)
             parameter("sort", sort)
         }
     }
 
     override suspend fun createJournalEntry(request: JournalEntryCreateRequest): ApiResponse<JournalEntryResponse> {
-        return httpClient.postApiResponse("api/journal") {
+        return httpClient().postApiResponse("api/journal") {
             setBody(request)
         }
     }
@@ -56,12 +56,12 @@ class JournalApiImpl(private val httpClient: HttpClient) : JournalApi {
         id: Int,
         request: JournalEntryCreateRequest,
     ): ApiResponse<JournalEntryResponse> {
-        return httpClient.putApiResponse("api/journal/$id") {
+        return httpClient().putApiResponse("api/journal/$id") {
             setBody(request)
         }
     }
 
     override suspend fun deleteJournalEntry(id: Int): ApiResponse<DeleteResponse> {
-        return httpClient.deleteApiResponse("api/journal/$id")
+        return httpClient().deleteApiResponse("api/journal/$id")
     }
 }
