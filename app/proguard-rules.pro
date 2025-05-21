@@ -25,3 +25,12 @@
 # https://firebase.google.com/docs/crashlytics/get-deobfuscated-reports?platform=android
 -keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
 -keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.
+
+# https://issuetracker.google.com/issues/418520101
+# Keep DataStore Preferences classes
+-keep class androidx.datastore.preferences.** { *; }
+-keep class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite { *; }
+# Keep protobuf classes
+-keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite {
+    <fields>;
+}

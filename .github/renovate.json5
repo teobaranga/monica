@@ -13,10 +13,9 @@
   ],
   "ignoreDeps": [
     "monica.android.application",
-    "monica.android.feature",
     "monica.android.library",
-    "monica.android.compose",
-    "monica.jvm.library",
+    "monica.cmp",
+    "monica.kmp",
     "monica.kotlin.inject",
     "monica.network",
   ],
