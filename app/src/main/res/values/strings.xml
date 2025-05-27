@@ -2,4 +2,7 @@
     <string name="app_name">Monica</string>
 
     <string name="shortcut_configuration">Configuration</string>
+
+    <string name="sync_work_notification_channel_name">Sync</string>
+    <string name="sync_work_notification_channel_description">Background synchronization of contacts, journal entries, etc.</string>
 </resources>
