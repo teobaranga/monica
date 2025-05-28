@@ -47,7 +47,6 @@ import com.teobaranga.monica.contacts.edit.ContactEditRoute
 import com.teobaranga.monica.core.paging.collectAsLazyPagingItems
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.plus
-import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshBox
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.core.ui.searchbar.MonicaSearchBar
@@ -58,6 +57,7 @@ import com.teobaranga.monica.ui.preview.contactAlice
 import com.teobaranga.monica.ui.preview.contactBob
 import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.flow.flowOf
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun Contacts(
@@ -232,7 +232,7 @@ private fun ContactItem(contact: Contact, onContactSelect: (Int) -> Unit, modifi
     }
 }
 
-@PreviewPixel4
+@Preview
 @Composable
 private fun PreviewContactsScreen() {
     MonicaTheme {

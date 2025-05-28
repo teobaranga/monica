@@ -24,11 +24,11 @@ import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.datetime.todayMonthDay
 import com.teobaranga.monica.core.ui.Zero
-import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 // TODO revisit this strategy, fix in kotlin-inject-viewmodel
 expect class ViewModelFactory {
@@ -155,7 +155,7 @@ private fun UnknownBirthday(uiState: BirthdayPickerUiState, modifier: Modifier =
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@PreviewPixel4
+@Preview
 @Composable
 private fun PreviewBirthdayPicker() {
     MonicaTheme {

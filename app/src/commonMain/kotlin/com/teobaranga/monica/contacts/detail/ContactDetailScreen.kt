@@ -34,10 +34,10 @@ import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
 import com.teobaranga.monica.contacts.edit.ContactEditRoute
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
-import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun ContactDetail(
@@ -167,7 +167,7 @@ private fun ContactDetailTab(text: String, onClick: () -> Unit, selected: Boolea
 }
 
 @Composable
-@PreviewPixel4
+@Preview
 private fun PreviewContactDetailScreen() {
     MonicaTheme {
         ContactDetailScreen(

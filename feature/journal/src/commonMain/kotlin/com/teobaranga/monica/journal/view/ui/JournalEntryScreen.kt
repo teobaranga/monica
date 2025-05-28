@@ -33,7 +33,6 @@ import com.teobaranga.monica.core.ui.ConfirmExitDialog
 import com.teobaranga.monica.core.ui.FabHeight
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.button.DateButton
-import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.rememberConfirmExitDialogState
 import com.teobaranga.monica.core.ui.text.MonicaTextField
 import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
@@ -44,6 +43,7 @@ import com.teobaranga.monica.core.ui.util.keepCursorVisible
 import com.teobaranga.monica.core.ui.util.rememberCursorData
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun JournalEntryScreen(
@@ -224,7 +224,7 @@ private fun PostTextField(
     )
 }
 
-@PreviewPixel4
+@Preview
 @Composable
 private fun PreviewJournalEntryScreen() {
     MonicaTheme {

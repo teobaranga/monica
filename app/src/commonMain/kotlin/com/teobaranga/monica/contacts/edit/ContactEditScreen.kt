@@ -37,9 +37,9 @@ import com.teobaranga.monica.contacts.edit.gender.GenderSection
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.core.ui.Zero
-import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.text.MonicaTextField
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -199,7 +199,7 @@ private fun NameTextField(state: TextFieldState, placeholder: String, modifier: 
     )
 }
 
-@PreviewPixel4
+@Preview
 @Composable
 private fun PreviewContactEditScreen() {
     MonicaTheme {

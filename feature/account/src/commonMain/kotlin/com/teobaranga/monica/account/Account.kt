@@ -19,9 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
-import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun Account(
@@ -63,7 +63,7 @@ private fun AccountScreen(onClearAuthorization: () -> Unit, onDismissRequest: ()
     }
 }
 
-@PreviewPixel4
+@Preview
 @Composable
 private fun PreviewAccountScreen() {
     MonicaTheme {

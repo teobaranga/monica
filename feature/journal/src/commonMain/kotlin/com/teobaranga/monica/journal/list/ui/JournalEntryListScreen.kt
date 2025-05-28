@@ -38,7 +38,6 @@ import com.teobaranga.monica.core.paging.LazyPagingItems
 import com.teobaranga.monica.core.paging.collectAsLazyPagingItems
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.plus
-import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshBox
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.core.ui.searchbar.MonicaSearchBar
@@ -48,6 +47,7 @@ import com.teobaranga.monica.core.ui.util.keepScrollOnSizeChanged
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun JournalEntryListScreen(
@@ -214,7 +214,7 @@ private fun LazyItemScope.JournalEntryListItem(
     }
 }
 
-@PreviewPixel4
+@Preview
 @Composable
 private fun PreviewJournalScreen() {
     MonicaTheme {

@@ -13,10 +13,10 @@ import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
-import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun JournalItem(journalEntry: JournalEntryListItem.Entry, modifier: Modifier = Modifier) {
@@ -52,7 +52,7 @@ fun JournalItem(journalEntry: JournalEntryListItem.Entry, modifier: Modifier = M
     }
 }
 
-@PreviewPixel4
+@Preview
 @Composable
 private fun PreviewJournalItem() {
     MonicaTheme {

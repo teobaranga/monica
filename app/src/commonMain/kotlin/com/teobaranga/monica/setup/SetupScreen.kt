@@ -28,13 +28,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
-import com.teobaranga.monica.core.ui.preview.PreviewPixel4
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.home.HomeRoute
 import com.teobaranga.monica.util.compose.keyboardAsState
 import monica.app.generated.resources.Res
 import monica.app.generated.resources.monica
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 internal const val SETUP_INFO_URL = "https://github.com/teobaranga/monica?tab=readme-ov-file#setup"
 
@@ -219,7 +219,7 @@ private fun SetupSectionTitle(modifier: Modifier = Modifier) {
 @Composable
 internal expect fun SetupInfoButton()
 
-@PreviewPixel4
+@Preview
 @Composable
 private fun PreviewSetupScreen() {
     MonicaTheme {
