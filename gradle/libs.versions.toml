@@ -5,12 +5,12 @@ targetSdk = "35"
 compileSdk = "35"
 
 # Included build
-androidGradlePlugin = "8.10.0"
-androidTools = "31.10.0"
+androidGradlePlugin = "8.10.1"
+androidTools = "31.10.1"
 
 # Plugins
 crashlytics = "3.0.3"
-dependency-analysis = "2.17.0"
+dependency-analysis = "2.18.0"
 detekt = "1.23.8"
 google-services = "4.4.2"
 ksp = "2.1.21-2.0.1"
