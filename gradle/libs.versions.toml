@@ -86,8 +86,8 @@ detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-form
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 # https://github.com/JetBrains/compose-multiplatform-core/pull/1868
-jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version = "1.8.0-alpha03" }
-jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.8.0-alpha03" }
+jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version = "1.8.1" }
+jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.8.1" }
 jetbrains-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle" }
 jetbrains-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "jetbrains-navigation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
