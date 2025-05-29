@@ -46,6 +46,7 @@ dependencies {
     compileOnly(libs.android.tools.common)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
+    compileOnly(libs.jetbrains.compose.gradlePlugin)
 }
 
 tasks {
@@ -61,21 +62,17 @@ gradlePlugin {
             id = "monica.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
-        register("androidFeature") {
-            id = "monica.android.feature"
-            implementationClass = "AndroidFeatureConventionPlugin"
-        }
         register("androidLibrary") {
             id = "monica.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
-        register("androidCompose") {
-            id = "monica.android.compose"
-            implementationClass = "AndroidComposeConventionPlugin"
+        register("kmp") {
+            id = "monica.kmp"
+            implementationClass = "KotlinMultiplatformConventionPlugin"
         }
-        register("jvmLibrary") {
-            id = "monica.jvm.library"
-            implementationClass = "JvmLibraryConventionPlugin"
+        register("cmp") {
+            id = "monica.cmp"
+            implementationClass = "ComposeMultiplatformConventionPlugin"
         }
         register("kotlinInject") {
             id = "monica.kotlin.inject"

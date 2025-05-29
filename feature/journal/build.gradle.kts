@@ -1,33 +1,42 @@
 plugins {
-    alias(libs.plugins.monica.android.feature)
-    alias(libs.plugins.monica.android.compose)
+    alias(libs.plugins.monica.cmp)
+    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
-    alias(libs.plugins.ksp)
+}
+
+kotlin {
+    androidTarget()
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(project(":core:account"))
+                implementation(project(":core:data"))
+                implementation(project(":core:datetime"))
+                implementation(project(":core:dispatcher"))
+                implementation(project(":core:inject"))
+                implementation(project(":core:paging"))
+                implementation(project(":core:ui"))
+                implementation(project(":component:user_avatar"))
+                implementation(project(":feature:account"))
+                implementation(project(":feature:user-api"))
+
+                // Storage
+                implementation(libs.room.runtime)
+
+                implementation(libs.kmlogging)
+
+                implementation(libs.jetbrains.navigation)
+            }
+        }
+    }
+}
+
+dependencies {
+    kspCommonMainMetadata(libs.room.compiler)
 }
 
 android {
     namespace = "com.teobaranga.monica.journal"
-}
-
-dependencies {
-    implementation(project(":core:account"))
-    implementation(project(":core:data"))
-    implementation(project(":core:datetime"))
-    implementation(project(":core:dispatcher"))
-    implementation(project(":core:inject"))
-    implementation(project(":core:ui"))
-    implementation(project(":component:user_avatar"))
-    implementation(project(":feature:account"))
-    implementation(project(":feature:user-api"))
-
-    // Storage
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-
-    implementation(libs.kmlogging)
-
-    implementation(libs.paging.compose)
-
-    implementation(libs.jetbrains.navigation)
 }

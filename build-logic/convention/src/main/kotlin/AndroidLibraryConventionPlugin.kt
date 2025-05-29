@@ -36,7 +36,6 @@ class AndroidLibraryConventionPlugin : MonicaPlugin() {
         with(target) {
             with(pluginManager) {
                 apply(libs.plugins.androidLibrary.get().pluginId)
-                apply(libs.plugins.kotlinAndroid.get().pluginId)
             }
 
             extensions.configure<LibraryExtension> {

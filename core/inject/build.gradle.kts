@@ -1,8 +1,5 @@
-import com.teobaranga.monica.implementation
-import com.teobaranga.monica.libs
-
 plugins {
-    alias(libs.plugins.monica.jvm.library)
+    alias(libs.plugins.monica.kmp)
 }
 
 group = "com.teobaranga.monica.core.inject"
@@ -14,7 +11,13 @@ monica {
     }
 }
 
-dependencies {
-    implementation(libs.kotlin.inject.runtime)
-    implementation(libs.kotlin.inject.viewmodel.runtime.compose)
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.kotlin.inject.runtime)
+                implementation(libs.kotlin.inject.viewmodel.runtime.compose)
+            }
+        }
+    }
 }

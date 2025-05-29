@@ -1,19 +1,23 @@
 plugins {
-    alias(libs.plugins.monica.android.feature)
+    alias(libs.plugins.monica.kmp)
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
-    alias(libs.plugins.ksp)
 }
 
-android {
-    namespace = "com.teobaranga.monica.genders"
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(project(":core:dispatcher"))
+                implementation(project(":core:inject"))
+
+                // Storage
+                implementation(libs.room.runtime)
+            }
+        }
+    }
 }
 
 dependencies {
-    implementation(project(":core:dispatcher"))
-    implementation(project(":core:inject"))
-
-    // Storage
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
+    kspCommonMainMetadata(libs.room.compiler)
 }
