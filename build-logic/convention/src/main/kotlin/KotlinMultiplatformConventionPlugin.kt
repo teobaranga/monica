@@ -40,8 +40,19 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
 
     // https://github.com/google/ksp/issues/567
     // Make sure common generated code is included
-    sourceSets.commonMain {
-        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+    with(sourceSets) {
+        commonMain {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+        }
+        iosX64Main {
+            kotlin.srcDir("build/generated/ksp/iosX64/iosX64Main/kotlin")
+        }
+        iosArm64Main {
+            kotlin.srcDir("build/generated/ksp/iosArm64/iosArm64Main/kotlin")
+        }
+        iosSimulatorArm64Main {
+            kotlin.srcDir("build/generated/ksp/iosSimulatorArm64/iosSimulatorArm64Main/kotlin")
+        }
     }
 
     // Treat all Kotlin warnings as errors (disabled by default)
