@@ -1,6 +1,5 @@
 package com.teobaranga.monica.data
 
-import androidx.annotation.Keep
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ktor.apiResponseOf
 import io.ktor.client.HttpClient
@@ -30,7 +29,6 @@ data class TokenResponse(
     val refreshToken: String,
 )
 
-@Keep
 class TokenRequest(
     clientId: String,
     clientSecret: String,

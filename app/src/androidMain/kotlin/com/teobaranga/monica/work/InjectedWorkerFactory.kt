@@ -2,6 +2,7 @@ package com.teobaranga.monica.work
 
 import android.content.Context
 import androidx.work.ListenableWorker
+import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.teobaranga.monica.sync.SyncWorker
 import me.tatarka.inject.annotations.Inject

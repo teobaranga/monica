@@ -36,6 +36,7 @@ import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.datetime.YearMonth
 import com.teobaranga.monica.core.paging.LazyPagingItems
 import com.teobaranga.monica.core.paging.collectAsLazyPagingItems
+import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshBox
@@ -185,7 +186,7 @@ private fun LazyItemScope.JournalEntryListItem(
         }
 
         is JournalEntryListItem.SectionTitle -> {
-            val formatter = rememberLocalizedDateFormatter()
+            val formatter = rememberLocalizedDateFormatter(dateStyle = DateFormatStyle.FULL)
             Text(
                 modifier = Modifier
                     .padding(vertical = 16.dp)
