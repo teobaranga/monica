@@ -28,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -36,9 +35,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.teobaranga.monica.contacts.ui.Birthday
+import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
+import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.text.MonicaTextField
 import kotlinx.datetime.Month
-import java.time.format.TextStyle
 
 @Composable
 internal fun UnknownYearBirthday(uiState: BirthdayPickerUiState, modifier: Modifier = Modifier) {
@@ -135,9 +135,9 @@ private fun MonthDropdown(uiState: BirthdayPickerUiState.UnknownYear, modifier: 
             expanded = it
         },
     ) {
-        val locale = LocalConfiguration.current.locales[0]
+        val formatter = rememberLocalizedDateFormatter(DateFormatStyle.FULL)
         val state by derivedStateOf {
-            TextFieldState(uiState.month.getDisplayName(TextStyle.FULL, locale))
+            TextFieldState(formatter.format(uiState.month))
         }
         MonicaTextField(
             modifier = Modifier
@@ -164,7 +164,7 @@ private fun MonthDropdown(uiState: BirthdayPickerUiState.UnknownYear, modifier: 
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = result.getDisplayName(TextStyle.FULL, locale),
+                            text = formatter.format(result),
                         )
                     },
                     onClick = {

@@ -19,6 +19,11 @@ class NetworkConventionPlugin : Plugin<Project> {
                             implementation(libs.ktor.client.okhttp)
                         }
                     }
+                    iosMain {
+                        dependencies {
+                            implementation(libs.ktor.client.darwin)
+                        }
+                    }
                     commonMain {
                         dependencies {
                             // Ktor for networking
