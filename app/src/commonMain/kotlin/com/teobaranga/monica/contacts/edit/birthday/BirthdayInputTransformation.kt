@@ -2,6 +2,7 @@ package com.teobaranga.monica.contacts.edit.birthday
 
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.byValue
+import com.teobaranga.monica.core.datetime.maxLength
 
 internal fun ageInputTransformation(age: BirthdayPickerUiState.Age): InputTransformation {
     return InputTransformation.byValue { _, proposed ->
@@ -32,8 +33,8 @@ internal fun dayOfMonthInputTransformation(unknownYear: BirthdayPickerUiState.Un
 
         val day = dayAsString.toString().toIntOrNull()
 
-        unknownYear.error = if (day !in 1..month.maxLength()) {
-            "Please enter a day between 1 and ${month.maxLength()}"
+        unknownYear.error = if (day !in 1..month.maxLength) {
+            "Please enter a day between 1 and ${month.maxLength}"
         } else {
             null
         }

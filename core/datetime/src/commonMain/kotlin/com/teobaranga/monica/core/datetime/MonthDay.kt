@@ -55,3 +55,19 @@ fun Clock.todayMonthDay(timeZone: TimeZone): MonthDay {
     val localDate = now().toLocalDateTime(timeZone).date
     return MonthDay.from(localDate)
 }
+
+/**
+ * Gets the maximum length of this month in days.
+ *
+ * February has a maximum length of 29 days.
+ * April, June, September and November have 30 days.
+ * All other months have 31 days.
+ *
+ * @return the maximum length of this month in days, from 29 to 31
+ */
+val Month.maxLength: Int
+    get() = when (this) {
+        Month.FEBRUARY -> 29
+        Month.APRIL, Month.JUNE, Month.SEPTEMBER, Month.NOVEMBER -> 30
+        else -> 31
+    }

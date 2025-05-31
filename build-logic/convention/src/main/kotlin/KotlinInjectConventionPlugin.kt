@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 @Suppress("unused")
 class KotlinInjectConventionPlugin : Plugin<Project> {
 
-    private val Project.kotlinInjectCompilerLibs
+    val Project.kotlinInjectCompilerLibs
         get() = arrayOf(
             libs.kotlin.inject.compiler,
             libs.kotlin.inject.anvil.compiler,
@@ -59,7 +59,11 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
                                 if (kmpExtension.sourceSets.findByName("androidMain") != null) {
                                     addAll("kspAndroid", kotlinInjectCompilerLibs)
                                 }
-                                // TODO add here all other supported targets
+                                if (kmpExtension.sourceSets.findByName("iosMain") != null) {
+                                    addAll("kspIosX64", kotlinInjectCompilerLibs)
+                                    addAll("kspIosArm64", kotlinInjectCompilerLibs)
+                                    addAll("kspIosSimulatorArm64", kotlinInjectCompilerLibs)
+                                }
                             }
                         }
                     }

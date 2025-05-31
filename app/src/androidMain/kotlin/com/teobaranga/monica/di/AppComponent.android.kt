@@ -3,6 +3,7 @@ package com.teobaranga.monica.di
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.WorkerFactory
 import coil3.PlatformContext
 import com.teobaranga.monica.MonicaApp
 import com.teobaranga.monica.core.inject.ApplicationContext
@@ -28,6 +29,8 @@ actual abstract class AppComponent(
 
     @ForScope(AppScope::class)
     actual abstract val viewModelFactory: ViewModelProvider.Factory
+
+    abstract val workerFactory: WorkerFactory
 
     @Provides
     @ApplicationContext
