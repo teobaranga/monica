@@ -34,7 +34,7 @@ espresso-core = "3.6.1"
 firebase-bom = "33.14.0"
 jetbrains-navigation = "2.9.0-beta02"
 junit = "4.13.2"
-junit-vintage = "5.12.2"
+junit-vintage = "5.13.0"
 kmlogging = "2.0.3"
 kotest = "6.0.0.M4"
 kotlin-inject = "0.8.0"
@@ -87,7 +87,7 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 # https://github.com/JetBrains/compose-multiplatform-core/pull/1868
 jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version = "1.8.0-alpha03" }
-jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.8.0-alpha03" }
+jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.8.1" }
 jetbrains-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle" }
 jetbrains-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "jetbrains-navigation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
