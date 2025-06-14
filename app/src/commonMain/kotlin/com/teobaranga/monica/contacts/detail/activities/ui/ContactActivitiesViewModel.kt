@@ -12,12 +12,13 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.AssistedFactory
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
 @Inject
-@ContributesViewModel(AppScope::class)
+@ContributesViewModel(AppScope::class, assistedFactory = ContactActivitiesViewModel.Factory::class)
 class ContactActivitiesViewModel internal constructor(
     contactActivitiesRepository: ContactActivitiesRepository,
     dispatcher: Dispatcher,
@@ -49,4 +50,9 @@ class ContactActivitiesViewModel internal constructor(
             started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
             initialValue = ContactActivitiesUiState.Loading,
         )
+
+    @AssistedFactory
+    interface Factory {
+        operator fun invoke(contactId: Int): ContactActivitiesViewModel
+    }
 }

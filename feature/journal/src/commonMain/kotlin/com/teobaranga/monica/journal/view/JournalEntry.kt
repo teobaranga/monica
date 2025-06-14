@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.createSavedStateHandle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.core.ui.ConfirmExitDialog
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
@@ -18,7 +19,11 @@ import com.teobaranga.monica.journal.view.ui.JournalEntryUiState
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun JournalEntry(
-    viewModel: JournalEntryViewModel = injectedViewModel<JournalEntryViewModel>(),
+    viewModel: JournalEntryViewModel = injectedViewModel<JournalEntryViewModel, JournalEntryViewModel.Factory>(
+        creationCallback = { factory ->
+            factory(createSavedStateHandle())
+        },
+    ),
 ) {
     val navigator = LocalNavigator.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

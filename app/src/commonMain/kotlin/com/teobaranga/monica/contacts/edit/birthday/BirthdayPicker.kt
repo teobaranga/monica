@@ -30,11 +30,6 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-// TODO revisit this strategy, fix in kotlin-inject-viewmodel
-expect class ViewModelFactory {
-    operator fun invoke(initialBirthday: Birthday?): BirthdayPickerViewModel
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun BirthdayPicker(
@@ -43,7 +38,7 @@ internal fun BirthdayPicker(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-    viewModel: BirthdayPickerViewModel = injectedViewModel<BirthdayPickerViewModel, ViewModelFactory>(
+    viewModel: BirthdayPickerViewModel = injectedViewModel<BirthdayPickerViewModel, BirthdayPickerViewModel.Factory>(
         creationCallback = { factory ->
             factory(birthday)
         },

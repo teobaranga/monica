@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.createSavedStateHandle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
@@ -49,7 +50,11 @@ expect fun SetupListenEffect(viewModel: SetupViewModel)
 
 @Composable
 fun Setup(
-    viewModel: SetupViewModel = injectedViewModel(),
+    viewModel: SetupViewModel = injectedViewModel<SetupViewModel, SetupViewModel.Factory>(
+        creationCallback = { factory ->
+            factory(createSavedStateHandle())
+        }
+    ),
 ) {
     val navigator = LocalNavigator.current
     val uiState = viewModel.uiState

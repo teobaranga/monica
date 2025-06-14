@@ -21,12 +21,13 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.AssistedFactory
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
 @Inject
-@ContributesViewModel(AppScope::class)
+@ContributesViewModel(AppScope::class, assistedFactory = ContactDetailViewModel.Factory::class)
 class ContactDetailViewModel internal constructor(
     contactRepository: ContactRepository,
     @Assisted
@@ -87,5 +88,10 @@ class ContactDetailViewModel internal constructor(
                 append(" ($nickname)")
             }
         }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        operator fun invoke(savedStateHandle: SavedStateHandle): ContactDetailViewModel
     }
 }

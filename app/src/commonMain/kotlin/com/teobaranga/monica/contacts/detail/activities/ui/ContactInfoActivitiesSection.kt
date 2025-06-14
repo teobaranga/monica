@@ -20,11 +20,6 @@ import com.teobaranga.monica.contacts.detail.ui.ContactInfoSection
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 
-// TODO refactor after kotlin-inject-viewmodel fix
-expect class ViewModelFactory {
-    operator fun invoke(contactId: Int): ContactActivitiesViewModel
-}
-
 data class ContactInfoActivitiesSection(
     private val contactId: Int,
 ) : ContactInfoSection {
@@ -34,7 +29,7 @@ data class ContactInfoActivitiesSection(
     @Composable
     override fun Content(modifier: Modifier) {
         val navigator = LocalNavigator.current
-        val viewModel = injectedViewModel<ContactActivitiesViewModel, ViewModelFactory>(
+        val viewModel = injectedViewModel<ContactActivitiesViewModel, ContactActivitiesViewModel.Factory>(
             creationCallback = { factory ->
                 factory(contactId)
             },

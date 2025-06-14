@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.AssistedFactory
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
@@ -25,7 +26,7 @@ import kotlin.time.Duration.Companion.seconds
 private const val ID_CONTACT_UNDEFINED = -1
 
 @Inject
-@ContributesViewModel(AppScope::class)
+@ContributesViewModel(scope = AppScope::class, assistedFactory = ContactEditViewModel.Factory::class)
 class ContactEditViewModel internal constructor(
     @Assisted
     savedStateHandle: SavedStateHandle,
@@ -102,5 +103,10 @@ class ContactEditViewModel internal constructor(
             genders = genders,
             initialBirthday = null,
         )
+    }
+
+    @AssistedFactory
+    interface Factory {
+        operator fun invoke(savedStateHandle: SavedStateHandle): ContactEditViewModel
     }
 }

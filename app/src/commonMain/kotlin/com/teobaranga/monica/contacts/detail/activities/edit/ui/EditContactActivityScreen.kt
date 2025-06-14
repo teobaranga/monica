@@ -35,6 +35,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.createSavedStateHandle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.FabHeight
@@ -58,7 +59,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun EditContactActivity(
-    viewModel: EditContactActivityViewModel = injectedViewModel<EditContactActivityViewModel>(),
+    viewModel: EditContactActivityViewModel = injectedViewModel<EditContactActivityViewModel, EditContactActivityViewModel.Factory>(
+        creationCallback = { factory ->
+            factory(createSavedStateHandle())
+        },
+    ),
 ) {
     val navigator = LocalNavigator.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
