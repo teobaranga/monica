@@ -12,7 +12,11 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -28,10 +32,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.createSavedStateHandle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
+import com.teobaranga.monica.applinks.AppLinksHandler
+import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import com.teobaranga.monica.data.PARAM_CODE
 import com.teobaranga.monica.home.HomeRoute
 import com.teobaranga.monica.util.compose.keyboardAsState
+import kotlinx.coroutines.flow.collectLatest
 import monica.app.generated.resources.Res
 import monica.app.generated.resources.monica
 import org.jetbrains.compose.resources.painterResource
@@ -43,12 +51,6 @@ internal const val SETUP_INFO_URL = "https://github.com/teobaranga/monica?tab=re
 expect fun logoFontFamily(): FontFamily
 
 @Composable
-expect fun SetupLaunchEffect(viewModel: SetupViewModel)
-
-@Composable
-expect fun SetupListenEffect(viewModel: SetupViewModel)
-
-@Composable
 fun Setup(
     viewModel: SetupViewModel = injectedViewModel<SetupViewModel, SetupViewModel.Factory>(
         creationCallback = { factory ->
@@ -56,6 +58,7 @@ fun Setup(
         }
     ),
 ) {
+    val webBrowser = LocalWebBrowser.current
     val navigator = LocalNavigator.current
     val uiState = viewModel.uiState
 
@@ -70,9 +73,21 @@ fun Setup(
         }
     }
 
-    SetupLaunchEffect(viewModel)
+    LaunchedEffect(Unit) {
+        viewModel.setupUri
+            .collectLatest { url ->
+                webBrowser.open(url)
+            }
+    }
 
-    SetupListenEffect(viewModel)
+    LaunchedEffect(Unit) {
+        AppLinksHandler.url
+            .collectLatest { url ->
+                url.parameters[PARAM_CODE]?.let { code ->
+                    viewModel.onAuthorizationCode(code)
+                }
+            }
+    }
 
     SetupScreen(
         uiState = uiState,
@@ -206,6 +221,7 @@ private fun Logo(modifier: Modifier = Modifier) {
 
 @Composable
 private fun SetupSectionTitle(modifier: Modifier = Modifier) {
+    val webBrowser = LocalWebBrowser.current
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -217,12 +233,18 @@ private fun SetupSectionTitle(modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.labelLarge,
         )
 
-        SetupInfoButton()
+        IconButton(
+            onClick = {
+                webBrowser.open(SETUP_INFO_URL)
+            },
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Info,
+                contentDescription = "OAuth 2.0 setup information",
+            )
+        }
     }
 }
-
-@Composable
-internal expect fun SetupInfoButton()
 
 @Preview
 @Composable

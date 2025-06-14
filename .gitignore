@@ -52,3 +52,14 @@ app/google-services.json
 
 # Kotlin
 .kotlin/
+
+# KMP
+.externalNativeBuild
+.cxx
+xcuserdata
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings

@@ -1,4 +1,13 @@
 import com.teobaranga.monica.InjectHandler
+import com.teobaranga.monica.addAll
+import com.teobaranga.monica.libs
+
+val Project.kotlinInjectCompilerLibs
+    get() = arrayOf(
+        libs.kotlin.inject.compiler,
+        libs.kotlin.inject.anvil.compiler,
+        libs.kotlin.inject.viewmodel.compiler,
+    )
 
 plugins {
     alias(libs.plugins.monica.cmp)
@@ -30,4 +39,11 @@ monica {
     inject {
         injectIn = InjectHandler.Target.SEPARATE
     }
+}
+
+// TODO something is broken in the kotlin inject plugin, probably can't be using afterEvaluate
+dependencies {
+    addAll("kspIosX64", kotlinInjectCompilerLibs)
+    addAll("kspIosArm64", kotlinInjectCompilerLibs)
+    addAll("kspIosSimulatorArm64", kotlinInjectCompilerLibs)
 }

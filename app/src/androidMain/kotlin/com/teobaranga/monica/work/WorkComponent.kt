@@ -1,4 +1,4 @@
-package com.teobaranga.monica.di
+package com.teobaranga.monica.work
 
 import android.content.Context
 import androidx.work.WorkManager
