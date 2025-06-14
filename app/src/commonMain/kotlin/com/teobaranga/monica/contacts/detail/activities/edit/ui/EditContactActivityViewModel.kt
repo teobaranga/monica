@@ -25,13 +25,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.AssistedFactory
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 @Inject
-@ContributesViewModel(AppScope::class)
+@ContributesViewModel(AppScope::class, assistedFactory = EditContactActivityViewModel.Factory::class)
 class EditContactActivityViewModel internal constructor(
     @Assisted
     private val savedStateHandle: SavedStateHandle,
@@ -127,5 +128,10 @@ class EditContactActivityViewModel internal constructor(
 
     private fun getLoadedUiState(): EditContactActivityUiState.Loaded? {
         return uiState.value as? EditContactActivityUiState.Loaded
+    }
+
+    @AssistedFactory
+    interface Factory {
+        operator fun invoke(savedStateHandle: SavedStateHandle): EditContactActivityViewModel
     }
 }

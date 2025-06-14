@@ -28,12 +28,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.AssistedFactory
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
 @OptIn(SavedStateHandleSaveableApi::class)
 @Inject
-@ContributesViewModel(AppScope::class)
+@ContributesViewModel(AppScope::class, assistedFactory = SetupViewModel.Factory::class)
 class SetupViewModel(
     @Assisted
     savedStateHandle: SavedStateHandle,
@@ -124,5 +125,10 @@ class SetupViewModel(
 
     companion object {
         private val log = logging()
+    }
+
+    @AssistedFactory
+    interface Factory {
+        operator fun invoke(savedStateHandle: SavedStateHandle): SetupViewModel
     }
 }

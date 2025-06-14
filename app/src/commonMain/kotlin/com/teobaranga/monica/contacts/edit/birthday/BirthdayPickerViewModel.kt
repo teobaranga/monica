@@ -11,11 +11,12 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.AssistedFactory
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
 @Inject
-@ContributesViewModel(AppScope::class)
+@ContributesViewModel(scope = AppScope::class, assistedFactory = BirthdayPickerViewModel.Factory::class)
 class BirthdayPickerViewModel internal constructor(
     @Assisted
     private val initialBirthday: Birthday?,
@@ -44,5 +45,10 @@ class BirthdayPickerViewModel internal constructor(
                     uiState.setUnknownYear()
                 }
         }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        operator fun invoke(initialBirthday: Birthday?): BirthdayPickerViewModel
     }
 }
