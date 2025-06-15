@@ -39,9 +39,3 @@ fun DependencyHandlerScope.testImplementation(dependencyNotation: Any) {
 fun DependencyHandlerScope.coreLibraryDesugaring(dependencyNotation: Any) {
     add("coreLibraryDesugaring", dependencyNotation)
 }
-
-fun <T: Any> DependencyHandler.addAll(configurationName: String, dependencies: Array<T>) {
-    for (dependency in dependencies) {
-        add(configurationName, dependency)
-    }
-}

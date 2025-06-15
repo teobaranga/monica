@@ -28,6 +28,6 @@ android {
 
 monica {
     inject {
-        injectIn = InjectHandler.Target.SEPARATE
+        injectIn.set(InjectHandler.Target.SEPARATE)
     }
 }

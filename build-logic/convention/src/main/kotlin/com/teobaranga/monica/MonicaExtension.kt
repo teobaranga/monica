@@ -1,10 +1,12 @@
 package com.teobaranga.monica
 
 import org.gradle.api.Action
+import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.findByType
+import org.gradle.kotlin.dsl.property
 import javax.inject.Inject
 
 /**
@@ -42,9 +44,10 @@ open class OptInHandler @Inject constructor() {
     var flowPreview: Boolean = true
 }
 
-open class InjectHandler @Inject constructor() {
+open class InjectHandler @Inject constructor(project: Project) {
 
-    var injectIn: Target = Target.COMMON
+    val injectIn = project.objects.property<Target>()
+        .convention(Target.COMMON)
 
     enum class Target {
 
