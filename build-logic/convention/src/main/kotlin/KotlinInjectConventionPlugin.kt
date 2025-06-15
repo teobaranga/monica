@@ -1,6 +1,5 @@
 import com.teobaranga.monica.InjectHandler
 import com.teobaranga.monica.MonicaExtension
-import com.teobaranga.monica.addAll
 import com.teobaranga.monica.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -15,19 +14,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 @Suppress("unused")
 class KotlinInjectConventionPlugin : Plugin<Project> {
 
-    private val Project.kotlinInjectCompilerLibs
-        get() = arrayOf(
-            libs.kotlin.inject.compiler,
-            libs.kotlin.inject.anvil.compiler,
-            libs.kotlin.inject.viewmodel.compiler,
-        )
-
-    private val androidTargetName = "android"
-    private val iosTargetNames = setOf("iosX64", "iosArm64", "iosSimulatorArm64")
-
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply(libs.plugins.ksp.get().pluginId)
+
+            val monicaExtension = extensions.getByType<MonicaExtension>()
 
             extensions.configure<KotlinMultiplatformExtension> {
                 with(sourceSets) {
@@ -40,47 +31,60 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
                             implementation(libs.kotlin.inject.viewmodel.runtime.compose)
                         }
                     }
-                    afterEvaluate {
-                        findByName("androidUnitTest")?.let {
-                            project.dependencies {
-                                // TODO there's a bug in the ViewModel compiler, add in here when fixed
-                                add("kspAndroidTest", libs.kotlin.inject.compiler)
-                                add("kspAndroidTest", libs.kotlin.inject.anvil.compiler)
+                }
+
+                dependencies {
+                    targets.all {
+                        when (targetName) {
+                            "metadata" -> {
+                                kotlinInjectCompilerLibs.forEach { lib ->
+                                    add(
+                                        configurationName = "kspCommonMainMetadata",
+                                        dependencyNotation = monicaExtension.inject.injectIn.flatMap { injectTarget ->
+                                            when (injectTarget) {
+                                                InjectHandler.Target.COMMON -> {
+                                                    logger.info("kspCommonMainMetadata: ${lib.get()}")
+                                                    lib
+                                                }
+
+                                                InjectHandler.Target.SEPARATE -> target.provider { null }
+                                            }
+                                        },
+                                    )
+                                }
+                            }
+
+                            in supportedTargets -> {
+                                kotlinInjectCompilerLibs.forEach { lib ->
+                                    add(
+                                        configurationName = "ksp${targetName.uppercaseFirstChar()}",
+                                        dependencyNotation = monicaExtension.inject.injectIn.flatMap { injectTarget ->
+                                            when (injectTarget) {
+                                                InjectHandler.Target.COMMON -> target.provider { null }
+                                                InjectHandler.Target.SEPARATE -> {
+                                                    logger.info("ksp${targetName.uppercaseFirstChar()}: ${lib.get()}")
+                                                    lib
+                                                }
+                                            }
+                                        },
+                                    )
+                                }
+                                if (targetName == "android") {
+                                    // TODO there's a bug in the ViewModel compiler, add in here when fixed
+                                    add("kspAndroidTest", libs.kotlin.inject.compiler)
+                                    add("kspAndroidTest", libs.kotlin.inject.anvil.compiler)
+                                }
                             }
                         }
                     }
                 }
             }
-            dependencies {
-                afterEvaluate {
-                    val kmpExtension = extensions.getByType<KotlinMultiplatformExtension>()
-                    project.extensions.configure<MonicaExtension> {
-                        when (inject.injectIn) {
-                            InjectHandler.Target.COMMON -> {
-                                addAll("kspCommonMainMetadata", kotlinInjectCompilerLibs)
-                            }
 
-                            InjectHandler.Target.SEPARATE -> {
-                                val targetNames = kmpExtension.targets.names
-                                if (androidTargetName in targetNames) {
-                                    addAll("kspAndroid", kotlinInjectCompilerLibs)
-                                }
-                                iosTargetNames.forEach { iosTargetName ->
-                                    if (iosTargetName in targetNames) {
-                                        addAll("ksp${iosTargetName.uppercaseFirstChar()}", kotlinInjectCompilerLibs)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // https://github.com/google/ksp/issues/963#issuecomment-1894144639
-            // Make sure we generate code for the common source set
             afterEvaluate {
+                // https://github.com/google/ksp/issues/963#issuecomment-1894144639
+                // Make sure we generate code for the common source set
                 val monica = extensions.getByType<MonicaExtension>()
-                if (monica.inject.injectIn == InjectHandler.Target.COMMON) {
+                if (monica.inject.injectIn.get() == InjectHandler.Target.COMMON) {
                     tasks.withType<KotlinCompilationTask<*>>().all {
                         if (name != "kspCommonMainKotlinMetadata") {
                             dependsOn("kspCommonMainKotlinMetadata")
@@ -89,5 +93,17 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
                 }
             }
         }
+    }
+
+    companion object {
+
+        private val supportedTargets = setOf("android", "iosX64", "iosArm64", "iosSimulatorArm64")
+
+        private val Project.kotlinInjectCompilerLibs
+            get() = arrayOf(
+                libs.kotlin.inject.compiler,
+                libs.kotlin.inject.anvil.compiler,
+                libs.kotlin.inject.viewmodel.compiler,
+            )
     }
 }
