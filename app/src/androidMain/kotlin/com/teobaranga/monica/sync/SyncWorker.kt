@@ -11,6 +11,7 @@ import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.ForegroundInfo
+import androidx.work.ListenableWorker
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
@@ -34,7 +35,14 @@ internal class SyncWorker(
     private val sync: SyncUseCase,
 ) : CoroutineWorker(appContext, workerParams) {
 
-    override suspend fun doWork() = sync()
+    override suspend fun doWork(): Result {
+        val syncResult = sync()
+        return if (syncResult.isSuccess) {
+            Result.success()
+        } else {
+            Result.failure()
+        }
+    }
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
         return ForegroundInfo(

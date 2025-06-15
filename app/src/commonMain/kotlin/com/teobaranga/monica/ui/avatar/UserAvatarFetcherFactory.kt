@@ -42,15 +42,10 @@ class UserAvatarFetcherFactory(
                     it.fileName in contactPhotos.avatarUrl
                 }
 
-            val byteBuffer = avatar.data?.decodeBase64()?.asByteBuffer() ?: return null
+            val byteString = avatar.data?.decodeBase64() ?: return null
 
-            val source = try {
-                Buffer().apply {
-                    write(byteBuffer)
-                }
-            } finally {
-                // Reset the position so we can read the byte buffer again.
-                byteBuffer.position(0)
+            val source = Buffer().apply {
+                write(byteString)
             }
 
             return SourceFetchResult(

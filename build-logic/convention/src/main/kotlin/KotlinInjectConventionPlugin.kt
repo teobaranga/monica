@@ -7,6 +7,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
@@ -20,6 +21,9 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
             libs.kotlin.inject.anvil.compiler,
             libs.kotlin.inject.viewmodel.compiler,
         )
+
+    private val androidTargetName = "android"
+    private val iosTargetNames = setOf("iosX64", "iosArm64", "iosSimulatorArm64")
 
     override fun apply(target: Project) {
         with(target) {
@@ -55,11 +59,17 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
                             InjectHandler.Target.COMMON -> {
                                 addAll("kspCommonMainMetadata", kotlinInjectCompilerLibs)
                             }
+
                             InjectHandler.Target.SEPARATE -> {
-                                if (kmpExtension.sourceSets.findByName("androidMain") != null) {
+                                val targetNames = kmpExtension.targets.names
+                                if (androidTargetName in targetNames) {
                                     addAll("kspAndroid", kotlinInjectCompilerLibs)
                                 }
-                                // TODO add here all other supported targets
+                                iosTargetNames.forEach { iosTargetName ->
+                                    if (iosTargetName in targetNames) {
+                                        addAll("ksp${iosTargetName.uppercaseFirstChar()}", kotlinInjectCompilerLibs)
+                                    }
+                                }
                             }
                         }
                     }
