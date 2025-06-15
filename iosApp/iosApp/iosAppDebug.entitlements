@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:monica.teobaranga.com</string>
+		<string>applinks:monica.teobaranga.com?mode=developer</string>
 	</array>
 </dict>
 </plist>
