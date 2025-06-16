@@ -32,24 +32,16 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                         dependencies {
                             implementation(project(":core:datetime"))
 
-                            implementation(libs.jetbrains.compose.material3.get().module.toString()) {
-                                // Enforce a downgrade of Jetbrains Compose Material3. The latest version doesn't have
-                                // access to newer Material3 API that this app added before CMP, eg. OutlinedTextField
-                                // with TextFieldState.
-                                version {
-                                    strictly(libs.jetbrains.compose.material3.get().version!!)
-                                }
-                            }
                             implementation(libs.jetbrains.compose.ui.backhandler)
                             implementation(libs.jetbrains.lifecycle.runtime.compose)
+                            implementation(libs.jetbrains.navigation)
                             implementation(compose.ui)
                             implementation(compose.components.resources)
                             implementation(compose.components.uiToolingPreview)
+                            implementation(compose.material3)
                             implementation(compose.materialIconsExtended)
                             implementation(compose.runtime)
                             implementation(compose.foundation)
-
-                            implementation(libs.jetbrains.navigation)
                         }
                     }
                     afterEvaluate {

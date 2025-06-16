@@ -13,7 +13,7 @@ crashlytics = "3.0.4"
 dependency-analysis = "2.18.0"
 detekt = "1.23.8"
 google-services = "4.4.2"
-jetbrains-compose = "1.8.1"
+jetbrains-compose = "1.9.0-alpha02"
 jetbrains-lifecycle = "2.9.0"
 ksp = "2.1.21-2.0.2"
 kotlin = "2.1.21"
@@ -67,8 +67,6 @@ desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", ver
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
-# https://github.com/JetBrains/compose-multiplatform-core/pull/1868
-jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version = "1.8.0-alpha03" }
 jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.8.1" }
 jetbrains-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle" }
 jetbrains-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "jetbrains-navigation" }
