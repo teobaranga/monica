@@ -14,7 +14,7 @@ dependency-analysis = "2.18.0"
 detekt = "1.23.8"
 google-services = "4.4.2"
 jetbrains-compose = "1.9.0-alpha02"
-jetbrains-lifecycle = "2.9.0"
+jetbrains-lifecycle = "2.9.1"
 ksp = "2.1.21-2.0.2"
 kotlin = "2.1.21"
 
@@ -26,7 +26,7 @@ compose-rules = "0.4.22"
 datastore = "1.1.7"
 desugar-jdk-libs = "2.1.5"
 firebase-bom = "33.15.0"
-jetbrains-navigation = "2.9.0-beta02"
+jetbrains-navigation = "2.9.0-beta03"
 junit = "4.13.2"
 junit-vintage = "5.13.1"
 kmlogging = "2.0.3"
@@ -67,7 +67,7 @@ desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", ver
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
-jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.8.1" }
+jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.8.2" }
 jetbrains-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle" }
 jetbrains-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "jetbrains-navigation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
