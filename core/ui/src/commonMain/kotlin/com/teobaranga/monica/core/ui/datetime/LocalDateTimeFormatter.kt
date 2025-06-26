@@ -5,9 +5,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.intl.PlatformLocale
 import com.teobaranga.monica.core.datetime.MonthDay
-import com.teobaranga.monica.core.datetime.YearMonth
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
+import kotlinx.datetime.YearMonth
 
 enum class DateFormatStyle {
     SHORT,

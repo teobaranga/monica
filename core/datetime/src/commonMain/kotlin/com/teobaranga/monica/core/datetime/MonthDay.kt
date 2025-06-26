@@ -1,10 +1,10 @@
 package com.teobaranga.monica.core.datetime
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 class MonthDay private constructor(
     val month: Month,
@@ -45,7 +45,7 @@ class MonthDay private constructor(
         fun from(localDate: LocalDate): MonthDay {
             return MonthDay(
                 month = localDate.month,
-                dayOfMonth = localDate.dayOfMonth,
+                dayOfMonth = localDate.day,
             )
         }
     }

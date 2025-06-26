@@ -1,10 +1,10 @@
 package com.teobaranga.monica.contacts.data
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.yearsUntil
 import me.tatarka.inject.annotations.Inject
+import kotlin.time.Clock
 
 @Inject
 class ContactRequestMapper(

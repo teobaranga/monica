@@ -25,9 +25,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import kotlinx.coroutines.flow.first
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import java.time.Month
+import kotlinx.datetime.Month
+import kotlin.time.Instant
 
 private val birthdate = Instant.parse("2010-06-01T22:19:44.475Z")
 

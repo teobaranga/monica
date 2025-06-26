@@ -10,7 +10,7 @@ import me.tatarka.inject.annotations.Inject
 
 @Inject
 class GenderRepository(
-    @ApplicationContext
+    @param:ApplicationContext
     private val appCoroutineScope: CoroutineScope,
     private val dispatcher: Dispatcher,
     private val gendersApi: GendersApi,

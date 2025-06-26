@@ -10,7 +10,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 @Inject
 @ContributesBinding(AppScope::class)
 class RestartAppUseCaseImpl(
-    @ApplicationContext
+    @param:ApplicationContext
     private val context: Context,
 ): RestartAppUseCase {
 

@@ -16,7 +16,6 @@ import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.core.datetime.MonthDay
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
@@ -24,6 +23,7 @@ import kotlinx.datetime.todayIn
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+import kotlin.time.Clock
 
 @Composable
 internal fun BirthdaySection(birthday: Birthday?, onBirthdayChange: () -> Unit, modifier: Modifier = Modifier) {
