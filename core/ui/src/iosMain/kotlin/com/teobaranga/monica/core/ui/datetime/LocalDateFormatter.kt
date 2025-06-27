@@ -2,10 +2,10 @@ package com.teobaranga.monica.core.ui.datetime
 
 import androidx.compose.ui.text.intl.PlatformLocale
 import com.teobaranga.monica.core.datetime.MonthDay
-import com.teobaranga.monica.core.datetime.YearMonth
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.YearMonth
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toNSDate
 import platform.Foundation.NSCalendar

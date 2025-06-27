@@ -9,8 +9,8 @@ import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@ContributesTo(AppScope::class)
-interface LogComponent {
+@ContributesTo(scope = AppScope::class, replaces = [LogComponent::class])
+interface TestLogComponent {
 
     @Provides
     @IntoSet

@@ -2,12 +2,13 @@ package com.teobaranga.monica.core.ui.datetime
 
 import androidx.compose.ui.text.intl.PlatformLocale
 import com.teobaranga.monica.core.datetime.MonthDay
-import com.teobaranga.monica.core.datetime.YearMonth
 import com.teobaranga.monica.core.datetime.toJavaMonthDay
-import com.teobaranga.monica.core.datetime.toJavaYearMonth
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
+import kotlinx.datetime.YearMonth
 import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toJavaMonth
+import kotlinx.datetime.toJavaYearMonth
 import java.time.chrono.Chronology
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
@@ -61,6 +62,6 @@ actual class LocalDateFormatter actual constructor(
             DateFormatStyle.LONG -> TextStyle.FULL
             DateFormatStyle.FULL -> TextStyle.FULL
         }
-        return month.getDisplayName(style, locale)
+        return month.toJavaMonth().getDisplayName(style, locale)
     }
 }

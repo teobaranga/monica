@@ -1,9 +1,10 @@
 package com.teobaranga.monica.database.adapter
 
 import androidx.room.TypeConverter
-import kotlinx.datetime.Instant
 import kotlinx.datetime.format.DateTimeComponents
+import kotlinx.datetime.parse
 import kotlin.jvm.JvmStatic
+import kotlin.time.Instant
 
 object InstantAdapter {
 

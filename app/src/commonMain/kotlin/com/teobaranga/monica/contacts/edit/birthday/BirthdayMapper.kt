@@ -3,9 +3,7 @@ package com.teobaranga.monica.contacts.edit.birthday
 import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.core.datetime.MonthDay
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
@@ -16,6 +14,8 @@ import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import kotlinx.datetime.yearsUntil
 import me.tatarka.inject.annotations.Inject
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 @Inject
 class BirthdayMapper(
@@ -57,7 +57,7 @@ class BirthdayMapper(
                 date = run {
                     val format = DateTimeComponents.Formats.ISO_DATE_TIME_OFFSET.format {
                         month = birthday.monthDay.month
-                        dayOfMonth = birthday.monthDay.dayOfMonth
+                        day = birthday.monthDay.dayOfMonth
                         // When the year is unknown, the provided year can be anything
                         year = clock.todayIn(timeZone).year
                         hour = 0

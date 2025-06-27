@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.core.data.sync.SyncStatus
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 @Entity(tableName = "contacts")
 data class ContactEntity(

@@ -20,13 +20,13 @@ import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

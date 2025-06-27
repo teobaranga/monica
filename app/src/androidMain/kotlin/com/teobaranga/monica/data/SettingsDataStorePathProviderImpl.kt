@@ -13,7 +13,7 @@ private const val PREFERENCES_DATASTORE_FILE_NAME = "datastore/settings.preferen
 @Inject
 @ContributesBinding(AppScope::class)
 class SettingsDataStorePathProviderImpl(
-    @ApplicationContext
+    @param:ApplicationContext
     private val context: Context,
 ) : SettingsDataStorePathProvider {
 

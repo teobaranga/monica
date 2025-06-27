@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.teobaranga.monica.core.datetime.LocalSystemClock
-import com.teobaranga.monica.core.datetime.YearMonth
 import com.teobaranga.monica.core.paging.LazyPagingItems
 import com.teobaranga.monica.core.paging.collectAsLazyPagingItems
 import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
@@ -47,6 +46,7 @@ import com.teobaranga.monica.core.ui.util.ScrollToTopEffect
 import com.teobaranga.monica.core.ui.util.keepScrollOnSizeChanged
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.YearMonth
 import kotlinx.datetime.todayIn
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -193,7 +193,7 @@ private fun LazyItemScope.JournalEntryListItem(
                     .padding(start = 26.dp),
                 text = when {
                     journalEntry.year != null -> formatter.format(
-                        YearMonth.of(journalEntry.year, journalEntry.month)
+                        YearMonth(journalEntry.year, journalEntry.month)
                     )
 
                     else -> formatter.format(journalEntry.month)

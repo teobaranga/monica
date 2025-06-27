@@ -5,7 +5,7 @@ import com.teobaranga.monica.contacts.data.ContactResponse
 import com.teobaranga.monica.contacts.data.CreateContactRequest
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.genders.data.genderMale
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 const val TEST_CONTACT_ID = 123
 

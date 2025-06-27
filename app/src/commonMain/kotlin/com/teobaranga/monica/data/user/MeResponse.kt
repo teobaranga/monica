@@ -1,9 +1,9 @@
 package com.teobaranga.monica.data.user
 
 import com.teobaranga.monica.contacts.data.ContactResponse
-import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @Serializable
 data class MeResponse(

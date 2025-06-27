@@ -1,7 +1,7 @@
 package com.teobaranga.monica.contact
 
 import com.teobaranga.monica.useravatar.UserAvatar
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 data class Contact(
     val id: Int,

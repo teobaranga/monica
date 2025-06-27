@@ -13,7 +13,7 @@ private const val CONFIGURATION_DATASTORE_FILE_NAME = "datastore/configuration.p
 @Inject
 @ContributesBinding(AppScope::class)
 class ConfigurationDataStorePathProviderImpl(
-    @ApplicationContext
+    @param:ApplicationContext
     private val context: Context,
 ): ConfigurationDataStorePathProvider {
 

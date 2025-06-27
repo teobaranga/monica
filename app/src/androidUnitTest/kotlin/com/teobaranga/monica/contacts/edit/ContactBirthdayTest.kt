@@ -23,10 +23,11 @@ import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.every
 import kotlinx.coroutines.flow.first
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
+import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
-import java.time.Month
+import kotlin.time.Instant
 
 class ContactBirthdayTest : BehaviorSpec(
     {
@@ -52,7 +53,7 @@ class ContactBirthdayTest : BehaviorSpec(
                     id = validContact.contactId,
                     request = validContact.toCreateRequest(
                         birthdayDay = 1,
-                        birthdayMonth = Month.JUNE.value,
+                        birthdayMonth = Month.JUNE.number,
                         birthdayYear = null,
                         isBirthdateKnown = true,
                     ),

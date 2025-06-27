@@ -11,16 +11,16 @@ import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.datetime.MonthDay
 import com.teobaranga.monica.datetime.FixedClock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import java.time.Month
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.time.Instant
 
 @RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalTestApi::class)

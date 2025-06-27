@@ -4,9 +4,9 @@ import com.teobaranga.monica.core.data.remote.AccountResponse
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.journal.data.local.JournalEntryEntity
 import com.teobaranga.monica.journal.data.remote.JournalEntry
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import java.time.Month
+import kotlinx.datetime.Month
+import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
 const val JOURNAL_ENTRY_ID_VALID = 1

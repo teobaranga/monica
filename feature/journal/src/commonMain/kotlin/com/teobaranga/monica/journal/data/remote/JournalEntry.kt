@@ -2,9 +2,9 @@ package com.teobaranga.monica.journal.data.remote
 
 import com.teobaranga.monica.core.data.adapter.UuidAsString
 import com.teobaranga.monica.core.data.remote.AccountResponse
-import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @Serializable
 data class JournalEntry(

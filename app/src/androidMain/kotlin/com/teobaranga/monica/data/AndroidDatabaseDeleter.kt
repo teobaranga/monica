@@ -9,7 +9,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 @Inject
 @ContributesBinding(AppScope::class)
 class AndroidDatabaseDeleter(
-    @ApplicationContext
+    @param:ApplicationContext
     private val context: Context,
 ) : DatabaseDeleter {
 

@@ -1,7 +1,7 @@
 package com.teobaranga.monica.datetime
 
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 data class FixedClock(private val now: Instant): Clock {
 
