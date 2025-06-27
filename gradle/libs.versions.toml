@@ -2,7 +2,7 @@
 # SDK Versions
 minSdk = "24"
 targetSdk = "35"
-compileSdk = "35"
+compileSdk = "36"
 
 # Included build
 androidGradlePlugin = "8.11.0"
