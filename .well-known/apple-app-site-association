@@ -1,0 +1,18 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "NL45VGPX83.com.teobaranga.monica.Monica",
+          "NL45VGPX83.com.teobaranga.monica.MonicaDebug"
+        ],
+        "components": [
+          {
+            "/": "*",
+            "comment": "Matches all routes"
+          }
+        ]
+      }
+    ]
+  }
+}
