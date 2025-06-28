@@ -19,6 +19,7 @@ enum class DateFormatStyle {
 expect class LocalDateFormatter(
     locale: PlatformLocale,
     dateFormatStyle: DateFormatStyle = DateFormatStyle.LONG,
+    includeDay: Boolean = true,
     includeYear: Boolean = true,
 ) {
     fun format(date: LocalDate): String
@@ -33,10 +34,16 @@ expect class LocalDateFormatter(
 @Composable
 fun rememberLocalizedDateFormatter(
     dateStyle: DateFormatStyle = DateFormatStyle.LONG,
+    includeDay: Boolean = true,
     includeYear: Boolean = true,
 ): LocalDateFormatter {
     val locale = Locale.current.platformLocale
     return remember(locale, dateStyle, includeYear) {
-        LocalDateFormatter(locale, dateStyle, includeYear)
+        LocalDateFormatter(
+            locale = locale,
+            dateFormatStyle = dateStyle,
+            includeDay = includeDay,
+            includeYear = includeYear,
+        )
     }
 }

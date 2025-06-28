@@ -2,6 +2,7 @@ package com.teobaranga.monica.core.data.local
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.diamondedge.logging.logging
 import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -36,6 +37,8 @@ abstract class RoomPagingSource<T : Any>(
         // Start paging with the STARTING_KEY if this is the first load
         val start = params.key ?: STARTING_KEY
 
+        log.d { "${this}: Loading with params ${params}, key: $start" }
+
         val entries = getEntries(start, params)
 
         return LoadResult.Page(
@@ -50,6 +53,8 @@ abstract class RoomPagingSource<T : Any>(
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+        }.also {
+            log.d { "${this}: Refresh key $it" }
         }
     }
 
@@ -57,4 +62,9 @@ abstract class RoomPagingSource<T : Any>(
      * @param start Effectively the page index, starting from 0.
      */
     protected abstract suspend fun getEntries(start: Int, params: LoadParams<Int>): List<T>
+
+    companion object {
+
+        private val log = logging()
+    }
 }

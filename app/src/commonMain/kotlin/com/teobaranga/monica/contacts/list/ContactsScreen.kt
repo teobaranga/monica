@@ -45,6 +45,7 @@ import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contacts.detail.ContactDetailRoute
 import com.teobaranga.monica.contacts.edit.ContactEditRoute
 import com.teobaranga.monica.core.paging.collectAsLazyPagingItems
+import com.teobaranga.monica.core.paging.itemKey
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshBox
@@ -180,11 +181,12 @@ private fun ContactsScreen(
                         is LoadState.NotLoading,
                         -> {
                             items(
-                                items = contacts.itemSnapshotList,
-                                key = { contact ->
-                                    contact?.id ?: Int.MIN_VALUE
+                                count = contacts.itemCount,
+                                key = contacts.itemKey { contact ->
+                                    contact.id
                                 },
-                            ) { contact ->
+                            ) { index ->
+                                val contact = contacts[index]
                                 if (contact != null) {
                                     ContactItem(
                                         modifier = Modifier

@@ -5,6 +5,14 @@ plugins {
 
 kotlin {
     androidTarget()
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.kmlogging)
+            }
+        }
+    }
 }
 
 android {
