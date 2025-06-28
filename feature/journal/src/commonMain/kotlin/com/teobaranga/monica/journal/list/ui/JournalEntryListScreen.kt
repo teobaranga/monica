@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -35,6 +34,8 @@ import androidx.paging.PagingData
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.paging.LazyPagingItems
 import com.teobaranga.monica.core.paging.collectAsLazyPagingItems
+import com.teobaranga.monica.core.paging.itemContentType
+import com.teobaranga.monica.core.paging.itemKey
 import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.plus
@@ -49,6 +50,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.YearMonth
 import kotlinx.datetime.todayIn
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.random.Random
 
 @Composable
 fun JournalEntryListScreen(
@@ -134,9 +136,9 @@ private fun LazyListScope.journalEntryListItems(
     lazyItems: LazyPagingItems<JournalEntryListItem>,
     onEntryClick: (id: Int) -> Unit,
 ) {
-    itemsIndexed(
-        items = lazyItems.itemSnapshotList,
-        key = { index, journalEntry ->
+    items(
+        count = lazyItems.itemCount,
+        key = lazyItems.itemKey { journalEntry ->
             when (journalEntry) {
                 is JournalEntryListItem.Entry -> journalEntry.id
                 is JournalEntryListItem.SectionTitle -> buildString {
@@ -147,19 +149,18 @@ private fun LazyListScope.journalEntryListItems(
                     append(journalEntry.month)
                 }
 
-                is JournalEntryListItem.Divider -> "divider_$index"
-                null -> Int.MIN_VALUE
+                is JournalEntryListItem.Divider -> "divider_${Random.nextInt()}"
             }
         },
-        contentType = { index, journalEntryItem ->
+        contentType = lazyItems.itemContentType { journalEntryItem ->
             when (journalEntryItem) {
                 is JournalEntryListItem.Entry -> "entry"
                 is JournalEntryListItem.SectionTitle -> "section_title"
                 is JournalEntryListItem.Divider -> "divider"
-                null -> "null"
             }
         },
-    ) { index, journalEntry ->
+    ) { index ->
+        val journalEntry = lazyItems[index]
         JournalEntryListItem(
             journalEntry = journalEntry,
             onEntryClick = onEntryClick,
@@ -186,7 +187,7 @@ private fun LazyItemScope.JournalEntryListItem(
         }
 
         is JournalEntryListItem.SectionTitle -> {
-            val formatter = rememberLocalizedDateFormatter(dateStyle = DateFormatStyle.FULL)
+            val formatter = rememberLocalizedDateFormatter(dateStyle = DateFormatStyle.FULL, includeDay = false)
             Text(
                 modifier = Modifier
                     .padding(vertical = 16.dp)

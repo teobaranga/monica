@@ -20,6 +20,8 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.serialization)
 
+                implementation(libs.kmlogging)
+
                 implementation(libs.paging.common)
             }
         }

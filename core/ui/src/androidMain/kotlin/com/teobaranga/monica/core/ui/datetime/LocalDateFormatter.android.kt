@@ -1,6 +1,7 @@
 package com.teobaranga.monica.core.ui.datetime
 
 import androidx.compose.ui.text.intl.PlatformLocale
+import com.diamondedge.logging.logging
 import com.teobaranga.monica.core.datetime.MonthDay
 import com.teobaranga.monica.core.datetime.toJavaMonthDay
 import kotlinx.datetime.LocalDate
@@ -18,6 +19,7 @@ import java.time.format.TextStyle
 actual class LocalDateFormatter actual constructor(
     private val locale: PlatformLocale,
     private val dateFormatStyle: DateFormatStyle,
+    includeDay: Boolean,
     includeYear: Boolean,
 ) {
     private val formatter: DateTimeFormatter
@@ -29,18 +31,25 @@ actual class LocalDateFormatter actual constructor(
             DateFormatStyle.LONG -> FormatStyle.LONG
             DateFormatStyle.FULL -> FormatStyle.FULL
         }
-        var format = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
+        var pattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
             /* dateStyle = */ dateStyle,
             /* timeStyle = */ null,
             /* chrono = */ Chronology.ofLocale(locale),
             /* locale = */ locale,
         )
         if (!includeYear) {
-            format = format
+            pattern = pattern
                 .replace("(,*|\'de\') [yY]+$".toRegex(), "")
                 .trim()
         }
-        formatter = DateTimeFormatter.ofPattern(format)
+        if (!includeDay) {
+            pattern = pattern
+                .replace(" *[dD]".toRegex(), "")
+                .replace("E*".toRegex(), "")
+                .trim(' ', ',')
+        }
+        log.d { "Pattern: $pattern" }
+        formatter = DateTimeFormatter.ofPattern(pattern)
     }
 
     actual fun format(date: LocalDate): String {
@@ -63,5 +72,9 @@ actual class LocalDateFormatter actual constructor(
             DateFormatStyle.FULL -> TextStyle.FULL
         }
         return month.toJavaMonth().getDisplayName(style, locale)
+    }
+
+    companion object {
+        private val log = logging()
     }
 }

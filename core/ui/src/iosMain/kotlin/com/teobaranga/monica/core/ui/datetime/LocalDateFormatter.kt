@@ -15,6 +15,7 @@ import platform.Foundation.NSDateFormatter
 actual class LocalDateFormatter actual constructor(
     private val locale: PlatformLocale,
     private val dateFormatStyle: DateFormatStyle,
+    private val includeDay: Boolean,
     private val includeYear: Boolean,
 ) {
     actual fun format(date: LocalDate): String {

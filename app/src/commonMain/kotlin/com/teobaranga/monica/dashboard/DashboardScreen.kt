@@ -39,6 +39,7 @@ import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contacts.detail.ContactDetailRoute
 import com.teobaranga.monica.core.paging.LazyPagingItems
 import com.teobaranga.monica.core.paging.collectAsLazyPagingItems
+import com.teobaranga.monica.core.paging.itemKey
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.searchbar.MonicaSearchBar
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
@@ -175,12 +176,9 @@ private fun RecentContactsSection(
                 -> {
                     items(
                         count = recentContacts.itemCount,
-                        key = {
-                            val contact = recentContacts[it]
-                            contact?.id ?: Int.MIN_VALUE
-                        },
-                    ) { contactId ->
-                        val contact = recentContacts[contactId]
+                        key = recentContacts.itemKey { contact -> contact.id },
+                    ) { index ->
+                        val contact = recentContacts[index]
                         if (contact != null) {
                             UserAvatar(
                                 modifier = Modifier

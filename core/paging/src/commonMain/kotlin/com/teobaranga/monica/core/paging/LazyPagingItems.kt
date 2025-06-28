@@ -26,9 +26,13 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.ItemSnapshotList
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
+import androidx.paging.LoadType
+import androidx.paging.LoadType.REFRESH
 import androidx.paging.PagingData
 import androidx.paging.PagingDataEvent
 import androidx.paging.PagingDataPresenter
+import androidx.paging.PagingSource
+import androidx.paging.RemoteMediator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -47,15 +51,13 @@ import kotlin.coroutines.EmptyCoroutineContext
  * Previewing [LazyPagingItems] is supported on a list of mock data. See sample for how to preview
  * mock data.
  *
- * @sample androidx.paging.compose.samples.PagingPreview
- *
  * @param T the type of value used by [PagingData].
  */
 public class LazyPagingItems<T : Any> internal constructor(
     /**
      * the [Flow] object which contains a stream of [PagingData] elements.
      */
-    private val flow: Flow<PagingData<T>>
+    private val flow: Flow<PagingData<T>>,
 ) {
     private val mainDispatcher = uiDispatcher()
 
@@ -191,14 +193,12 @@ private val InitialLoadStates = LoadStates(
  * instance. The [LazyPagingItems] instance can be used for lazy foundations such as
  * [LazyListScope.items] in order to display the data obtained from a [Flow] of [PagingData].
  *
- * @sample androidx.paging.compose.samples.PagingBackendSample
- *
  * @param context the [CoroutineContext] to perform the collection of [PagingData]
  * and [CombinedLoadStates].
  */
 @Composable
-public fun <T : Any> Flow<PagingData<T>>.collectAsLazyPagingItems(
-    context: CoroutineContext = EmptyCoroutineContext
+fun <T : Any> Flow<PagingData<T>>.collectAsLazyPagingItems(
+    context: CoroutineContext = EmptyCoroutineContext,
 ): LazyPagingItems<T> {
 
     val lazyPagingItems = remember(this) { LazyPagingItems(this) }
