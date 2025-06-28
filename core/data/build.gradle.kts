@@ -1,14 +1,7 @@
 plugins {
+    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.kmp)
     alias(libs.plugins.kotlinx.serialization)
-}
-
-group = "com.teobaranga.monica.core.data"
-
-monica {
-    optIn {
-        flowPreview = false
-    }
 }
 
 kotlin {
@@ -25,5 +18,15 @@ kotlin {
                 implementation(libs.paging.common)
             }
         }
+    }
+}
+
+android {
+    namespace = "com.teobaranga.monica.core.data"
+}
+
+monica {
+    optIn {
+        flowPreview = false
     }
 }

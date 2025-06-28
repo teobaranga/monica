@@ -28,9 +28,9 @@ class KotlinMultiplatformConventionPlugin : MonicaPlugin() {
 
 private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatformExtension> {
 
-    jvm {
+    androidTarget {
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 

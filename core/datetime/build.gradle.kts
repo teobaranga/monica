@@ -1,15 +1,7 @@
 plugins {
+    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.kmp)
     alias(libs.plugins.monica.kotlin.inject)
-}
-
-group = "com.teobaranga.monica.core.datetime"
-
-monica {
-    optIn {
-        experimentalCoroutinesApi = false
-        flowPreview = false
-    }
 }
 
 kotlin {
@@ -22,5 +14,16 @@ kotlin {
                 api(libs.kotlinx.datetime)
             }
         }
+    }
+}
+
+android {
+    namespace = "com.teobaranga.monica.core.datetime"
+}
+
+monica {
+    optIn {
+        experimentalCoroutinesApi = false
+        flowPreview = false
     }
 }

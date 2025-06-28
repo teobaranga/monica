@@ -1,8 +1,11 @@
 plugins {
+    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.kmp)
 }
 
-group = "com.teobaranga.monica.core.account"
+android {
+    namespace = "com.teobaranga.monica.core.account"
+}
 
 monica {
     optIn {

@@ -1,4 +1,5 @@
 plugins {
+    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.kmp)
 }
 
@@ -11,6 +12,10 @@ kotlin {
             }
         }
     }
+}
+
+android {
+    namespace = "com.teobaranga.monica.feature.contact"
 }
 
 monica {
