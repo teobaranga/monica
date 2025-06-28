@@ -14,7 +14,7 @@ class NetworkConventionPlugin : Plugin<Project> {
 
             extensions.configure<KotlinMultiplatformExtension> {
                 with(sourceSets) {
-                    jvmMain {
+                    androidMain {
                         dependencies {
                             implementation(libs.ktor.client.okhttp)
                         }

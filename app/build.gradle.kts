@@ -4,8 +4,8 @@ import com.teobaranga.monica.InjectHandler
 import com.teobaranga.monica.libs
 
 plugins {
-    alias(libs.plugins.monica.cmp)
     alias(libs.plugins.monica.android.application)
+    alias(libs.plugins.monica.cmp)
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
     alias(libs.plugins.google.services)

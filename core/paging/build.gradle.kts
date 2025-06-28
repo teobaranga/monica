@@ -1,10 +1,9 @@
 plugins {
-    alias(libs.plugins.monica.cmp)
     alias(libs.plugins.monica.android.library)
+    alias(libs.plugins.monica.cmp)
 }
 
 kotlin {
-    androidTarget()
 
     sourceSets {
         commonMain {

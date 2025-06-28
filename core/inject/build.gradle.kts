@@ -1,14 +1,6 @@
 plugins {
+    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.kmp)
-}
-
-group = "com.teobaranga.monica.core.inject"
-
-monica {
-    optIn {
-        experimentalCoroutinesApi = false
-        flowPreview = false
-    }
 }
 
 kotlin {
@@ -19,5 +11,16 @@ kotlin {
                 implementation(libs.kotlin.inject.viewmodel.runtime.compose)
             }
         }
+    }
+}
+
+android {
+    namespace = "com.teobaranga.monica.core.inject"
+}
+
+monica {
+    optIn {
+        experimentalCoroutinesApi = false
+        flowPreview = false
     }
 }

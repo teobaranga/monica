@@ -1,4 +1,5 @@
 plugins {
+    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.kmp)
     alias(libs.plugins.monica.kotlin.inject)
 }
@@ -11,4 +12,8 @@ kotlin {
             }
         }
     }
+}
+
+android {
+    namespace = "com.teobaranga.monica.core.dispatcher"
 }
