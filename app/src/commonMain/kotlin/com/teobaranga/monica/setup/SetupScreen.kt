@@ -45,7 +45,7 @@ import monica.app.generated.resources.monica
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-internal const val SETUP_INFO_URL = "https://github.com/teobaranga/monica?tab=readme-ov-file#setup"
+private const val SETUP_INFO_URL = "https://monica.teobaranga.com/setup"
 
 @Composable
 expect fun logoFontFamily(): FontFamily
