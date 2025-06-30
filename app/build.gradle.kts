@@ -67,9 +67,11 @@ kotlin {
                 implementation(project(":core:dispatcher"))
                 implementation(project(":core:inject"))
                 implementation(project(":core:paging"))
+                implementation(project(":core:network"))
                 implementation(project(":core:ui"))
                 implementation(project(":component:user_avatar"))
                 implementation(project(":feature:account"))
+                implementation(project(":feature:certificate"))
                 implementation(project(":feature:configuration"))
                 implementation(project(":feature:contact-api"))
                 implementation(project(":feature:genders"))
@@ -87,6 +89,8 @@ kotlin {
                 implementation(libs.room.runtime)
 
                 implementation(libs.kmlogging)
+
+                implementation(libs.signum.indispensable)
             }
         }
     }
@@ -146,6 +150,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
         }
     }
 
