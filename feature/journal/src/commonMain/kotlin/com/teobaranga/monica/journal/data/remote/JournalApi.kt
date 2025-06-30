@@ -6,7 +6,7 @@ import com.skydoves.sandwich.ktor.getApiResponse
 import com.skydoves.sandwich.ktor.postApiResponse
 import com.skydoves.sandwich.ktor.putApiResponse
 import com.teobaranga.monica.core.data.remote.DeleteResponse
-import io.ktor.client.HttpClient
+import com.teobaranga.monica.core.network.HttpRequestMaker
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import me.tatarka.inject.annotations.Inject
@@ -37,18 +37,22 @@ interface JournalApi {
 @Inject
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
-class JournalApiImpl(private val httpClient: HttpClient) : JournalApi {
+class JournalApiImpl(private val httpRequestMaker: HttpRequestMaker) : JournalApi {
 
     override suspend fun getJournal(page: Int?, sort: String?): ApiResponse<JournalEntriesResponse> {
-        return httpClient.getApiResponse("api/journal") {
-            parameter("page", page)
-            parameter("sort", sort)
+        return httpRequestMaker.call {
+            getApiResponse("api/journal") {
+                parameter("page", page)
+                parameter("sort", sort)
+            }
         }
     }
 
     override suspend fun createJournalEntry(request: JournalEntryCreateRequest): ApiResponse<JournalEntryResponse> {
-        return httpClient.postApiResponse("api/journal") {
-            setBody(request)
+        return httpRequestMaker.call {
+            postApiResponse("api/journal") {
+                setBody(request)
+            }
         }
     }
 
@@ -56,12 +60,16 @@ class JournalApiImpl(private val httpClient: HttpClient) : JournalApi {
         id: Int,
         request: JournalEntryCreateRequest,
     ): ApiResponse<JournalEntryResponse> {
-        return httpClient.putApiResponse("api/journal/$id") {
-            setBody(request)
+        return httpRequestMaker.call {
+            putApiResponse("api/journal/$id") {
+                setBody(request)
+            }
         }
     }
 
     override suspend fun deleteJournalEntry(id: Int): ApiResponse<DeleteResponse> {
-        return httpClient.deleteApiResponse("api/journal/$id")
+        return httpRequestMaker.call {
+            deleteApiResponse("api/journal/$id")
+        }
     }
 }

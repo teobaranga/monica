@@ -1,5 +1,6 @@
 package com.teobaranga.monica.network.config
 
+import com.teobaranga.monica.core.network.config.HttpClientConfigurator
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json

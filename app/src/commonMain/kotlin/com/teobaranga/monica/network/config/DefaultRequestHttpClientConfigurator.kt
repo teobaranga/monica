@@ -2,6 +2,7 @@ package com.teobaranga.monica.network.config
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.teobaranga.monica.core.network.config.HttpClientConfigurator
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.core.inject.ApplicationContext
 import com.teobaranga.monica.settings.getOAuthSettings

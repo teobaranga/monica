@@ -17,6 +17,7 @@ class NetworkConventionPlugin : Plugin<Project> {
                     androidMain {
                         dependencies {
                             implementation(libs.ktor.client.okhttp)
+                            implementation(libs.okhttp.tls)
                         }
                     }
                     iosMain {
