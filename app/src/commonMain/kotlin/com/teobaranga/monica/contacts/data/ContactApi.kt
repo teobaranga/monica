@@ -18,36 +18,36 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @Inject
 @SingleIn(AppScope::class)
-class ContactApi(private val httpClient: HttpClient) {
+class ContactApi(private val httpClient: () -> HttpClient) {
 
     suspend fun getContacts(
         page: Int? = null,
         sort: String? = null,
     ): ApiResponse<MultipleContactsResponse> {
-        return httpClient.getApiResponse("api/contacts") {
+        return httpClient().getApiResponse("api/contacts") {
             parameter("page", page)
             parameter("sort", sort)
         }
     }
 
     suspend fun getContact(id: Int): ApiResponse<SingleContactResponse> {
-        return httpClient.getApiResponse("api/contacts/$id")
+        return httpClient().getApiResponse("api/contacts/$id")
     }
 
     suspend fun createContact(request: CreateContactRequest): ApiResponse<SingleContactResponse> {
-        return httpClient.getApiResponse("api/contacts") {
+        return httpClient().getApiResponse("api/contacts") {
             setBody(request)
         }
     }
 
     suspend fun updateContact(id: Int, request: CreateContactRequest): ApiResponse<SingleContactResponse> {
-        return httpClient.putApiResponse("api/contacts/$id") {
+        return httpClient().putApiResponse("api/contacts/$id") {
             setBody(request)
         }
     }
 
     suspend fun deleteContact(id: Int): ApiResponse<DeleteResponse> {
-        return httpClient.deleteApiResponse("api/contacts/$id")
+        return httpClient().deleteApiResponse("api/contacts/$id")
     }
 
     suspend fun getContactActivities(
@@ -55,25 +55,25 @@ class ContactApi(private val httpClient: HttpClient) {
         limit: Int? = null,
         page: Int? = null,
     ): ApiResponse<ContactActivitiesResponse> {
-        return httpClient.getApiResponse("api/contacts/$id/activities") {
+        return httpClient().getApiResponse("api/contacts/$id/activities") {
             parameter("limit", limit)
             parameter("page", page)
         }
     }
 
     suspend fun createActivity(request: CreateActivityRequest): ApiResponse<CreateActivityResponse> {
-        return httpClient.postApiResponse("api/activities") {
+        return httpClient().postApiResponse("api/activities") {
             setBody(request)
         }
     }
 
     suspend fun updateActivity(id: Int, request: CreateActivityRequest): ApiResponse<CreateActivityResponse> {
-        return httpClient.putApiResponse("api/activities/$id") {
+        return httpClient().putApiResponse("api/activities/$id") {
             setBody(request)
         }
     }
 
     suspend fun deleteActivity(id: Int): ApiResponse<DeleteResponse> {
-        return httpClient.deleteApiResponse("api/activities/$id")
+        return httpClient().deleteApiResponse("api/activities/$id")
     }
 }

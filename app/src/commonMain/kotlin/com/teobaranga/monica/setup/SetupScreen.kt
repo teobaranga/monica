@@ -25,6 +25,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +38,9 @@ import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.applinks.AppLinksHandler
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.browser.PreviewPlatformWebBrowser
+import com.teobaranga.monica.certificate.CertificateData
+import com.teobaranga.monica.certificate.CertificateScreenRoute
+import com.teobaranga.monica.certificate.UntrustedCertificateBottomSheet
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.data.PARAM_CODE
@@ -63,8 +68,9 @@ fun Setup(
     val webBrowser = LocalWebBrowser.current
     val navigator = LocalNavigator.current
     val uiState = viewModel.uiState
-
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
+    val untrustedCertificates = remember { mutableStateListOf<CertificateData>() }
+
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn == true) {
             navigator.navigate(HomeRoute) {
@@ -94,11 +100,36 @@ fun Setup(
     SetupScreen(
         uiState = uiState,
         onSignIn = viewModel::onSignIn,
+        onUntrustedCertificates = { certificates ->
+            untrustedCertificates.clear()
+            untrustedCertificates.addAll(certificates)
+        },
     )
+
+    if (untrustedCertificates.isNotEmpty()) {
+        UntrustedCertificateBottomSheet(
+            onDismissRequest = { untrustedCertificates.clear() },
+            onAccept = {
+                // TODO
+            },
+            onReject = {
+                untrustedCertificates.clear()
+            },
+            onViewDetails = {
+                untrustedCertificates.clear()
+                navigator.navigate(CertificateScreenRoute)
+            },
+        )
+    }
 }
 
 @Composable
-fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Modifier) {
+fun SetupScreen(
+    uiState: UiState,
+    onSignIn: () -> Unit,
+    onUntrustedCertificates: (List<CertificateData>) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val scrollState = rememberScrollState()
 
     // Scroll to bottom to keep the main button visible when the IME is open
@@ -106,6 +137,20 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
     LaunchedEffect(keyboardState) {
         if (keyboardState) {
             scrollState.animateScrollTo(Int.MAX_VALUE)
+        }
+    }
+
+    LaunchedEffect(uiState.error) {
+        when (val error = uiState.error) {
+            is UiState.Error.ConfigurationError -> {
+                // nothing to do
+            }
+
+            is UiState.Error.UntrustedCertificates -> {
+                onUntrustedCertificates(error.certificates)
+                uiState.error = null
+            }
+            null -> Unit
         }
     }
 
@@ -168,15 +213,13 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
                     Text(text = "Client Secret")
                 },
             )
-            uiState.error?.let {
+            if (uiState.error is UiState.Error.ConfigurationError) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp)
                         .padding(top = 12.dp),
-                    text = when (it) {
-                        UiState.Error.ConfigurationError -> "Please check your configuration"
-                    },
+                    text = "Please check your configuration",
                     color = Color.Red,
                 )
             }
@@ -258,6 +301,7 @@ private fun PreviewSetupScreen() {
             SetupScreen(
                 uiState = UiState(),
                 onSignIn = { },
+                onUntrustedCertificates = { },
             )
         }
     }

@@ -9,9 +9,9 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @Inject
 @SingleIn(AppScope::class)
-class GendersApi(private val httpClient: HttpClient) {
+class GendersApi(private val httpClient: () -> HttpClient) {
 
     suspend fun getGenders(): ApiResponse<GendersResponse> {
-        return httpClient.getApiResponse("api/genders")
+        return httpClient().getApiResponse("api/genders")
     }
 }

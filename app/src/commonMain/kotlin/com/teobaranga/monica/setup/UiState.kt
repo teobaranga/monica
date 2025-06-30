@@ -8,12 +8,16 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import com.teobaranga.monica.MONICA_URL
+import com.teobaranga.monica.certificate.CertificateData
 
 @Stable
 class UiState {
 
     sealed interface Error {
+
         data object ConfigurationError : Error
+
+        data class UntrustedCertificates(val certificates: List<CertificateData>) : Error
     }
 
     var serverAddress by mutableStateOf(TextFieldValue(MONICA_URL))
