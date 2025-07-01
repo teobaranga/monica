@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,6 +35,7 @@ import androidx.lifecycle.createSavedStateHandle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.applinks.AppLinksHandler
 import com.teobaranga.monica.browser.LocalWebBrowser
+import com.teobaranga.monica.browser.PreviewPlatformWebBrowser
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.data.PARAM_CODE
@@ -250,9 +252,13 @@ private fun SetupSectionTitle(modifier: Modifier = Modifier) {
 @Composable
 private fun PreviewSetupScreen() {
     MonicaTheme {
-        SetupScreen(
-            uiState = UiState(),
-            onSignIn = { },
-        )
+        CompositionLocalProvider(
+            LocalWebBrowser provides PreviewPlatformWebBrowser,
+        ) {
+            SetupScreen(
+                uiState = UiState(),
+                onSignIn = { },
+            )
+        }
     }
 }
