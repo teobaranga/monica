@@ -1,0 +1,5 @@
+### Get all journal entries
+GET {{baseUrl}}/journal?sort=created_at
+Authorization: Bearer {{pat}}
+
+###
