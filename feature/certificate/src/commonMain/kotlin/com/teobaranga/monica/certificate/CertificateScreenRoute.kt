@@ -12,6 +12,8 @@ fun NavGraphBuilder.certificateScreen() {
     composable<CertificateScreenRoute> {
 
         val viewModel = injectedViewModel<CertificateViewModel>()
-        CertificateScreen(viewModel.certificates.first())
+        viewModel.certificateDetails?.let {
+            CertificateScreen(it)
+        }
     }
 }

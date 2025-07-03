@@ -19,6 +19,13 @@ import java.security.cert.X509Certificate
 import javax.security.auth.x500.X500Principal
 import kotlin.time.toKotlinInstant
 
+
+private val hexFormat = HexFormat {
+    upperCase = true
+    bytes {
+        byteSeparator = ":"
+    }
+}
 @Inject
 @ContributesBinding(AppScope::class)
 class AndroidSignInExceptionHandler(
@@ -42,6 +49,7 @@ class AndroidSignInExceptionHandler(
     }
 
     private fun X509Certificate.toCertificateData(): CertificateData {
+        println(this)
         return CertificateData(
             subjectName = subjectX500Principal.getField("CN")
                 .takeIf { it.isNotEmpty() }
@@ -60,10 +68,10 @@ class AndroidSignInExceptionHandler(
             publicKeyInfo = PublicKeyInfo(
                 algorithm = publicKey.algorithm,
                 keySize = publicKey.keySize,
-                publicValue = publicKey.encoded.toHexString(),
+                publicValue = publicKey.encoded.toHexString(hexFormat),
             ),
             miscellaneous = Miscellaneous(
-                serialNumber = serialNumber.toString(16),
+                serialNumber = serialNumber.toByteArray().toHexString(hexFormat),
                 signatureAlgorithm = sigAlgName,
                 version = version,
             ),
@@ -77,8 +85,6 @@ class AndroidSignInExceptionHandler(
             keyUsages = KeyUsages(
                 purposes = getKeyUsages(),
             ),
-            subjectKeyId = getExtensionValue("2.5.29.14")?.toHexString() ?: "",
-            authorityKeyId = getExtensionValue("2.5.29.35")?.toHexString() ?: "",
         )
     }
 
@@ -115,6 +121,6 @@ class AndroidSignInExceptionHandler(
     private fun X509Certificate.getFingerprint(algorithm: String): String {
         val digest = MessageDigest.getInstance(algorithm)
         val bytes = digest.digest(encoded)
-        return bytes.toHexString()
+        return bytes.toHexString(hexFormat)
     }
 }

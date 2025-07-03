@@ -11,8 +11,6 @@ data class CertificateData(
     val fingerprints: Fingerprints,
     val basicConstraints: BasicConstraints,
     val keyUsages: KeyUsages,
-    val subjectKeyId: String,
-    val authorityKeyId: String,
 )
 
 data class SubjectName(
