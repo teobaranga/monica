@@ -29,27 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.clipboard.setPlainText
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
-
-@Serializable
-data object CertificateScreenRoute
-
-fun NavGraphBuilder.certificateScreen() {
-    composable<CertificateScreenRoute> {
-
-        val viewModel = injectedViewModel<CertificateViewModel>()
-        CertificateScreen(viewModel.certificates.first())
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,8 +68,10 @@ private fun CertificateDetails(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(16.dp),
     ) {
-        item {
-            SubjectNameSection(certificateData.subjectName)
+        certificateData.subjectName?.let {
+            item {
+                SubjectNameSection(it)
+            }
         }
         item {
             IssuerNameSection(certificateData.issuerName)

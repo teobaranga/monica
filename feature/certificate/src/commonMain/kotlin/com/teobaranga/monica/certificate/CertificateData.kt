@@ -3,7 +3,7 @@ package com.teobaranga.monica.certificate
 import kotlin.time.Instant
 
 data class CertificateData(
-    val subjectName: SubjectName,
+    val subjectName: SubjectName?,
     val issuerName: IssuerName,
     val validity: Validity,
     val publicKeyInfo: PublicKeyInfo,

@@ -16,6 +16,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import java.security.MessageDigest
 import java.security.cert.CertPathValidatorException
 import java.security.cert.X509Certificate
+import javax.security.auth.x500.X500Principal
 import kotlin.time.toKotlinInstant
 
 @Inject
@@ -42,9 +43,13 @@ class AndroidSignInExceptionHandler(
 
     private fun X509Certificate.toCertificateData(): CertificateData {
         return CertificateData(
-            subjectName = SubjectName(
-                commonName = subjectX500Principal.getField("CN"),
-            ),
+            subjectName = subjectX500Principal.getField("CN")
+                .takeIf { it.isNotEmpty() }
+                ?.let {
+                    SubjectName(
+                        commonName = it,
+                    )
+                },
             issuerName = IssuerName(
                 commonName = issuerX500Principal.getField("CN"),
             ),
@@ -77,10 +82,6 @@ class AndroidSignInExceptionHandler(
         )
     }
 
-    private fun ByteArray.toHexString() = joinToString(separator = ":") {
-        String.format("%02X", it)
-    }
-
     private val java.security.PublicKey.keySize: Int
         get() {
             return when (this) {
@@ -105,7 +106,7 @@ class AndroidSignInExceptionHandler(
         return purposes
     }
 
-    private fun javax.security.auth.x500.X500Principal.getField(field: String): String {
+    private fun X500Principal.getField(field: String): String {
         return name.split(",").find {
             it.startsWith("$field=")
         }?.substringAfter("=") ?: ""
@@ -114,8 +115,6 @@ class AndroidSignInExceptionHandler(
     private fun X509Certificate.getFingerprint(algorithm: String): String {
         val digest = MessageDigest.getInstance(algorithm)
         val bytes = digest.digest(encoded)
-        return bytes.joinToString(separator = ":") {
-            String.format("%02X", it)
-        }
+        return bytes.toHexString()
     }
 }
