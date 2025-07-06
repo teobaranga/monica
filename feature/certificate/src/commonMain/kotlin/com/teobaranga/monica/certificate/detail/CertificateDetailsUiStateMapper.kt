@@ -12,6 +12,8 @@ import at.asitplus.signum.indispensable.pki.AttributeTypeAndValue
 import at.asitplus.signum.indispensable.pki.RelativeDistinguishedName
 import at.asitplus.signum.indispensable.pki.TbsCertificate
 import com.teobaranga.monica.certificate.data.CommonCertificate
+import kotlinx.datetime.format
+import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.toStdlibInstant
 import me.tatarka.inject.annotations.Inject
 
@@ -64,15 +66,51 @@ class CertificateDetailsUiStateMapper {
                                     add(
                                         CertificateDetailsUiState.Section.Item(
                                             title = "Common Name",
-                                            value = attributeTypeAndValue.value.toString()
+                                            value = attributeTypeAndValue.value.asPrimitive()
+                                                .decodeToString(),
                                         )
                                     )
                                 }
 
-                                is AttributeTypeAndValue.Country -> TODO()
-                                is AttributeTypeAndValue.Organization -> TODO()
-                                is AttributeTypeAndValue.OrganizationalUnit -> TODO()
-                                is AttributeTypeAndValue.Other -> TODO()
+                                is AttributeTypeAndValue.Country -> {
+                                    add(
+                                        CertificateDetailsUiState.Section.Item(
+                                            title = "Country",
+                                            value = attributeTypeAndValue.value.asPrimitive()
+                                                .decodeToString(),
+                                        )
+                                    )
+                                }
+
+                                is AttributeTypeAndValue.Organization -> {
+                                    add(
+                                        CertificateDetailsUiState.Section.Item(
+                                            title = "Organization",
+                                            value = attributeTypeAndValue.value.asPrimitive()
+                                                .decodeToString(),
+                                        )
+                                    )
+                                }
+
+                                is AttributeTypeAndValue.OrganizationalUnit -> {
+                                    add(
+                                        CertificateDetailsUiState.Section.Item(
+                                            title = "Organizational Unit",
+                                            value = attributeTypeAndValue.value.asPrimitive()
+                                                .decodeToString(),
+                                        )
+                                    )
+                                }
+
+                                is AttributeTypeAndValue.Other -> {
+                                    add(
+                                        CertificateDetailsUiState.Section.Item(
+                                            title = "Other",
+                                            value = attributeTypeAndValue.value.asPrimitive()
+                                                .decodeToString(),
+                                        )
+                                    )
+                                }
                             }
                         }
                     }
@@ -124,10 +162,45 @@ class CertificateDetailsUiStateMapper {
                                     )
                                 }
 
-                                is AttributeTypeAndValue.Country -> TODO()
-                                is AttributeTypeAndValue.Organization -> TODO()
-                                is AttributeTypeAndValue.OrganizationalUnit -> TODO()
-                                is AttributeTypeAndValue.Other -> TODO()
+                                is AttributeTypeAndValue.Country -> {
+                                    add(
+                                        CertificateDetailsUiState.Section.Item(
+                                            title = "Country",
+                                            value = attributeTypeAndValue.value.asPrimitive()
+                                                .decodeToString(),
+                                        )
+                                    )
+                                }
+
+                                is AttributeTypeAndValue.Organization -> {
+                                    add(
+                                        CertificateDetailsUiState.Section.Item(
+                                            title = "Organization",
+                                            value = attributeTypeAndValue.value.asPrimitive()
+                                                .decodeToString(),
+                                        )
+                                    )
+                                }
+
+                                is AttributeTypeAndValue.OrganizationalUnit -> {
+                                    add(
+                                        CertificateDetailsUiState.Section.Item(
+                                            title = "Organizational Unit",
+                                            value = attributeTypeAndValue.value.asPrimitive()
+                                                .decodeToString(),
+                                        )
+                                    )
+                                }
+
+                                is AttributeTypeAndValue.Other -> {
+                                    add(
+                                        CertificateDetailsUiState.Section.Item(
+                                            title = "Other",
+                                            value = attributeTypeAndValue.value.asPrimitive()
+                                                .decodeToString(),
+                                        )
+                                    )
+                                }
                             }
                         }
                     },
@@ -146,11 +219,11 @@ class CertificateDetailsUiStateMapper {
                 items = listOf(
                     CertificateDetailsUiState.Section.Item(
                         title = "Not Before",
-                        value = validFrom.instant.toStdlibInstant().toString(),
+                        value = validFrom.instant.toStdlibInstant().format(DateTimeComponents.Formats.RFC_1123),
                     ),
                     CertificateDetailsUiState.Section.Item(
                         title = "Not After",
-                        value = validUntil.instant.toStdlibInstant().toString(),
+                        value = validUntil.instant.toStdlibInstant().format(DateTimeComponents.Formats.RFC_1123),
                     ),
                 ),
             )

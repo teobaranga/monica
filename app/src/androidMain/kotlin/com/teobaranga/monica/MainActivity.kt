@@ -23,9 +23,10 @@ import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOw
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.applinks.AppLinksHandler
 import com.teobaranga.monica.browser.LocalWebBrowser
-import com.teobaranga.monica.certificate.popup.CertificateIssueViewModel
-import com.teobaranga.monica.certificate.popup.CertificateIssueBottomSheet
 import com.teobaranga.monica.certificate.detail.CertificateScreenRoute
+import com.teobaranga.monica.certificate.list.CertificateListRoute
+import com.teobaranga.monica.certificate.popup.CertificateIssueBottomSheet
+import com.teobaranga.monica.certificate.popup.CertificateIssueViewModel
 import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
@@ -79,7 +80,8 @@ class MainActivity : ComponentActivity() {
         val hasUntrustedCertificates by viewModel.hasUntrustedCertificates.collectAsStateWithLifecycle()
         val isViewingDetails by navHostController.currentBackStackEntryFlow
             .map {
-                it.destination.hasRoute(CertificateScreenRoute::class)
+                it.destination.hasRoute(CertificateListRoute::class)
+                    || it.destination.hasRoute(CertificateScreenRoute::class)
             }
             .collectAsStateWithLifecycle(false)
         val shouldShow by remember {
@@ -91,7 +93,7 @@ class MainActivity : ComponentActivity() {
             CertificateIssueBottomSheet(
                 onDismissRequest = viewModel::onDismiss,
                 onViewDetails = {
-                    navHostController.navigate(CertificateScreenRoute)
+                    navHostController.navigate(CertificateListRoute)
                 },
                 onReject = viewModel::onDismiss,
                 onAccept = {
