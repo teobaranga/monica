@@ -1,4 +1,4 @@
-package com.teobaranga.monica.certificate.ui
+package com.teobaranga.monica.certificate.detail
 
 data class CertificateDetailsUiState(
     val sections: List<Section>,

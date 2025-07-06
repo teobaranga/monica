@@ -1,4 +1,4 @@
-package com.teobaranga.monica.certificate
+package com.teobaranga.monica.certificate.popup
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +23,7 @@ private val textButtonMinWidth = 64.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UntrustedCertificateBottomSheet(
+fun CertificateIssueBottomSheet(
     onDismissRequest: () -> Unit,
     onAccept: () -> Unit,
     onReject: () -> Unit,
@@ -113,7 +113,7 @@ private fun ActionButtonRow(
 @Composable
 private fun UntrustedCertificateBottomSheetPreview() {
     MonicaTheme {
-        UntrustedCertificateBottomSheet(
+        CertificateIssueBottomSheet(
             onDismissRequest = { },
             onAccept = { },
             onReject = { },

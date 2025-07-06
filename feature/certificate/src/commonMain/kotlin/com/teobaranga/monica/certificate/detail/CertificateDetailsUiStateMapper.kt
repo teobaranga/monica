@@ -1,4 +1,4 @@
-package com.teobaranga.monica.certificate.ui
+package com.teobaranga.monica.certificate.detail
 
 import at.asitplus.signum.indispensable.CryptoPublicKey
 import at.asitplus.signum.indispensable.SignatureAlgorithm

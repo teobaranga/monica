@@ -1,4 +1,4 @@
-package com.teobaranga.monica.certificate
+package com.teobaranga.monica.certificate.popup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

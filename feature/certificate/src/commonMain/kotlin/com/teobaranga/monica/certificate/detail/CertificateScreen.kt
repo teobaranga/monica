@@ -1,4 +1,4 @@
-package com.teobaranga.monica.certificate.ui
+package com.teobaranga.monica.certificate.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
