@@ -25,6 +25,7 @@ import kotlin.time.Clock
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CertificateListScreen(
+    type: CertificateListRoute.Type,
     certificateListItems: List<CertificateListItem>,
     onNavigateToCertificate: (String) -> Unit,
     onBack: () -> Unit,
@@ -43,7 +44,14 @@ fun CertificateListScreen(
                     }
                 },
                 title = {
-                    Text(text = "Untrusted certificates")
+                    when (type) {
+                        CertificateListRoute.Type.UNSECURE -> {
+                            Text(text = "Untrusted certificates")
+                        }
+                        CertificateListRoute.Type.TRUSTED -> {
+                            Text(text = "Custom trusted certificates")
+                        }
+                    }
                 },
             )
         },
@@ -80,6 +88,7 @@ fun CertificateListScreen(
 private fun CertificateListScreenPreview() {
     MonicaTheme {
         CertificateListScreen(
+            type = CertificateListRoute.Type.UNSECURE,
             certificateListItems = listOf(
                 CertificateListItem(
                     sha256Hash = "00:00:00:00",

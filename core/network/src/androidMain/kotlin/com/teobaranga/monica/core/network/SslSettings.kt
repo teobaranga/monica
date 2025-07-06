@@ -12,13 +12,18 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import java.io.File
 import java.io.FileInputStream
 import java.security.KeyStore
+import java.security.cert.Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
 interface SslSettings {
+
     fun getSslContext(): SSLContext
+
     fun getTrustManager(): X509TrustManager
+
+    fun getUserTrustedCertificates(): Sequence<Certificate>
 }
 
 @Inject
@@ -102,6 +107,14 @@ class SslSettingsImpl(
         val sslContext = SSLContext.getInstance("TLS")
         sslContext.init(null, arrayOf(getTrustManager()), null)
         return sslContext
+    }
+
+    override fun getUserTrustedCertificates(): Sequence<Certificate> {
+        val keyStore = getKeyStore()
+        return keyStore.aliases().asSequence()
+            .map { alias ->
+                keyStore.getCertificate(alias)
+            }
     }
 
     override fun getTrustManager(): X509TrustManager {

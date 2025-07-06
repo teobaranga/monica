@@ -1,7 +1,9 @@
 package com.teobaranga.monica.certificate.list
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import at.asitplus.signum.indispensable.asn1.Asn1Exception
 import at.asitplus.signum.indispensable.asn1.encoding.decodeToString
 import at.asitplus.signum.indispensable.pki.TbsCertificate
@@ -11,31 +13,38 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.toStdlibInstant
+import me.tatarka.inject.annotations.Assisted
+import me.tatarka.inject.annotations.AssistedFactory
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
 @Inject
-@ContributesViewModel(AppScope::class)
+@ContributesViewModel(scope = AppScope::class, assistedFactory = CertificateListViewModel.Factory::class)
 class CertificateListViewModel(
+    @Assisted
+    savedStateHandle: SavedStateHandle,
     certificateRepository: CertificateRepository,
 ) : ViewModel() {
 
-    val certificatesListItem = certificateRepository.unsecureCertificates
-        .map { certificates ->
-            certificates.map {
-                CertificateListItem(
-                    sha256Hash = it.sha256,
-                    issuer = it.x509Certificate.tbsCertificate.getFirstIssuerName() ?: "Unknown issuer",
-                    expiry = it.x509Certificate.tbsCertificate.validUntil.instant.toStdlibInstant(),
-                )
-            }
+    val route = savedStateHandle.toRoute<CertificateListRoute>()
+
+    val certificatesListItem = when (route.type) {
+        CertificateListRoute.Type.UNSECURE -> certificateRepository.unsecureCertificates
+        CertificateListRoute.Type.TRUSTED -> certificateRepository.userTrustedCertificates
+    }.map { certificates ->
+        certificates.map {
+            CertificateListItem(
+                sha256Hash = it.sha256,
+                issuer = it.x509Certificate.tbsCertificate.getFirstIssuerName() ?: "Unknown issuer",
+                expiry = it.x509Certificate.tbsCertificate.validUntil.instant.toStdlibInstant(),
+            )
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
-            initialValue = emptyList(),
-        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
+        initialValue = emptyList(),
+    )
 
     private fun TbsCertificate.getFirstIssuerName(): String? {
         var name: String? = null
@@ -53,5 +62,10 @@ class CertificateListViewModel(
         }
 
         return name
+    }
+
+    @AssistedFactory
+    interface Factory {
+        operator fun invoke(savedStateHandle: SavedStateHandle): CertificateListViewModel
     }
 }

@@ -26,7 +26,7 @@ class CertificateDetailsViewModel(
 
     private val route = savedStateHandle.toRoute<CertificateDetailsRoute>()
 
-    val certificateDetails = certificateRepository.unsecureCertificates
+    val certificateDetails = certificateRepository.allCertificates
         .map { certificates ->
             certificates.find { it.sha256 == route.sha256Hash }?.let {
                 certificateDetailsUiStateMapper.map(it)

@@ -93,7 +93,7 @@ class MainActivity : ComponentActivity() {
             CertificateIssueBottomSheet(
                 onDismissRequest = viewModel::onDismiss,
                 onViewDetails = {
-                    navHostController.navigate(CertificateListRoute)
+                    navHostController.navigate(CertificateListRoute(type = CertificateListRoute.Type.UNSECURE))
                 },
                 onReject = viewModel::onDismiss,
                 onAccept = viewModel::onTrust,

@@ -1,3 +1,5 @@
+import com.teobaranga.monica.InjectHandler
+
 plugins {
     alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.cmp)
@@ -22,4 +24,10 @@ kotlin {
 
 android {
     namespace = "com.teobaranga.monica.certificate"
+}
+
+monica {
+    inject {
+        injectIn = InjectHandler.Target.SEPARATE
+    }
 }
