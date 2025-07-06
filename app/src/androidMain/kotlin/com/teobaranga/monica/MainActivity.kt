@@ -96,9 +96,7 @@ class MainActivity : ComponentActivity() {
                     navHostController.navigate(CertificateListRoute)
                 },
                 onReject = viewModel::onDismiss,
-                onAccept = {
-                    // TODO
-                },
+                onAccept = viewModel::onTrust,
             )
         }
     }

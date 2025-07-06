@@ -67,6 +67,7 @@ kotlin {
                 implementation(project(":core:dispatcher"))
                 implementation(project(":core:inject"))
                 implementation(project(":core:paging"))
+                implementation(project(":core:network"))
                 implementation(project(":core:ui"))
                 implementation(project(":component:user_avatar"))
                 implementation(project(":feature:account"))

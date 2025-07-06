@@ -9,6 +9,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":core:network"))
                 implementation(project(":core:ui"))
                 implementation(libs.jetbrains.navigation)
                 implementation(libs.kotlinx.serialization)

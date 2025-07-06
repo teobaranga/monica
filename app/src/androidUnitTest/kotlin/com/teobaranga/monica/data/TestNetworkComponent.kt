@@ -2,7 +2,7 @@ package com.teobaranga.monica.data
 
 import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.genders.data.GendersApi
-import com.teobaranga.monica.network.NetworkComponent
+import com.teobaranga.monica.core.network.NetworkComponent
 import io.mockk.mockk
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Provides

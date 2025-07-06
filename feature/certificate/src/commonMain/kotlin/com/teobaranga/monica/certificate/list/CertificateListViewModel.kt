@@ -26,8 +26,8 @@ class CertificateListViewModel(
             certificates.map {
                 CertificateListItem(
                     sha256Hash = it.sha256,
-                    issuer = it.tbsCertificate.getFirstIssuerName() ?: "Unknown issuer",
-                    expiry = it.tbsCertificate.validUntil.instant.toStdlibInstant(),
+                    issuer = it.x509Certificate.tbsCertificate.getFirstIssuerName() ?: "Unknown issuer",
+                    expiry = it.x509Certificate.tbsCertificate.validUntil.instant.toStdlibInstant(),
                 )
             }
         }

@@ -1,6 +1,8 @@
-package com.teobaranga.monica.network
+package com.teobaranga.monica.core.network
 
 import android.content.Context
+import at.asitplus.signum.indispensable.pki.X509Certificate
+import at.asitplus.signum.indispensable.toJcaCertificate
 import com.diamondedge.logging.logging
 import com.teobaranga.monica.core.inject.ApplicationContext
 import me.tatarka.inject.annotations.Inject
@@ -10,7 +12,6 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import java.io.File
 import java.io.FileInputStream
 import java.security.KeyStore
-import java.security.cert.CertPathValidatorException
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
@@ -18,16 +19,16 @@ import javax.net.ssl.X509TrustManager
 interface SslSettings {
     fun getSslContext(): SSLContext
     fun getTrustManager(): X509TrustManager
-    fun trustCertificates(ex: CertPathValidatorException)
 }
 
 @Inject
 @SingleIn(AppScope::class)
-@ContributesBinding(AppScope::class)
+@ContributesBinding(AppScope::class, boundType = SslSettings::class)
+@ContributesBinding(AppScope::class, boundType = CertificateTruster::class)
 class SslSettingsImpl(
     @param:ApplicationContext
     private val context: Context,
-): SslSettings {
+) : SslSettings, CertificateTruster {
 
     private fun createCombinedKeyStore(): KeyStore {
         // Load system KeyStore
@@ -107,15 +108,20 @@ class SslSettingsImpl(
         return getTrustManagerFactory().trustManagers.first { it is X509TrustManager } as X509TrustManager
     }
 
-    override fun trustCertificates(ex: CertPathValidatorException) {
+    override suspend fun trustCertificates(certificates: List<X509Certificate>) {
         val customKeyStore = getKeyStore()
-        ex.certPath.certificates.forEach {
-            val alias = "custom_${it.hashCode()}"
-            customKeyStore.setCertificateEntry(alias, it)
-            logging.d { "Added certificate to combined KeyStore: $alias" }
-        }
+        certificates
+            .mapNotNull {
+                it.toJcaCertificate().getOrNull()
+            }
+            .forEach {
+                val alias = "custom_${it.hashCode()}"
+                customKeyStore.setCertificateEntry(alias, it)
+                logging.d { "Added certificate to combined KeyStore: $alias" }
+            }
         val file = File(context.filesDir, "keystore.jks")
         customKeyStore.store(file.outputStream().buffered(), "foobar".toCharArray())
+        isStale = true
     }
 
     companion object {

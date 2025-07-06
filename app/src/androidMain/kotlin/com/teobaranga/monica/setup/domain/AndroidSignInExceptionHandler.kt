@@ -31,10 +31,10 @@ class AndroidSignInExceptionHandler(
                         if (certificate !is X509Certificate) return@mapNotNull null
 
                         println(certificate)
-                        val tbsCertificate = certificate.toKmpCertificate().getOrNull()?.tbsCertificate
+                        val x509Certificate = certificate.toKmpCertificate().getOrNull()
                             ?: return@mapNotNull null
                         CommonCertificate(
-                            tbsCertificate = tbsCertificate,
+                            x509Certificate = x509Certificate,
                             sha1 = certificate.getFingerprint("SHA-1"),
                             sha256 = certificate.getFingerprint("SHA-256"),
                         )

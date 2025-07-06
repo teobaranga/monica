@@ -30,7 +30,7 @@ class CertificateDetailsUiStateMapper {
     fun map(commonCertificate: CommonCertificate): CertificateDetailsUiState {
         return CertificateDetailsUiState(
             sections = buildList {
-                with(commonCertificate.tbsCertificate) {
+                with(commonCertificate.x509Certificate.tbsCertificate) {
                     addSubjectNameSections(subjectName)
                     subjectAlternativeNames?.let {
                         addSubjectAltNamesSection(it)
