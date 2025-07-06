@@ -1,19 +1,22 @@
-package com.teobaranga.monica.certificate
+package com.teobaranga.monica.certificate.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,6 +33,7 @@ import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.clipboard.setPlainText
+import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -64,7 +68,8 @@ private fun CertificateDetails(
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(16.dp) +
+            WindowInsets.navigationBars.asPaddingValues(),
     ) {
         certificateData.sections.forEach { section ->
             item {
@@ -80,6 +85,9 @@ private fun CertificateDetails(
 private fun Section(section: CertificateDetailsUiState.Section) {
     Card(
         modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
         shape = RoundedCornerShape(8.dp),
     ) {
         Column {
@@ -104,7 +112,11 @@ private fun Item(
     item: CertificateDetailsUiState.Section.Item,
 ) {
     ListItem(
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = Modifier
+            .padding(horizontal = 16.dp),
+        colors = ListItemDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
         headlineContent = { Text(text = item.title) },
         supportingContent = { Text(text = item.value) },
         trailingContent = if (item.isCopyEnabled) {
@@ -127,7 +139,6 @@ private fun Item(
         } else {
             null
         },
-        colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     )
 }
 

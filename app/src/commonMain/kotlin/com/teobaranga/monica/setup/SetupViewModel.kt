@@ -123,8 +123,7 @@ class SetupViewModel(
                     }
                 }
                 is SignInResult.Error.UntrustedCertificates -> {
-                    log.w { "Untrusted certificates: ${signInResult.certificates}" }
-                    uiState.error = UiState.Error.UntrustedCertificates(signInResult.certificates)
+                    uiState.error = UiState.Error.UntrustedCertificates
                     withContext(dispatcher.main) {
                         uiState.isSigningIn = false
                     }
