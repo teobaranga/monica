@@ -21,10 +21,10 @@ class CertificateListViewModel(
     certificateRepository: CertificateRepository,
 ) : ViewModel() {
 
-    val userCertificates = certificateRepository.unsecureCertificates
+    val certificatesListItem = certificateRepository.unsecureCertificates
         .map { certificates ->
             certificates.map {
-                UserCertificate(
+                CertificateListItem(
                     sha256Hash = it.sha256,
                     issuer = it.tbsCertificate.getFirstIssuerName() ?: "Unknown issuer",
                     expiry = it.tbsCertificate.validUntil.instant.toStdlibInstant(),

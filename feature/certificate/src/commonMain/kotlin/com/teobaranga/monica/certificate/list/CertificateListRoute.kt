@@ -5,7 +5,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
-import com.teobaranga.monica.certificate.detail.CertificateScreenRoute
+import com.teobaranga.monica.certificate.detail.CertificateDetailsRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import kotlinx.serialization.Serializable
 
@@ -16,11 +16,11 @@ fun NavGraphBuilder.certificateListScreen() {
     composable<CertificateListRoute> {
         val navigator = LocalNavigator.current
         val viewModel = injectedViewModel<CertificateListViewModel>()
-        val userCertificates by viewModel.userCertificates.collectAsStateWithLifecycle()
+        val userCertificates by viewModel.certificatesListItem.collectAsStateWithLifecycle()
         CertificateListScreen(
-            userCertificates = userCertificates,
+            certificateListItems = userCertificates,
             onNavigateToCertificate = {
-                navigator.navigate(CertificateScreenRoute(it))
+                navigator.navigate(CertificateDetailsRoute(it))
             },
             onBack = navigator::popBackStack,
         )

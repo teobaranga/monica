@@ -16,15 +16,15 @@ import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
 @Inject
-@ContributesViewModel(scope = AppScope::class, assistedFactory = CertificateViewModel.Factory::class)
-class CertificateViewModel(
+@ContributesViewModel(scope = AppScope::class, assistedFactory = CertificateDetailsViewModel.Factory::class)
+class CertificateDetailsViewModel(
     @Assisted
     private val savedStateHandle: SavedStateHandle,
     certificateRepository: CertificateRepository,
     private val certificateDetailsUiStateMapper: CertificateDetailsUiStateMapper,
 ) : ViewModel() {
 
-    private val route = savedStateHandle.toRoute<CertificateScreenRoute>()
+    private val route = savedStateHandle.toRoute<CertificateDetailsRoute>()
 
     val certificateDetails = certificateRepository.unsecureCertificates
         .map { certificates ->
@@ -40,6 +40,6 @@ class CertificateViewModel(
 
     @AssistedFactory
     interface Factory {
-        operator fun invoke(savedStateHandle: SavedStateHandle): CertificateViewModel
+        operator fun invoke(savedStateHandle: SavedStateHandle): CertificateDetailsViewModel
     }
 }

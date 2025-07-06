@@ -25,7 +25,7 @@ import kotlin.time.Clock
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CertificateListScreen(
-    userCertificates: List<UserCertificate>,
+    certificateListItems: List<CertificateListItem>,
     onNavigateToCertificate: (String) -> Unit,
     onBack: () -> Unit,
 ) {
@@ -53,7 +53,7 @@ fun CertificateListScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
         ) {
-            items(userCertificates) { userCertificate ->
+            items(certificateListItems) { userCertificate ->
                 ListItem(
                     modifier = Modifier
                         .clickable {
@@ -80,13 +80,13 @@ fun CertificateListScreen(
 private fun CertificateListScreenPreview() {
     MonicaTheme {
         CertificateListScreen(
-            userCertificates = listOf(
-                UserCertificate(
+            certificateListItems = listOf(
+                CertificateListItem(
                     sha256Hash = "00:00:00:00",
                     issuer = "example.com",
                     expiry = Clock.System.now(),
                 ),
-                UserCertificate(
+                CertificateListItem(
                     sha256Hash = "00:00:00:00",
                     issuer = "another-example.com",
                     expiry = Clock.System.now(),

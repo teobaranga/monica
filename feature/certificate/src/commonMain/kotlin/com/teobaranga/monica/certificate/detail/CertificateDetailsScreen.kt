@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -40,12 +41,23 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CertificateScreen(
+fun CertificateDetailsScreen(
     certificateData: CertificateDetailsUiState,
+    onBack: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
+                navigationIcon = {
+                    IconButton(
+                        onClick = onBack,
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                        )
+                    }
+                },
                 title = { Text(text = "Certificate Details") },
             )
         },
@@ -146,7 +158,7 @@ private fun Item(
 @Composable
 private fun CertificateScreenPreview() {
     MonicaTheme {
-        CertificateScreen(
+        CertificateDetailsScreen(
             certificateData = CertificateDetailsUiState(
                 sections = listOf(
                     CertificateDetailsUiState.Section(
@@ -266,6 +278,7 @@ private fun CertificateScreenPreview() {
                     ),
                 )
             ),
+            onBack = { },
         )
     }
 }

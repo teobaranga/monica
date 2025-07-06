@@ -23,7 +23,7 @@ import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOw
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.applinks.AppLinksHandler
 import com.teobaranga.monica.browser.LocalWebBrowser
-import com.teobaranga.monica.certificate.detail.CertificateScreenRoute
+import com.teobaranga.monica.certificate.detail.CertificateDetailsRoute
 import com.teobaranga.monica.certificate.list.CertificateListRoute
 import com.teobaranga.monica.certificate.popup.CertificateIssueBottomSheet
 import com.teobaranga.monica.certificate.popup.CertificateIssueViewModel
@@ -81,7 +81,7 @@ class MainActivity : ComponentActivity() {
         val isViewingDetails by navHostController.currentBackStackEntryFlow
             .map {
                 it.destination.hasRoute(CertificateListRoute::class)
-                    || it.destination.hasRoute(CertificateScreenRoute::class)
+                    || it.destination.hasRoute(CertificateDetailsRoute::class)
             }
             .collectAsStateWithLifecycle(false)
         val shouldShow by remember {

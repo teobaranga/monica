@@ -6,21 +6,26 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
+import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CertificateScreenRoute(val sha256Hash: String)
+data class CertificateDetailsRoute(val sha256Hash: String)
 
-fun NavGraphBuilder.certificateScreen() {
-    composable<CertificateScreenRoute> { backStackEntry ->
-        val viewModel = injectedViewModel<CertificateViewModel, CertificateViewModel.Factory>(
+fun NavGraphBuilder.certificateDetailsScreen() {
+    composable<CertificateDetailsRoute> { backStackEntry ->
+        val navigator = LocalNavigator.current
+        val viewModel = injectedViewModel<CertificateDetailsViewModel, CertificateDetailsViewModel.Factory>(
             creationCallback = { factory ->
                 factory(createSavedStateHandle())
             },
         )
         val certificateDetails by viewModel.certificateDetails.collectAsStateWithLifecycle()
         certificateDetails?.let {
-            CertificateScreen(it)
+            CertificateDetailsScreen(
+                certificateData = it,
+                onBack = navigator::popBackStack,
+            )
         }
     }
 }
