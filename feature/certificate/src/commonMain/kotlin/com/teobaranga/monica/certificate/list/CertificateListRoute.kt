@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CertificateListRoute(val type: Type) {
     enum class Type {
-        UNSECURE,
+        UNTRUSTED,
         TRUSTED,
     }
 }

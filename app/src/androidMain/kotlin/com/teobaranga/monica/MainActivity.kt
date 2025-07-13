@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                         builder = RootNavGraphBuilder,
                     )
 
-                    UnsecureCertificatePopup(
+                    UntrustedCertificatePopup(
                         navHostController = navController,
                     )
                 }
@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun UnsecureCertificatePopup(navHostController: NavHostController) {
+    private fun UntrustedCertificatePopup(navHostController: NavHostController) {
         val viewModel = injectedViewModel<CertificateIssueViewModel>()
         val hasUntrustedCertificates by viewModel.hasUntrustedCertificates.collectAsStateWithLifecycle()
         val isViewingDetails by navHostController.currentBackStackEntryFlow
@@ -93,7 +93,7 @@ class MainActivity : ComponentActivity() {
             CertificateIssueBottomSheet(
                 onDismissRequest = viewModel::onDismiss,
                 onViewDetails = {
-                    navHostController.navigate(CertificateListRoute(type = CertificateListRoute.Type.UNSECURE))
+                    navHostController.navigate(CertificateListRoute(type = CertificateListRoute.Type.UNTRUSTED))
                 },
                 onReject = viewModel::onDismiss,
                 onAccept = viewModel::onTrust,

@@ -28,7 +28,7 @@ class CertificateRepository(
 ) {
 
     private val _untrustedCertificates = MutableStateFlow(emptyList<CommonCertificate>())
-    val unsecureCertificates = _untrustedCertificates.asStateFlow()
+    val untrustedCertificates = _untrustedCertificates.asStateFlow()
 
     private val _untrustedCertificateResults = MutableSharedFlow<UntrustedCertificateResult>()
     val untrustedCertificateResult = _untrustedCertificateResults.asSharedFlow()
@@ -49,8 +49,8 @@ class CertificateRepository(
     )
 
     val allCertificates
-        get() = combine(unsecureCertificates, userTrustedCertificates) { unsecure, userTrusted ->
-            unsecure + userTrusted
+        get() = combine(untrustedCertificates, userTrustedCertificates) { untrusted, userTrusted ->
+            untrusted + userTrusted
         }
 
     fun setUntrustedCertificates(certificates: List<CommonCertificate>) {

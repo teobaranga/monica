@@ -50,7 +50,7 @@ fun CertificateListScreen(
                 },
                 title = {
                     when (type) {
-                        CertificateListRoute.Type.UNSECURE -> {
+                        CertificateListRoute.Type.UNTRUSTED -> {
                             Text(text = "Untrusted certificates")
                         }
                         CertificateListRoute.Type.TRUSTED -> {
@@ -104,7 +104,7 @@ fun CertificateListScreen(
 private fun CertificateListScreenPreview() {
     MonicaTheme {
         CertificateListScreen(
-            type = CertificateListRoute.Type.UNSECURE,
+            type = CertificateListRoute.Type.UNTRUSTED,
             certificateListItems = listOf(
                 CertificateListItem(
                     sha256Hash = "DE:AD:BE:EF".hexToByteString(hexFormatDisplay),

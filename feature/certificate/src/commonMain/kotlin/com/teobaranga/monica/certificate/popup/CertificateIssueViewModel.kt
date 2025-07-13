@@ -17,7 +17,7 @@ class CertificateIssueViewModel(
     private val certificateRepository: CertificateRepository,
 ): ViewModel() {
 
-    val hasUntrustedCertificates = certificateRepository.unsecureCertificates
+    val hasUntrustedCertificates = certificateRepository.untrustedCertificates
         .map {
             it.isNotEmpty()
         }

@@ -32,7 +32,7 @@ class CertificateListViewModel(
     val route = savedStateHandle.toRoute<CertificateListRoute>()
 
     val certificatesListItem = when (route.type) {
-        CertificateListRoute.Type.UNSECURE -> certificateRepository.unsecureCertificates
+        CertificateListRoute.Type.UNTRUSTED -> certificateRepository.untrustedCertificates
         CertificateListRoute.Type.TRUSTED -> certificateRepository.userTrustedCertificates
     }.map { certificates ->
         certificates.map {
