@@ -17,6 +17,7 @@ class NetworkConventionPlugin : Plugin<Project> {
                     androidMain {
                         dependencies {
                             implementation(libs.ktor.client.okhttp)
+                            implementation(libs.okhttp.tls)
                         }
                     }
                     iosMain {
@@ -38,6 +39,11 @@ class NetworkConventionPlugin : Plugin<Project> {
                             // Sandwich for a nicer way to handle network responses
                             implementation(libs.sandwich)
                             implementation(libs.sandwich.ktor)
+                        }
+                    }
+                    commonTest {
+                        dependencies {
+                            implementation(libs.ktor.client.mock)
                         }
                     }
                 }

@@ -6,8 +6,8 @@ import com.teobaranga.monica.contacts.ContactComponent
 import com.teobaranga.monica.contacts.TEST_CONTACT_ID
 import com.teobaranga.monica.contacts.create
 import com.teobaranga.monica.core.data.remote.MetaResponse
+import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.core.test.config.DefaultTestConfig
 import io.kotest.core.test.testCoroutineScheduler
 import io.kotest.engine.coroutines.backgroundScope
 import io.mockk.coEvery
@@ -20,7 +20,8 @@ import kotlin.time.Duration.Companion.seconds
 
 class ContactActivitiesViewModelTest : BehaviorSpec(
     {
-        defaultTestConfig = DefaultTestConfig(coroutineTestScope = true)
+        isolationMode = IsolationMode.InstancePerRoot
+        coroutineTestScope = true
 
         val component = ContactComponent::class.create()
         val viewModel = component.contactActivitiesViewModel()(TEST_CONTACT_ID)

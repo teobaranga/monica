@@ -22,13 +22,13 @@ class AccountViewModel(
     private val dispatcher: Dispatcher,
     private val dataStore: DataStore<Preferences>,
     private val database: RoomDatabase,
-    private val httpClient: HttpClient,
+    private val httpClient: () -> HttpClient,
 ) : ViewModel() {
 
     fun onClearAuthorization() {
         viewModelScope.launch(dispatcher.io) {
             // TODO Revoke current access token
-            httpClient.authProvider<BearerAuthProvider>()?.clearToken()
+            httpClient().authProvider<BearerAuthProvider>()?.clearToken()
 
             dataStore.edit { preferences ->
                 preferences.tokenStorage {

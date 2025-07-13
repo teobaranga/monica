@@ -1,6 +1,7 @@
 package com.teobaranga.monica.network.config
 
 import com.diamondedge.logging.logging
+import com.teobaranga.monica.core.network.config.HttpClientConfigurator
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger

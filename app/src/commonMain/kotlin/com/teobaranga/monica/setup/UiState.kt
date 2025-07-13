@@ -13,7 +13,10 @@ import com.teobaranga.monica.MONICA_URL
 class UiState {
 
     sealed interface Error {
+
         data object ConfigurationError : Error
+
+        data object UntrustedCertificates : Error
     }
 
     var serverAddress by mutableStateOf(TextFieldValue(MONICA_URL))

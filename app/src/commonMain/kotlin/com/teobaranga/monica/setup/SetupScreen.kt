@@ -63,8 +63,8 @@ fun Setup(
     val webBrowser = LocalWebBrowser.current
     val navigator = LocalNavigator.current
     val uiState = viewModel.uiState
-
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
+
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn == true) {
             navigator.navigate(HomeRoute) {
@@ -98,7 +98,11 @@ fun Setup(
 }
 
 @Composable
-fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Modifier) {
+fun SetupScreen(
+    uiState: UiState,
+    onSignIn: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val scrollState = rememberScrollState()
 
     // Scroll to bottom to keep the main button visible when the IME is open
@@ -106,6 +110,19 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
     LaunchedEffect(keyboardState) {
         if (keyboardState) {
             scrollState.animateScrollTo(Int.MAX_VALUE)
+        }
+    }
+
+    LaunchedEffect(uiState.error) {
+        when (uiState.error) {
+            is UiState.Error.UntrustedCertificates -> {
+                // The certificate error is handled globally
+                uiState.error = null
+            }
+
+            is UiState.Error.ConfigurationError -> Unit
+
+            null -> Unit
         }
     }
 
@@ -168,15 +185,13 @@ fun SetupScreen(uiState: UiState, onSignIn: () -> Unit, modifier: Modifier = Mod
                     Text(text = "Client Secret")
                 },
             )
-            uiState.error?.let {
+            if (uiState.error is UiState.Error.ConfigurationError) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp)
                         .padding(top = 12.dp),
-                    text = when (it) {
-                        UiState.Error.ConfigurationError -> "Please check your configuration"
-                    },
+                    text = "Please check your configuration",
                     color = Color.Red,
                 )
             }
