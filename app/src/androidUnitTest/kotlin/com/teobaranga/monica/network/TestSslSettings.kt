@@ -1,10 +1,13 @@
 package com.teobaranga.monica.network
 
+import com.teobaranga.monica.core.network.SslSettings
+import com.teobaranga.monica.core.network.SslSettingsImpl
+import kotlinx.io.bytestring.ByteString
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import java.security.KeyStore
-import java.security.cert.CertPathValidatorException
+import java.security.cert.Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
@@ -14,7 +17,7 @@ import javax.net.ssl.X509TrustManager
     scope = AppScope::class,
     replaces = [SslSettingsImpl::class]
 )
-class TestSslSettings: SslSettings {
+class TestSslSettings : SslSettings {
 
     override fun getSslContext(): SSLContext {
         val sslContext = SSLContext.getInstance("TLS")
@@ -28,7 +31,15 @@ class TestSslSettings: SslSettings {
         return trustManagerFactory.trustManagers.first { it is X509TrustManager } as X509TrustManager
     }
 
-    override fun trustCertificates(ex: CertPathValidatorException) {
-        // no-op
+    override fun getUserTrustedCertificates(): Sequence<Certificate> {
+        return emptySequence()
+    }
+
+    override fun trustCertificates(certificates: List<Certificate>) {
+        // No-op
+    }
+
+    override suspend fun deleteCertificate(sha256Hash: ByteString) {
+        // No-op
     }
 }

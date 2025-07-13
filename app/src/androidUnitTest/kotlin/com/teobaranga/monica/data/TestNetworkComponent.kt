@@ -1,8 +1,8 @@
 package com.teobaranga.monica.data
 
 import com.teobaranga.monica.contacts.data.ContactApi
+import com.teobaranga.monica.core.network.AndroidNetworkComponent
 import com.teobaranga.monica.genders.data.GendersApi
-import com.teobaranga.monica.core.network.NetworkComponent
 import io.mockk.mockk
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Provides
@@ -12,7 +12,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @ContributesTo(
     scope = AppScope::class,
-    replaces = [NetworkComponent::class],
+    replaces = [AndroidNetworkComponent::class],
 )
 interface TestNetworkComponent {
 
