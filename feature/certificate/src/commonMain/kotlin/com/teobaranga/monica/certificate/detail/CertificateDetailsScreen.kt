@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -41,6 +40,7 @@ import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.clipboard.setPlainText
+import com.teobaranga.monica.core.ui.icons.Delete
 import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.util.debounce
@@ -77,7 +77,7 @@ fun CertificateDetailsScreen(
                         },
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Delete,
+                            imageVector = Delete,
                             contentDescription = "Delete certificate",
                         )
                     }

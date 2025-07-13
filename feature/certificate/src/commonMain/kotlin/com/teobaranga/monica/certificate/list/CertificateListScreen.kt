@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.teobaranga.monica.certificate.util.hexFormatDisplay
+import com.teobaranga.monica.core.ui.icons.KeyboardArrowRight
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import kotlinx.datetime.format
 import kotlinx.datetime.format.DateTimeComponents
@@ -71,9 +72,6 @@ fun CertificateListScreen(
                         .clickable {
                             onNavigateToCertificate(userCertificate.sha256Hash.toHexString())
                         },
-                    overlineContent = {
-                        Text(text = "Issuer")
-                    },
                     headlineContent = {
                         Text(text = userCertificate.issuer)
                     },
@@ -87,6 +85,12 @@ fun CertificateListScreen(
                         } else {
                             Text(text = "Expires: $expiryDate")
                         }
+                    },
+                    trailingContent = {
+                        Icon(
+                            imageVector = KeyboardArrowRight,
+                            contentDescription = null,
+                        )
                     },
                 )
             }
