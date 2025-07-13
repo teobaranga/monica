@@ -7,4 +7,5 @@ data class CertificateListItem(
     val sha256Hash: ByteString,
     val issuer: String,
     val expiry: Instant,
+    val isExpired: Boolean,
 )

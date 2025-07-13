@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -78,7 +79,14 @@ fun CertificateListScreen(
                     },
                     supportingContent = {
                         val expiryDate = userCertificate.expiry.format(DateTimeComponents.Formats.RFC_1123)
-                        Text(text = "Expires: $expiryDate")
+                        if (userCertificate.isExpired) {
+                            Text(
+                                text = "Expired: $expiryDate",
+                                color = MaterialTheme.colorScheme.error,
+                            )
+                        } else {
+                            Text(text = "Expires: $expiryDate")
+                        }
                     },
                 )
             }
@@ -98,11 +106,13 @@ private fun CertificateListScreenPreview() {
                     sha256Hash = "DE:AD:BE:EF".hexToByteString(hexFormatDisplay),
                     issuer = "example.com",
                     expiry = Clock.System.now(),
+                    isExpired = false,
                 ),
                 CertificateListItem(
                     sha256Hash = "DE:AD:BE:EF".hexToByteString(hexFormatDisplay),
                     issuer = "another-example.com",
                     expiry = Clock.System.now(),
+                    isExpired = true,
                 ),
             ),
             onNavigateToCertificate = { },

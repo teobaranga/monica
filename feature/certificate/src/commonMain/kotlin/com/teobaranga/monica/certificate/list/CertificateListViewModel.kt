@@ -18,6 +18,7 @@ import me.tatarka.inject.annotations.AssistedFactory
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Instant
 
 @Inject
 @ContributesViewModel(scope = AppScope::class, assistedFactory = CertificateListViewModel.Factory::class)
@@ -25,6 +26,7 @@ class CertificateListViewModel(
     @Assisted
     savedStateHandle: SavedStateHandle,
     certificateRepository: CertificateRepository,
+    private val now: () -> Instant,
 ) : ViewModel() {
 
     val route = savedStateHandle.toRoute<CertificateListRoute>()
@@ -34,10 +36,13 @@ class CertificateListViewModel(
         CertificateListRoute.Type.TRUSTED -> certificateRepository.userTrustedCertificates
     }.map { certificates ->
         certificates.map {
+            val tbsCertificate = it.x509Certificate.tbsCertificate
+            val expiry = tbsCertificate.validUntil.instant.toStdlibInstant()
             CertificateListItem(
                 sha256Hash = it.sha256,
-                issuer = it.x509Certificate.tbsCertificate.getFirstIssuerName() ?: "Unknown issuer",
-                expiry = it.x509Certificate.tbsCertificate.validUntil.instant.toStdlibInstant(),
+                issuer = tbsCertificate.getFirstIssuerName() ?: "Unknown issuer",
+                expiry = expiry,
+                isExpired = expiry < now(),
             )
         }
     }.stateIn(
