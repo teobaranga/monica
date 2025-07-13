@@ -41,6 +41,11 @@ class NetworkConventionPlugin : Plugin<Project> {
                             implementation(libs.sandwich.ktor)
                         }
                     }
+                    commonTest {
+                        dependencies {
+                            implementation(libs.ktor.client.mock)
+                        }
+                    }
                 }
             }
         }

@@ -1,5 +1,7 @@
 package com.teobaranga.monica.network
 
+import com.teobaranga.monica.certificate.util.sha256
+import com.teobaranga.monica.certificate.util.toByteString
 import com.teobaranga.monica.core.network.SslSettings
 import com.teobaranga.monica.core.network.SslSettingsImpl
 import kotlinx.io.bytestring.ByteString
@@ -19,6 +21,8 @@ import javax.net.ssl.X509TrustManager
 )
 class TestSslSettings : SslSettings {
 
+    private val userTrustedCertificates = mutableListOf<Certificate>()
+
     override fun getSslContext(): SSLContext {
         val sslContext = SSLContext.getInstance("TLS")
         sslContext.init(null, arrayOf(getTrustManager()), null)
@@ -32,14 +36,14 @@ class TestSslSettings : SslSettings {
     }
 
     override fun getUserTrustedCertificates(): Sequence<Certificate> {
-        return emptySequence()
+        return userTrustedCertificates.asSequence()
     }
 
     override fun trustCertificates(certificates: List<Certificate>) {
-        // No-op
+        userTrustedCertificates.addAll(certificates)
     }
 
     override suspend fun deleteCertificate(sha256Hash: ByteString) {
-        // No-op
+        userTrustedCertificates.removeIf { it.encoded.toByteString().sha256() == sha256Hash }
     }
 }

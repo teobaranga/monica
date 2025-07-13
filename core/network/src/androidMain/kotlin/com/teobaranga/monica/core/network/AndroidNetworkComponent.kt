@@ -2,7 +2,6 @@ package com.teobaranga.monica.core.network
 
 import com.teobaranga.monica.core.network.config.HttpClientConfigurator
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.HttpClientEngineFactory
 import io.ktor.client.engine.okhttp.OkHttp
 import me.tatarka.inject.annotations.Provides
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
@@ -14,12 +13,8 @@ lateinit var httpClient: HttpClient
 interface AndroidNetworkComponent: NetworkComponent {
 
     @Provides
-    fun provideHttpEngine(): HttpClientEngineFactory<*> = OkHttp
-
-    @Provides
     fun provideHttpClient(
         sslSettings: SslSettings,
-        engineFactory: HttpClientEngineFactory<*>,
         configurators: Set<HttpClientConfigurator>,
     ): HttpClient {
         if (!::httpClient.isInitialized || isStale) {

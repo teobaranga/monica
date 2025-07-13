@@ -3,6 +3,8 @@ package com.teobaranga.monica.data
 import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.core.network.AndroidNetworkComponent
 import com.teobaranga.monica.genders.data.GendersApi
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.mock.MockEngine
 import io.mockk.mockk
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Provides
@@ -22,6 +24,18 @@ interface TestNetworkComponent {
         return Json {
             ignoreUnknownKeys = true
         }
+    }
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun provideHttpEngine(): MockEngine.Queue {
+        return MockEngine.Queue()
+    }
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun provideHttpClient(engine: MockEngine.Queue): HttpClient {
+        return HttpClient(engine)
     }
 
     @Provides

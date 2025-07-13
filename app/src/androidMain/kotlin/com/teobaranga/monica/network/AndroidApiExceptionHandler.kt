@@ -1,4 +1,4 @@
-package com.teobaranga.monica
+package com.teobaranga.monica.network
 
 import at.asitplus.signum.indispensable.toKmpCertificate
 import com.skydoves.sandwich.ApiResponse
