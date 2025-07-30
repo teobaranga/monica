@@ -8,6 +8,7 @@ import com.teobaranga.monica.certificate.testCertificate
 import com.teobaranga.monica.core.network.util.sha1
 import com.teobaranga.monica.core.network.util.sha256
 import com.teobaranga.monica.core.network.util.toByteString
+import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.testCoroutineScheduler
 import io.kotest.matchers.shouldBe
@@ -24,6 +25,7 @@ import java.security.cert.X509Certificate
 class HttpRequestMakerTest : BehaviorSpec({
 
     coroutineTestScope = true
+    isolationMode = IsolationMode.InstancePerTest
 
     val component = HttpRequestMakerComponent::class.create()
     val mockEngine = component.httpEngine()
