@@ -19,7 +19,7 @@ ksp = "2.2.0-2.0.2"
 kotlin = "2.2.0"
 
 # Libraries
-browser = "1.8.0"
+browser = "1.9.0"
 coil = "3.3.0"
 compose-placeholder = "1.0.11"
 compose-rules = "0.4.26"
@@ -30,7 +30,7 @@ jetbrains-navigation = "2.9.0-beta04"
 junit = "4.13.2"
 junit-vintage = "5.13.4"
 kmlogging = "2.0.3"
-kotest = "6.0.0.M8"
+kotest = "6.0.0.M9"
 kotlin-inject = "0.8.0"
 kotlin-inject-anvil = "0.1.6"
 kotlin-inject-viewmodel = "0.3.0"
@@ -48,7 +48,7 @@ robolectric = "4.15.1"
 room = "2.7.2"
 sandwich = "2.1.2"
 turbine = "1.2.1"
-work = "2.10.2"
+work = "2.10.3"
 
 [libraries]
 # Included build
