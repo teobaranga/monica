@@ -9,7 +9,7 @@ on:
 jobs:
   test-android:
     name: Test (Android)
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
 
@@ -88,7 +88,7 @@ jobs:
 
   build-android:
     name: Build (Android)
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
 
@@ -161,7 +161,7 @@ jobs:
 
   build-ios:
     name: Build (iOS Simulator)
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
 
