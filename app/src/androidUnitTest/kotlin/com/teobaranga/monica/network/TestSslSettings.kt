@@ -45,4 +45,8 @@ class TestSslSettings : SslSettings {
     override suspend fun deleteCertificate(sha256Hash: ByteString) {
         userTrustedCertificates.removeIf { it.encoded.toByteString().sha256() == sha256Hash }
     }
+
+    fun clearUserTrustedCertificates() {
+        userTrustedCertificates.clear()
+    }
 }

@@ -29,6 +29,12 @@ class HttpRequestMakerTest : BehaviorSpec({
     val mockEngine = component.httpEngine()
     val httpRequestMaker = component.httpRequestMaker()
     val certificateRepository = component.certificateRepository()
+    val testSslSettings = component.testSslSettings()
+
+    beforeContainer {
+        certificateRepository.setUntrustedCertificates(emptyList())
+        testSslSettings.clearUserTrustedCertificates()
+    }
 
     Given("a non-certificate exception") {
         val exception = RuntimeException()

@@ -16,4 +16,6 @@ interface HttpRequestMakerComponent {
     fun httpRequestMaker(): HttpRequestMaker
 
     fun certificateRepository(): CertificateRepository
+
+    fun testSslSettings(): TestSslSettings
 }
