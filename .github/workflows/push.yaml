@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    name: Test
-    runs-on: macos-latest
+  test-android:
+    name: Test (Android)
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
 
@@ -86,9 +86,9 @@ jobs:
           minColorRange: 0
           maxColorRange: 100
 
-  build:
-    name: Build
-    runs-on: macos-latest
+  build-android:
+    name: Build (Android)
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
 
@@ -158,3 +158,67 @@ jobs:
         with:
           name: apk-release
           path: app/build/outputs/apk/release/app-release.apk
+
+  build-ios:
+    name: Build (iOS Simulator)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup composite build caching
+        uses: actions/cache@v4
+        with:
+          path: |
+            build-logic/build
+            build-logic/convention/build
+          key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
+
+      - name: Extract Kotlin version
+        id: kotlin-version
+        run: |
+          KOTLIN_VERSION=$(grep '^kotlin = ' gradle/libs.versions.toml | sed 's/kotlin = "\(.*\)"/\1/')
+          echo "version=$KOTLIN_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Kotlin Native cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.konan
+          key: konan-${{ runner.os }}-kotlin-${{ steps.kotlin-version.outputs.version }}
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          build-scan-publish: true
+          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+          build-scan-terms-of-use-agree: "yes"
+
+      - name: Setup signing
+        run: |
+          # Decode keystore and save in expected place
+          echo ${{ secrets.RELEASE_KEYSTORE_BASE64 }} > keystore_base64.txt
+          base64 -d -i keystore_base64.txt -o app/release.jks
+          # Retrieve other secrets and place in expected place
+          touch local.properties
+          echo "RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}" >> local.properties
+          echo "RELEASE_KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}" >> local.properties
+          echo "RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}" >> local.properties
+          cat local.properties
+
+      - name: Setup Firebase
+        run: |
+          # Decode the google-services.json from secrets
+          echo ${{ secrets.GOOGLE_SERVICES_JSON }} > google-services_base64.txt
+          base64 -d -i google-services_base64.txt -o app/google-services.json
+
+      - name: Build Debug for iOS Simulator
+        run: |
+          cd iosApp
+          sudo xcode-select -s '/Applications/Xcode_16.4.app/Contents/Developer'
+          xcodebuild -configuration Debug -scheme iosApp -sdk iphonesimulator
