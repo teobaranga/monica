@@ -5,9 +5,6 @@ import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ktor.getApiResponse
 import com.teobaranga.monica.certificate.data.CommonCertificate
 import com.teobaranga.monica.certificate.testCertificate
-import com.teobaranga.monica.core.network.util.sha1
-import com.teobaranga.monica.core.network.util.sha256
-import com.teobaranga.monica.core.network.util.toByteString
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.testCoroutineScheduler
@@ -18,6 +15,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
+import okio.ByteString.Companion.toByteString
 import java.security.cert.CertPath
 import java.security.cert.CertPathValidatorException
 import java.security.cert.X509Certificate

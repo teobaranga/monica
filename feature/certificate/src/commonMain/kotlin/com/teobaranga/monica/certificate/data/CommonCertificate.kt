@@ -1,7 +1,7 @@
 package com.teobaranga.monica.certificate.data
 
 import at.asitplus.signum.indispensable.pki.X509Certificate
-import kotlinx.io.bytestring.ByteString
+import okio.ByteString
 
 // TODO: is this needed or can we just use X509Certificate directly?
 data class CommonCertificate(

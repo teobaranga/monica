@@ -29,7 +29,6 @@ import com.teobaranga.monica.certificate.data.CommonCertificate
 import com.teobaranga.monica.certificate.util.hexFormatDisplay
 import kotlinx.datetime.format
 import kotlinx.datetime.format.DateTimeComponents
-import kotlinx.io.bytestring.toHexString
 import me.tatarka.inject.annotations.Inject
 
 @Inject
@@ -324,11 +323,11 @@ class CertificateDetailsUiStateMapper {
                 items = listOf(
                     CertificateDetailsUiState.Section.Item(
                         title = "SHA-256",
-                        value = commonCertificate.sha256.toHexString(hexFormatDisplay),
+                        value = commonCertificate.sha256.toByteArray().toHexString(hexFormatDisplay),
                     ),
                     CertificateDetailsUiState.Section.Item(
                         title = "SHA-1",
-                        value = commonCertificate.sha1.toHexString(hexFormatDisplay),
+                        value = commonCertificate.sha1.toByteArray().toHexString(hexFormatDisplay),
                     ),
                 ),
             )

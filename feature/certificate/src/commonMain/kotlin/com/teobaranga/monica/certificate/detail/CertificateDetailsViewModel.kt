@@ -13,11 +13,11 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.io.bytestring.ByteString
-import kotlinx.io.bytestring.hexToByteString
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.AssistedFactory
 import me.tatarka.inject.annotations.Inject
+import okio.ByteString
+import okio.ByteString.Companion.decodeHex
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
@@ -33,7 +33,7 @@ class CertificateDetailsViewModel(
     private val certificateDetailsUiStateMapper: CertificateDetailsUiStateMapper,
 ) : ViewModel() {
 
-    private val sha256Hash = savedStateHandle.toRoute<CertificateDetailsRoute>().sha256Hash.hexToByteString()
+    private val sha256Hash = savedStateHandle.toRoute<CertificateDetailsRoute>().sha256Hash.decodeHex()
 
     val certificateDetails = combine(
         certificateRepository.untrustedCertificates,

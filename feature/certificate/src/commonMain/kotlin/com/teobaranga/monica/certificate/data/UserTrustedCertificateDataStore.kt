@@ -1,6 +1,6 @@
 package com.teobaranga.monica.certificate.data
 
-import kotlinx.io.bytestring.ByteString
+import okio.ByteString
 
 interface UserTrustedCertificateDataStore {
 

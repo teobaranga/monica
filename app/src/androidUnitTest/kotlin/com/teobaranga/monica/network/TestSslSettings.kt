@@ -2,10 +2,9 @@ package com.teobaranga.monica.network
 
 import com.teobaranga.monica.core.network.SslSettings
 import com.teobaranga.monica.core.network.SslSettingsImpl
-import com.teobaranga.monica.core.network.util.sha256
-import com.teobaranga.monica.core.network.util.toByteString
-import kotlinx.io.bytestring.ByteString
 import me.tatarka.inject.annotations.Inject
+import okio.ByteString
+import okio.ByteString.Companion.toByteString
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import java.security.KeyStore

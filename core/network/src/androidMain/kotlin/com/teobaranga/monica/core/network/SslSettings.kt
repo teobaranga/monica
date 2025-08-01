@@ -4,11 +4,10 @@ import android.content.Context
 import com.diamondedge.logging.logging
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.core.inject.ApplicationContext
-import com.teobaranga.monica.core.network.util.sha256
-import com.teobaranga.monica.core.network.util.toByteString
 import kotlinx.coroutines.withContext
-import kotlinx.io.bytestring.ByteString
 import me.tatarka.inject.annotations.Inject
+import okio.ByteString
+import okio.ByteString.Companion.toByteString
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn

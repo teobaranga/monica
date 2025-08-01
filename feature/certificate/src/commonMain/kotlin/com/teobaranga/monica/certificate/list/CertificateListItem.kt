@@ -1,6 +1,6 @@
 package com.teobaranga.monica.certificate.list
 
-import kotlinx.io.bytestring.ByteString
+import okio.ByteString
 import kotlin.time.Instant
 
 data class CertificateListItem(

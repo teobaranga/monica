@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
+import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.certificate.list.CertificateListRoute
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
@@ -34,7 +35,7 @@ fun Account(
     AccountScreen(
         onClearAuthorization = viewModel::onClearAuthorization,
         onViewCertificates = {
-            navigator.navigate(CertificateListRoute(type = CertificateListRoute.Type.TRUSTED))
+            navigator.navigate(CertificateListRoute(CertificateTrustStatus.TRUSTED))
             onDismissRequest()
         },
         onDismissRequest = onDismissRequest,

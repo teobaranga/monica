@@ -17,20 +17,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.teobaranga.monica.certificate.util.hexFormatDisplay
+import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.core.ui.icons.KeyboardArrowRight
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import kotlinx.datetime.format
 import kotlinx.datetime.format.DateTimeComponents
-import kotlinx.io.bytestring.hexToByteString
-import kotlinx.io.bytestring.toHexString
+import okio.ByteString.Companion.decodeHex
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalStdlibApi::class)
 @Composable
 fun CertificateListScreen(
-    type: CertificateListRoute.Type,
+    certificateTrustStatus: CertificateTrustStatus,
     certificateListItems: List<CertificateListItem>,
     onNavigateToCertificate: (String) -> Unit,
     onBack: () -> Unit,
@@ -49,11 +48,11 @@ fun CertificateListScreen(
                     }
                 },
                 title = {
-                    when (type) {
-                        CertificateListRoute.Type.UNTRUSTED -> {
+                    when (certificateTrustStatus) {
+                        CertificateTrustStatus.UNTRUSTED -> {
                             Text(text = "Untrusted certificates")
                         }
-                        CertificateListRoute.Type.TRUSTED -> {
+                        CertificateTrustStatus.TRUSTED -> {
                             Text(text = "Custom trusted certificates")
                         }
                     }
@@ -70,7 +69,7 @@ fun CertificateListScreen(
                 ListItem(
                     modifier = Modifier
                         .clickable {
-                            onNavigateToCertificate(userCertificate.sha256Hash.toHexString())
+                            onNavigateToCertificate(userCertificate.sha256Hash.hex())
                         },
                     headlineContent = {
                         Text(text = userCertificate.issuer)
@@ -104,16 +103,16 @@ fun CertificateListScreen(
 private fun CertificateListScreenPreview() {
     MonicaTheme {
         CertificateListScreen(
-            type = CertificateListRoute.Type.UNTRUSTED,
+            certificateTrustStatus = CertificateTrustStatus.UNTRUSTED,
             certificateListItems = listOf(
                 CertificateListItem(
-                    sha256Hash = "DE:AD:BE:EF".hexToByteString(hexFormatDisplay),
+                    sha256Hash = "deadbeef".decodeHex(),
                     issuer = "example.com",
                     expiry = Clock.System.now(),
                     isExpired = false,
                 ),
                 CertificateListItem(
-                    sha256Hash = "DE:AD:BE:EF".hexToByteString(hexFormatDisplay),
+                    sha256Hash = "deadbeef".decodeHex(),
                     issuer = "another-example.com",
                     expiry = Clock.System.now(),
                     isExpired = true,

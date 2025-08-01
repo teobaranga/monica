@@ -9,6 +9,7 @@ import at.asitplus.signum.indispensable.asn1.encoding.decodeToString
 import at.asitplus.signum.indispensable.pki.TbsCertificate
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.certificate.data.CertificateRepository
+import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -30,9 +31,9 @@ class CertificateListViewModel(
 
     val route = savedStateHandle.toRoute<CertificateListRoute>()
 
-    val certificatesListItem = when (route.type) {
-        CertificateListRoute.Type.UNTRUSTED -> certificateRepository.untrustedCertificates
-        CertificateListRoute.Type.TRUSTED -> certificateRepository.userTrustedCertificates
+    val certificatesListItem = when (route.certificateTrustStatus) {
+        CertificateTrustStatus.UNTRUSTED -> certificateRepository.untrustedCertificates
+        CertificateTrustStatus.TRUSTED -> certificateRepository.userTrustedCertificates
     }.map { certificates ->
         certificates.map {
             val tbsCertificate = it.x509Certificate.tbsCertificate

@@ -3,11 +3,9 @@ package com.teobaranga.monica.certificate.data
 import at.asitplus.signum.indispensable.toJcaCertificate
 import at.asitplus.signum.indispensable.toKmpCertificate
 import com.teobaranga.monica.core.network.SslSettings
-import com.teobaranga.monica.core.network.util.sha1
-import com.teobaranga.monica.core.network.util.sha256
-import com.teobaranga.monica.core.network.util.toByteString
-import kotlinx.io.bytestring.ByteString
 import me.tatarka.inject.annotations.Inject
+import okio.ByteString
+import okio.ByteString.Companion.toByteString
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import java.security.cert.X509Certificate

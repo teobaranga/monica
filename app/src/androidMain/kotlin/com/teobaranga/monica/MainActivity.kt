@@ -23,6 +23,7 @@ import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOw
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.applinks.AppLinksHandler
 import com.teobaranga.monica.browser.LocalWebBrowser
+import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.certificate.detail.CertificateDetailsRoute
 import com.teobaranga.monica.certificate.list.CertificateListRoute
 import com.teobaranga.monica.certificate.popup.CertificateIssueBottomSheet
@@ -93,7 +94,7 @@ class MainActivity : ComponentActivity() {
             CertificateIssueBottomSheet(
                 onDismissRequest = viewModel::onDismiss,
                 onViewDetails = {
-                    navHostController.navigate(CertificateListRoute(type = CertificateListRoute.Type.UNTRUSTED))
+                    navHostController.navigate(CertificateListRoute(CertificateTrustStatus.UNTRUSTED))
                 },
                 onReject = viewModel::onDismiss,
                 onAccept = viewModel::onTrust,
