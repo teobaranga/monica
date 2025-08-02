@@ -13,6 +13,7 @@ import com.teobaranga.monica.MONICA_URL
 class UiState {
 
     sealed interface Error {
+
         data object ConfigurationError : Error
     }
 
