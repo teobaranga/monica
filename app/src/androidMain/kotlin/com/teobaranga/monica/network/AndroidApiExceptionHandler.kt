@@ -1,6 +1,7 @@
 package com.teobaranga.monica.network
 
 import at.asitplus.signum.indispensable.toKmpCertificate
+import com.diamondedge.logging.logging
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.certificate.data.CertificateRepository
 import com.teobaranga.monica.certificate.data.CommonCertificate
@@ -68,10 +69,26 @@ class AndroidApiExceptionHandler(
             val result = withTimeoutOrNull(5.minutes) {
                 certificateRepository.untrustedCertificateResult.first()
             }
-            if (result == UntrustedCertificateResult.Accepted) {
-                return httpClient().request()
+            when (result) {
+                UntrustedCertificateResult.Accepted -> {
+                    return httpClient().request()
+                }
+
+                UntrustedCertificateResult.Refused -> {
+                    log.i { "User refused to accept certificates" }
+                }
+
+                null -> {
+                    log.w { "Timeout while reviewing untrusted certificates" }
+                }
             }
+        } else {
+            log.w { "No certificates found in exception: $exception" }
         }
         return null
+    }
+
+    companion object {
+        private val log = logging()
     }
 }
