@@ -11,6 +11,7 @@ kotlin {
             dependencies {
                 implementation(project(":core:dispatcher"))
                 implementation(project(":core:inject"))
+                implementation(project(":core:network"))
 
                 // Storage
                 implementation(libs.room.runtime)

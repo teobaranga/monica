@@ -1,4 +1,4 @@
-package com.teobaranga.monica.network.config
+package com.teobaranga.monica.core.network.config
 
 import io.ktor.client.HttpClientConfig
 

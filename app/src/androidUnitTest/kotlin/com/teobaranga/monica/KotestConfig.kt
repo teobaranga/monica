@@ -1,5 +1,8 @@
 package com.teobaranga.monica
 
+import com.diamondedge.logging.FixedLogLevel
+import com.diamondedge.logging.KmLogging
+import com.diamondedge.logging.PrintLogger
 import io.kotest.core.config.AbstractProjectConfig
 import io.kotest.core.extensions.Extension
 import io.kotest.core.spec.IsolationMode
@@ -18,7 +21,7 @@ class KotestConfig : AbstractProjectConfig() {
 
     override val testCaseOrder: TestCaseOrder = TestCaseOrder.Sequential
 
-    override val isolationMode: IsolationMode = IsolationMode.InstancePerRoot
+    override val isolationMode: IsolationMode = IsolationMode.InstancePerLeaf
 
     override val testExecutionMode: TestExecutionMode = TestExecutionMode.Sequential
 
@@ -37,6 +40,9 @@ class KotestConfig : AbstractProjectConfig() {
         mockkStatic("androidx.navigation.SavedStateHandleKt")
 
         Dispatchers.setMain(UnconfinedTestDispatcher())
+
+        KmLogging.clear()
+        KmLogging.addLogger(PrintLogger(FixedLogLevel(true)))
     }
 
     override suspend fun afterProject() {

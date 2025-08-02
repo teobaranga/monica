@@ -2,7 +2,7 @@ package com.teobaranga.monica.data
 
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ktor.apiResponseOf
-import io.ktor.client.HttpClient
+import com.teobaranga.monica.core.network.HttpRequestMaker
 import io.ktor.client.request.forms.submitForm
 import io.ktor.http.parameters
 import kotlinx.serialization.SerialName
@@ -54,18 +54,20 @@ interface MonicaApi {
 @Inject
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
-class MonicaApiImpl(private val httpClient: HttpClient) : MonicaApi {
+class MonicaApiImpl(private val httpRequestMaker: HttpRequestMaker) : MonicaApi {
 
     override suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse> {
-        return apiResponseOf {
-            httpClient.submitForm(
-                url = "oauth/token",
-                formParameters = parameters {
-                    tokenRequest.forEach { (key, value) ->
-                        append(key, value)
-                    }
-                },
-            )
+        return httpRequestMaker.call {
+            apiResponseOf {
+                submitForm(
+                    url = "oauth/token",
+                    formParameters = parameters {
+                        tokenRequest.forEach { (key, value) ->
+                            append(key, value)
+                        }
+                    },
+                )
+            }
         }
     }
 }

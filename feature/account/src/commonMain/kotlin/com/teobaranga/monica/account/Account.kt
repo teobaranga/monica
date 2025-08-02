@@ -19,7 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
+import com.teobaranga.monica.certificate.data.CertificateTrustStatus
+import com.teobaranga.monica.certificate.list.CertificateListRoute
 import com.teobaranga.monica.core.ui.Zero
+import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -28,15 +31,24 @@ fun Account(
     viewModel: AccountViewModel = injectedViewModel(),
     onDismissRequest: () -> Unit,
 ) {
+    val navigator = LocalNavigator.current
     AccountScreen(
         onClearAuthorization = viewModel::onClearAuthorization,
+        onViewCertificates = {
+            navigator.navigate(CertificateListRoute(CertificateTrustStatus.TRUSTED))
+            onDismissRequest()
+        },
         onDismissRequest = onDismissRequest,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AccountScreen(onClearAuthorization: () -> Unit, onDismissRequest: () -> Unit) {
+private fun AccountScreen(
+    onClearAuthorization: () -> Unit,
+    onViewCertificates: () -> Unit,
+    onDismissRequest: () -> Unit,
+) {
     ModalBottomSheet(
         modifier = Modifier
             .statusBarsPadding(),
@@ -54,6 +66,11 @@ private fun AccountScreen(onClearAuthorization: () -> Unit, onDismissRequest: ()
                 onClick = onClearAuthorization,
             ) {
                 Text(text = "Sign out")
+            }
+            Button(
+                onClick = onViewCertificates,
+            ) {
+                Text(text = "Certificates")
             }
         }
         Spacer(
@@ -73,6 +90,7 @@ private fun PreviewAccountScreen() {
         ) {
             AccountScreen(
                 onClearAuthorization = { },
+                onViewCertificates = { },
                 onDismissRequest = { },
             )
         }

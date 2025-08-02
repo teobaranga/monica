@@ -19,6 +19,7 @@ import com.teobaranga.monica.data.PARAM_RESPONSE_TYPE
 import com.teobaranga.monica.data.REDIRECT_URI
 import com.teobaranga.monica.settings.getOAuthSettings
 import com.teobaranga.monica.settings.oAuthSettings
+import com.teobaranga.monica.setup.domain.SignInResult
 import com.teobaranga.monica.setup.domain.SignInUseCase
 import io.ktor.http.URLBuilder
 import io.ktor.http.appendPathSegments
@@ -113,11 +114,16 @@ class SetupViewModel(
             val oAuthSettings = dataStore.data.first().getOAuthSettings()
             val clientId = requireNotNull(oAuthSettings.clientId)
             val clientSecret = requireNotNull(oAuthSettings.clientSecret)
-            val isSignInSuccess = signInUseCase(clientId, clientSecret, code)
-            if (!isSignInSuccess) {
-                uiState.error = UiState.Error.ConfigurationError
-                withContext(dispatcher.main) {
-                    uiState.isSigningIn = false
+            val signInResult = signInUseCase(clientId, clientSecret, code)
+            when (signInResult) {
+                is SignInResult.Error.UnknownError -> {
+                    uiState.error = UiState.Error.ConfigurationError
+                    withContext(dispatcher.main) {
+                        uiState.isSigningIn = false
+                    }
+                }
+                is SignInResult.Success -> {
+                    // nothing to do
                 }
             }
         }
