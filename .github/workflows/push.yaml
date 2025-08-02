@@ -27,18 +27,13 @@ jobs:
             build-logic/convention/build
           key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
 
-      - name: Extract Kotlin version
-        id: kotlin-version
-        run: |
-          KOTLIN_VERSION=$(grep '^kotlin = ' gradle/libs.versions.toml | sed 's/kotlin = "\(.*\)"/\1/')
-          echo "version=$KOTLIN_VERSION" >> $GITHUB_OUTPUT
-
       - name: Kotlin Native cache
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.konan
-          key: konan-${{ runner.os }}-kotlin-${{ steps.kotlin-version.outputs.version }}
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ hashFiles('**/gradle/libs.versions.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-konan-
 
       - uses: gradle/actions/setup-gradle@v4
         with:
@@ -106,18 +101,13 @@ jobs:
             build-logic/convention/build
           key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
 
-      - name: Extract Kotlin version
-        id: kotlin-version
-        run: |
-          KOTLIN_VERSION=$(grep '^kotlin = ' gradle/libs.versions.toml | sed 's/kotlin = "\(.*\)"/\1/')
-          echo "version=$KOTLIN_VERSION" >> $GITHUB_OUTPUT
-
       - name: Kotlin Native cache
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.konan
-          key: konan-${{ runner.os }}-kotlin-${{ steps.kotlin-version.outputs.version }}
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ hashFiles('**/gradle/libs.versions.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-konan-
 
       - uses: gradle/actions/setup-gradle@v4
         with:
@@ -179,18 +169,13 @@ jobs:
             build-logic/convention/build
           key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
 
-      - name: Extract Kotlin version
-        id: kotlin-version
-        run: |
-          KOTLIN_VERSION=$(grep '^kotlin = ' gradle/libs.versions.toml | sed 's/kotlin = "\(.*\)"/\1/')
-          echo "version=$KOTLIN_VERSION" >> $GITHUB_OUTPUT
-
       - name: Kotlin Native cache
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.konan
-          key: konan-${{ runner.os }}-kotlin-${{ steps.kotlin-version.outputs.version }}
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ hashFiles('**/gradle/libs.versions.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-konan-
 
       - uses: gradle/actions/setup-gradle@v4
         with:
