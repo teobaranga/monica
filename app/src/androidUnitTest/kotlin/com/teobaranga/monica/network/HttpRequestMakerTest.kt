@@ -3,17 +3,21 @@ package com.teobaranga.monica.network
 import at.asitplus.signum.indispensable.toJcaCertificate
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ktor.getApiResponse
+import com.teobaranga.monica.certificate.data.CertificateRepository
 import com.teobaranga.monica.certificate.data.CommonCertificate
 import com.teobaranga.monica.certificate.testCertificate
+import com.teobaranga.monica.core.network.HttpRequestMaker
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.core.test.testCoroutineScheduler
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.instanceOf
+import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.StandardTestDispatcher
 import okio.ByteString.Companion.toByteString
 import java.security.cert.CertPath
 import java.security.cert.CertPathValidatorException
@@ -21,20 +25,19 @@ import java.security.cert.X509Certificate
 
 class HttpRequestMakerTest : BehaviorSpec({
 
-    coroutineTestScope = true
+    lateinit var mockEngine: MockEngine.Queue
+    lateinit var httpRequestMaker: HttpRequestMaker
+    lateinit var certificateRepository: CertificateRepository
 
-    val component = HttpRequestMakerComponent::class.create()
-    val mockEngine = component.httpEngine()
-    val httpRequestMaker = component.httpRequestMaker()
-    val certificateRepository = component.certificateRepository()
-    val testSslSettings = component.testSslSettings()
-
-    beforeContainer {
-        certificateRepository.setUntrustedCertificates(emptyList())
-        testSslSettings.clearUserTrustedCertificates()
+    fun setup() {
+        val component = HttpRequestMakerComponent::class.create()
+        mockEngine = component.httpEngine()
+        httpRequestMaker = component.httpRequestMaker()
+        certificateRepository = component.certificateRepository()
     }
 
     Given("a non-certificate exception") {
+        setup()
         val exception = RuntimeException()
         mockEngine.enqueue {
             throw exception
@@ -56,6 +59,7 @@ class HttpRequestMakerTest : BehaviorSpec({
     }
 
     Given("a certificate exception with no certificates") {
+        setup()
         val certPath = mockk<CertPath> {
             every { certificates } returns emptyList()
         }
@@ -80,11 +84,10 @@ class HttpRequestMakerTest : BehaviorSpec({
     }
 
     Given("a certificate exception with certificates") {
+        setup()
+        val dispatcher = StandardTestDispatcher()
         val x509Certificate = mockk<X509Certificate>(relaxed = true) {
             every { encoded } returns testCertificate.encodeToDer()
-            every { publicKey } returns mockk {
-                every { encoded } returns "dummy-public-key".toByteArray()
-            }
         }
         val certPath = mockk<CertPath> {
             every { certificates } returns listOf(x509Certificate)
@@ -95,21 +98,22 @@ class HttpRequestMakerTest : BehaviorSpec({
         }
 
         When("making a call") {
-            val result = async {
+            val result = CoroutineScope(dispatcher).async {
                 httpRequestMaker.call {
                     getApiResponse<Unit>("api")
                 }
             }
-            testCoroutineScheduler.advanceUntilIdle()
+            dispatcher.scheduler.runCurrent()
 
             And("the user accepts the certificate") {
+                mockEngine.config.requestHandlers.clear()
                 mockEngine.enqueue {
                     respond("success")
                 }
                 certificateRepository.acceptUntrustedCertificates()
 
                 Then("it should retry the request and return the new response") {
-                    testCoroutineScheduler.advanceUntilIdle()
+                    dispatcher.scheduler.advanceUntilIdle()
                     result.await() shouldBe instanceOf<ApiResponse.Success<Unit>>()
                 }
 
@@ -117,7 +121,7 @@ class HttpRequestMakerTest : BehaviorSpec({
                     val certificates = async {
                         certificateRepository.userTrustedCertificates.first()
                     }
-                    testCoroutineScheduler.advanceUntilIdle()
+                    dispatcher.scheduler.advanceUntilIdle()
 
                     val testCertificateEncodedByteString = testCertificate.toJcaCertificate().getOrThrow()
                         .encoded.toByteString()
@@ -134,14 +138,15 @@ class HttpRequestMakerTest : BehaviorSpec({
                 certificateRepository.refuseUntrustedCertificates()
 
                 Then("it should return the same exception") {
+                    dispatcher.scheduler.advanceUntilIdle()
                     (result.await() as ApiResponse.Failure.Exception).throwable shouldBe exception
                 }
 
                 Then("it should not interact with the certificate repository") {
+                    dispatcher.scheduler.advanceUntilIdle()
                     val certificates = async {
                         certificateRepository.userTrustedCertificates.first()
                     }
-                    testCoroutineScheduler.advanceUntilIdle()
 
                     certificateRepository.untrustedCertificates.value shouldBe emptyList()
                     certificates.await() shouldBe emptyList()
