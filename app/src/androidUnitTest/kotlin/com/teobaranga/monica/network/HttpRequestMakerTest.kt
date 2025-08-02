@@ -5,7 +5,6 @@ import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ktor.getApiResponse
 import com.teobaranga.monica.certificate.data.CommonCertificate
 import com.teobaranga.monica.certificate.testCertificate
-import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.testCoroutineScheduler
 import io.kotest.matchers.shouldBe
@@ -23,7 +22,6 @@ import java.security.cert.X509Certificate
 class HttpRequestMakerTest : BehaviorSpec({
 
     coroutineTestScope = true
-    isolationMode = IsolationMode.InstancePerTest
 
     val component = HttpRequestMakerComponent::class.create()
     val mockEngine = component.httpEngine()

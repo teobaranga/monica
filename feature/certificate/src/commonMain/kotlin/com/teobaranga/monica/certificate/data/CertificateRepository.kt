@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
@@ -47,11 +46,6 @@ class CertificateRepository(
         started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
         initialValue = emptyList(),
     )
-
-    val allCertificates
-        get() = combine(untrustedCertificates, userTrustedCertificates) { untrusted, userTrusted ->
-            untrusted + userTrusted
-        }
 
     fun setUntrustedCertificates(certificates: List<CommonCertificate>) {
         _untrustedCertificates.value = certificates
