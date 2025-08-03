@@ -31,9 +31,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-konan-${{ hashFiles('**/gradle/libs.versions.toml') }}
+          key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-
+            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
+            ${{ runner.os }}-konan-${{ github.job }}
 
       - uses: gradle/actions/setup-gradle@v4
         with:
@@ -105,9 +106,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-konan-${{ hashFiles('**/gradle/libs.versions.toml') }}
+          key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-
+            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
+            ${{ runner.os }}-konan-${{ github.job }}
 
       - uses: gradle/actions/setup-gradle@v4
         with:
@@ -173,9 +175,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-konan-${{ hashFiles('**/gradle/libs.versions.toml') }}
+          key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-
+            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
+            ${{ runner.os }}-konan-${{ github.job }}
 
       - uses: gradle/actions/setup-gradle@v4
         with:

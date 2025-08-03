@@ -5,7 +5,9 @@ import com.teobaranga.monica.core.network.AndroidNetworkComponent
 import com.teobaranga.monica.genders.data.GendersApi
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.MockEngineConfig
 import io.mockk.mockk
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Provides
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
@@ -29,7 +31,11 @@ interface TestNetworkComponent {
     @Provides
     @SingleIn(AppScope::class)
     fun provideHttpEngine(): MockEngine.Queue {
-        return MockEngine.Queue()
+        return MockEngine.Queue(
+            config = MockEngineConfig().apply {
+                dispatcher = UnconfinedTestDispatcher()
+            }
+        )
     }
 
     @Provides
