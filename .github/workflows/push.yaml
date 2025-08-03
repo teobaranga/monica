@@ -137,7 +137,7 @@ jobs:
           base64 -d -i google-services_base64.txt -o app/google-services.json
 
       - name: Assemble Android
-        run: ./gradlew :app:assembleDebug :app:assembleRelease --stacktrace
+        run: ./gradlew :app:assembleDebug :app:assembleRelease --stacktrace -Pandroid.experimental.settings.executionProfile=ci
 
       - name: Upload APK (debug)
         uses: actions/upload-artifact@v4
