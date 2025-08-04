@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import com.google.gms.googleservices.GoogleServicesPlugin
 import com.teobaranga.monica.InjectHandler
 import com.teobaranga.monica.libs
@@ -145,6 +146,11 @@ android {
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
+            configure<CrashlyticsExtension> {
+                val isMappingFileUploadEnabled =
+                    project.properties["isMappingFileUploadEnabled"]?.toString()?.toBoolean() ?: false
+                mappingFileUploadEnabled = isMappingFileUploadEnabled
+            }
         }
     }
     packaging {
