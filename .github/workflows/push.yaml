@@ -40,7 +40,6 @@ jobs:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
             ${{ runner.os }}-konan-${{ github.job }}
 
       - name: Kotlin Native cache - restore only
@@ -50,7 +49,6 @@ jobs:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
             ${{ runner.os }}-konan-${{ github.job }}
 
       - uses: gradle/actions/setup-gradle@v4
@@ -127,7 +125,6 @@ jobs:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
             ${{ runner.os }}-konan-${{ github.job }}
 
       - name: Kotlin Native cache - restore only
@@ -137,7 +134,6 @@ jobs:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
             ${{ runner.os }}-konan-${{ github.job }}
 
       - uses: gradle/actions/setup-gradle@v4
@@ -211,7 +207,6 @@ jobs:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
             ${{ runner.os }}-konan-${{ github.job }}
 
       - name: Kotlin Native cache - restore only
@@ -221,7 +216,6 @@ jobs:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
             ${{ runner.os }}-konan-${{ github.job }}
 
       - uses: gradle/actions/setup-gradle@v4
