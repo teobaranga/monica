@@ -1,0 +1,108 @@
+name: Push
+
+on:
+  pull_request:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      is_mapping_file_upload_enabled:
+        description: 'Upload the Crashlytics mapping file'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  test-android:
+    name: Test (Android)
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Firebase
+        run: |
+          # Decode the google-services.json from secrets
+          echo ${{ secrets.GOOGLE_SERVICES_JSON }} > google-services_base64.txt
+          base64 -d -i google-services_base64.txt -o app/google-services.json
+
+      - name: Run local tests
+        run: |
+          export RUNNER_TRACKING_ID=""
+          ./gradlew testDebug
+
+      - name: Generate coverage output
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "COVERAGE=$(./gradlew -q testDebugUnitTest koverLineCoverage -Pkover koverXmlReport)" >> $GITHUB_ENV
+
+      - name: Update dynamic badge gist
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        if: github.ref == 'refs/heads/main'
+        with:
+          auth: ${{secrets.GIST_SECRET}}
+          gistID: 446173b9ad64f83674608016425ee4aa
+          filename: monica-coverage-badge.json
+          label: coverage
+          message: ${{env.COVERAGE}}%
+          valColorRange: ${{env.COVERAGE}}
+          minColorRange: 0
+          maxColorRange: 100
+
+  build-android:
+    name: Build (Android)
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup signing
+        run: |
+          # Decode keystore and save in expected place
+          echo ${{ secrets.RELEASE_KEYSTORE_BASE64 }} > keystore_base64.txt
+          base64 -d -i keystore_base64.txt -o app/release.jks
+          # Retrieve other secrets and place in expected place
+          touch local.properties
+          echo "RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}" >> local.properties
+          echo "RELEASE_KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}" >> local.properties
+          echo "RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}" >> local.properties
+          cat local.properties
+
+      - name: Setup Firebase
+        run: |
+          # Decode the google-services.json from secrets
+          echo ${{ secrets.GOOGLE_SERVICES_JSON }} > google-services_base64.txt
+          base64 -d -i google-services_base64.txt -o app/google-services.json
+
+      - name: Assemble Android
+        run: |
+          export RUNNER_TRACKING_ID=""
+          ./gradlew :app:assembleDebug :app:assembleRelease --stacktrace \
+            -Pandroid.experimental.settings.executionProfile=ci \
+            -PisMappingFileUploadEnabled=${{ github.event.inputs.is_mapping_file_upload_enabled || 'false' }}
+
+      - name: Upload APK (debug)
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload APK (release)
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-release
+          path: app/build/outputs/apk/release/app-release.apk
+
+  build-ios:
+    name: Build (iOS Simulator)
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Firebase
+        run: |
+          # Decode the google-services.json from secrets
+          echo ${{ secrets.GOOGLE_SERVICES_JSON }} > google-services_base64.txt
+          base64 -d -i google-services_base64.txt -o app/google-services.json
+
+      - name: Build Debug for iOS Simulator
+        run: |
+          xcodebuild build -project iosApp/iosApp.xcodeproj -scheme iosApp -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max,OS=latest'
