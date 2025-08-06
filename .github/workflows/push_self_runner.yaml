@@ -27,6 +27,7 @@ jobs:
 
       - name: Run local tests
         run: |
+          # https://github.com/actions/runner/issues/598#issuecomment-721151364
           export RUNNER_TRACKING_ID=""
           ./gradlew testDebug
 
@@ -74,6 +75,7 @@ jobs:
 
       - name: Assemble Android
         run: |
+          # https://github.com/actions/runner/issues/598#issuecomment-721151364
           export RUNNER_TRACKING_ID=""
           ./gradlew :app:assembleDebug :app:assembleRelease --stacktrace \
             -Pandroid.experimental.settings.executionProfile=ci \
