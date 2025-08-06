@@ -1,9 +1,9 @@
 name: Push
 
 on:
-  pull_request:
-  push:
-    branches: [ "main" ]
+#  pull_request:
+#  push:
+#    branches: [ "main" ]
   workflow_dispatch:
     inputs:
       is_mapping_file_upload_enabled:
