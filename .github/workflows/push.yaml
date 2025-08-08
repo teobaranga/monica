@@ -1,10 +1,16 @@
 name: Push
 
 on:
-  pull_request:
-  push:
-    branches: [ "main" ]
+#  pull_request:
+#  push:
+#    branches: [ "main" ]
   workflow_dispatch:
+    inputs:
+      is_mapping_file_upload_enabled:
+        description: 'Upload the Crashlytics mapping file'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   test-android:
@@ -27,13 +33,22 @@ jobs:
             build-logic/convention/build
           key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
 
-      - name: Kotlin Native cache
+      - name: Kotlin Native cache - restore and save
         uses: actions/cache@v4
+        if: github.ref == 'refs/heads/main'
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
+            ${{ runner.os }}-konan-${{ github.job }}
+
+      - name: Kotlin Native cache - restore only
+        uses: actions/cache/restore@v4
+        if: github.ref != 'refs/heads/main'
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
+          restore-keys: |
             ${{ runner.os }}-konan-${{ github.job }}
 
       - uses: gradle/actions/setup-gradle@v4
@@ -42,6 +57,7 @@ jobs:
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
+          cache-cleanup: never
 
       - name: Setup signing
         run: |
@@ -102,13 +118,22 @@ jobs:
             build-logic/convention/build
           key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
 
-      - name: Kotlin Native cache
+      - name: Kotlin Native cache - restore and save
         uses: actions/cache@v4
+        if: github.ref == 'refs/heads/main'
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
+            ${{ runner.os }}-konan-${{ github.job }}
+
+      - name: Kotlin Native cache - restore only
+        uses: actions/cache/restore@v4
+        if: github.ref != 'refs/heads/main'
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
+          restore-keys: |
             ${{ runner.os }}-konan-${{ github.job }}
 
       - uses: gradle/actions/setup-gradle@v4
@@ -117,6 +142,7 @@ jobs:
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
+          cache-cleanup: never
 
       - name: Setup signing
         run: |
@@ -137,7 +163,10 @@ jobs:
           base64 -d -i google-services_base64.txt -o app/google-services.json
 
       - name: Assemble Android
-        run: ./gradlew :app:assembleDebug :app:assembleRelease --stacktrace
+        run: |
+          ./gradlew :app:assembleDebug :app:assembleRelease --stacktrace \
+            -Pandroid.experimental.settings.executionProfile=ci \
+            -PisMappingFileUploadEnabled=${{ github.event.inputs.is_mapping_file_upload_enabled || 'false' }}
 
       - name: Upload APK (debug)
         uses: actions/upload-artifact@v4
@@ -171,13 +200,22 @@ jobs:
             build-logic/convention/build
           key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
 
-      - name: Kotlin Native cache
+      - name: Kotlin Native cache - restore and save
         uses: actions/cache@v4
+        if: github.ref == 'refs/heads/main'
         with:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
+            ${{ runner.os }}-konan-${{ github.job }}
+
+      - name: Kotlin Native cache - restore only
+        uses: actions/cache/restore@v4
+        if: github.ref != 'refs/heads/main'
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
+          restore-keys: |
             ${{ runner.os }}-konan-${{ github.job }}
 
       - uses: gradle/actions/setup-gradle@v4
@@ -186,6 +224,7 @@ jobs:
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
+          cache-cleanup: never
 
       - name: Setup signing
         run: |

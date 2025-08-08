@@ -16,7 +16,30 @@ dependencyResolutionManagement {
 
 plugins {
     id("org.jetbrains.kotlinx.kover.aggregation") version "0.9.1"
+    id("com.android.settings") version "8.12.0"
 }
+
+android {
+    execution {
+        profiles {
+            register("ci") {
+                r8 {
+                    runInSeparateProcess = true
+                    jvmOptions += listOf(
+                        "-Xms3g",
+                        "-Xmx6g",
+                        "-XX:MaxMetaspaceSize=2g",
+                        "-XX:+HeapDumpOnOutOfMemoryError",
+                        "-XX:+UseParallelGC",
+                        "-XX:SoftRefLRUPolicyMSPerMB=1",
+                    )
+                }
+            }
+        }
+        defaultProfile = null
+    }
+}
+
 
 kover {
     enableCoverage()
