@@ -12,7 +12,7 @@ for Kotlin Multiplatform development. This also includes Xcode installation for 
 
 ### Download the latest CI build
 
-1. Navigate to the [Push Action](https://github.com/teobaranga/monica/actions/workflows/push.yaml?query=branch%3Amain)
+1. Navigate to the [Push Action](https://github.com/teobaranga/monica/actions/workflows/push_self_runner.yaml?query=branch%3Amain)
 results
 2. Click on the latest build
 3. Scroll down to the `Artifacts` section
