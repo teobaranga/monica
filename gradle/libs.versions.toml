@@ -1,7 +1,7 @@
 [versions]
 # SDK Versions
 minSdk = "24"
-targetSdk = "35"
+targetSdk = "36"
 compileSdk = "36"
 
 # Included build
