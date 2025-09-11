@@ -94,7 +94,7 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
 
     companion object {
 
-        private val supportedTargets = setOf("android", "iosX64", "iosArm64", "iosSimulatorArm64")
+        private val supportedTargets = setOf("android", "iosArm64", "iosSimulatorArm64")
 
         private val Project.kotlinInjectCompilerLibs
             get() = arrayOf(
