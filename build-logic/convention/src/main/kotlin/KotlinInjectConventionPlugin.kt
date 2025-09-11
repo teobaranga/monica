@@ -4,7 +4,6 @@ import com.teobaranga.monica.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import org.gradle.kotlin.dsl.withType
@@ -33,47 +32,45 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
                     }
                 }
 
-                dependencies {
-                    targets.all {
-                        when (targetName) {
-                            "metadata" -> {
-                                kotlinInjectCompilerLibs.forEach { lib ->
-                                    add(
-                                        configurationName = "kspCommonMainMetadata",
-                                        dependencyNotation = monicaExtension.inject.injectIn.flatMap { injectTarget ->
-                                            when (injectTarget) {
-                                                InjectHandler.Target.COMMON -> {
-                                                    logger.info("kspCommonMainMetadata: ${lib.get()}")
-                                                    lib
-                                                }
-
-                                                InjectHandler.Target.SEPARATE -> target.provider { null }
+                targets.all {
+                    when (targetName) {
+                        "metadata" -> {
+                            kotlinInjectCompilerLibs.forEach { lib ->
+                                dependencies.add(
+                                    "kspCommonMainMetadata",
+                                    monicaExtension.inject.injectIn.flatMap { injectTarget ->
+                                        when (injectTarget) {
+                                            InjectHandler.Target.COMMON -> {
+                                                logger.info("kspCommonMainMetadata: ${lib.get()}")
+                                                lib
                                             }
-                                        },
-                                    )
-                                }
+
+                                            InjectHandler.Target.SEPARATE -> target.provider { null }
+                                        }
+                                    },
+                                )
                             }
+                        }
 
-                            in supportedTargets -> {
-                                kotlinInjectCompilerLibs.forEach { lib ->
-                                    add(
-                                        configurationName = "ksp${targetName.uppercaseFirstChar()}",
-                                        dependencyNotation = monicaExtension.inject.injectIn.flatMap { injectTarget ->
-                                            when (injectTarget) {
-                                                InjectHandler.Target.COMMON -> target.provider { null }
-                                                InjectHandler.Target.SEPARATE -> {
-                                                    logger.info("ksp${targetName.uppercaseFirstChar()}: ${lib.get()}")
-                                                    lib
-                                                }
+                        in supportedTargets -> {
+                            kotlinInjectCompilerLibs.forEach { lib ->
+                                dependencies.add(
+                                    "ksp${targetName.uppercaseFirstChar()}",
+                                    monicaExtension.inject.injectIn.flatMap { injectTarget ->
+                                        when (injectTarget) {
+                                            InjectHandler.Target.COMMON -> target.provider { null }
+                                            InjectHandler.Target.SEPARATE -> {
+                                                logger.info("ksp${targetName.uppercaseFirstChar()}: ${lib.get()}")
+                                                lib
                                             }
-                                        },
-                                    )
-                                }
-                                if (targetName == "android") {
-                                    // TODO there's a bug in the ViewModel compiler, add in here when fixed
-                                    add("kspAndroidTest", libs.kotlin.inject.compiler)
-                                    add("kspAndroidTest", libs.kotlin.inject.anvil.compiler)
-                                }
+                                        }
+                                    },
+                                )
+                            }
+                            if (targetName == "android") {
+                                // TODO there's a bug in the ViewModel compiler, add in here when fixed
+                                dependencies.add("kspAndroidTest", libs.kotlin.inject.compiler)
+                                dependencies.add("kspAndroidTest", libs.kotlin.inject.anvil.compiler)
                             }
                         }
                     }
