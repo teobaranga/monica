@@ -88,6 +88,7 @@ kotlin {
                 implementation(libs.datastore.preferences)
 
                 implementation(libs.room.runtime)
+                implementation(libs.sqlite.bundled)
 
                 implementation(libs.kmlogging)
 
