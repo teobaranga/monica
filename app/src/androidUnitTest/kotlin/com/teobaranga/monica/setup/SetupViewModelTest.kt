@@ -20,14 +20,14 @@ import java.net.URLEncoder
 
 class SetupViewModelTest : BehaviorSpec(
     {
-        val component = SetupComponent::class.create()
-        val viewModel = component.setupViewModel()(SavedStateHandle())
-
-        afterTest {
-            component.dataStore().reset()
-        }
 
         Given("logged out user") {
+            val component = SetupComponent::class.create()
+            val viewModel = component.setupViewModel()(SavedStateHandle())
+
+            afterTest {
+                component.dataStore().reset()
+            }
 
             viewModel.isLoggedIn.test {
                 awaitItem() shouldBe false
@@ -125,6 +125,12 @@ class SetupViewModelTest : BehaviorSpec(
         }
 
         Given("logged in user") {
+            val component = SetupComponent::class.create()
+            val viewModel = component.setupViewModel()(SavedStateHandle())
+
+            afterTest {
+                component.dataStore().reset()
+            }
 
             component
                 .userDao()
