@@ -35,7 +35,6 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
     }
 
     iosArm64()
-    iosX64()
     iosSimulatorArm64()
 
     // https://github.com/google/ksp/issues/567
@@ -43,9 +42,6 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
     with(sourceSets) {
         commonMain {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-        }
-        iosX64Main {
-            kotlin.srcDir("build/generated/ksp/iosX64/iosX64Main/kotlin")
         }
         iosArm64Main {
             kotlin.srcDir("build/generated/ksp/iosArm64/iosArm64Main/kotlin")
