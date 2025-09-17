@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ContactActivityEditRoute(
-    val contactId: Int,
+    val contactId: Int?,
     val activityId: Int?,
 )
 

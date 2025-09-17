@@ -41,9 +41,6 @@ data class ContactInfoBioSection(
                     .size(128.dp)
                     .align(Alignment.CenterHorizontally),
                 userAvatar = userAvatar,
-                onClick = {
-                    // TODO
-                },
             )
             Text(
                 modifier = Modifier

@@ -1,7 +1,6 @@
 package com.teobaranga.monica.useravatar
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -47,7 +46,10 @@ data class UserAvatar(
 }
 
 @Composable
-fun UserAvatar(userAvatar: UserAvatar, modifier: Modifier = Modifier, onClick: (() -> Unit)? = null) {
+fun UserAvatar(
+    userAvatar: UserAvatar,
+    modifier: Modifier = Modifier,
+) {
     SubcomposeAsyncImage(
         modifier = modifier
             .size(32.dp)
@@ -57,13 +59,6 @@ fun UserAvatar(userAvatar: UserAvatar, modifier: Modifier = Modifier, onClick: (
                     // Some colours don't have enough contrast in dark mode, darken them
                     val isLight = MaterialTheme.colorScheme.isLight()
                     if (isLight) this else darken(2.5f)
-                },
-            )
-            .then(
-                if (onClick != null) {
-                    Modifier.clickable(onClick = onClick)
-                } else {
-                    Modifier
                 },
             ),
         model = ImageRequest.Builder(LocalPlatformContext.current)

@@ -52,22 +52,23 @@ class EditContactActivityViewModel internal constructor(
         .filterNotNull()
         .debounce(200.milliseconds)
         .flatMapLatest { query ->
-            if (query.isBlank()) {
-                return@flatMapLatest flowOf(emptyList())
-            }
-            val uiState = getLoadedUiState() ?: return@flatMapLatest flowOf(emptyList())
-            val results = searchContactAsActivityParticipantUseCase(
-                query = query,
-                excludeContacts = uiState.participants.map { it.contactId },
-            )
-            results
-                .map { results ->
-                    if (results.isEmpty() && query.isNotBlank()) {
-                        listOf(ActivityParticipant.New(query))
-                    } else {
-                        results
+            val uiState = getLoadedUiState()
+            if (query.isBlank() || uiState == null) {
+                flowOf(emptyList())
+            } else {
+                val results = searchContactAsActivityParticipantUseCase(
+                    query = query,
+                    excludeContacts = uiState.participants.map { it.contactId },
+                )
+                results
+                    .map { results ->
+                        if (results.isEmpty() && query.isNotBlank()) {
+                            listOf(ActivityParticipant.New(query))
+                        } else {
+                            results
+                        }
                     }
-                }
+            }
         }
         .stateIn(
             scope = viewModelScope,
@@ -75,7 +76,7 @@ class EditContactActivityViewModel internal constructor(
             started = WhileSubscribed(5.seconds.inWholeMilliseconds),
         )
 
-    val uiState: StateFlow<EditContactActivityUiState> = flow {
+    val uiState = flow {
         val uiState = EditContactActivityUiState.Loaded(
             initialDate = getNowLocalDate(),
             participantResults = participantResults,
@@ -89,13 +90,15 @@ class EditContactActivityViewModel internal constructor(
                 participants.addAll(activity.participants)
             }
         } else {
-            val contact = getContactUseCase(contactActivityEditRoute.contactId)
-            val contactParticipant = ActivityParticipant.Contact(
-                contactId = contact.contactId,
-                name = contact.completeName,
-                avatar = contact.userAvatar,
-            )
-            uiState.participants.add(contactParticipant)
+            if (contactActivityEditRoute.contactId != null) {
+                val contact = getContactUseCase(contactActivityEditRoute.contactId)
+                val contactParticipant = ActivityParticipant.Contact(
+                    contactId = contact.contactId,
+                    name = contact.completeName,
+                    avatar = contact.userAvatar,
+                )
+                uiState.participants.add(contactParticipant)
+            }
         }
         emit(uiState)
     }.stateIn(
