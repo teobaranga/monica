@@ -17,7 +17,7 @@ jobs:
         id: download-artifact
         uses: dawidd6/action-download-artifact@v11
         with:
-          workflow: push.yaml
+          workflow: push_self_runner.yaml
           branch: main
           name: apk-release
       - name: Upload release APK
