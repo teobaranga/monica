@@ -31,7 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
@@ -129,16 +129,22 @@ private fun DashboardScreen(
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(horizontal = 32.dp)
-                        .padding(top = 24.dp, bottom = 32.dp),
-                    text = "Welcome, ${userUiState?.userInfo?.name ?: "..."}",
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 6.dp, bottom = 22.dp),
+                    text = "Welcome, ${userUiState?.userInfo?.name ?: "..."}!",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Medium,
+                )
+
+                QuickActionsSection(
+                    modifier = Modifier
+                        .fillMaxWidth(),
                 )
 
                 RecentContactsSection(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(top = 20.dp),
                     recentContacts = recentContacts,
                     onContactSelect = onContactSelect,
                 )
@@ -159,9 +165,9 @@ private fun RecentContactsSection(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = 16.dp),
             text = "Recent contacts",
-            style = MaterialTheme.typography.titleSmall,
+            style = MaterialTheme.typography.titleMedium,
         )
         LazyRow(
             modifier = Modifier

@@ -89,13 +89,15 @@ class EditContactActivityViewModel internal constructor(
                 participants.addAll(activity.participants)
             }
         } else {
-            val contact = getContactUseCase(contactActivityEditRoute.contactId)
-            val contactParticipant = ActivityParticipant.Contact(
-                contactId = contact.contactId,
-                name = contact.completeName,
-                avatar = contact.userAvatar,
-            )
-            uiState.participants.add(contactParticipant)
+            if (contactActivityEditRoute.contactId != null) {
+                val contact = getContactUseCase(contactActivityEditRoute.contactId)
+                val contactParticipant = ActivityParticipant.Contact(
+                    contactId = contact.contactId,
+                    name = contact.completeName,
+                    avatar = contact.userAvatar,
+                )
+                uiState.participants.add(contactParticipant)
+            }
         }
         emit(uiState)
     }.stateIn(
