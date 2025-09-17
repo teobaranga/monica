@@ -29,13 +29,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -50,6 +50,7 @@ import com.teobaranga.monica.core.ui.text.MonicaTextField
 import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
 import com.teobaranga.monica.core.ui.text.startVerticalLineShape
 import com.teobaranga.monica.useravatar.UserAvatar
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 @Composable
@@ -88,9 +89,7 @@ private fun ParticipantDropdownMenu(
 ) {
     val participantResults by uiState.participantResults.collectAsStateWithLifecycle()
     var shouldExpand by rememberSaveable { mutableStateOf(false) }
-    val expanded by remember {
-        derivedStateOf { shouldExpand && participantResults.isNotEmpty() }
-    }
+    val expanded = shouldExpand && participantResults.isNotEmpty()
     ExposedDropdownMenuBox(
         modifier = modifier,
         expanded = expanded,
@@ -98,8 +97,14 @@ private fun ParticipantDropdownMenu(
             shouldExpand = it
         },
     ) {
-        LaunchedEffect(uiState.participantSearch) {
-            shouldExpand = true
+        LaunchedEffect(Unit) {
+            snapshotFlow { uiState.participantSearch.text }
+                .distinctUntilChanged()
+                .collect {
+                    if (it.isNotBlank()) {
+                        shouldExpand = true
+                    }
+                }
         }
         val interactionSource = remember { MutableInteractionSource() }
         MonicaTextField(
