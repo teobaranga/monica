@@ -41,8 +41,8 @@ import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshBox
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshState
-import com.teobaranga.monica.core.ui.searchbar.MonicaSearchBar
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import com.teobaranga.monica.core.ui.topappbar.MonicaTopAppBar
 import com.teobaranga.monica.core.ui.util.ScrollToTopEffect
 import com.teobaranga.monica.core.ui.util.keepScrollOnSizeChanged
 import kotlinx.coroutines.flow.flowOf
@@ -241,11 +241,7 @@ private fun PreviewJournalScreen() {
         )
         JournalEntryListScreen(
             searchBar = {
-                MonicaSearchBar(
-                    modifier = Modifier.padding(top = 16.dp),
-                    userAvatar = { },
-                    onSearch = { },
-                )
+                MonicaTopAppBar()
             },
             lazyItems = journalItems.collectAsLazyPagingItems(),
             refreshState = MonicaPullToRefreshState(onRefresh = { }),

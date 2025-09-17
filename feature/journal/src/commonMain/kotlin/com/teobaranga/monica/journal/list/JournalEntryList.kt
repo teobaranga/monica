@@ -17,10 +17,11 @@ import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.core.paging.collectAsLazyPagingItems
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
-import com.teobaranga.monica.useravatar.UserAvatar
-import com.teobaranga.monica.core.ui.searchbar.MonicaSearchBar
+import com.teobaranga.monica.core.ui.topappbar.MonicaTopAppBar
+import com.teobaranga.monica.core.ui.topappbar.SearchIconButton
 import com.teobaranga.monica.journal.list.ui.JournalEntryListScreen
 import com.teobaranga.monica.journal.view.JournalEntryRoute
+import com.teobaranga.monica.useravatar.UserAvatarIconButton
 
 @Composable
 internal fun JournalEntryList(
@@ -37,24 +38,24 @@ internal fun JournalEntryList(
                 0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
                 1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
             )
-            MonicaSearchBar(
+            MonicaTopAppBar(
                 modifier = Modifier
                     .background(Brush.verticalGradient(colorStops = colors))
                     .statusBarsPadding()
                     .padding(top = 16.dp),
-                userAvatar = {
+                actions = {
+                    SearchIconButton(
+                        onClick = { /* TODO */ },
+                    )
                     val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
                     userAvatar?.let {
-                        UserAvatar(
+                        UserAvatarIconButton(
                             userAvatar = it,
                             onClick = {
                                 shouldShowAccount = true
                             },
                         )
                     }
-                },
-                onSearch = {
-                    // TODO: Implement search
                 },
             )
             if (shouldShowAccount) {

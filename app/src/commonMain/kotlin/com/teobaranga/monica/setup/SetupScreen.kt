@@ -36,15 +36,13 @@ import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.applinks.AppLinksHandler
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.browser.PreviewPlatformWebBrowser
+import com.teobaranga.monica.core.ui.icon.MonicaLogo
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.data.PARAM_CODE
 import com.teobaranga.monica.home.HomeRoute
 import com.teobaranga.monica.util.compose.keyboardAsState
 import kotlinx.coroutines.flow.collectLatest
-import monica.app.generated.resources.Res
-import monica.app.generated.resources.monica
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val SETUP_INFO_URL = "https://monica.teobaranga.com/setup"
@@ -211,7 +209,7 @@ private fun Logo(modifier: Modifier = Modifier) {
                 .widthIn(max = 192.dp)
                 .padding(top = 20.dp)
                 .align(Alignment.CenterHorizontally),
-            painter = painterResource(Res.drawable.monica),
+            imageVector = MonicaLogo,
             contentDescription = null,
         )
 

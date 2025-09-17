@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -50,13 +49,15 @@ import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshBox
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshState
-import com.teobaranga.monica.core.ui.searchbar.MonicaSearchBar
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import com.teobaranga.monica.core.ui.topappbar.MonicaTopAppBar
+import com.teobaranga.monica.core.ui.topappbar.SearchIconButton
 import com.teobaranga.monica.core.ui.util.ScrollToTopEffect
 import com.teobaranga.monica.core.ui.util.keepScrollOnSizeChanged
 import com.teobaranga.monica.ui.preview.contactAlice
 import com.teobaranga.monica.ui.preview.contactBob
 import com.teobaranga.monica.useravatar.UserAvatar
+import com.teobaranga.monica.useravatar.UserAvatarIconButton
 import kotlinx.coroutines.flow.flowOf
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -74,24 +75,24 @@ internal fun Contacts(
                 0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
                 1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
             )
-            MonicaSearchBar(
+            MonicaTopAppBar(
                 modifier = Modifier
                     .background(Brush.verticalGradient(colorStops = colors))
                     .statusBarsPadding()
                     .padding(top = 16.dp),
-                userAvatar = {
+                actions = {
+                    SearchIconButton(
+                        onClick = { /* TODO */ },
+                    )
                     val userAvatar by viewModel.userAvatar.collectAsStateWithLifecycle()
                     userAvatar?.let {
-                        UserAvatar(
+                        UserAvatarIconButton(
                             userAvatar = it,
                             onClick = {
                                 shouldShowAccount = true
                             },
                         )
                     }
-                },
-                onSearch = {
-                    // TODO: Implement search
                 },
             )
             if (shouldShowAccount) {
@@ -222,9 +223,6 @@ private fun ContactItem(contact: Contact, onContactSelect: (Int) -> Unit, modifi
             modifier = Modifier
                 .size(48.dp),
             userAvatar = contact.avatar,
-            onClick = {
-                onContactSelect(contact.id)
-            },
         )
         Text(
             modifier = Modifier
@@ -240,12 +238,7 @@ private fun PreviewContactsScreen() {
     MonicaTheme {
         ContactsScreen(
             searchBar = {
-                MonicaSearchBar(
-                    modifier = Modifier
-                        .padding(top = 16.dp),
-                    userAvatar = { },
-                    onSearch = { },
-                )
+                MonicaTopAppBar()
             },
             uiState = ContactsUiState(
                 items = flowOf(PagingData.from(listOf(contactAlice, contactBob))),
