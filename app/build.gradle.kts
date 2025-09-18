@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.room)
 }
 
 kotlin {
@@ -26,7 +27,6 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "MonicaApp"
-            isStatic = true
             // Required when using NativeSQLiteDriver
             linkerOpts.add("-lsqlite3")
         }
@@ -171,8 +171,8 @@ googleServices {
     missingGoogleServicesStrategy = GoogleServicesPlugin.MissingGoogleServicesStrategy.WARN
 }
 
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 tasks.withType<Test>().configureEach {

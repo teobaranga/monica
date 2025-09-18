@@ -25,3 +25,7 @@
 # https://firebase.google.com/docs/crashlytics/get-deobfuscated-reports?platform=android
 -keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
 -keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.
+
+# https://issuetracker.google.com/issues/442489402
+# Remove when sqlite driver 2.6.1 is released
+-keepclasseswithmembers class androidx.sqlite.driver.bundled.** { native <methods>; }

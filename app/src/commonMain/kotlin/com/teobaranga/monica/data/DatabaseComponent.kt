@@ -1,9 +1,12 @@
 package com.teobaranga.monica.data
 
 import androidx.room.RoomDatabase
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.teobaranga.monica.configuration.domain.ConfigurationDataStore
 import com.teobaranga.monica.configuration.domain.ConfigurationItem
 import com.teobaranga.monica.journal.data.local.JournalDatabaseOwner
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.runBlocking
 import me.tatarka.inject.annotations.Provides
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
@@ -28,7 +31,10 @@ interface DatabaseComponent {
                 databaseDeleter.deleteDatabase(DATABASE_NAME)
             }
         }
-        return databaseBuilder.build()
+        return databaseBuilder
+            .setDriver(BundledSQLiteDriver())
+            .setQueryCoroutineContext(Dispatchers.IO)
+            .build()
     }
 
     @Provides
