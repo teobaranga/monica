@@ -107,4 +107,4 @@ jobs:
 
       - name: Build Debug for iOS Simulator
         run: |
-          xcodebuild build -project iosApp/iosApp.xcodeproj -scheme iosApp -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max,OS=latest'
+          xcodebuild build -project iosApp/iosApp.xcodeproj -scheme iosApp -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,OS=latest'
