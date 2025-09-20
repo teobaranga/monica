@@ -3,10 +3,13 @@ package com.teobaranga.monica.journal.view.ui
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -21,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -31,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.FabHeight
 import com.teobaranga.monica.core.ui.Zero
+import com.teobaranga.monica.core.ui.admonition.Admonition
+import com.teobaranga.monica.core.ui.admonition.AdmonitionType
 import com.teobaranga.monica.core.ui.button.DateButton
 import com.teobaranga.monica.core.ui.text.MonicaTextField
 import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
@@ -39,8 +45,6 @@ import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.util.debounce
 import com.teobaranga.monica.core.ui.util.keepCursorVisible
 import com.teobaranga.monica.core.ui.util.rememberCursorData
-import com.teobaranga.monica.ui.Admonition
-import com.teobaranga.monica.ui.AdmonitionType
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import monica.feature.journal.generated.resources.Res
@@ -145,8 +149,19 @@ private fun JournalEntryScreenLoaded(
             type = AdmonitionType.INFO,
             title = "Info",
             description = "This Monica server version actually requires a title due to a bug. The app will use the entry date as the default if none is provided.",
-            onClose = {
-
+            actions = {
+                Spacer(
+                    modifier = Modifier
+                        .weight(1f),
+                )
+                TextButton(
+                    modifier = Modifier
+                        .height(24.dp),
+                    contentPadding = PaddingValues(horizontal = 12.dp),
+                    onClick = {},
+                ) {
+                    Text("Ok, got it")
+                }
             },
         )
 
