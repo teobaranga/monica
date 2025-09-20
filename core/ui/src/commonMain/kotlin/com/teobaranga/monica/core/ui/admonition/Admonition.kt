@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+private val DefaultShape = RoundedCornerShape(8.dp)
+
 @Composable
 fun Admonition(
     type: AdmonitionType,
@@ -35,59 +37,78 @@ fun Admonition(
             .border(
                 width = 1.dp,
                 color = type.color,
-                shape = RoundedCornerShape(8.dp),
+                shape = DefaultShape,
             )
-            .clip(RoundedCornerShape(8.dp))
+            .clip(DefaultShape)
     ) {
-        Row(
+        TitleRow(
+            modifier = Modifier
+                .fillMaxWidth(),
+            type = type,
+            title = title,
+        )
+        BodyColumn(
+            modifier = Modifier
+                .fillMaxWidth(),
+            description = description,
+            actions = actions,
+        )
+    }
+}
+
+@Composable
+private fun TitleRow(
+    type: AdmonitionType,
+    title: String,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .background(color = type.backgroundColor)
+            .padding(start = 12.dp)
+            .heightIn(min = 32.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            modifier = Modifier
+                .size(16.dp),
+            imageVector = type.icon,
+            contentDescription = null,
+            tint = type.color,
+        )
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 6.dp),
+            text = title,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
+        )
+    }
+}
+
+@Composable
+private fun BodyColumn(
+    description: String,
+    actions: (@Composable RowScope.() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+    ) {
+        Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    color = type.backgroundColor,
-                )
-                .padding(
-                    start = 12.dp,
-                )
-                .heightIn(min = 32.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                modifier = Modifier
-                    .size(16.dp),
-                imageVector = type.icon,
-                contentDescription = null,
-                tint = type.color,
-            )
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 6.dp),
-                text = title,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-            )
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    vertical = 6.dp,
-                ),
-        ) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 12.dp,
-                    ),
-                text = description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-            )
-            if (actions != null) {
-                Row {
-                    actions()
-                }
+                .padding(horizontal = 12.dp),
+            text = description,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
+        )
+        if (actions != null) {
+            Row {
+                actions()
             }
         }
     }

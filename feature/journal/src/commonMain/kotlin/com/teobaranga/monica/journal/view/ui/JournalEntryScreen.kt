@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.datetime.LocalSystemClock
+import com.teobaranga.monica.core.ui.CoreRes
 import com.teobaranga.monica.core.ui.FabHeight
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.admonition.Admonition
@@ -49,6 +50,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import monica.feature.journal.generated.resources.Res
 import monica.feature.journal.generated.resources.journal_entry_empty_error
+import monica.feature.journal.generated.resources.journal_title_info_mandatory_title_bug
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -148,7 +150,7 @@ private fun JournalEntryScreenLoaded(
                 .padding(top = 16.dp),
             type = AdmonitionType.INFO,
             title = "Info",
-            description = "This Monica server version actually requires a title due to a bug. The app will use the entry date as the default if none is provided.",
+            description = stringResource(Res.string.journal_title_info_mandatory_title_bug),
             actions = {
                 Spacer(
                     modifier = Modifier
@@ -160,7 +162,10 @@ private fun JournalEntryScreenLoaded(
                     contentPadding = PaddingValues(horizontal = 12.dp),
                     onClick = {},
                 ) {
-                    Text("Ok, got it")
+                    Text(
+                        text = stringResource(CoreRes.string.ok_got_it),
+                        style = MaterialTheme.typography.labelSmall,
+                    )
                 }
             },
         )
