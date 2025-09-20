@@ -25,6 +25,7 @@ sealed interface JournalEntryUiState {
         val title = TextFieldState(initialTitle.orEmpty())
 
         val post = TextFieldState(initialPost)
+        var postError by mutableStateOf<JournalEntryError?>(null)
 
         val hasChanges by derivedStateOf {
             initialTitle.orEmpty() != title.text ||
@@ -58,4 +59,9 @@ sealed interface JournalEntryUiState {
             return "Loaded(id=$id, date=$date, title=$title, post=$post, hasChanges=$hasChanges)"
         }
     }
+}
+
+sealed interface JournalEntryError {
+
+    data object Empty : JournalEntryError
 }

@@ -12,7 +12,11 @@ import com.teobaranga.monica.core.ui.OverflowMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JournalEntryTopAppBar(onBack: () -> Unit, onDelete: () -> Unit, modifier: Modifier = Modifier) {
+fun JournalEntryTopAppBar(
+    onBack: () -> Unit,
+    onDelete: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
     TopAppBar(
         modifier = modifier,
         navigationIcon = {
@@ -29,10 +33,12 @@ fun JournalEntryTopAppBar(onBack: () -> Unit, onDelete: () -> Unit, modifier: Mo
             // No title
         },
         actions = {
-            OverflowMenu {
-                JournalEntryDeleteMenuItem(
-                    onDelete = onDelete,
-                )
+            if (onDelete != null) {
+                OverflowMenu {
+                    JournalEntryDeleteMenuItem(
+                        onDelete = onDelete,
+                    )
+                }
             }
         },
     )
