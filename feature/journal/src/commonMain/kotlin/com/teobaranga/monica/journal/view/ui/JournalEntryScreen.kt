@@ -39,6 +39,8 @@ import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.util.debounce
 import com.teobaranga.monica.core.ui.util.keepCursorVisible
 import com.teobaranga.monica.core.ui.util.rememberCursorData
+import com.teobaranga.monica.ui.Admonition
+import com.teobaranga.monica.ui.AdmonitionType
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import monica.feature.journal.generated.resources.Res
@@ -133,6 +135,19 @@ private fun JournalEntryScreenLoaded(
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp),
             uiState = uiState,
+        )
+
+        Admonition(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .padding(top = 16.dp),
+            type = AdmonitionType.INFO,
+            title = "Info",
+            description = "This Monica server version actually requires a title due to a bug. The app will use the entry date as the default if none is provided.",
+            onClose = {
+
+            },
         )
 
         PostTextField(
