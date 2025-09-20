@@ -41,6 +41,9 @@ import com.teobaranga.monica.core.ui.util.keepCursorVisible
 import com.teobaranga.monica.core.ui.util.rememberCursorData
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import monica.feature.journal.generated.resources.Res
+import monica.feature.journal.generated.resources.journal_entry_empty_error
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -193,6 +196,16 @@ private fun PostTextField(
                 text = "Entry",
                 style = MaterialTheme.typography.bodyMedium,
             )
+        },
+        isError = uiState.postError != null,
+        label = uiState.postError?.let {
+            {
+                Text(
+                    text = when (it) {
+                        JournalEntryError.Empty -> stringResource(Res.string.journal_entry_empty_error)
+                    },
+                )
+            }
         },
         shape = MonicaTextFieldDefaults.startVerticalLineShape(postInteractionSource),
         keyboardOptions = KeyboardOptions(

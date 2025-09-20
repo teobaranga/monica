@@ -1,16 +1,23 @@
 package com.teobaranga.monica.journal.view
 
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
-import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.journal.data.JournalRepository
+import com.teobaranga.monica.journal.view.ui.JournalEntryError
 import com.teobaranga.monica.journal.view.ui.JournalEntryUiState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
@@ -24,7 +31,6 @@ import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 class JournalEntryViewModel(
     @Assisted
     private val savedStateHandle: SavedStateHandle,
-    private val dispatcher: Dispatcher,
     private val journalRepository: JournalRepository,
     private val getNowLocalDate: () -> LocalDate,
 ) : ViewModel() {
@@ -48,17 +54,34 @@ class JournalEntryViewModel(
             )
         }
         emit(uiState)
+    }.onEach { state ->
+        if (state is JournalEntryUiState.Loaded) {
+            postJob?.cancel()
+            postJob = viewModelScope.launch {
+                snapshotFlow { state.post.text }
+                    .distinctUntilChanged()
+                    .onEach {
+                        state.postError = null
+                    }
+                    .collect()
+            }
+        }
     }.stateIn(
         scope = viewModelScope,
         initialValue = JournalEntryUiState.Loading,
         started = SharingStarted.Eagerly,
     )
 
+    private val _effects = MutableSharedFlow<JournalEntryEffect>()
+    val effects = _effects.asSharedFlow()
+
+    private var postJob: Job? = null
+
     fun onSave() {
-        viewModelScope.launch(dispatcher.io) {
+        viewModelScope.launch {
             val uiState = getLoadedState() ?: return@launch
             if (uiState.post.text.isBlank()) {
-                // TODO: show error
+                uiState.postError = JournalEntryError.Empty
                 return@launch
             }
             journalRepository.upsertJournalEntry(
@@ -67,6 +90,7 @@ class JournalEntryViewModel(
                 post = uiState.post.text.toString(),
                 date = uiState.date,
             )
+            _effects.emit(JournalEntryEffect.Back)
         }
     }
 
@@ -74,8 +98,9 @@ class JournalEntryViewModel(
         if (journalEntryRoute.entryId == null) {
             return
         }
-        viewModelScope.launch(dispatcher.io) {
+        viewModelScope.launch {
             journalRepository.deleteJournalEntry(journalEntryRoute.entryId)
+            _effects.emit(JournalEntryEffect.Back)
         }
     }
 

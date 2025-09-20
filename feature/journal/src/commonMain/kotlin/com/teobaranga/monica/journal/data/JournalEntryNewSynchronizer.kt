@@ -5,6 +5,8 @@ import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.journal.data.local.JournalDao
 import com.teobaranga.monica.journal.data.remote.JournalApi
 import com.teobaranga.monica.journal.data.remote.JournalEntryCreateRequest
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.format
 import me.tatarka.inject.annotations.Inject
 
 @Inject
@@ -21,7 +23,10 @@ class JournalEntryNewSynchronizer(
         for (newEntry in newEntries) {
             val response = journalApi.createJournalEntry(
                 JournalEntryCreateRequest(
-                    title = newEntry.title.orEmpty(),
+                    // Monica v4 original can't handle a missing or empty title,
+                    // default to the date instead to avoid failing the request.
+                    title = newEntry.title
+                        ?: newEntry.date.format(LocalDate.Formats.ISO),
                     post = newEntry.post,
                     date = newEntry.date,
                 ),
