@@ -1,22 +1,22 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "local>android/.github:renovate-config"
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'local>android/.github:renovate-config',
   ],
-  "baseBranches": [
-    "main"
+  baseBranchPatterns: [
+    'main',
   ],
-  "gitIgnoredAuthors": [
-    "renovate[bot]@users.noreply.github.com",
-    "github-actions[bot]@users.noreply.github.com",
-    "41898282+github-actions[bot]@users.noreply.github.com"
+  gitIgnoredAuthors: [
+    'renovate[bot]@users.noreply.github.com',
+    'github-actions[bot]@users.noreply.github.com',
+    '41898282+github-actions[bot]@users.noreply.github.com',
   ],
-  "ignoreDeps": [
-    "monica.android.application",
-    "monica.android.library",
-    "monica.cmp",
-    "monica.kmp",
-    "monica.kotlin.inject",
-    "monica.network",
+  ignoreDeps: [
+    'monica.android.application',
+    'monica.android.library',
+    'monica.cmp',
+    'monica.kmp',
+    'monica.kotlin.inject',
+    'monica.network',
   ],
 }
