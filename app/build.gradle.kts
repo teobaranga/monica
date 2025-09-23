@@ -70,6 +70,7 @@ kotlin {
                 implementation(project(":core:network"))
                 implementation(project(":core:ui"))
                 implementation(project(":component:user_avatar"))
+                implementation(project(":component:tips"))
                 implementation(project(":feature:account"))
                 implementation(project(":feature:certificate"))
                 implementation(project(":feature:configuration"))

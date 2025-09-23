@@ -3,13 +3,10 @@ package com.teobaranga.monica.journal.view.ui
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -24,7 +21,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,6 +33,7 @@ import com.teobaranga.monica.core.ui.CoreRes
 import com.teobaranga.monica.core.ui.FabHeight
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.admonition.Admonition
+import com.teobaranga.monica.core.ui.admonition.AdmonitionState
 import com.teobaranga.monica.core.ui.admonition.AdmonitionType
 import com.teobaranga.monica.core.ui.button.DateButton
 import com.teobaranga.monica.core.ui.text.MonicaTextField
@@ -46,6 +43,7 @@ import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.util.debounce
 import com.teobaranga.monica.core.ui.util.keepCursorVisible
 import com.teobaranga.monica.core.ui.util.rememberCursorData
+import com.teobaranga.monica.journal.data.JournalTips
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import monica.feature.journal.generated.resources.Res
@@ -59,6 +57,7 @@ fun JournalEntryScreen(
     uiState: JournalEntryUiState,
     topBar: @Composable () -> Unit,
     onSave: () -> Unit,
+    onTipDismiss: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -101,6 +100,7 @@ fun JournalEntryScreen(
                             .navigationBarsPadding()
                             .padding(bottom = FabHeight),
                         uiState = uiState,
+                        onTipDismiss = onTipDismiss,
                     )
                 }
             }
@@ -111,6 +111,7 @@ fun JournalEntryScreen(
 @Composable
 private fun JournalEntryScreenLoaded(
     uiState: JournalEntryUiState.Loaded,
+    onTipDismiss: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -143,32 +144,26 @@ private fun JournalEntryScreenLoaded(
             uiState = uiState,
         )
 
-        Admonition(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(top = 16.dp),
-            type = AdmonitionType.INFO,
-            title = "Info",
-            description = stringResource(Res.string.journal_title_info_mandatory_title_bug),
-            actions = {
-                Spacer(
-                    modifier = Modifier
-                        .weight(1f),
-                )
-                TextButton(
-                    modifier = Modifier
-                        .height(24.dp),
-                    contentPadding = PaddingValues(horizontal = 12.dp),
-                    onClick = {},
-                ) {
-                    Text(
-                        text = stringResource(CoreRes.string.ok_got_it),
-                        style = MaterialTheme.typography.labelSmall,
+        if (uiState.showTitleBugInfo) {
+            Admonition(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 16.dp),
+                data = AdmonitionState(
+                    type = AdmonitionType.INFO,
+                    title = "Info",
+                    description = stringResource(Res.string.journal_title_info_mandatory_title_bug),
+                    dismissAction = AdmonitionState.DismissAction(
+                        label = stringResource(CoreRes.string.ok_got_it),
+                        onDismiss = {
+                            uiState.showTitleBugInfo = false
+                            onTipDismiss(JournalTips.mandatoryTitleServerBug)
+                        },
                     )
-                }
-            },
-        )
+                ),
+            )
+        }
 
         PostTextField(
             modifier = Modifier
@@ -267,6 +262,7 @@ private fun PreviewJournalEntryScreen() {
                 initialTitle = null,
                 initialPost = "Hello World!",
                 initialDate = LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()),
+                showTitleBugInfo = true,
             ),
             topBar = {
                 JournalEntryTopAppBar(
@@ -275,6 +271,7 @@ private fun PreviewJournalEntryScreen() {
                 )
             },
             onSave = { },
+            onTipDismiss = { },
         )
     }
 }

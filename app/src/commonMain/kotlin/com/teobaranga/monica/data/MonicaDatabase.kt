@@ -8,6 +8,8 @@ import androidx.room.TypeConverters
 import com.teobaranga.monica.activities.data.ContactActivitiesDao
 import com.teobaranga.monica.activities.data.ContactActivityCrossRef
 import com.teobaranga.monica.activities.data.ContactActivityEntity
+import com.teobaranga.monica.component.tips.TipEntity
+import com.teobaranga.monica.component.tips.di.TipsTableOwner
 import com.teobaranga.monica.contacts.data.ContactDao
 import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.data.photo.PhotoDao
@@ -33,6 +35,7 @@ import com.teobaranga.monica.journal.data.local.JournalEntryEntity
         PhotoEntity::class,
         JournalEntryEntity::class,
         GenderEntity::class,
+        TipEntity::class,
     ],
 )
 @ConstructedBy(MonicaDatabaseConstructor::class)
@@ -41,7 +44,7 @@ import com.teobaranga.monica.journal.data.local.JournalEntryEntity
     LocalDateAdapter::class,
     UuidAdapter::class,
 )
-abstract class MonicaDatabase : RoomDatabase(), JournalDatabaseOwner {
+abstract class MonicaDatabase : RoomDatabase(), JournalDatabaseOwner, TipsTableOwner {
     abstract fun userDao(): UserDao
     abstract fun contactDao(): ContactDao
     abstract fun contactActivitiesDao(): ContactActivitiesDao
@@ -50,6 +53,7 @@ abstract class MonicaDatabase : RoomDatabase(), JournalDatabaseOwner {
 }
 
 // The Room compiler generates the `actual` implementations.
+@Suppress("KotlinNoActualForExpect")
 expect object MonicaDatabaseConstructor : RoomDatabaseConstructor<MonicaDatabase> {
     override fun initialize(): MonicaDatabase
 }

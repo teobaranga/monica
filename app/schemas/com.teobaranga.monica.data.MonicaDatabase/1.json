@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4aea3122dc91481ce391cebdd90a29b5",
+    "identityHash": "31629c1f1142fda532bbb9ab22854aa0",
     "entities": [
       {
         "tableName": "me",
@@ -23,8 +23,7 @@
           {
             "fieldPath": "contactId",
             "columnName": "contactId",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -32,9 +31,7 @@
           "columnNames": [
             "id"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "contacts",
@@ -55,14 +52,12 @@
           {
             "fieldPath": "lastName",
             "columnName": "lastName",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "nickname",
             "columnName": "nickname",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "completeName",
@@ -79,14 +74,12 @@
           {
             "fieldPath": "genderId",
             "columnName": "genderId",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "updated",
             "columnName": "updated",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "syncStatus",
@@ -97,8 +90,7 @@
           {
             "fieldPath": "avatar.url",
             "columnName": "avatar_url",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "avatar.color",
@@ -109,20 +101,17 @@
           {
             "fieldPath": "birthdate.isAgeBased",
             "columnName": "birthdate_isAgeBased",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "birthdate.isYearUnknown",
             "columnName": "birthdate_isYearUnknown",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "birthdate.date",
             "columnName": "birthdate_date",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -130,9 +119,7 @@
           "columnNames": [
             "contactId"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "contact_activity",
@@ -159,8 +146,7 @@
           {
             "fieldPath": "description",
             "columnName": "description",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "date",
@@ -192,9 +178,7 @@
           "columnNames": [
             "activityId"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "contact_activity_cross_refs",
@@ -230,8 +214,7 @@
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_contact_activity_cross_refs_activityId` ON `${TABLE_NAME}` (`activityId`)"
           }
-        ],
-        "foreignKeys": []
+        ]
       },
       {
         "tableName": "photos",
@@ -258,8 +241,7 @@
           {
             "fieldPath": "data",
             "columnName": "data",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -267,9 +249,7 @@
           "columnNames": [
             "id"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "journal_entries",
@@ -290,8 +270,7 @@
           {
             "fieldPath": "title",
             "columnName": "title",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "post",
@@ -329,9 +308,7 @@
           "columnNames": [
             "id"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "genders",
@@ -355,15 +332,36 @@
           "columnNames": [
             "genderId"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
+      },
+      {
+        "tableName": "tips",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `isSeen` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isSeen",
+            "columnName": "isSeen",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
       }
     ],
-    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4aea3122dc91481ce391cebdd90a29b5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '31629c1f1142fda532bbb9ab22854aa0')"
     ]
   }
 }

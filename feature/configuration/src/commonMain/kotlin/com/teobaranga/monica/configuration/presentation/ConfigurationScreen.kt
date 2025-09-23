@@ -15,14 +15,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -35,6 +40,7 @@ internal fun ConfigurationScreen(
         modifier = modifier,
         uiState = viewModel.uiState,
         onClose = onClose,
+        onResetTips = viewModel::resetTips,
         onRestartApp = viewModel::onRestartApp,
     )
 }
@@ -43,9 +49,12 @@ internal fun ConfigurationScreen(
 private fun ConfigurationScreen(
     uiState: ConfigurationUiState,
     onClose: () -> Unit,
+    onResetTips: () -> Unit,
     onRestartApp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -70,6 +79,9 @@ private fun ConfigurationScreen(
                 )
             }
         },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
     ) { contentPadding ->
         Column(
             modifier = modifier
@@ -78,6 +90,14 @@ private fun ConfigurationScreen(
         ) {
             ClearDatabaseItem(
                 uiState = uiState,
+            )
+            ResetTipsItem(
+                onResetTips = {
+                    onResetTips()
+                    scope.launch {
+                        snackbarHostState.showSnackbar("All in-app tips have been reset.")
+                    }
+                },
             )
         }
     }
@@ -130,6 +150,23 @@ private fun ClearDatabaseItem(uiState: ConfigurationUiState, modifier: Modifier 
     )
 }
 
+@Composable
+private fun ResetTipsItem(
+    onResetTips: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    ListItem(
+        modifier = modifier
+            .clickable(onClick = onResetTips),
+        headlineContent = {
+            Text("Reset all the in-app tips")
+        },
+        supportingContent = {
+            Text("All previously seen tips will be marked as unseen.")
+        },
+    )
+}
+
 @Preview
 @Composable
 private fun PreviewConfigurationScreen() {
@@ -137,6 +174,7 @@ private fun PreviewConfigurationScreen() {
         ConfigurationScreen(
             uiState = ConfigurationUiState(),
             onClose = { },
+            onResetTips = { },
             onRestartApp = { },
         )
     }

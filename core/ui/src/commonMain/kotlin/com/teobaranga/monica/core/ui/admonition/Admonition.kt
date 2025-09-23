@@ -3,9 +3,12 @@ package com.teobaranga.monica.core.ui.admonition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -13,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,18 +29,15 @@ private val DefaultShape = RoundedCornerShape(8.dp)
 
 @Composable
 fun Admonition(
-    type: AdmonitionType,
-    title: String,
-    description: String,
+    data: AdmonitionState,
     modifier: Modifier = Modifier,
-    actions: (@Composable RowScope.() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = type.color,
+                color = data.type.color,
                 shape = DefaultShape,
             )
             .clip(DefaultShape)
@@ -44,14 +45,32 @@ fun Admonition(
         TitleRow(
             modifier = Modifier
                 .fillMaxWidth(),
-            type = type,
-            title = title,
+            type = data.type,
+            title = data.title,
         )
         BodyColumn(
             modifier = Modifier
                 .fillMaxWidth(),
-            description = description,
-            actions = actions,
+            description = data.description,
+            actions = {
+                data.dismissAction?.let {
+                    Spacer(
+                        modifier = Modifier
+                            .weight(1f),
+                    )
+                    TextButton(
+                        modifier = Modifier
+                            .height(24.dp),
+                        contentPadding = PaddingValues(horizontal = 12.dp),
+                        onClick = it.onDismiss,
+                    ) {
+                        Text(
+                            text = it.label,
+                            style = MaterialTheme.typography.labelSmall,
+                        )
+                    }
+                }
+            },
         )
     }
 }
@@ -90,7 +109,7 @@ private fun TitleRow(
 @Composable
 private fun BodyColumn(
     description: String,
-    actions: (@Composable RowScope.() -> Unit)? = null,
+    actions: (@Composable RowScope.() -> Unit),
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -106,10 +125,8 @@ private fun BodyColumn(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
         )
-        if (actions != null) {
-            Row {
-                actions()
-            }
+        Row {
+            actions()
         }
     }
 }
@@ -119,9 +136,12 @@ private fun BodyColumn(
 private fun AdmonitionInfoPreview() {
     MonicaTheme {
         Admonition(
-            type = AdmonitionType.INFO,
-            title = "Title",
-            description = "This is a description",
+            data = AdmonitionState(
+                type = AdmonitionType.INFO,
+                title = "Title",
+                description = "This is a description",
+                dismissAction = null,
+            )
         )
     }
 }
@@ -131,9 +151,12 @@ private fun AdmonitionInfoPreview() {
 private fun AdmonitionWarningPreview() {
     MonicaTheme {
         Admonition(
-            type = AdmonitionType.WARNING,
-            title = "Title",
-            description = "This is a description",
+            data = AdmonitionState(
+                type = AdmonitionType.WARNING,
+                title = "Title",
+                description = "This is a description",
+                dismissAction = null,
+            )
         )
     }
 }

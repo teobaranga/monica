@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
+import com.teobaranga.monica.component.tips.TipsRepository
 import com.teobaranga.monica.journal.data.JournalRepository
+import com.teobaranga.monica.journal.data.JournalTips
 import com.teobaranga.monica.journal.view.ui.JournalEntryError
 import com.teobaranga.monica.journal.view.ui.JournalEntryUiState
 import kotlinx.coroutines.Job
@@ -33,6 +35,7 @@ class JournalEntryViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val journalRepository: JournalRepository,
     private val getNowLocalDate: () -> LocalDate,
+    private val tipsRepository: TipsRepository,
 ) : ViewModel() {
 
     val journalEntryRoute = savedStateHandle.toRoute<JournalEntryRoute>()
@@ -51,6 +54,7 @@ class JournalEntryViewModel(
                 initialTitle = entry.title,
                 initialPost = entry.post,
                 initialDate = entry.date,
+                showTitleBugInfo = !tipsRepository.isTipSeen(JournalTips.mandatoryTitleServerBug),
             )
         }
         emit(uiState)
@@ -104,12 +108,19 @@ class JournalEntryViewModel(
         }
     }
 
-    private fun getEmptyState(): JournalEntryUiState.Loaded {
+    fun onTipDismiss(id: String) {
+        viewModelScope.launch {
+            tipsRepository.markAsSeen(id)
+        }
+    }
+
+    private suspend fun getEmptyState(): JournalEntryUiState.Loaded {
         return JournalEntryUiState.Loaded(
             id = -1,
             initialTitle = null,
             initialPost = "",
             initialDate = getNowLocalDate(),
+            showTitleBugInfo = !tipsRepository.isTipSeen(JournalTips.mandatoryTitleServerBug),
         )
     }
 

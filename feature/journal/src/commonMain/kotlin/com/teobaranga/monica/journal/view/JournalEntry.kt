@@ -56,6 +56,7 @@ internal fun JournalEntry(
             )
         },
         onSave = viewModel::onSave,
+        onTipDismiss = viewModel::onTipDismiss,
     )
 
     if (isConfirming) {

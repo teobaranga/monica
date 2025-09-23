@@ -18,6 +18,7 @@ sealed interface JournalEntryUiState {
         initialTitle: String?,
         initialPost: String,
         initialDate: LocalDate,
+        showTitleBugInfo: Boolean,
     ) : JournalEntryUiState {
 
         var date by mutableStateOf(initialDate)
@@ -32,6 +33,8 @@ sealed interface JournalEntryUiState {
                 initialPost != post.text ||
                 initialDate != date
         }
+
+        var showTitleBugInfo by mutableStateOf(showTitleBugInfo)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
