@@ -152,7 +152,7 @@ private fun JournalEntryScreenLoaded(
                     .padding(top = 16.dp),
                 data = AdmonitionState(
                     type = AdmonitionType.INFO,
-                    title = "Info",
+                    title = stringResource(CoreRes.string.admonition_info_title),
                     description = stringResource(Res.string.journal_title_info_mandatory_title_bug),
                     dismissAction = AdmonitionState.DismissAction(
                         label = stringResource(CoreRes.string.ok_got_it),
