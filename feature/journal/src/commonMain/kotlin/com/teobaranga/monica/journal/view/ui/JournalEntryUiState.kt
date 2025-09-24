@@ -18,6 +18,7 @@ sealed interface JournalEntryUiState {
         initialTitle: String?,
         initialPost: String,
         initialDate: LocalDate,
+        showTitleBugInfo: Boolean,
     ) : JournalEntryUiState {
 
         var date by mutableStateOf(initialDate)
@@ -25,12 +26,15 @@ sealed interface JournalEntryUiState {
         val title = TextFieldState(initialTitle.orEmpty())
 
         val post = TextFieldState(initialPost)
+        var postError by mutableStateOf<JournalEntryError?>(null)
 
         val hasChanges by derivedStateOf {
             initialTitle.orEmpty() != title.text ||
                 initialPost != post.text ||
                 initialDate != date
         }
+
+        var showTitleBugInfo by mutableStateOf(showTitleBugInfo)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -58,4 +62,9 @@ sealed interface JournalEntryUiState {
             return "Loaded(id=$id, date=$date, title=$title, post=$post, hasChanges=$hasChanges)"
         }
     }
+}
+
+sealed interface JournalEntryError {
+
+    data object Empty : JournalEntryError
 }

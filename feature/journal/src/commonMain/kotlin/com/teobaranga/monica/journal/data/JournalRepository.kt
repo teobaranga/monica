@@ -4,6 +4,7 @@ import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.diamondedge.logging.logging
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.journal.data.local.JournalDao
@@ -13,6 +14,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
@@ -25,7 +27,7 @@ private const val PAGE_SIZE = 15
 @Inject
 @SingleIn(AppScope::class)
 class JournalRepository(
-    dispatcher: Dispatcher,
+    private val dispatcher: Dispatcher,
     private val getNow: () -> Instant,
     private val journalDao: JournalDao,
     private val journalPagingSourceFactory: (OrderBy) -> JournalPagingSource,
@@ -69,7 +71,6 @@ class JournalRepository(
     }
 
     suspend fun upsertJournalEntry(entryId: Int?, title: String?, post: String, date: LocalDate) {
-        require(post.isNotBlank()) { "Journal entry cannot be empty" }
         if (entryId != null) {
             updateJournalEntry(entryId, title, post, date)
         } else {
@@ -78,54 +79,61 @@ class JournalRepository(
     }
 
     private suspend fun insertJournalEntry(title: String?, post: String, date: LocalDate) {
-        /**
-         * Add new entry to Room with id = max(id) + 1
-         * Create new entry using API
-         * Insert response into Room, should ideally have a similar ID but keep a map of local to remote ID
-         */
-        val localId = journalDao.getMaxId() + 1
-        val createdDate = getNow()
-        val entry = JournalEntryEntity(
-            id = localId,
-            uuid = Uuid.random(),
-            title = title,
-            post = post,
-            date = date,
-            created = createdDate,
-            updated = createdDate,
-            syncStatus = SyncStatus.NEW,
-        )
-        journalDao.upsertJournalEntry(entry)
-        invalidatePages()
-        scope.launch {
-            journalEntryNewSynchronizer.sync()
+        withContext(dispatcher.default) {
+            /**
+             * Add new entry to Room with id = max(id) + 1
+             * Create new entry using API
+             * Insert response into Room, should ideally have a similar ID but keep a map of local to remote ID
+             */
+            val localId = journalDao.getMaxId() + 1
+            val createdDate = getNow()
+            val entry = JournalEntryEntity(
+                id = localId,
+                uuid = Uuid.random(),
+                title = title,
+                post = post,
+                date = date,
+                created = createdDate,
+                updated = createdDate,
+                syncStatus = SyncStatus.NEW,
+            )
+            log.debug { "Inserting new journal entry: $entry" }
+            journalDao.upsertJournalEntry(entry)
             invalidatePages()
+            scope.launch {
+                journalEntryNewSynchronizer.sync()
+                invalidatePages()
+            }
         }
     }
 
     private suspend fun updateJournalEntry(entryId: Int, title: String?, post: String, date: LocalDate) {
-        val originalEntry = journalDao.getJournalEntry(entryId).firstOrNull() ?: return
-        val updatedEntry = originalEntry.copy(
-            title = title,
-            post = post,
-            date = date,
-            updated = getNow(),
-            syncStatus = SyncStatus.EDITED,
-        )
-        journalDao.upsertJournalEntry(updatedEntry)
-        invalidatePages()
-        scope.launch {
-            journalEntryUpdateSynchronizer.sync()
+        withContext(dispatcher.default) {
+            val originalEntry = journalDao.getJournalEntry(entryId).firstOrNull() ?: return@withContext
+            val updatedEntry = originalEntry.copy(
+                title = title,
+                post = post,
+                date = date,
+                updated = getNow(),
+                syncStatus = SyncStatus.EDITED,
+            )
+            journalDao.upsertJournalEntry(updatedEntry)
             invalidatePages()
+            scope.launch {
+                journalEntryUpdateSynchronizer.sync()
+                invalidatePages()
+            }
         }
     }
 
     suspend fun deleteJournalEntry(entryId: Int) {
-        journalDao.setSyncStatus(entryId, SyncStatus.DELETED)
-        invalidatePages()
-        scope.launch {
-            journalEntryDeletedSynchronizer.sync()
+        withContext(dispatcher.default) {
+            journalDao.setSyncStatus(entryId, SyncStatus.DELETED)
             invalidatePages()
+            scope.launch {
+                journalEntryDeletedSynchronizer.sync()
+                invalidatePages()
+            }
         }
     }
 
@@ -146,5 +154,9 @@ class JournalRepository(
         ) : OrderBy {
             override val columnName = "datetime(date)"
         }
+    }
+
+    companion object {
+        private val log = logging()
     }
 }

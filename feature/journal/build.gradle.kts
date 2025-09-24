@@ -17,6 +17,7 @@ kotlin {
                 implementation(project(":core:network"))
                 implementation(project(":core:paging"))
                 implementation(project(":core:ui"))
+                implementation(project(":component:tips"))
                 implementation(project(":component:user_avatar"))
                 implementation(project(":feature:account"))
                 implementation(project(":feature:user-api"))

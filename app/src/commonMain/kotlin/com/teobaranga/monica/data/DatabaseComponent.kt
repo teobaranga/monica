@@ -2,6 +2,7 @@ package com.teobaranga.monica.data
 
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.teobaranga.monica.component.tips.di.TipsTableOwner
 import com.teobaranga.monica.configuration.domain.ConfigurationDataStore
 import com.teobaranga.monica.configuration.domain.ConfigurationItem
 import com.teobaranga.monica.journal.data.local.JournalDatabaseOwner
@@ -44,4 +45,8 @@ interface DatabaseComponent {
     @Provides
     @SingleIn(AppScope::class)
     fun providesJournalDatabaseOwner(database: MonicaDatabase): JournalDatabaseOwner = database
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun providesTipsTableOwner(database: MonicaDatabase): TipsTableOwner = database
 }

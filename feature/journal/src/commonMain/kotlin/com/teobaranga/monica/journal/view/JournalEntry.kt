@@ -33,6 +33,10 @@ internal fun JournalEntry(
         isConfirming = true
     }
 
+    JournalEntryEffectHandler(
+        effects = viewModel.effects,
+    )
+
     JournalEntryScreen(
         uiState = uiState,
         topBar = {
@@ -44,16 +48,15 @@ internal fun JournalEntry(
                         navigator.popBackStack()
                     }
                 },
-                onDelete = {
-                    viewModel.onDelete()
-                    navigator.popBackStack()
+                onDelete = if (viewModel.journalEntryRoute.entryId != null) {
+                    viewModel::onDelete
+                } else {
+                    null
                 },
             )
         },
-        onSave = {
-            viewModel.onSave()
-            navigator.popBackStack()
-        },
+        onSave = viewModel::onSave,
+        onTipDismiss = viewModel::onTipDismiss,
     )
 
     if (isConfirming) {

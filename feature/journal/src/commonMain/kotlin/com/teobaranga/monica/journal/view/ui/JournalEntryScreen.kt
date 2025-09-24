@@ -29,8 +29,12 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.datetime.LocalSystemClock
+import com.teobaranga.monica.core.ui.CoreRes
 import com.teobaranga.monica.core.ui.FabHeight
 import com.teobaranga.monica.core.ui.Zero
+import com.teobaranga.monica.core.ui.admonition.Admonition
+import com.teobaranga.monica.core.ui.admonition.AdmonitionState
+import com.teobaranga.monica.core.ui.admonition.AdmonitionType
 import com.teobaranga.monica.core.ui.button.DateButton
 import com.teobaranga.monica.core.ui.text.MonicaTextField
 import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
@@ -39,8 +43,13 @@ import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.util.debounce
 import com.teobaranga.monica.core.ui.util.keepCursorVisible
 import com.teobaranga.monica.core.ui.util.rememberCursorData
+import com.teobaranga.monica.journal.data.JournalTips
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import monica.feature.journal.generated.resources.Res
+import monica.feature.journal.generated.resources.journal_entry_empty_error
+import monica.feature.journal.generated.resources.journal_title_info_mandatory_title_bug
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -48,6 +57,7 @@ fun JournalEntryScreen(
     uiState: JournalEntryUiState,
     topBar: @Composable () -> Unit,
     onSave: () -> Unit,
+    onTipDismiss: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -90,6 +100,7 @@ fun JournalEntryScreen(
                             .navigationBarsPadding()
                             .padding(bottom = FabHeight),
                         uiState = uiState,
+                        onTipDismiss = onTipDismiss,
                     )
                 }
             }
@@ -100,6 +111,7 @@ fun JournalEntryScreen(
 @Composable
 private fun JournalEntryScreenLoaded(
     uiState: JournalEntryUiState.Loaded,
+    onTipDismiss: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -131,6 +143,26 @@ private fun JournalEntryScreenLoaded(
                 .padding(horizontal = 24.dp),
             uiState = uiState,
         )
+
+        if (uiState.showTitleBugInfo) {
+            Admonition(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 16.dp),
+                data = AdmonitionState(
+                    type = AdmonitionType.INFO,
+                    title = stringResource(CoreRes.string.admonition_info_title),
+                    description = stringResource(Res.string.journal_title_info_mandatory_title_bug),
+                    dismissAction = AdmonitionState.DismissAction(
+                        label = stringResource(CoreRes.string.ok_got_it),
+                        onDismiss = {
+                            onTipDismiss(JournalTips.mandatoryTitleServerBug)
+                        },
+                    )
+                ),
+            )
+        }
 
         PostTextField(
             modifier = Modifier
@@ -194,6 +226,16 @@ private fun PostTextField(
                 style = MaterialTheme.typography.bodyMedium,
             )
         },
+        isError = uiState.postError != null,
+        label = uiState.postError?.let {
+            {
+                Text(
+                    text = when (it) {
+                        JournalEntryError.Empty -> stringResource(Res.string.journal_entry_empty_error)
+                    },
+                )
+            }
+        },
         shape = MonicaTextFieldDefaults.startVerticalLineShape(postInteractionSource),
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Sentences,
@@ -219,6 +261,7 @@ private fun PreviewJournalEntryScreen() {
                 initialTitle = null,
                 initialPost = "Hello World!",
                 initialDate = LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()),
+                showTitleBugInfo = true,
             ),
             topBar = {
                 JournalEntryTopAppBar(
@@ -227,6 +270,7 @@ private fun PreviewJournalEntryScreen() {
                 )
             },
             onSave = { },
+            onTipDismiss = { },
         )
     }
 }

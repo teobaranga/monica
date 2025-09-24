@@ -5,6 +5,8 @@ targetSdk = "36"
 compileSdk = "36"
 
 # Included build
+# On 9.0.0 bump:
+# - remove failOnNoDiscoveredTests
 androidGradlePlugin = "8.13.0"
 androidTools = "31.13.0"
 
@@ -13,6 +15,7 @@ crashlytics = "3.0.6"
 dependency-analysis = "3.0.4"
 detekt = "1.23.8"
 google-services = "4.4.3"
+# Remove PlatformTest workaround when going to 1.10.0 (https://youtrack.jetbrains.com/issue/CMP-6612)
 jetbrains-compose = "1.9.0"
 jetbrains-lifecycle = "2.9.4"
 ksp = "2.2.20-2.0.2"

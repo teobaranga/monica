@@ -4,6 +4,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
+import com.teobaranga.monica.component.tips.TipsRepository
 import com.teobaranga.monica.configuration.domain.ConfigurationDataStore
 import com.teobaranga.monica.configuration.domain.ConfigurationItem
 import com.teobaranga.monica.configuration.domain.RestartAppUseCase
@@ -20,6 +21,7 @@ class ConfigurationViewModel(
     private val dispatcher: Dispatcher,
     private val configurationDataStore: ConfigurationDataStore,
     private val restartApp: RestartAppUseCase,
+    private val tipsRepository: TipsRepository,
 ) : ViewModel() {
 
     val uiState = ConfigurationUiState()
@@ -44,5 +46,11 @@ class ConfigurationViewModel(
 
     fun onRestartApp() {
         restartApp()
+    }
+
+    fun resetTips() {
+        viewModelScope.launch {
+            tipsRepository.deleteAll()
+        }
     }
 }

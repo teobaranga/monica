@@ -1,6 +1,7 @@
 package com.teobaranga.monica.journal
 
 import androidx.lifecycle.SavedStateHandle
+import com.teobaranga.monica.component.tips.TipsRepository
 import com.teobaranga.monica.journal.data.local.JournalDao
 import com.teobaranga.monica.journal.data.remote.JournalApi
 import com.teobaranga.monica.journal.view.JournalEntryViewModel
@@ -17,4 +18,6 @@ interface TestJournalComponent {
     fun api(): JournalApi
 
     fun dao(): JournalDao
+
+    fun tipsRepository(): TipsRepository
 }

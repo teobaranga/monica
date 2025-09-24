@@ -1,0 +1,4 @@
+<resources>
+    <string name="journal_entry_empty_error">Enter a journal entry</string>
+    <string name="journal_title_info_mandatory_title_bug">This Monica server version actually requires a title due to a bug. The app will use the entry date as the default if none is provided.</string>
+</resources>

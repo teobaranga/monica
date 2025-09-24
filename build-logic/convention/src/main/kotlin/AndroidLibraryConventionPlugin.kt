@@ -22,6 +22,7 @@ import com.teobaranga.monica.configureKotlinAndroid
 import com.teobaranga.monica.libs
 import com.teobaranga.monica.testImplementation
 import org.gradle.api.Project
+import org.gradle.api.tasks.testing.AbstractTestTask
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
@@ -47,6 +48,7 @@ class AndroidLibraryConventionPlugin : MonicaPlugin() {
                 testOptions {
                     animationsDisabled = true
                     unitTests {
+                        isIncludeAndroidResources = true
                         all { test ->
                             test.systemProperties["robolectric.logging.enabled"] = "true"
                         }
@@ -85,6 +87,11 @@ class AndroidLibraryConventionPlugin : MonicaPlugin() {
                     junitXml.required.set(false)
                 }
                 systemProperty("gradle.build.dir", project.layout.buildDirectory.asFile.get())
+            }
+
+            // https://issuetracker.google.com/issues/411739086?pli=1
+            tasks.withType<AbstractTestTask>().configureEach {
+                failOnNoDiscoveredTests.set(false)
             }
         }
     }
