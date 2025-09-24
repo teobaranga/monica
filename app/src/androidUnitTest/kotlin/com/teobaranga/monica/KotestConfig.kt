@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
+import java.io.File
 
 class KotestConfig : AbstractProjectConfig() {
 
@@ -49,5 +50,7 @@ class KotestConfig : AbstractProjectConfig() {
         unmockkStatic("androidx.navigation.SavedStateHandleKt")
 
         Dispatchers.resetMain()
+
+        File("test.preferences_pb").delete()
     }
 }
