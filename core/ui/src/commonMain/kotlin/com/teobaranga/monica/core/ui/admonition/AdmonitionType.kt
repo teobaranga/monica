@@ -6,6 +6,9 @@ import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
+private val admonitionColorInfo = Color(0xFF00B8D4)
+private val admonitionColorWarning = Color(0xFFFF9100)
+
 enum class AdmonitionType(
     val icon: ImageVector,
     val color: Color,
@@ -13,12 +16,12 @@ enum class AdmonitionType(
 ) {
     INFO(
         icon = Icons.Outlined.Info,
-        color = Color(0xFF00B8D4),
-        backgroundColor = Color(0xFF00B8D4).copy(alpha = 0.1f),
+        color = admonitionColorInfo,
+        backgroundColor = admonitionColorInfo.copy(alpha = 0.1f),
     ),
     WARNING(
         icon = Icons.Outlined.WarningAmber,
-        color = Color(0xFFFF9100),
-        backgroundColor = Color(0xFFFF9100).copy(alpha = 0.1f),
+        color = admonitionColorWarning,
+        backgroundColor = admonitionColorWarning.copy(alpha = 0.1f),
     );
 }

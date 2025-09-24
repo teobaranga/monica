@@ -157,7 +157,6 @@ private fun JournalEntryScreenLoaded(
                     dismissAction = AdmonitionState.DismissAction(
                         label = stringResource(CoreRes.string.ok_got_it),
                         onDismiss = {
-                            uiState.showTitleBugInfo = false
                             onTipDismiss(JournalTips.mandatoryTitleServerBug)
                         },
                     )

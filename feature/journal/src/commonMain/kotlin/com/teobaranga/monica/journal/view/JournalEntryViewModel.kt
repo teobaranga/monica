@@ -110,6 +110,11 @@ class JournalEntryViewModel(
 
     fun onTipDismiss(id: String) {
         viewModelScope.launch {
+            when (id) {
+                JournalTips.mandatoryTitleServerBug -> {
+                    getLoadedState()?.showTitleBugInfo = false
+                }
+            }
             tipsRepository.markAsSeen(id)
         }
     }

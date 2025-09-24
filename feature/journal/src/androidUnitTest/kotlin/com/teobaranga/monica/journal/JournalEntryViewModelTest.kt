@@ -4,9 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import app.cash.turbine.test
 import com.skydoves.sandwich.ApiResponse
+import com.teobaranga.monica.journal.data.JournalTips
 import com.teobaranga.monica.journal.data.remote.JournalEntryCreateRequest
 import com.teobaranga.monica.journal.data.remote.JournalEntryResponse
 import com.teobaranga.monica.journal.view.JournalEntryRoute
+import com.teobaranga.monica.journal.view.ui.JournalEntryError
 import com.teobaranga.monica.journal.view.ui.JournalEntryUiState
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.config.DefaultTestConfig
@@ -44,6 +46,7 @@ class JournalEntryViewModelTest : BehaviorSpec(
                         initialTitle = null,
                         initialPost = "",
                         initialDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+                        showTitleBugInfo = true,
                     )
                 }
             }
@@ -58,14 +61,32 @@ class JournalEntryViewModelTest : BehaviorSpec(
                 }
             }
 
-            When("save") {
+            When("save blank entry") {
                 viewModel.uiState.first()
 
                 viewModel.onSave()
 
-                Then("nothing happens") {
+                Then("API is not called") {
                     coVerify(exactly = 0) { api.createJournalEntry(request = any()) }
                     coVerify(exactly = 0) { api.updateJournalEntry(id = any(), request = any()) }
+                }
+
+                Then("entry error message is raised") {
+                    val uiState = viewModel.uiState.value as JournalEntryUiState.Loaded
+                    uiState.postError shouldBe JournalEntryError.Empty
+                }
+            }
+
+            When("dismiss title bug info") {
+                viewModel.onTipDismiss(JournalTips.mandatoryTitleServerBug)
+
+                Then("info is dismissed") {
+                    val tipsRepository = component.tipsRepository()
+
+                    val uiState = viewModel.uiState.value as JournalEntryUiState.Loaded
+                    uiState.showTitleBugInfo shouldBe false
+
+                    tipsRepository.isTipSeen(JournalTips.mandatoryTitleServerBug) shouldBe true
                 }
             }
         }
@@ -87,6 +108,7 @@ class JournalEntryViewModelTest : BehaviorSpec(
                         initialTitle = validJournalEntry.title,
                         initialPost = validJournalEntry.post,
                         initialDate = validJournalEntry.date,
+                        showTitleBugInfo = true,
                     )
                 }
             }
