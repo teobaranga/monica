@@ -47,6 +47,7 @@ class AndroidLibraryConventionPlugin : MonicaPlugin() {
                 testOptions {
                     animationsDisabled = true
                     unitTests {
+                        isIncludeAndroidResources = true
                         all { test ->
                             test.systemProperties["robolectric.logging.enabled"] = "true"
                         }
