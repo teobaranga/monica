@@ -2,12 +2,9 @@ package com.teobaranga.monica.test
 
 import android.content.ContentProvider
 import org.junit.Before
-import org.junit.runner.RunWith
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.util.Logger
 
-@RunWith(RobolectricTestRunner::class)
 actual open class PlatformTest {
 
     @Before

@@ -31,9 +31,12 @@ import monica.feature.journal.generated.resources.journal_entry_empty_error
 import monica.feature.journal.generated.resources.journal_title_info_mandatory_title_bug
 import org.jetbrains.compose.resources.getString
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import kotlin.time.Clock
 import kotlin.uuid.Uuid
 
+@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalTestApi::class)
 class JournalEntryScreenTest : PlatformTest() {
 
