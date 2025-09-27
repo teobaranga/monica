@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
@@ -30,11 +31,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.createSavedStateHandle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.applinks.AppLinksHandler
 import com.teobaranga.monica.browser.LocalWebBrowser
@@ -55,14 +55,10 @@ private const val SETUP_INFO_URL = "https://monica.teobaranga.com/setup"
 
 @Composable
 fun Setup(
-    viewModel: SetupViewModel = injectedViewModel<SetupViewModel, SetupViewModel.Factory>(
-        creationCallback = { factory ->
-            factory(createSavedStateHandle())
-        }
-    ),
+    viewModel: SetupViewModel = injectedViewModel(),
 ) {
     val webBrowser = LocalWebBrowser.current
-    val uiState = viewModel.uiState
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
     var insecureSetupUrl by remember { mutableStateOf<String?>(null) }
 
@@ -130,6 +126,9 @@ fun SetupScreen(
     onSignIn: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val focusManager = LocalFocusManager.current
+    val error = uiState.error
+
     val scrollState = rememberScrollState()
 
     // Scroll to bottom to keep the main button visible when the IME is open
@@ -163,13 +162,16 @@ fun SetupScreen(
                     .fillMaxWidth()
                     .padding(top = 8.dp)
                     .padding(horizontal = 20.dp),
-                value = uiState.serverAddress,
-                onValueChange = {
-                    uiState.onServerAddressChanged(it)
-                },
-                singleLine = true,
+                state = uiState.serverAddress,
+                lineLimits = TextFieldLineLimits.SingleLine,
                 label = {
                     Text(text = "Server Address")
+                },
+                isError = error is UiState.Error.ServerProtocolError,
+                supportingText = {
+                    if (error is UiState.Error.ServerProtocolError) {
+                        Text(text = "Protocol must be http or https")
+                    }
                 },
             )
             OutlinedTextField(
@@ -177,11 +179,8 @@ fun SetupScreen(
                     .fillMaxWidth()
                     .padding(top = 12.dp)
                     .padding(horizontal = 20.dp),
-                value = uiState.clientId,
-                onValueChange = {
-                    uiState.onClientIdChanged(it)
-                },
-                singleLine = true,
+                state = uiState.clientId,
+                lineLimits = TextFieldLineLimits.SingleLine,
                 label = {
                     Text(text = "Client ID")
                 },
@@ -191,22 +190,20 @@ fun SetupScreen(
                     .fillMaxWidth()
                     .padding(top = 12.dp)
                     .padding(horizontal = 20.dp),
-                value = uiState.clientSecret,
-                onValueChange = {
-                    uiState.onClientSecretChanged(it)
-                },
+                state = uiState.clientSecret,
                 label = {
                     Text(text = "Client Secret")
                 },
             )
-            if (uiState.error is UiState.Error.ConfigurationError) {
+            if (error is UiState.Error.ConfigurationError) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp)
                         .padding(top = 12.dp),
-                    text = "Please check your configuration",
-                    color = Color.Red,
+                    text = error.message
+                        ?: "Please check your configuration",
+                    color = MaterialTheme.colorScheme.error,
                 )
             }
             Button(
@@ -214,7 +211,10 @@ fun SetupScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
                     .padding(top = 12.dp, bottom = 20.dp),
-                onClick = onSignIn,
+                onClick = {
+                    focusManager.clearFocus()
+                    onSignIn()
+                },
                 enabled = uiState.isSignInEnabled,
                 content = {
                     Text(

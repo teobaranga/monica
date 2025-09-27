@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -91,7 +90,7 @@ private fun TitleText() {
             tint = MaterialTheme.colorScheme.error,
         )
     }
-    BasicText(
+    Text(
         text = buildAnnotatedString {
             appendInlineContent("warning_icon")
             append(stringResource(Res.string.insecure_alert_title))

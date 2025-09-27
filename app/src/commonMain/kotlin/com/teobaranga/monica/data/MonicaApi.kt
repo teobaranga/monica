@@ -29,6 +29,12 @@ data class TokenResponse(
     val refreshToken: String,
 )
 
+@Serializable
+data class TokenErrorResponse(
+    @SerialName("message")
+    val message: String,
+)
+
 class TokenRequest(
     clientId: String,
     clientSecret: String,
