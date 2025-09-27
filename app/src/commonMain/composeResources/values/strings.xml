@@ -1,0 +1,7 @@
+<resources>
+    <string name="insecure_alert_title">Insecure connection</string>
+    <string name="insecure_alert_body1">The data you send and receive will not be encrypted and could be intercepted by a third-party.</string>
+    <string name="insecure_alert_body2">It is recommended to use a secure connection (HTTPS) instead.</string>
+    <string name="insecure_alert_accept">I understand the risk, proceed</string>
+    <string name="insecure_alert_reject">Dismiss</string>
+</resources>

@@ -52,7 +52,7 @@ class SetupViewModelTest : BehaviorSpec(
 
                     Then("no web redirection happens") {
 
-                        viewModel.setupUri.test {
+                        viewModel.setupEvents.test {
                             expectNoEvents()
                         }
                     }
@@ -70,7 +70,7 @@ class SetupViewModelTest : BehaviorSpec(
 
                     Then("the setup URL is correct") {
 
-                        viewModel.setupUri.test {
+                        viewModel.setupEvents.test {
 
                             viewModel.onSignIn()
 
@@ -96,7 +96,7 @@ class SetupViewModelTest : BehaviorSpec(
 
                     Then("the setup URL is correct") {
 
-                        viewModel.setupUri.test {
+                        viewModel.setupEvents.test {
 
                             viewModel.onSignIn()
 

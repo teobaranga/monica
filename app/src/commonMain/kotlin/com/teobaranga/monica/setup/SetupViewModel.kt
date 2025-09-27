@@ -21,10 +21,12 @@ import com.teobaranga.monica.settings.getOAuthSettings
 import com.teobaranga.monica.settings.oAuthSettings
 import com.teobaranga.monica.setup.domain.SignInResult
 import com.teobaranga.monica.setup.domain.SignInUseCase
-import io.ktor.http.URLBuilder
 import io.ktor.http.appendPathSegments
+import io.ktor.http.buildUrl
+import io.ktor.http.isSecure
+import io.ktor.http.takeFrom
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -51,8 +53,8 @@ class SetupViewModel(
         UiState()
     }
 
-    private val _setupUri = MutableSharedFlow<String>()
-    val setupUri: SharedFlow<String> = _setupUri
+    private val _setupEvents = MutableSharedFlow<SetupEvent>()
+    val setupEvents = _setupEvents.asSharedFlow()
 
     init {
         viewModelScope.launch(dispatcher.io) {
@@ -74,12 +76,6 @@ class SetupViewModel(
 
     fun onSignIn() {
         viewModelScope.launch(dispatcher.io) {
-            val serverAddress = URLBuilder(uiState.serverAddress.text)
-            val baseUrl = serverAddress
-                .appendPathSegments("oauth")
-                .appendPathSegments("authorize")
-                .build()
-
             dataStore.edit { preferences ->
                 preferences.oAuthSettings {
                     setServerAddress(uiState.serverAddress.text)
@@ -88,16 +84,21 @@ class SetupViewModel(
                 }
             }
 
-            val url = URLBuilder(baseUrl).apply {
+            val url = buildUrl {
+                takeFrom(uiState.serverAddress.text)
+                appendPathSegments("oauth", "authorize")
                 parameters.apply {
                     append(PARAM_CLIENT_ID, uiState.clientId.text)
                     append(PARAM_RESPONSE_TYPE, "code")
                     append(PARAM_REDIRECT_URI, REDIRECT_URI)
                 }
             }
-                .build()
-                .toString()
-            _setupUri.emit(url)
+            _setupEvents.emit(
+                SetupEvent.Login(
+                    setupUrl = url.toString(),
+                    isSecure = url.protocol.isSecure(),
+                )
+            )
         }
     }
 

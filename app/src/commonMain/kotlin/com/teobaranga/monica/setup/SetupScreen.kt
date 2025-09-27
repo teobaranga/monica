@@ -25,6 +25,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,12 +46,12 @@ import com.teobaranga.monica.data.PARAM_CODE
 import com.teobaranga.monica.home.HomeRoute
 import com.teobaranga.monica.util.compose.keyboardAsState
 import kotlinx.coroutines.flow.collectLatest
+import monica.app.generated.resources.Res
+import monica.app.generated.resources.eb_garamond_variable
+import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val SETUP_INFO_URL = "https://monica.teobaranga.com/setup"
-
-@Composable
-expect fun logoFontFamily(): FontFamily
 
 @Composable
 fun Setup(
@@ -59,24 +62,24 @@ fun Setup(
     ),
 ) {
     val webBrowser = LocalWebBrowser.current
-    val navigator = LocalNavigator.current
     val uiState = viewModel.uiState
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
+    var insecureSetupUrl by remember { mutableStateOf<String?>(null) }
 
-    LaunchedEffect(isLoggedIn) {
-        if (isLoggedIn == true) {
-            navigator.navigate(HomeRoute) {
-                popUpTo(SetupRoute) {
-                    inclusive = true
-                }
-            }
-        }
-    }
+    RedirectEffect(isLoggedIn)
 
     LaunchedEffect(Unit) {
-        viewModel.setupUri
+        viewModel.setupEvents
             .collectLatest { url ->
-                webBrowser.open(url)
+                when (url) {
+                    is SetupEvent.Login -> {
+                        if (url.isSecure) {
+                            webBrowser.open(url.setupUrl)
+                        } else {
+                            insecureSetupUrl = url.setupUrl
+                        }
+                    }
+                }
             }
     }
 
@@ -93,6 +96,32 @@ fun Setup(
         uiState = uiState,
         onSignIn = viewModel::onSignIn,
     )
+
+    insecureSetupUrl?.let {
+        InsecureHttpBottomSheet(
+            onDismiss = {
+                insecureSetupUrl = null
+            },
+            onAccept = {
+                insecureSetupUrl = null
+                webBrowser.open(it)
+            },
+        )
+    }
+}
+
+@Composable
+private fun RedirectEffect(isLoggedIn: Boolean?) {
+    val navigator = LocalNavigator.current
+    LaunchedEffect(isLoggedIn) {
+        if (isLoggedIn == true) {
+            navigator.navigate(HomeRoute) {
+                popUpTo(SetupRoute) {
+                    inclusive = true
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -216,7 +245,7 @@ private fun Logo(modifier: Modifier = Modifier) {
         Text(
             text = "MONICA",
             style = MaterialTheme.typography.displayLarge,
-            fontFamily = logoFontFamily(),
+            fontFamily = FontFamily(Font(Res.font.eb_garamond_variable)),
         )
     }
 }
