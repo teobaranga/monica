@@ -18,7 +18,7 @@ google-services = "4.4.3"
 # Remove PlatformTest workaround when going to 1.10.0 (https://youtrack.jetbrains.com/issue/CMP-6612)
 jetbrains-compose = "1.9.0"
 jetbrains-lifecycle = "2.9.4"
-ksp = "2.2.20-2.0.3"
+ksp = "2.2.20-2.0.2"
 kotlin = "2.2.20"
 
 # Libraries
