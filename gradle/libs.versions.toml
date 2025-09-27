@@ -18,7 +18,7 @@ google-services = "4.4.3"
 # Remove PlatformTest workaround when going to 1.10.0 (https://youtrack.jetbrains.com/issue/CMP-6612)
 jetbrains-compose = "1.9.0"
 jetbrains-lifecycle = "2.9.4"
-ksp = "2.2.20-2.0.2"
+ksp = "2.2.20-2.0.3"
 kotlin = "2.2.20"
 
 # Libraries
@@ -28,7 +28,7 @@ compose-placeholder = "1.0.12"
 compose-rules = "0.4.27"
 datastore = "1.1.7"
 desugar-jdk-libs = "2.1.5"
-firebase-bom = "34.2.0"
+firebase-bom = "34.3.0"
 jetbrains-navigation = "2.9.0"
 junit = "4.13.2"
 junit-vintage = "5.13.4"
@@ -49,14 +49,14 @@ mockk = "1.14.5"
 okio = "3.16.0"
 paging = "3.3.6"
 robolectric = "4.16"
-room = "2.8.0"
+room = "2.8.1"
 sandwich = "2.1.3"
 signum = "3.17.0"
 # Remove custom proguard rule when 2.6.1 is released
 # https://issuetracker.google.com/issues/442489402
-sqlite = "2.6.0"
+sqlite = "2.6.1"
 turbine = "1.2.1"
-work = "2.10.4"
+work = "2.10.5"
 
 [libraries]
 # Included build
