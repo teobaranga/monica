@@ -1,4 +1,6 @@
 <resources>
+    <string name="setup_error_address_protocol">Address must start with http:// or https://</string>
+    <string name="setup_error_address_invalid">Please enter a valid URL</string>
     <string name="insecure_alert_title">Insecure connection</string>
     <string name="insecure_alert_body1">The data you send and receive will not be encrypted and could be intercepted by a third-party.</string>
     <string name="insecure_alert_body2">It is recommended to use a secure connection (HTTPS) instead.</string>

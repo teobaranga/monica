@@ -17,7 +17,9 @@ class UiState(
 
     sealed interface Error {
 
-        data object ServerProtocolError : Error
+        data object ServerAddressProtocolError : Error
+
+        data object ServerAddressInvalidError : Error
 
         data class ConfigurationError(val message: String?) : Error
     }

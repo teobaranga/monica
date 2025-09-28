@@ -19,7 +19,7 @@ import com.teobaranga.monica.settings.getOAuthSettings
 import com.teobaranga.monica.settings.oAuthSettings
 import com.teobaranga.monica.setup.domain.SignInResult
 import com.teobaranga.monica.setup.domain.SignInUseCase
-import io.ktor.http.URLProtocol
+import com.teobaranga.monica.setup.domain.ValidateServerAddressUseCase
 import io.ktor.http.appendPathSegments
 import io.ktor.http.buildUrl
 import io.ktor.http.isSecure
@@ -44,6 +44,7 @@ class SetupViewModel(
     private val dispatcher: Dispatcher,
     private val dataStore: DataStore<Preferences>,
     authorizationRepository: AuthorizationRepository,
+    private val validateServerAddress: ValidateServerAddressUseCase,
     private val signIn: SignInUseCase,
 ) : ViewModel() {
 
@@ -78,36 +79,46 @@ class SetupViewModel(
 
     fun onSignIn() {
         viewModelScope.launch(dispatcher.io) {
+            val address = uiState.value.serverAddress.text.toString().trim()
+            val clientId = uiState.value.clientId.text.toString().trim()
+            val clientSecret = uiState.value.clientSecret.text.toString().trim()
+
             dataStore.edit { preferences ->
                 preferences.oAuthSettings {
-                    setServerAddress(uiState.value.serverAddress.text.toString())
-                    setClientId(uiState.value.clientId.text.toString())
-                    setClientSecret(uiState.value.clientSecret.text.toString())
+                    setServerAddress(address)
+                    setClientId(clientId)
+                    setClientSecret(clientSecret)
                 }
             }
 
-            val url = buildUrl {
-                takeFrom(uiState.value.serverAddress.text.toString())
-                appendPathSegments("oauth", "authorize")
-                parameters.apply {
-                    append(PARAM_CLIENT_ID, uiState.value.clientId.text.toString())
-                    append(PARAM_RESPONSE_TYPE, "code")
-                    append(PARAM_REDIRECT_URI, REDIRECT_URI)
+            when (validateServerAddress(address)) {
+                ValidateServerAddressUseCase.Result.Invalid -> {
+                    uiState.value.error = UiState.Error.ServerAddressInvalidError
+                    return@launch
                 }
-            }
 
-            when (url.protocol) {
-                URLProtocol.HTTP, URLProtocol.HTTPS -> {
+                ValidateServerAddressUseCase.Result.InvalidProtocol -> {
+                    uiState.value.error = UiState.Error.ServerAddressProtocolError
+                    return@launch
+                }
+
+                ValidateServerAddressUseCase.Result.Valid -> {
+                    val url = buildUrl {
+                        takeFrom(address)
+                        appendPathSegments("oauth", "authorize")
+                        parameters.apply {
+                            append(PARAM_CLIENT_ID, uiState.value.clientId.text.toString())
+                            append(PARAM_RESPONSE_TYPE, "code")
+                            append(PARAM_REDIRECT_URI, REDIRECT_URI)
+                        }
+                    }
+
                     _setupEvents.emit(
                         SetupEvent.Login(
                             setupUrl = url.toString(),
                             isSecure = url.protocol.isSecure(),
                         )
                     )
-                }
-
-                else -> {
-                    uiState.value.error = UiState.Error.ServerProtocolError
                 }
             }
         }
@@ -131,6 +142,7 @@ class SetupViewModel(
                 is SignInResult.Error.ServerError -> {
                     uiState.value.error = UiState.Error.ConfigurationError(message = signInResult.message)
                 }
+
                 is SignInResult.Error.UnknownError -> {
                     uiState.value.error = UiState.Error.ConfigurationError(message = null)
                 }
@@ -151,7 +163,9 @@ class SetupViewModel(
             launch {
                 snapshotFlow { uiState.serverAddress.text }
                     .collect {
-                        if (uiState.error == UiState.Error.ServerProtocolError) {
+                        if (uiState.error == UiState.Error.ServerAddressProtocolError
+                            || uiState.error == UiState.Error.ServerAddressInvalidError
+                        ) {
                             uiState.error = null
                         }
                     }

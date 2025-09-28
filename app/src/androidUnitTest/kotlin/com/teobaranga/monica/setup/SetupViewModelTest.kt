@@ -1,6 +1,6 @@
 package com.teobaranga.monica.setup
 
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
@@ -25,6 +25,8 @@ class SetupViewModelTest : BehaviorSpec(
             val component = SetupComponent::class.create()
             val viewModel = component.setupViewModel()(SavedStateHandle())
 
+            fun uiState() = viewModel.uiState.value
+
             afterTest {
                 component.dataStore().reset()
             }
@@ -35,26 +37,29 @@ class SetupViewModelTest : BehaviorSpec(
 
             Then("displays default server address, empty client inputs, and disabled sign in") {
 
-                viewModel.uiState.serverAddress.text shouldBe MONICA_URL
-                viewModel.uiState.clientId.text shouldBe ""
-                viewModel.uiState.clientSecret.text shouldBe ""
-                viewModel.uiState.isSignInEnabled shouldBe false
+                uiState().serverAddress.text shouldBe MONICA_URL
+                uiState().clientId.text shouldBe ""
+                uiState().clientSecret.text shouldBe ""
+                uiState().isSignInEnabled shouldBe false
             }
 
             And("non-http scheme") {
 
-                viewModel.uiState.onServerAddressChanged(TextFieldValue("blah"))
-                viewModel.uiState.onClientIdChanged(TextFieldValue("2"))
+                uiState().serverAddress.setTextAndPlaceCursorAtEnd("blah://test.com")
+                uiState().clientId.setTextAndPlaceCursorAtEnd("2")
 
                 When("sign in") {
 
                     viewModel.onSignIn()
 
                     Then("no web redirection happens") {
-
                         viewModel.setupEvents.test {
                             expectNoEvents()
                         }
+                    }
+
+                    Then("show unsupported protocol error") {
+                        uiState().error shouldBe UiState.Error.ServerAddressProtocolError
                     }
                 }
             }
@@ -63,8 +68,8 @@ class SetupViewModelTest : BehaviorSpec(
 
                 val address = "http://test.com"
                 val clientId = "2"
-                viewModel.uiState.onServerAddressChanged(TextFieldValue(address))
-                viewModel.uiState.onClientIdChanged(TextFieldValue(clientId))
+                uiState().serverAddress.setTextAndPlaceCursorAtEnd(address)
+                uiState().clientId.setTextAndPlaceCursorAtEnd(clientId)
 
                 When("sign in") {
 
@@ -75,11 +80,13 @@ class SetupViewModelTest : BehaviorSpec(
                             viewModel.onSignIn()
 
                             val redirectUri = URLEncoder.encode(REDIRECT_URI, "UTF-8")
-                            awaitItem() shouldBe
-                                "$address/oauth/authorize?" +
-                                "$PARAM_CLIENT_ID=$clientId&" +
-                                "$PARAM_RESPONSE_TYPE=code&" +
-                                "$PARAM_REDIRECT_URI=$redirectUri"
+                            awaitItem() shouldBe SetupEvent.Login(
+                                setupUrl = "$address/oauth/authorize?" +
+                                        "$PARAM_CLIENT_ID=$clientId&" +
+                                        "$PARAM_RESPONSE_TYPE=code&" +
+                                        "$PARAM_REDIRECT_URI=$redirectUri",
+                                isSecure = false,
+                            )
                         }
                     }
                 }
@@ -89,8 +96,8 @@ class SetupViewModelTest : BehaviorSpec(
 
                 val address = "http://test.com:8080"
                 val clientId = "2"
-                viewModel.uiState.onServerAddressChanged(TextFieldValue(address))
-                viewModel.uiState.onClientIdChanged(TextFieldValue(clientId))
+                uiState().serverAddress.setTextAndPlaceCursorAtEnd(address)
+                uiState().clientId.setTextAndPlaceCursorAtEnd(clientId)
 
                 When("sign in") {
 
@@ -101,11 +108,41 @@ class SetupViewModelTest : BehaviorSpec(
                             viewModel.onSignIn()
 
                             val redirectUri = URLEncoder.encode(REDIRECT_URI, "UTF-8")
-                            awaitItem() shouldBe
-                                "$address/oauth/authorize?" +
-                                "$PARAM_CLIENT_ID=$clientId&" +
-                                "$PARAM_RESPONSE_TYPE=code&" +
-                                "$PARAM_REDIRECT_URI=$redirectUri"
+                            awaitItem() shouldBe SetupEvent.Login(
+                                setupUrl = "$address/oauth/authorize?" +
+                                    "$PARAM_CLIENT_ID=$clientId&" +
+                                    "$PARAM_RESPONSE_TYPE=code&" +
+                                    "$PARAM_REDIRECT_URI=$redirectUri",
+                                isSecure = false,
+                            )
+                        }
+                    }
+                }
+            }
+
+            And("valid https scheme") {
+
+                val address = "https://test.com"
+                val clientId = "2"
+                uiState().serverAddress.setTextAndPlaceCursorAtEnd(address)
+                uiState().clientId.setTextAndPlaceCursorAtEnd(clientId)
+
+                When("sign in") {
+
+                    Then("the setup URL is correct") {
+
+                        viewModel.setupEvents.test {
+
+                            viewModel.onSignIn()
+
+                            val redirectUri = URLEncoder.encode(REDIRECT_URI, "UTF-8")
+                            awaitItem() shouldBe SetupEvent.Login(
+                                setupUrl = "$address/oauth/authorize?" +
+                                    "$PARAM_CLIENT_ID=$clientId&" +
+                                    "$PARAM_RESPONSE_TYPE=code&" +
+                                    "$PARAM_REDIRECT_URI=$redirectUri",
+                                isSecure = true,
+                            )
                         }
                     }
                 }
@@ -113,13 +150,13 @@ class SetupViewModelTest : BehaviorSpec(
 
             And("all inputs filled") {
 
-                viewModel.uiState.onClientIdChanged(TextFieldValue("2"))
+                uiState().clientId.setTextAndPlaceCursorAtEnd("2")
 
-                viewModel.uiState.onClientSecretChanged(TextFieldValue("abc123"))
+                uiState().clientSecret.setTextAndPlaceCursorAtEnd("abc123")
 
                 Then("sign in is enabled") {
 
-                    viewModel.uiState.isSignInEnabled shouldBe true
+                    uiState().isSignInEnabled shouldBe true
                 }
             }
         }

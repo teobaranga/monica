@@ -48,7 +48,10 @@ import com.teobaranga.monica.util.compose.keyboardAsState
 import kotlinx.coroutines.flow.collectLatest
 import monica.app.generated.resources.Res
 import monica.app.generated.resources.eb_garamond_variable
+import monica.app.generated.resources.setup_error_address_invalid
+import monica.app.generated.resources.setup_error_address_protocol
 import org.jetbrains.compose.resources.Font
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val SETUP_INFO_URL = "https://monica.teobaranga.com/setup"
@@ -167,10 +170,13 @@ fun SetupScreen(
                 label = {
                     Text(text = "Server Address")
                 },
-                isError = error is UiState.Error.ServerProtocolError,
+                isError = error is UiState.Error.ServerAddressProtocolError
+                    || error is UiState.Error.ServerAddressInvalidError,
                 supportingText = {
-                    if (error is UiState.Error.ServerProtocolError) {
-                        Text(text = "Protocol must be http or https")
+                    if (error is UiState.Error.ServerAddressProtocolError) {
+                        Text(text = stringResource(Res.string.setup_error_address_protocol))
+                    } else if (error is UiState.Error.ServerAddressInvalidError) {
+                        Text(text = stringResource(Res.string.setup_error_address_invalid))
                     }
                 },
             )
