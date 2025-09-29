@@ -30,6 +30,11 @@ kotlin {
                 implementation(libs.jetbrains.navigation)
             }
         }
+        commonTest {
+            dependencies {
+                implementation(project(":core:test"))
+            }
+        }
     }
 }
 

@@ -95,6 +95,11 @@ kotlin {
                 implementation(libs.signum.indispensable)
             }
         }
+        commonTest {
+            dependencies {
+                implementation(project(":core:test"))
+            }
+        }
     }
 }
 

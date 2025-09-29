@@ -9,8 +9,11 @@ import com.skydoves.sandwich.message
 import com.teobaranga.monica.account.settings.tokenStorage
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.MonicaApi
+import com.teobaranga.monica.data.TokenErrorResponse
 import com.teobaranga.monica.data.TokenRequest
 import com.teobaranga.monica.work.WorkScheduler
+import io.ktor.client.call.body
+import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
 
@@ -33,8 +36,12 @@ class SignInUseCase internal constructor(
             when (tokenResponse) {
                 is ApiResponse.Failure.Error -> {
                     log.e { "Failed to get access token: ${tokenResponse.message()}" }
-                    // TODO present message to user
-                    SignInResult.Error.UnknownError
+                    val tokenErrorResponse = (tokenResponse.payload as? HttpResponse)?.body<TokenErrorResponse>()
+                    if (tokenErrorResponse != null) {
+                        SignInResult.Error.ServerError(tokenErrorResponse.message)
+                    } else {
+                        SignInResult.Error.UnknownError
+                    }
                 }
 
                 is ApiResponse.Failure.Exception -> {
