@@ -9,7 +9,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 const val PARAM_CLIENT_ID = "client_id"
@@ -53,16 +52,11 @@ class TokenRequest(
     }
 }
 
-interface MonicaApi {
-    suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse>
-}
-
 @Inject
 @SingleIn(AppScope::class)
-@ContributesBinding(AppScope::class)
-class MonicaApiImpl(private val httpRequestMaker: HttpRequestMaker) : MonicaApi {
+class MonicaApi(private val httpRequestMaker: HttpRequestMaker) {
 
-    override suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse> {
+    suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse> {
         return httpRequestMaker.call {
             apiResponseOf {
                 submitForm(

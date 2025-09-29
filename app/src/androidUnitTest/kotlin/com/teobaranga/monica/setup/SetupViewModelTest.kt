@@ -7,15 +7,22 @@ import app.cash.turbine.test
 import com.diamondedge.logging.FixedLogLevel
 import com.diamondedge.logging.KmLogging
 import com.diamondedge.logging.PrintLogger
+import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.MONICA_URL
 import com.teobaranga.monica.account.settings.tokenStorage
 import com.teobaranga.monica.data.PARAM_CLIENT_ID
 import com.teobaranga.monica.data.PARAM_REDIRECT_URI
 import com.teobaranga.monica.data.PARAM_RESPONSE_TYPE
 import com.teobaranga.monica.data.REDIRECT_URI
+import com.teobaranga.monica.data.TokenErrorResponse
+import com.teobaranga.monica.data.TokenResponse
 import com.teobaranga.monica.data.user.MeEntity
+import com.teobaranga.monica.setup.domain.SYNC_WORKER_WORK_NAME
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
+import io.ktor.client.statement.HttpResponse
+import io.mockk.coEvery
+import io.mockk.mockk
 import java.net.URLEncoder
 
 class SetupViewModelTest : BehaviorSpec(
@@ -24,11 +31,14 @@ class SetupViewModelTest : BehaviorSpec(
         Given("logged out user") {
             val component = SetupComponent::class.create()
             val viewModel = component.setupViewModel()(SavedStateHandle())
+            val testWorkScheduler = component.testWorkScheduler()
+            val monicaApi = component.monicaApi()
 
             fun uiState() = viewModel.uiState.value
 
             afterTest {
                 component.dataStore().reset()
+                testWorkScheduler.clearWork()
             }
 
             viewModel.isLoggedIn.test {
@@ -82,9 +92,9 @@ class SetupViewModelTest : BehaviorSpec(
                             val redirectUri = URLEncoder.encode(REDIRECT_URI, "UTF-8")
                             awaitItem() shouldBe SetupEvent.Login(
                                 setupUrl = "$address/oauth/authorize?" +
-                                        "$PARAM_CLIENT_ID=$clientId&" +
-                                        "$PARAM_RESPONSE_TYPE=code&" +
-                                        "$PARAM_REDIRECT_URI=$redirectUri",
+                                    "$PARAM_CLIENT_ID=$clientId&" +
+                                    "$PARAM_RESPONSE_TYPE=code&" +
+                                    "$PARAM_REDIRECT_URI=$redirectUri",
                                 isSecure = false,
                             )
                         }
@@ -151,12 +161,81 @@ class SetupViewModelTest : BehaviorSpec(
             And("all inputs filled") {
 
                 uiState().clientId.setTextAndPlaceCursorAtEnd("2")
-
                 uiState().clientSecret.setTextAndPlaceCursorAtEnd("abc123")
 
                 Then("sign in is enabled") {
 
                     uiState().isSignInEnabled shouldBe true
+                }
+
+                And("sign in API success") {
+
+                    coEvery { monicaApi.getAccessToken(any()) }.answers {
+                        ApiResponse.of {
+                            TokenResponse(
+                                accessToken = "access_token",
+                                refreshToken = "refresh_token",
+                            )
+                        }
+                    }
+
+                    When("sign in") {
+                        viewModel.onSignIn()
+
+                        val code = "123456"
+                        viewModel.onAuthorizationCode(code)
+
+                        Then("sign in work is scheduled") {
+                            testWorkScheduler.isWorkScheduled(SYNC_WORKER_WORK_NAME) shouldBe true
+                        }
+                    }
+                }
+
+                And("sign in API error") {
+
+                    coEvery { monicaApi.getAccessToken(any()) }.answers {
+                        val httpResponse = mockk<HttpResponse> {
+                            coEvery { call.bodyNullable(any()) } answers { TokenErrorResponse("Test Error") }
+                        }
+                        ApiResponse.Failure.Error(httpResponse)
+                    }
+
+                    When("sign in") {
+                        viewModel.onSignIn()
+
+                        val code = "123456"
+                        viewModel.onAuthorizationCode(code)
+
+                        Then("sign in work is not scheduled") {
+                            testWorkScheduler.isWorkScheduled(SYNC_WORKER_WORK_NAME) shouldBe false
+                        }
+
+                        Then("UI state displays error with server message") {
+                            uiState().error shouldBe UiState.Error.ConfigurationError("Test Error")
+                        }
+                    }
+                }
+
+                And("sign in API exception") {
+
+                    coEvery { monicaApi.getAccessToken(any()) }.answers {
+                        ApiResponse.exception(Throwable())
+                    }
+
+                    When("sign in") {
+                        viewModel.onSignIn()
+
+                        val code = "123456"
+                        viewModel.onAuthorizationCode(code)
+
+                        Then("sign in work is not scheduled") {
+                            testWorkScheduler.isWorkScheduled(SYNC_WORKER_WORK_NAME) shouldBe false
+                        }
+
+                        Then("UI state displays generic error") {
+                            uiState().error shouldBe UiState.Error.ConfigurationError(null)
+                        }
+                    }
                 }
             }
         }

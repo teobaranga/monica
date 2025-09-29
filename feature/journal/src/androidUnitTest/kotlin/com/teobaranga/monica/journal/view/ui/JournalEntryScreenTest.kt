@@ -22,7 +22,7 @@ import com.teobaranga.monica.journal.create
 import com.teobaranga.monica.journal.data.local.JournalEntryEntity
 import com.teobaranga.monica.journal.view.JournalEntry
 import com.teobaranga.monica.journal.view.JournalEntryRoute
-import com.teobaranga.monica.test.PlatformTest
+import com.teobaranga.monica.test.setupAndroidContextProvider
 import io.mockk.mockk
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -30,6 +30,7 @@ import monica.feature.journal.generated.resources.Res
 import monica.feature.journal.generated.resources.journal_entry_empty_error
 import monica.feature.journal.generated.resources.journal_title_info_mandatory_title_bug
 import org.jetbrains.compose.resources.getString
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -38,7 +39,7 @@ import kotlin.uuid.Uuid
 
 @RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalTestApi::class)
-class JournalEntryScreenTest : PlatformTest() {
+class JournalEntryScreenTest {
 
     private val localDateFormatter = LocalDateFormatter(
         locale = Locale.current.platformLocale,
@@ -50,6 +51,11 @@ class JournalEntryScreenTest : PlatformTest() {
     val component = TestJournalComponent::class.create()
     val savedStateHandle = SavedStateHandle()
     val navigator = mockk<NavHostController>()
+
+    @Before
+    fun setup() {
+        setupAndroidContextProvider()
+    }
 
     @Test
     fun `Given new entry, When loaded, Then UI is correct`() = runAndroidComposeUiTest<ComponentActivity> {

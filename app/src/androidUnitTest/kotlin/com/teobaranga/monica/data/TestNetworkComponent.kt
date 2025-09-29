@@ -46,6 +46,10 @@ interface TestNetworkComponent {
 
     @Provides
     @SingleIn(AppScope::class)
+    fun provideMonicaApi(): MonicaApi = mockk<MonicaApi>()
+
+    @Provides
+    @SingleIn(AppScope::class)
     fun provideContactApi(): ContactApi = mockk<ContactApi>()
 
     @Provides

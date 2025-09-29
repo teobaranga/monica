@@ -48,8 +48,15 @@ import com.teobaranga.monica.util.compose.keyboardAsState
 import kotlinx.coroutines.flow.collectLatest
 import monica.app.generated.resources.Res
 import monica.app.generated.resources.eb_garamond_variable
+import monica.app.generated.resources.setup_client_id_label
+import monica.app.generated.resources.setup_client_secret_label
 import monica.app.generated.resources.setup_error_address_invalid
 import monica.app.generated.resources.setup_error_address_protocol
+import monica.app.generated.resources.setup_error_configuration_generic
+import monica.app.generated.resources.setup_oauth
+import monica.app.generated.resources.setup_oauth_content_description
+import monica.app.generated.resources.setup_server_address_label
+import monica.app.generated.resources.setup_sign_in
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -168,7 +175,7 @@ fun SetupScreen(
                 state = uiState.serverAddress,
                 lineLimits = TextFieldLineLimits.SingleLine,
                 label = {
-                    Text(text = "Server Address")
+                    Text(text = stringResource(Res.string.setup_server_address_label))
                 },
                 isError = error is UiState.Error.ServerAddressProtocolError
                     || error is UiState.Error.ServerAddressInvalidError,
@@ -188,7 +195,7 @@ fun SetupScreen(
                 state = uiState.clientId,
                 lineLimits = TextFieldLineLimits.SingleLine,
                 label = {
-                    Text(text = "Client ID")
+                    Text(text = stringResource(Res.string.setup_client_id_label))
                 },
             )
             OutlinedTextField(
@@ -198,7 +205,7 @@ fun SetupScreen(
                     .padding(horizontal = 20.dp),
                 state = uiState.clientSecret,
                 label = {
-                    Text(text = "Client Secret")
+                    Text(text = stringResource(Res.string.setup_client_secret_label))
                 },
             )
             if (error is UiState.Error.ConfigurationError) {
@@ -208,7 +215,7 @@ fun SetupScreen(
                         .padding(horizontal = 20.dp)
                         .padding(top = 12.dp),
                     text = error.message
-                        ?: "Please check your configuration",
+                        ?: stringResource(Res.string.setup_error_configuration_generic),
                     color = MaterialTheme.colorScheme.error,
                 )
             }
@@ -224,7 +231,7 @@ fun SetupScreen(
                 enabled = uiState.isSignInEnabled,
                 content = {
                     Text(
-                        text = "Sign In",
+                        text = stringResource(Res.string.setup_sign_in),
                     )
                 },
             )
@@ -266,7 +273,7 @@ private fun SetupSectionTitle(modifier: Modifier = Modifier) {
         Text(
             modifier = Modifier
                 .weight(1f),
-            text = "OAuth 2.0 Setup",
+            text = stringResource(Res.string.setup_oauth),
             style = MaterialTheme.typography.labelLarge,
         )
 
@@ -277,7 +284,7 @@ private fun SetupSectionTitle(modifier: Modifier = Modifier) {
         ) {
             Icon(
                 imageVector = Icons.Outlined.Info,
-                contentDescription = "OAuth 2.0 setup information",
+                contentDescription = stringResource(Res.string.setup_oauth_content_description),
             )
         }
     }
