@@ -1,9 +1,9 @@
 name: Push
 
 on:
-#  pull_request:
-#  push:
-#    branches: [ "main" ]
+  pull_request:
+  push:
+    branches: [ "main" ]
   workflow_dispatch:
     inputs:
       is_mapping_file_upload_enabled:
@@ -15,15 +15,9 @@ on:
 jobs:
   test-android:
     name: Test (Android)
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v5
-
-      - name: JDK 21
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'temurin'
 
       - name: Setup composite build caching
         uses: actions/cache@v4
@@ -100,15 +94,9 @@ jobs:
 
   build-android:
     name: Build (Android)
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v5
-
-      - name: JDK 21
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'temurin'
 
       - name: Setup composite build caching
         uses: actions/cache@v4
@@ -182,15 +170,9 @@ jobs:
 
   build-ios:
     name: Build (iOS Simulator)
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v5
-
-      - name: JDK 21
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'temurin'
 
       - name: Setup composite build caching
         uses: actions/cache@v4
@@ -246,6 +228,4 @@ jobs:
 
       - name: Build Debug for iOS Simulator
         run: |
-          cd iosApp
-          sudo xcode-select -s '/Applications/Xcode_16.4.app/Contents/Developer'
-          xcodebuild -configuration Debug -scheme iosApp -sdk iphonesimulator
+          xcodebuild build -project iosApp/iosApp.xcodeproj -scheme iosApp -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,OS=latest'
