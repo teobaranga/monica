@@ -19,12 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: JDK 21
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
       - name: Setup composite build caching
         uses: actions/cache@v4
         with:
@@ -104,12 +98,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: JDK 21
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
       - name: Setup composite build caching
         uses: actions/cache@v4
         with:
@@ -185,12 +173,6 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v5
-
-      - name: JDK 21
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'temurin'
 
       - name: Setup composite build caching
         uses: actions/cache@v4
