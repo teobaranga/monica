@@ -1,17 +1,10 @@
 package com.teobaranga.monica.journal.list
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
@@ -33,16 +26,7 @@ internal fun JournalEntryList(
     JournalEntryListScreen(
         searchBar = {
             var shouldShowAccount by remember { mutableStateOf(false) }
-            val colors = arrayOf(
-                0.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
-                0.75f to MaterialTheme.colorScheme.background.copy(alpha = 0.78f),
-                1.0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
-            )
             MonicaTopAppBar(
-                modifier = Modifier
-                    .background(Brush.verticalGradient(colorStops = colors))
-                    .statusBarsPadding()
-                    .padding(top = 16.dp),
                 actions = {
                     SearchIconButton(
                         onClick = { /* TODO */ },
