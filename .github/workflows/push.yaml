@@ -45,7 +45,6 @@ jobs:
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
-          cache-cleanup: never
 
       - name: Run local tests
         run: ./gradlew testDebug
@@ -106,7 +105,6 @@ jobs:
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
-          cache-cleanup: never
 
       - name: Setup signing
         run: |
@@ -181,7 +179,6 @@ jobs:
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
-          cache-cleanup: never
 
       - name: Build Debug for iOS Simulator
         run: |
