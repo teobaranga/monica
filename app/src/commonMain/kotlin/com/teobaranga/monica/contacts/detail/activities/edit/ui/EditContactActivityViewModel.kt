@@ -47,7 +47,7 @@ class EditContactActivityViewModel internal constructor(
     val contactActivityEditRoute = savedStateHandle.toRoute<ContactActivityEditRoute>()
 
     private val participantResults: StateFlow<List<ActivityParticipant>> = snapshotFlow {
-        (uiState.value as? EditContactActivityUiState.Loaded)?.participantSearch?.text?.toString()
+        (uiState.value as? EditContactActivityUiState.Loaded)?.participantsState?.participantSearch?.text?.toString()
     }
         .filterNotNull()
         .debounce(200.milliseconds)
@@ -58,7 +58,7 @@ class EditContactActivityViewModel internal constructor(
             } else {
                 val results = searchContactAsActivityParticipantUseCase(
                     query = query,
-                    excludeContacts = uiState.participants.map { it.contactId },
+                    excludeContacts = uiState.participantsState.participants.map { it.contactId },
                 )
                 results
                     .map { results ->
@@ -79,7 +79,7 @@ class EditContactActivityViewModel internal constructor(
     val uiState = flow {
         val uiState = EditContactActivityUiState.Loaded(
             initialDate = getNowLocalDate(),
-            participantResults = participantResults,
+//            participantResults = participantResults,
         )
         if (contactActivityEditRoute.activityId != null) {
             val activity = getActivityUseCase(contactActivityEditRoute.activityId)
@@ -87,7 +87,7 @@ class EditContactActivityViewModel internal constructor(
                 summary.setTextAndPlaceCursorAtEnd(activity.summary)
                 details.setTextAndPlaceCursorAtEnd(activity.details.orEmpty())
                 date = activity.date
-                participants.addAll(activity.participants)
+                uiState.participantsState.participants.addAll(activity.participants)
             }
         } else {
             if (contactActivityEditRoute.contactId != null) {
@@ -97,7 +97,7 @@ class EditContactActivityViewModel internal constructor(
                     name = contact.completeName,
                     avatar = contact.userAvatar,
                 )
-                uiState.participants.add(contactParticipant)
+                uiState.participantsState.participants.add(contactParticipant)
             }
         }
         emit(uiState)
@@ -115,7 +115,7 @@ class EditContactActivityViewModel internal constructor(
                 title = uiState.summary.text.toString(),
                 description = uiState.details.text.toString().takeUnless { it.isEmpty() },
                 date = uiState.date,
-                participants = uiState.participants.map { it.contactId },
+                participants = uiState.participantsState.participants.map { it.contactId },
             )
         }
     }
