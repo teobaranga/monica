@@ -51,7 +51,6 @@ import com.teobaranga.monica.core.ui.util.CursorData
 import com.teobaranga.monica.core.ui.util.debounce
 import com.teobaranga.monica.core.ui.util.keepCursorVisible
 import com.teobaranga.monica.core.ui.util.rememberCursorData
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -160,15 +159,16 @@ private fun EditContactActivityScreenLoaded(
         modifier = modifier
             .verticalScroll(cursorData.scrollState),
     ) {
+        ParticipantsSection(
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .padding(horizontal = 20.dp),
+            state = uiState.participantsState,
+        )
+
         SummarySection(
             modifier = Modifier
                 .padding(top = 24.dp),
-            uiState = uiState,
-        )
-
-        ParticipantsSection(
-            modifier = Modifier
-                .padding(top = 20.dp),
             uiState = uiState,
         )
 
@@ -282,7 +282,6 @@ private fun PreviewEditContactActivityLoadedScreen() {
         EditContactActivity(
             uiState = EditContactActivityUiState.Loaded(
                 initialDate = LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()),
-                participantResults = MutableStateFlow(emptyList()),
             ),
             topAppBar = { },
             onSave = { },

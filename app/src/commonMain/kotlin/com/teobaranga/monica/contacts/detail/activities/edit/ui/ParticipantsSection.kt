@@ -43,40 +43,39 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.monica.contacts.edit.ContactEditRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.text.MonicaTextField
 import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
 import com.teobaranga.monica.core.ui.text.startVerticalLineShape
+import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Modifier = Modifier) {
+fun ParticipantsSection(state: ParticipantsState, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
     ) {
         Text(
             modifier = Modifier
-                .padding(start = 40.dp),
+                .padding(start = 12.dp),
             text = "Participants",
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.labelLarge,
         )
         ParticipantDropdownMenu(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
                 .padding(top = 12.dp),
-            uiState = uiState,
+            state = state,
         )
         ParticipantFlowRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
                 .padding(top = 4.dp),
-            participants = uiState.participants,
+            participants = state.participants,
         )
     }
 }
@@ -84,12 +83,11 @@ fun ParticipantsSection(uiState: EditContactActivityUiState.Loaded, modifier: Mo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ParticipantDropdownMenu(
-    uiState: EditContactActivityUiState.Loaded,
+    state: ParticipantsState,
     modifier: Modifier = Modifier,
 ) {
-    val participantResults by uiState.participantResults.collectAsStateWithLifecycle()
     var shouldExpand by rememberSaveable { mutableStateOf(false) }
-    val expanded = shouldExpand && participantResults.isNotEmpty()
+    val expanded = shouldExpand && state.suggestions.isNotEmpty()
     ExposedDropdownMenuBox(
         modifier = modifier,
         expanded = expanded,
@@ -98,7 +96,7 @@ private fun ParticipantDropdownMenu(
         },
     ) {
         LaunchedEffect(Unit) {
-            snapshotFlow { uiState.participantSearch.text }
+            snapshotFlow { state.participantSearch.text }
                 .distinctUntilChanged()
                 .collect {
                     if (it.isNotBlank()) {
@@ -111,7 +109,7 @@ private fun ParticipantDropdownMenu(
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(type = ExposedDropdownMenuAnchorType.PrimaryEditable),
-            state = uiState.participantSearch,
+            state = state.participantSearch,
             interactionSource = interactionSource,
             shape = MonicaTextFieldDefaults.startVerticalLineShape(interactionSource),
             placeholder = {
@@ -131,7 +129,7 @@ private fun ParticipantDropdownMenu(
                 shouldExpand = false
             },
         ) {
-            participantResults.forEach { result ->
+            state.suggestions.forEach { result ->
                 when (result) {
                     is ActivityParticipant.Contact -> {
                         DropdownMenuItem(
@@ -139,8 +137,8 @@ private fun ParticipantDropdownMenu(
                                 Text(text = result.name)
                             },
                             onClick = {
-                                uiState.participantSearch.clearText()
-                                uiState.participants.add(result)
+                                state.participantSearch.clearText()
+                                state.participants.add(result)
                                 shouldExpand = false
                             },
                         )
@@ -238,4 +236,17 @@ private fun CloseIcon(onClick: () -> Unit, modifier: Modifier = Modifier) {
         imageVector = Icons.Default.Close,
         contentDescription = "Remove participant",
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewParticipantsSection() {
+    MonicaTheme {
+        val state = remember { ParticipantsState() }
+        ParticipantsSection(
+            modifier = Modifier
+                .padding(8.dp),
+            state = state,
+        )
+    }
 }
