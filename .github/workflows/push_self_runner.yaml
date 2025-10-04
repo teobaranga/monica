@@ -53,7 +53,13 @@ jobs:
           echo "RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}" >> local.properties
           echo "RELEASE_KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}" >> local.properties
           echo "RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}" >> local.properties
-          cat local.properties
+
+      - name: Setup Sentry
+        run: |
+          touch sentry.properties
+          echo "defaults.project=${{ secrets.SENTRY_PROJECT }}" >> sentry.properties
+          echo "defaults.org=${{ secrets.SENTRY_ORG }}" >> sentry.properties
+          echo "auth.token=${{ secrets.SENTRY_AUTH_TOKEN }}" >> sentry.properties
 
       - name: Assemble Android
         run: |
