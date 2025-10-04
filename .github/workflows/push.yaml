@@ -47,17 +47,6 @@ jobs:
           build-scan-terms-of-use-agree: "yes"
           cache-cleanup: never
 
-      - name: Setup signing
-        run: |
-          # Decode keystore and save in expected place
-          echo ${{ secrets.RELEASE_KEYSTORE_BASE64 }} > keystore_base64.txt
-          base64 -d -i keystore_base64.txt -o app/release.jks
-          # Retrieve other secrets and place in expected place
-          touch local.properties
-          echo "RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}" >> local.properties
-          echo "RELEASE_KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}" >> local.properties
-          echo "RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}" >> local.properties
-
       - name: Run local tests
         run: ./gradlew testDebug
 
@@ -193,17 +182,6 @@ jobs:
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
           cache-cleanup: never
-
-      - name: Setup signing
-        run: |
-          # Decode keystore and save in expected place
-          echo ${{ secrets.RELEASE_KEYSTORE_BASE64 }} > keystore_base64.txt
-          base64 -d -i keystore_base64.txt -o app/release.jks
-          # Retrieve other secrets and place in expected place
-          touch local.properties
-          echo "RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}" >> local.properties
-          echo "RELEASE_KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}" >> local.properties
-          echo "RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}" >> local.properties
 
       - name: Build Debug for iOS Simulator
         run: |
