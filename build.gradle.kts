@@ -4,7 +4,6 @@ import javax.xml.parsers.DocumentBuilderFactory
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.compose.compiler) apply false
-    alias(libs.plugins.crashlytics) apply false
     alias(libs.plugins.dependency.analysis) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.google.services) apply false

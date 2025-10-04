@@ -5,12 +5,6 @@ on:
 #  push:
 #    branches: [ "main" ]
   workflow_dispatch:
-    inputs:
-      is_mapping_file_upload_enabled:
-        description: 'Upload the Crashlytics mapping file'
-        required: false
-        type: boolean
-        default: false
 
 jobs:
   test-android:

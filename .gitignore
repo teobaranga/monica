@@ -66,3 +66,6 @@ xcuserdata
 
 ## Site (docs)
 site/
+
+# Sentry Config File
+sentry.properties
