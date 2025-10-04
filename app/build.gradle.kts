@@ -1,5 +1,4 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.google.gms.googleservices.GoogleServicesPlugin
 import com.teobaranga.monica.InjectHandler
 import com.teobaranga.monica.libs
 
@@ -8,7 +7,6 @@ plugins {
     alias(libs.plugins.monica.cmp)
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
-    alias(libs.plugins.google.services)
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.detekt)
     alias(libs.plugins.room)
@@ -37,8 +35,6 @@ kotlin {
                 implementation(libs.work)
 
                 implementation(libs.browser)
-
-                implementation(project.dependencies.platform(libs.firebase.bom))
             }
         }
         androidUnitTest {
@@ -162,10 +158,6 @@ android {
             test.systemProperties["robolectric.logging.enabled"] = "true"
         }
     }
-}
-
-googleServices {
-    missingGoogleServicesStrategy = GoogleServicesPlugin.MissingGoogleServicesStrategy.WARN
 }
 
 room {

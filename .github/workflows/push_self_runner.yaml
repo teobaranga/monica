@@ -13,12 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Setup Firebase
-        run: |
-          # Decode the google-services.json from secrets
-          echo ${{ secrets.GOOGLE_SERVICES_JSON }} > google-services_base64.txt
-          base64 -d -i google-services_base64.txt -o app/google-services.json
-
       - name: Run local tests
         run: |
           # https://github.com/actions/runner/issues/598#issuecomment-721151364
@@ -61,12 +55,6 @@ jobs:
           echo "RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}" >> local.properties
           cat local.properties
 
-      - name: Setup Firebase
-        run: |
-          # Decode the google-services.json from secrets
-          echo ${{ secrets.GOOGLE_SERVICES_JSON }} > google-services_base64.txt
-          base64 -d -i google-services_base64.txt -o app/google-services.json
-
       - name: Assemble Android
         run: |
           # https://github.com/actions/runner/issues/598#issuecomment-721151364
@@ -92,12 +80,6 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v5
-
-      - name: Setup Firebase
-        run: |
-          # Decode the google-services.json from secrets
-          echo ${{ secrets.GOOGLE_SERVICES_JSON }} > google-services_base64.txt
-          base64 -d -i google-services_base64.txt -o app/google-services.json
 
       - name: Build Debug for iOS Simulator
         run: |

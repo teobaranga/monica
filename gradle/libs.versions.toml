@@ -13,7 +13,6 @@ androidTools = "31.13.0"
 # Plugins
 dependency-analysis = "3.0.4"
 detekt = "1.23.8"
-google-services = "4.4.3"
 # Remove PlatformTest workaround when going to 1.10.0 (https://youtrack.jetbrains.com/issue/CMP-6612)
 jetbrains-compose = "1.9.0"
 jetbrains-lifecycle = "2.9.4"
@@ -27,7 +26,6 @@ compose-placeholder = "1.0.12"
 compose-rules = "0.4.27"
 datastore = "1.1.7"
 desugar-jdk-libs = "2.1.5"
-firebase-bom = "34.3.0"
 jetbrains-navigation = "2.9.0"
 junit = "4.13.2"
 junit-vintage = "6.0.0"
@@ -74,7 +72,6 @@ compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-mani
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.9.0" }
 jetbrains-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle" }
 jetbrains-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "jetbrains-navigation" }
@@ -133,7 +130,6 @@ androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugi
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
