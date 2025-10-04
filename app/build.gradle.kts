@@ -1,6 +1,4 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
-import com.google.gms.googleservices.GoogleServicesPlugin
 import com.teobaranga.monica.InjectHandler
 import com.teobaranga.monica.libs
 
@@ -9,11 +7,10 @@ plugins {
     alias(libs.plugins.monica.cmp)
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
-    alias(libs.plugins.google.services)
-    alias(libs.plugins.crashlytics)
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.detekt)
     alias(libs.plugins.room)
+    alias(libs.plugins.sentry)
 }
 
 kotlin {
@@ -38,9 +35,6 @@ kotlin {
                 implementation(libs.work)
 
                 implementation(libs.browser)
-
-                implementation(project.dependencies.platform(libs.firebase.bom))
-                implementation(libs.firebase.crashlytics)
             }
         }
         androidUnitTest {
@@ -143,19 +137,12 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
-            manifestPlaceholders["crashlyticsCollectionEnabled"] = false
         }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            manifestPlaceholders["crashlyticsCollectionEnabled"] = true
-            configure<CrashlyticsExtension> {
-                val isMappingFileUploadEnabled =
-                    project.properties["isMappingFileUploadEnabled"]?.toString()?.toBoolean() ?: false
-                mappingFileUploadEnabled = isMappingFileUploadEnabled
-            }
         }
     }
     packaging {
@@ -171,10 +158,6 @@ android {
             test.systemProperties["robolectric.logging.enabled"] = "true"
         }
     }
-}
-
-googleServices {
-    missingGoogleServicesStrategy = GoogleServicesPlugin.MissingGoogleServicesStrategy.WARN
 }
 
 room {
@@ -198,4 +181,11 @@ monica {
     inject {
         injectIn.set(InjectHandler.Target.SEPARATE)
     }
+}
+
+
+sentry {
+    // this will upload your source code to Sentry to show it as part of the stack traces
+    // disable if you don't want to expose your sources
+    includeSourceContext.set(true)
 }

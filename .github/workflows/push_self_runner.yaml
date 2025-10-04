@@ -5,12 +5,6 @@ on:
 #  push:
 #    branches: [ "main" ]
   workflow_dispatch:
-    inputs:
-      is_mapping_file_upload_enabled:
-        description: 'Upload the Crashlytics mapping file'
-        required: false
-        type: boolean
-        default: false
 
 jobs:
   test-android:
@@ -18,12 +12,6 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v5
-
-      - name: Setup Firebase
-        run: |
-          # Decode the google-services.json from secrets
-          echo ${{ secrets.GOOGLE_SERVICES_JSON }} > google-services_base64.txt
-          base64 -d -i google-services_base64.txt -o app/google-services.json
 
       - name: Run local tests
         run: |
@@ -65,13 +53,13 @@ jobs:
           echo "RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}" >> local.properties
           echo "RELEASE_KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}" >> local.properties
           echo "RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}" >> local.properties
-          cat local.properties
 
-      - name: Setup Firebase
+      - name: Setup Sentry
         run: |
-          # Decode the google-services.json from secrets
-          echo ${{ secrets.GOOGLE_SERVICES_JSON }} > google-services_base64.txt
-          base64 -d -i google-services_base64.txt -o app/google-services.json
+          touch sentry.properties
+          echo "defaults.project=${{ secrets.SENTRY_PROJECT }}" >> sentry.properties
+          echo "defaults.org=${{ secrets.SENTRY_ORG }}" >> sentry.properties
+          echo "auth.token=${{ secrets.SENTRY_AUTH_TOKEN }}" >> sentry.properties
 
       - name: Assemble Android
         run: |
@@ -98,12 +86,6 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v5
-
-      - name: Setup Firebase
-        run: |
-          # Decode the google-services.json from secrets
-          echo ${{ secrets.GOOGLE_SERVICES_JSON }} > google-services_base64.txt
-          base64 -d -i google-services_base64.txt -o app/google-services.json
 
       - name: Build Debug for iOS Simulator
         run: |

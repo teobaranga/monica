@@ -20,8 +20,3 @@
 # kept. Suspend functions are wrapped in continuations where the type argument
 # is used.
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
-
-# Get readable crash reports in the Crashlytics dashboard
-# https://firebase.google.com/docs/crashlytics/get-deobfuscated-reports?platform=android
--keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
--keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.
