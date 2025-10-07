@@ -16,7 +16,7 @@ detekt = "1.23.8"
 # Remove PlatformTest workaround when going to 1.10.0 (https://youtrack.jetbrains.com/issue/CMP-6612)
 jetbrains-compose = "1.9.0"
 jetbrains-lifecycle = "2.9.4"
-ksp = "2.2.20-2.0.2"
+ksp = "2.2.20-2.0.3"
 kotlin = "2.2.20"
 
 # Libraries
@@ -29,7 +29,7 @@ desugar-jdk-libs = "2.1.5"
 jetbrains-navigation = "2.9.0"
 junit = "4.13.2"
 junit-vintage = "6.0.0"
-kmlogging = "2.0.3"
+kmlogging = "2.1.0"
 kotest = "6.0.3"
 kotlin-inject = "0.8.0"
 kotlin-inject-anvil = "0.1.6"
