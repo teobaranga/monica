@@ -19,4 +19,13 @@
     'monica.kotlin.inject',
     'monica.network',
   ],
+  packageRules: [
+    {
+      "matchPackageNames": [
+        "org.jetbrains.kotlinx:kotlinx-datetime"
+      ],
+      "matchNewValue": "0.7.1-0.6.x-compat",
+      "enabled": false
+    },
+  ]
 }
