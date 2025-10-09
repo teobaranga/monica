@@ -31,11 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import com.teobaranga.monica.core.datetime.LocalSystemClock
-import com.teobaranga.monica.core.paging.LazyPagingItems
-import com.teobaranga.monica.core.paging.collectAsLazyPagingItems
-import com.teobaranga.monica.core.paging.itemContentType
-import com.teobaranga.monica.core.paging.itemKey
 import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import com.teobaranga.monica.core.ui.plus

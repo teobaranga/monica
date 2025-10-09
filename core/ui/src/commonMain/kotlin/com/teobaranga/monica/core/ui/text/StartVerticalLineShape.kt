@@ -36,7 +36,7 @@ private class StartVerticalLineShape(val isFocused: () -> Boolean) : Shape {
 }
 
 @Composable
-fun MonicaTextFieldDefaults.startVerticalLineShape(interactionSource: InteractionSource): Shape {
+fun startVerticalLineShape(interactionSource: InteractionSource): Shape {
     val isFocused by interactionSource.collectIsFocusedAsState()
     return StartVerticalLineShape(isFocused = { isFocused })
 }

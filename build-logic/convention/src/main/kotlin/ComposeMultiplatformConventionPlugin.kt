@@ -33,12 +33,11 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                             implementation(project(":core:datetime"))
 
                             implementation(libs.jetbrains.compose.ui.backhandler)
-                            implementation(libs.jetbrains.lifecycle.runtime.compose)
                             implementation(libs.jetbrains.navigation)
-                            implementation(libs.material3)
                             implementation(compose.ui)
                             implementation(compose.components.resources)
                             implementation(compose.components.uiToolingPreview)
+                            implementation(compose.material3)
                             implementation(compose.materialIconsExtended)
                             implementation(compose.runtime)
                             implementation(compose.foundation)

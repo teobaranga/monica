@@ -35,13 +35,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contacts.detail.ContactDetailRoute
-import com.teobaranga.monica.core.paging.LazyPagingItems
-import com.teobaranga.monica.core.paging.collectAsLazyPagingItems
-import com.teobaranga.monica.core.paging.itemKey
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.topappbar.MonicaTopAppBar

@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +22,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contacts.ui.Birthday
-import com.teobaranga.monica.core.ui.text.MonicaTextField
 
 @Composable
 internal fun AgeBasedBirthday(uiState: BirthdayPickerUiState, modifier: Modifier = Modifier) {
@@ -63,7 +63,7 @@ internal fun AgeBasedBirthday(uiState: BirthdayPickerUiState, modifier: Modifier
                 .padding(start = 52.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            MonicaTextField(
+            OutlinedTextField(
                 modifier = Modifier
                     .widthIn(max = 64.dp)
                     .onFocusChanged {

@@ -60,7 +60,6 @@ kotlin {
                 implementation(project(":core:datetime"))
                 implementation(project(":core:dispatcher"))
                 implementation(project(":core:inject"))
-                implementation(project(":core:paging"))
                 implementation(project(":core:network"))
                 implementation(project(":core:ui"))
                 implementation(project(":component:user_avatar"))
@@ -78,6 +77,8 @@ kotlin {
                 implementation(libs.coil)
 
                 implementation(libs.jetbrains.navigation)
+
+                implementation(libs.paging.compose)
 
                 implementation(libs.datastore.preferences)
 
@@ -181,11 +182,4 @@ monica {
     inject {
         injectIn.set(InjectHandler.Target.SEPARATE)
     }
-}
-
-
-sentry {
-    // this will upload your source code to Sentry to show it as part of the stack traces
-    // disable if you don't want to expose your sources
-    includeSourceContext.set(true)
 }
