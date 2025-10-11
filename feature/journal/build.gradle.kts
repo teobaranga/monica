@@ -15,7 +15,6 @@ kotlin {
                 implementation(project(":core:dispatcher"))
                 implementation(project(":core:inject"))
                 implementation(project(":core:network"))
-                implementation(project(":core:paging"))
                 implementation(project(":core:ui"))
                 implementation(project(":component:tips"))
                 implementation(project(":component:user_avatar"))
@@ -28,6 +27,8 @@ kotlin {
                 implementation(libs.kmlogging)
 
                 implementation(libs.jetbrains.navigation)
+
+                implementation(libs.paging.compose)
             }
         }
         commonTest {

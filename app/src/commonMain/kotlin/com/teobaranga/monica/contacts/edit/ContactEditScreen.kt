@@ -19,6 +19,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +38,6 @@ import com.teobaranga.monica.contacts.edit.gender.GenderSection
 import com.teobaranga.monica.contacts.edit.ui.ContactEditTopAppBar
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.core.ui.Zero
-import com.teobaranga.monica.core.ui.text.MonicaTextField
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -170,7 +170,7 @@ private fun ContactEditLoaded(
 private fun NameTextField(state: TextFieldState, placeholder: String, modifier: Modifier = Modifier) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
-    MonicaTextField(
+    OutlinedTextField(
         modifier = modifier,
         state = state,
         textStyle = MaterialTheme.typography.bodyMedium,

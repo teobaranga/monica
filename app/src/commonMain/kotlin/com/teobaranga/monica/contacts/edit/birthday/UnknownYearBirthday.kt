@@ -17,6 +17,7 @@ import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +38,6 @@ import androidx.compose.ui.window.PopupProperties
 import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
-import com.teobaranga.monica.core.ui.text.MonicaTextField
 import kotlinx.datetime.Month
 
 @Composable
@@ -90,7 +90,7 @@ internal fun UnknownYearBirthday(uiState: BirthdayPickerUiState, modifier: Modif
                     },
                 uiState = uiState.unknownYear,
             )
-            MonicaTextField(
+            OutlinedTextField(
                 modifier = Modifier
                     .padding(start = 12.dp)
                     .requiredWidth(56.dp)
@@ -139,7 +139,7 @@ private fun MonthDropdown(uiState: BirthdayPickerUiState.UnknownYear, modifier: 
         val state by derivedStateOf {
             TextFieldState(formatter.format(uiState.month))
         }
-        MonicaTextField(
+        OutlinedTextField(
             modifier = Modifier
                 .menuAnchor(type = ExposedDropdownMenuAnchorType.PrimaryNotEditable),
             state = state,

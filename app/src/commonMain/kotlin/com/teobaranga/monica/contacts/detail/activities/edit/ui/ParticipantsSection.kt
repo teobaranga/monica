@@ -26,6 +26,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,8 +47,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.monica.contacts.edit.ContactEditRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
-import com.teobaranga.monica.core.ui.text.MonicaTextField
-import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
 import com.teobaranga.monica.core.ui.text.startVerticalLineShape
 import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -107,13 +106,13 @@ private fun ParticipantDropdownMenu(
                 }
         }
         val interactionSource = remember { MutableInteractionSource() }
-        MonicaTextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(type = ExposedDropdownMenuAnchorType.PrimaryEditable),
             state = uiState.participantSearch,
             interactionSource = interactionSource,
-            shape = MonicaTextFieldDefaults.startVerticalLineShape(interactionSource),
+            shape = startVerticalLineShape(interactionSource),
             placeholder = {
                 Text(
                     text = "Add a participant by name",

@@ -6,9 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
-import com.teobaranga.monica.core.paging.collectAsLazyPagingItems
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.topappbar.MonicaTopAppBar
 import com.teobaranga.monica.core.ui.topappbar.SearchIconButton

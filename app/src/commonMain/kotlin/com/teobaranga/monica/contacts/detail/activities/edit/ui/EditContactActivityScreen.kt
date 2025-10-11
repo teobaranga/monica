@@ -21,6 +21,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -43,8 +44,6 @@ import com.teobaranga.monica.core.ui.FabPadding
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.button.DateButton
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
-import com.teobaranga.monica.core.ui.text.MonicaTextField
-import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
 import com.teobaranga.monica.core.ui.text.startVerticalLineShape
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.util.CursorData
@@ -210,13 +209,13 @@ private fun SummarySection(uiState: EditContactActivityUiState.Loaded, modifier:
         }
 
         val interactionSource = remember { MutableInteractionSource() }
-        MonicaTextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .padding(top = 12.dp),
             interactionSource = interactionSource,
-            shape = MonicaTextFieldDefaults.startVerticalLineShape(interactionSource),
+            shape = startVerticalLineShape(interactionSource),
             state = uiState.summary,
             placeholder = {
                 Text(
@@ -249,7 +248,7 @@ private fun DetailsSection(
             style = MaterialTheme.typography.titleMedium,
         )
         val interactionSource = remember { MutableInteractionSource() }
-        MonicaTextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
@@ -258,7 +257,7 @@ private fun DetailsSection(
             state = textFieldState,
             onTextLayout = cursorData.textLayoutResult,
             interactionSource = interactionSource,
-            shape = MonicaTextFieldDefaults.startVerticalLineShape(interactionSource),
+            shape = startVerticalLineShape(interactionSource),
             placeholder = {
                 Text(
                     text = "Add more details (optional)",

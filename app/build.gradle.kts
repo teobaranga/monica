@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.detekt)
     alias(libs.plugins.room)
-    alias(libs.plugins.sentry)
+    alias(libs.plugins.sentry.android)
 }
 
 kotlin {
@@ -60,7 +60,6 @@ kotlin {
                 implementation(project(":core:datetime"))
                 implementation(project(":core:dispatcher"))
                 implementation(project(":core:inject"))
-                implementation(project(":core:paging"))
                 implementation(project(":core:network"))
                 implementation(project(":core:ui"))
                 implementation(project(":component:user_avatar"))
@@ -78,6 +77,8 @@ kotlin {
                 implementation(libs.coil)
 
                 implementation(libs.jetbrains.navigation)
+
+                implementation(libs.paging.compose)
 
                 implementation(libs.datastore.preferences)
 
@@ -182,7 +183,6 @@ monica {
         injectIn.set(InjectHandler.Target.SEPARATE)
     }
 }
-
 
 sentry {
     // this will upload your source code to Sentry to show it as part of the stack traces

@@ -18,6 +18,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,8 +37,6 @@ import com.teobaranga.monica.core.ui.admonition.Admonition
 import com.teobaranga.monica.core.ui.admonition.AdmonitionState
 import com.teobaranga.monica.core.ui.admonition.AdmonitionType
 import com.teobaranga.monica.core.ui.button.DateButton
-import com.teobaranga.monica.core.ui.text.MonicaTextField
-import com.teobaranga.monica.core.ui.text.MonicaTextFieldDefaults
 import com.teobaranga.monica.core.ui.text.startVerticalLineShape
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.util.debounce
@@ -180,7 +179,7 @@ private fun TitleTextField(
     modifier: Modifier = Modifier,
 ) {
     val titleInteractionSource = remember { MutableInteractionSource() }
-    MonicaTextField(
+    OutlinedTextField(
         modifier = modifier,
         interactionSource = titleInteractionSource,
         state = uiState.title,
@@ -192,7 +191,7 @@ private fun TitleTextField(
             )
         },
         lineLimits = TextFieldLineLimits.SingleLine,
-        shape = MonicaTextFieldDefaults.startVerticalLineShape(titleInteractionSource),
+        shape = startVerticalLineShape(titleInteractionSource),
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Sentences,
             autoCorrectEnabled = true,
@@ -214,7 +213,7 @@ private fun PostTextField(
             boundsInWindow.topLeft.y - scrollState.value + cursor.top - cursor.height > threshold
         },
     )
-    MonicaTextField(
+    OutlinedTextField(
         modifier = modifier
             .keepCursorVisible(cursorData),
         interactionSource = postInteractionSource,
@@ -236,7 +235,7 @@ private fun PostTextField(
                 )
             }
         },
-        shape = MonicaTextFieldDefaults.startVerticalLineShape(postInteractionSource),
+        shape = startVerticalLineShape(postInteractionSource),
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Sentences,
             autoCorrectEnabled = true,
