@@ -12,6 +12,7 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		AB36B73A2DEC3B550020EB76 /* iOSWebBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36B7392DEC3B490020EB76 /* iOSWebBrowser.swift */; };
+		AB61BBAC2E98F58A00BA1E2E /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = AB61BBAB2E98F58A00BA1E2E /* Sentry */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		B92378962B6B1156000C7307 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				AB61BBAC2E98F58A00BA1E2E /* Sentry in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -105,6 +107,9 @@
 			buildRules = (
 			);
 			name = iosApp;
+			packageProductDependencies = (
+				AB61BBAB2E98F58A00BA1E2E /* Sentry */,
+			);
 			productName = iosApp;
 			productReference = 7555FF7B242A565900829871 /* Monica (Debug).app */;
 			productType = "com.apple.product-type.application";
@@ -134,6 +139,7 @@
 			);
 			mainGroup = 7555FF72242A565900829871;
 			packageReferences = (
+				AB61BBAA2E98F58A00BA1E2E /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 7555FF7C242A565900829871 /* Products */;
@@ -155,26 +161,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* https://youtrack.jetbrains.com/issue/KMT-1359/Kotlin-Multiplatform-plugin-Code-Analysis-takes-forever */
 /* Begin PBXShellScriptBuildPhase section */
 		F36B1CEB2AD83DDC00CB74D5 /* Compile Kotlin Framework */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
 			name = "Compile Kotlin Framework";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then\n  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\"\"\n  exit 0\nfi\ncd \"$SRCROOT/..\"\n./gradlew :app:embedAndSignAppleFrameworkForXcode\n";
+			shellScript = (
+				"if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then",
+				"  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\"\"",
+				"  exit 0",
+				"fi",
+				"cd \"$SRCROOT/..\"",
+				"./gradlew :app:embedAndSignAppleFrameworkForXcode",
+				"",
+				"",
+			);
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -190,7 +192,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		7555FFA3242A565B00829871 /* Debug */ = {
+		7555FFA3242A565B00829871 /* Debug configuration for PBXProject "iosApp" */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AB3632DC29227652001CCB65 /* Config.xcconfig */;
 			buildSettings = {
@@ -256,7 +258,7 @@
 			};
 			name = Debug;
 		};
-		7555FFA4242A565B00829871 /* Release */ = {
+		7555FFA4242A565B00829871 /* Release configuration for PBXProject "iosApp" */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AB3632DC29227652001CCB65 /* Config.xcconfig */;
 			buildSettings = {
@@ -314,7 +316,7 @@
 			};
 			name = Release;
 		};
-		7555FFA6242A565B00829871 /* Debug */ = {
+		7555FFA6242A565B00829871 /* Debug configuration for PBXNativeTarget "iosApp" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -345,7 +347,7 @@
 			};
 			name = Debug;
 		};
-		7555FFA7242A565B00829871 /* Release */ = {
+		7555FFA7242A565B00829871 /* Release configuration for PBXNativeTarget "iosApp" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -381,20 +383,39 @@
 		7555FF76242A565900829871 /* Build configuration list for PBXProject "iosApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7555FFA3242A565B00829871 /* Debug */,
-				7555FFA4242A565B00829871 /* Release */,
+				7555FFA3242A565B00829871 /* Debug configuration for PBXProject "iosApp" */,
+				7555FFA4242A565B00829871 /* Release configuration for PBXProject "iosApp" */,
 			);
 			defaultConfigurationName = Release;
 		};
 		7555FFA5242A565B00829871 /* Build configuration list for PBXNativeTarget "iosApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7555FFA6242A565B00829871 /* Debug */,
-				7555FFA7242A565B00829871 /* Release */,
+				7555FFA6242A565B00829871 /* Debug configuration for PBXNativeTarget "iosApp" */,
+				7555FFA7242A565B00829871 /* Release configuration for PBXNativeTarget "iosApp" */,
 			);
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AB61BBAA2E98F58A00BA1E2E /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.55.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AB61BBAB2E98F58A00BA1E2E /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB61BBAA2E98F58A00BA1E2E /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7555FF73242A565900829871 /* Project object */;
 }
