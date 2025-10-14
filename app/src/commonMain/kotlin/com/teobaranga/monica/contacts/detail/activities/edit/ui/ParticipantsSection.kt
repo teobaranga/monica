@@ -6,12 +6,15 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -70,12 +73,26 @@ fun ParticipantsSection(state: ParticipantsState, modifier: Modifier = Modifier)
                 .padding(top = 12.dp),
             state = state,
         )
-        ParticipantFlowRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp),
-            participants = state.participants,
-        )
+        if (state.participants.isNotEmpty()) {
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(top = 8.dp)
+            ) {
+                for (contact in state.participants) {
+                    item(contact.contactId) {
+                        Box {
+                            UserAvatar(
+                                modifier = Modifier
+                                    .size(64.dp),
+                                userAvatar = contact.avatar,
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -241,7 +258,24 @@ private fun CloseIcon(onClick: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 private fun PreviewParticipantsSection() {
     MonicaTheme {
-        val state = remember { ParticipantsState() }
+        val state = remember {
+            ParticipantsState().apply {
+                participants.add(
+                    ActivityParticipant.Contact(
+                        contactId = 1,
+                        name = "John",
+                        avatar = UserAvatar.default("JD")
+                    )
+                )
+                participants.add(
+                    ActivityParticipant.Contact(
+                        contactId = 2,
+                        name = "Jane",
+                        avatar = UserAvatar.default("JD")
+                    )
+                )
+            }
+        }
         ParticipantsSection(
             modifier = Modifier
                 .padding(8.dp),
