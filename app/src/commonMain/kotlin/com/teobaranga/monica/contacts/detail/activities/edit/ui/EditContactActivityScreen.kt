@@ -3,6 +3,8 @@ package com.teobaranga.monica.contacts.detail.activities.edit.ui
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -157,23 +159,35 @@ private fun EditContactActivityScreenLoaded(
     Column(
         modifier = modifier
             .verticalScroll(cursorData.scrollState),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        ParticipantsSection(
+        Box(
             modifier = Modifier
-                .padding(top = 20.dp)
-                .padding(horizontal = 20.dp),
-            state = uiState.participantsState,
-        )
+                .fillMaxWidth(),
+        ) {
+            ParticipantsSection(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 14.dp),
+                state = uiState.participantsState,
+            )
+            DateButton(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(end = 10.dp),
+                date = uiState.date,
+                onDateSelect = { date ->
+                    uiState.date = date
+                },
+            )
+        }
 
         SummarySection(
-            modifier = Modifier
-                .padding(top = 24.dp),
             uiState = uiState,
         )
 
         DetailsSection(
             modifier = Modifier
-                .padding(top = 20.dp)
                 .navigationBarsPadding()
                 .imePadding()
                 .padding(bottom = FabPadding + FabHeight),
@@ -184,27 +198,21 @@ private fun EditContactActivityScreenLoaded(
 }
 
 @Composable
-private fun SummarySection(uiState: EditContactActivityUiState.Loaded, modifier: Modifier = Modifier) {
+private fun SummarySection(
+    uiState: EditContactActivityUiState.Loaded,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            SectionTitle(
                 modifier = Modifier
-                    .padding(start = 40.dp)
+                    .padding(start = 32.dp)
                     .weight(1f),
                 text = "Summary",
-                style = MaterialTheme.typography.titleMedium,
-            )
-            DateButton(
-                modifier = Modifier
-                    .padding(end = 24.dp),
-                date = uiState.date,
-                onDateSelect = { date ->
-                    uiState.date = date
-                },
             )
         }
 
@@ -241,11 +249,10 @@ private fun DetailsSection(
         modifier = modifier
             .animateContentSize(),
     ) {
-        Text(
+        SectionTitle(
             modifier = Modifier
                 .padding(start = 40.dp),
             text = "Details",
-            style = MaterialTheme.typography.titleMedium,
         )
         val interactionSource = remember { MutableInteractionSource() }
         OutlinedTextField(
@@ -263,7 +270,7 @@ private fun DetailsSection(
                     text = "Add more details (optional)",
                 )
             },
-            lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 3),
+            lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 6),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 autoCorrectEnabled = true,
@@ -271,6 +278,18 @@ private fun DetailsSection(
             ),
         )
     }
+}
+
+@Composable
+private fun SectionTitle(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MaterialTheme.typography.labelLarge,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
