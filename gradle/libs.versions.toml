@@ -24,7 +24,7 @@ compose-placeholder = "1.0.12"
 compose-rules = "0.4.27"
 datastore = "1.1.7"
 desugar-jdk-libs = "2.1.5"
-jetbrains-navigation = "2.9.0"
+jetbrains-navigation = "2.9.1"
 junit = "4.13.2"
 junit-vintage = "6.0.0"
 kmlogging = "2.1.0"
@@ -38,7 +38,7 @@ kotlinx-serialization = "1.9.0"
 ktor = "3.3.1"
 materialKolor = "3.0.1"
 mockk = "1.14.6"
-okio = "3.16.1"
+okio = "3.16.2"
 paging = "3.4.0-alpha04"
 robolectric = "4.16"
 room = "2.8.2"
@@ -67,7 +67,7 @@ compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-mani
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
-jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.9.0" }
+jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.9.1" }
 jetbrains-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "jetbrains-navigation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 junit-vintage = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit-vintage" }
