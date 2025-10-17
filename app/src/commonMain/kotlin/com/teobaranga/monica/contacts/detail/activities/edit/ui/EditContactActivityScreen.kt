@@ -2,29 +2,34 @@ package com.teobaranga.monica.contacts.detail.activities.edit.ui
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -42,14 +47,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.createSavedStateHandle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.core.datetime.LocalSystemClock
-import com.teobaranga.monica.core.ui.FabHeight
-import com.teobaranga.monica.core.ui.FabPadding
 import com.teobaranga.monica.core.ui.Zero
+import com.teobaranga.monica.core.ui.appbar.MonicaBottomAppBar
 import com.teobaranga.monica.core.ui.button.DateButton
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.text.startVerticalLineShape
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.util.CursorData
+import com.teobaranga.monica.core.ui.util.CursorVisibilityStrategy
 import com.teobaranga.monica.core.ui.util.debounce
 import com.teobaranga.monica.core.ui.util.keepCursorVisible
 import com.teobaranga.monica.core.ui.util.rememberCursorData
@@ -84,8 +89,7 @@ internal fun EditContactActivity(
         onBack = navigator::popBackStack,
     )
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun EditContactActivity(
     uiState: EditContactActivityUiState,
@@ -95,27 +99,37 @@ private fun EditContactActivity(
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val contentScrollState = rememberScrollState()
     Scaffold(
         modifier = modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             topAppBar(scrollBehavior)
         },
-        floatingActionButton = {
-            FloatingActionButton(
+        bottomBar = {
+            MonicaBottomAppBar(
                 modifier = Modifier
-                    .navigationBarsPadding()
                     .imePadding(),
-                onClick = debounce {
-                    onSave()
-                    onBack()
+                actions = {
+
                 },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Done,
-                    contentDescription = "Save activity",
-                )
-            }
+                floatingActionButton = {
+                    SmallFloatingActionButton(
+                        onClick = debounce {
+                            onSave()
+                            onBack()
+                        },
+                        containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Done,
+                            contentDescription = "Save activity",
+                        )
+                    }
+                },
+                contentScrollState = contentScrollState,
+            )
         },
         contentWindowInsets = WindowInsets.Zero,
     ) { contentPadding ->
@@ -123,24 +137,41 @@ private fun EditContactActivity(
             targetState = uiState,
             label = "Edit Contact Activity",
         ) { uiState ->
-            when (uiState) {
-                is EditContactActivityUiState.Loading -> {
-                    LinearProgressIndicator(
-                        modifier = Modifier
-                            .padding(contentPadding)
-                            .fillMaxWidth(),
-                    )
-                }
+            EditContactActivityContent(
+                modifier = Modifier
+                    .padding(contentPadding)
+                    .fillMaxWidth(),
+                uiState = uiState,
+                contentScrollState = contentScrollState,
+            )
+        }
+    }
+}
 
-                is EditContactActivityUiState.Loaded -> {
-                    EditContactActivityScreenLoaded(
-                        modifier = Modifier
-                            .padding(contentPadding)
-                            .fillMaxWidth(),
-                        uiState = uiState,
-                    )
-                }
-            }
+@Composable
+private fun EditContactActivityContent(
+    uiState: EditContactActivityUiState,
+    contentScrollState: ScrollState,
+    modifier: Modifier = Modifier,
+) {
+    when (uiState) {
+        is EditContactActivityUiState.Loading -> {
+            LinearProgressIndicator(
+                modifier = modifier,
+            )
+        }
+
+        is EditContactActivityUiState.Loaded -> {
+            val cursorData = rememberCursorData(
+                textFieldState = uiState.details,
+                cursorVisibilityStrategy = cursorVisibilityStrategy,
+                scrollState = contentScrollState,
+            )
+            EditContactActivityScreenLoaded(
+                modifier = modifier,
+                uiState = uiState,
+                cursorData = cursorData,
+            )
         }
     }
 }
@@ -148,14 +179,9 @@ private fun EditContactActivity(
 @Composable
 private fun EditContactActivityScreenLoaded(
     uiState: EditContactActivityUiState.Loaded,
+    cursorData: CursorData,
     modifier: Modifier = Modifier,
 ) {
-    val cursorData = rememberCursorData(
-        textFieldState = uiState.details,
-        cursorVisibilityStrategy = { cursor, boundsInWindow, screenHeight, scrollState ->
-            boundsInWindow.topLeft.y - (screenHeight - boundsInWindow.bottomRight.y) + cursor.top > screenHeight / 2
-        },
-    )
     Column(
         modifier = modifier
             .verticalScroll(cursorData.scrollState),
@@ -187,12 +213,13 @@ private fun EditContactActivityScreenLoaded(
         )
 
         DetailsSection(
-            modifier = Modifier
-                .navigationBarsPadding()
-                .imePadding()
-                .padding(bottom = FabPadding + FabHeight),
             textFieldState = uiState.details,
             cursorData = cursorData,
+        )
+
+        Spacer(
+            modifier = Modifier
+                .height(4.dp),
         )
     }
 }
@@ -280,16 +307,8 @@ private fun DetailsSection(
     }
 }
 
-@Composable
-private fun SectionTitle(
-    text: String,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        modifier = modifier,
-        text = text,
-        style = MaterialTheme.typography.labelLarge,
-    )
+private val cursorVisibilityStrategy = CursorVisibilityStrategy { cursor, boundsInWindow, screenHeight, _ ->
+    boundsInWindow.topLeft.y - (screenHeight - boundsInWindow.bottomRight.y) + cursor.top > screenHeight / 2
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
