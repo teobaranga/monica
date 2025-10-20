@@ -7,7 +7,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -64,11 +62,12 @@ import kotlinx.datetime.todayIn
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun EditContactActivity(
-    viewModel: EditContactActivityViewModel = injectedViewModel<EditContactActivityViewModel, EditContactActivityViewModel.Factory>(
-        creationCallback = { factory ->
-            factory(createSavedStateHandle())
-        },
-    ),
+    viewModel: EditContactActivityViewModel =
+        injectedViewModel<EditContactActivityViewModel, EditContactActivityViewModel.Factory>(
+            creationCallback = { factory ->
+                factory(createSavedStateHandle())
+            },
+        ),
 ) {
     val navigator = LocalNavigator.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -89,7 +88,8 @@ internal fun EditContactActivity(
         onBack = navigator::popBackStack,
     )
 }
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EditContactActivity(
     uiState: EditContactActivityUiState,
@@ -111,7 +111,7 @@ private fun EditContactActivity(
                 modifier = Modifier
                     .imePadding(),
                 actions = {
-
+                    // Put actions here when available
                 },
                 floatingActionButton = {
                     SmallFloatingActionButton(
@@ -208,6 +208,12 @@ private fun EditContactActivityScreenLoaded(
             )
         }
 
+        ParticipantsRow(
+            modifier = Modifier
+                .fillMaxWidth(),
+            state = uiState.participantsState,
+        )
+
         SummarySection(
             uiState = uiState,
         )
@@ -232,22 +238,17 @@ private fun SummarySection(
     Column(
         modifier = modifier,
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            SectionTitle(
-                modifier = Modifier
-                    .padding(start = 32.dp)
-                    .weight(1f),
-                text = "Summary",
-            )
-        }
+        SectionTitle(
+            modifier = Modifier
+                .padding(start = 32.dp),
+            text = "Summary",
+        )
 
         val interactionSource = remember { MutableInteractionSource() }
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 20.dp)
                 .padding(top = 12.dp),
             interactionSource = interactionSource,
             shape = startVerticalLineShape(interactionSource),
@@ -278,14 +279,14 @@ private fun DetailsSection(
     ) {
         SectionTitle(
             modifier = Modifier
-                .padding(start = 40.dp),
+                .padding(start = 32.dp),
             text = "Details",
         )
         val interactionSource = remember { MutableInteractionSource() }
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 20.dp)
                 .padding(top = 12.dp)
                 .keepCursorVisible(cursorData),
             state = textFieldState,
