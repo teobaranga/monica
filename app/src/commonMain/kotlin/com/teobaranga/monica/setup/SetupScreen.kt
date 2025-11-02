@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
@@ -59,7 +60,6 @@ import monica.app.generated.resources.setup_server_address_label
 import monica.app.generated.resources.setup_sign_in
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val SETUP_INFO_URL = "https://monica.teobaranga.com/setup"
 

@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.CoreRes
@@ -49,7 +50,6 @@ import monica.feature.journal.generated.resources.Res
 import monica.feature.journal.generated.resources.journal_entry_empty_error
 import monica.feature.journal.generated.resources.journal_title_info_mandatory_title_bug
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun JournalEntryScreen(

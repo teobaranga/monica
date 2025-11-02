@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.LocalPlatformContext
@@ -25,7 +26,6 @@ import com.materialkolor.ktx.darken
 import com.teobaranga.monica.core.ui.fromHex
 import com.teobaranga.monica.core.ui.isLight
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 data class UserAvatar(
     val contactId: Int,

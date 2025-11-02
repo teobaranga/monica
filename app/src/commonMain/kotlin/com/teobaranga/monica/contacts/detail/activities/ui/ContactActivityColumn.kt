@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.core.datetime.LocalSystemClock
@@ -31,12 +32,10 @@ import com.teobaranga.monica.core.ui.FabHeight
 import com.teobaranga.monica.core.ui.FabPadding
 import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
-import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.uuid.Uuid
 
 @Composable

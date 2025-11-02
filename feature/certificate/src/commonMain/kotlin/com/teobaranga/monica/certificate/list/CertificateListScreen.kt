@@ -17,13 +17,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.core.ui.icons.KeyboardArrowRight
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import kotlinx.datetime.format
 import kotlinx.datetime.format.DateTimeComponents
 import okio.ByteString.Companion.decodeHex
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Clock
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalStdlibApi::class)

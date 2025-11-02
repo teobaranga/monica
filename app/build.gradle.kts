@@ -165,15 +165,6 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
-tasks.withType<Test>().configureEach {
-    useJUnitPlatform()
-    reports {
-        html.required.set(false)
-        junitXml.required.set(false)
-    }
-    systemProperty("gradle.build.dir", project.layout.buildDirectory.asFile.get())
-}
-
 detekt {
     autoCorrect = true
 }

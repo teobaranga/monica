@@ -22,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -41,7 +42,6 @@ import com.teobaranga.monica.journal.list.JournalEntriesRoute
 import com.teobaranga.monica.setup.SetupRoute
 import com.teobaranga.monica.ui.navigation.TopLevelRoute
 import com.teobaranga.monica.util.compose.thenIf
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 val topLevelRoutes = listOf(
     TopLevelRoute("Dashboard", DashboardRoute, Icons.Default.Dashboard),

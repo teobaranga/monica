@@ -10,12 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import monica.app.generated.resources.Res
 import monica.app.generated.resources.calendar_day_blank
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun ContactActivityEmpty(modifier: Modifier = Modifier) {

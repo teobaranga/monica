@@ -19,6 +19,7 @@
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.teobaranga.monica.configureKotlinAndroid
+import com.teobaranga.monica.configureUnitTests
 import com.teobaranga.monica.libs
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -39,6 +40,8 @@ class AndroidApplicationConventionPlugin : MonicaPlugin() {
                 defaultConfig.targetSdk = libs.versions.targetSdk.get().toInt()
                 testOptions.animationsDisabled = true
             }
+
+            configureUnitTests()
         }
     }
 }
