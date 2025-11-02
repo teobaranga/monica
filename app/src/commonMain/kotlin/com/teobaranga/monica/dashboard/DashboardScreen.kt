@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
@@ -49,7 +50,6 @@ import com.teobaranga.monica.core.ui.topappbar.SearchIconButton
 import com.teobaranga.monica.useravatar.UserAvatar
 import com.teobaranga.monica.useravatar.UserAvatarIconButton
 import kotlinx.coroutines.flow.flowOf
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun Dashboard(
