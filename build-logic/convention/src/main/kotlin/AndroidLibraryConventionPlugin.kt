@@ -19,14 +19,12 @@
 
 import com.android.build.gradle.LibraryExtension
 import com.teobaranga.monica.configureKotlinAndroid
+import com.teobaranga.monica.configureUnitTests
 import com.teobaranga.monica.libs
 import com.teobaranga.monica.testImplementation
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.AbstractTestTask
-import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.withType
 
 @Suppress("unused") // Registered as a plugin in build.gradle.kts
 class AndroidLibraryConventionPlugin : MonicaPlugin() {
@@ -80,19 +78,7 @@ class AndroidLibraryConventionPlugin : MonicaPlugin() {
                 testImplementation(libs.mockk)
             }
 
-            tasks.withType<Test>().configureEach {
-                useJUnitPlatform()
-                reports {
-                    html.required.set(false)
-                    junitXml.required.set(false)
-                }
-                systemProperty("gradle.build.dir", project.layout.buildDirectory.asFile.get())
-            }
-
-            // https://issuetracker.google.com/issues/411739086?pli=1
-            tasks.withType<AbstractTestTask>().configureEach {
-                failOnNoDiscoveredTests.set(false)
-            }
+            configureUnitTests()
         }
     }
 }
