@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.detekt)
     alias(libs.plugins.room)
+    alias(libs.plugins.sentry.kmp)
     alias(libs.plugins.sentry.android)
 }
 
@@ -24,6 +25,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "MonicaApp"
+            isStatic = true
             // Required when using NativeSQLiteDriver
             linkerOpts.add("-lsqlite3")
         }
@@ -133,6 +135,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -171,12 +174,17 @@ detekt {
 
 monica {
     inject {
-        injectIn.set(InjectHandler.Target.SEPARATE)
+        injectIn = InjectHandler.Target.SEPARATE
     }
 }
 
 sentry {
+    autoInstallation {
+        // Installed by the KMP plugin instead
+        enabled = false
+    }
+
     // this will upload your source code to Sentry to show it as part of the stack traces
     // disable if you don't want to expose your sources
-    includeSourceContext.set(true)
+    includeSourceContext = true
 }
