@@ -33,6 +33,10 @@ class MonicaApp :
     override fun onCreate() {
         super.onCreate()
 
+        if (!BuildConfig.DEBUG) {
+            initializeSentry()
+        }
+
         KmLogging.setLoggers(*appComponent.loggers.toTypedArray())
 
         appComponent.workScheduler.schedule(SYNC_WORKER_WORK_NAME)
