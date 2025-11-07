@@ -33,7 +33,9 @@ class MonicaApp :
     override fun onCreate() {
         super.onCreate()
 
-        initializeSentry()
+        if (!BuildConfig.DEBUG) {
+            initializeSentry()
+        }
 
         KmLogging.setLoggers(*appComponent.loggers.toTypedArray())
 

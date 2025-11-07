@@ -6,7 +6,9 @@ import SwiftUI
 struct iOSApp: App {
 
     init() {
+        #if	!DEBUG
         SentrySetupKt.initializeSentry()
+        #endif
         IosWebBrowserKt.iosWebBrowser = iOSWebBrowser()
     }
 
