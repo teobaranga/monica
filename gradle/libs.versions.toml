@@ -36,6 +36,8 @@ kotlinx-coroutines = "1.10.2"
 kotlinx-datetime = "0.7.1"
 kotlinx-serialization = "1.9.0"
 ktor = "3.3.2"
+material3 = "1.10.0-alpha04"
+material-icons-extended = "1.7.3"
 materialKolor = "4.0.3"
 mockk = "1.14.6"
 okio = "3.16.2"
@@ -63,12 +65,20 @@ browser = { group = "androidx.browser", name = "browser", version.ref = "browser
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 compose-placeholder = { group = "com.eygraber", name = "compose-placeholder-material3", version.ref = "compose-placeholder" }
 compose-rules = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "compose-rules"  }
-compose-runtime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "jetbrains-compose" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
-jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.9.3" }
+jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrains-compose" }
+jetbrains-compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrains-compose" }
+jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
+jetbrains-compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "material-icons-extended" }
+jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui-test = { module = "org.jetbrains.compose.ui:ui-test", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "jetbrains-compose" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 jetbrains-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "jetbrains-navigation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 junit-vintage = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit-vintage" }

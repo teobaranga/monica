@@ -10,7 +10,7 @@ kotlin {
             dependencies {
                 implementation(project(":core:inject"))
 
-                implementation(libs.compose.runtime)
+                implementation(libs.jetbrains.compose.runtime)
                 api(libs.kotlinx.datetime)
             }
         }

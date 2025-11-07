@@ -32,6 +32,7 @@ import com.teobaranga.monica.core.ui.FabHeight
 import com.teobaranga.monica.core.ui.FabPadding
 import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
+import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.datetime.TimeZone
