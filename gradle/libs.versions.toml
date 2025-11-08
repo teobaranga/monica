@@ -28,7 +28,7 @@ jetbrains-navigation = "2.9.1"
 junit = "4.13.2"
 junit-vintage = "6.0.1"
 kmlogging = "2.1.0"
-kotest = "6.0.4"
+kotest = "6.0.3"
 kotlin-inject = "0.8.0"
 kotlin-inject-anvil = "0.1.6"
 kotlin-inject-viewmodel = "0.3.0"
@@ -83,6 +83,8 @@ jetbrains-navigation = { group = "org.jetbrains.androidx.navigation", name = "na
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 junit-vintage = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit-vintage" }
 kmlogging = { group = "com.diamondedge", name = "logging", version.ref = "kmlogging" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 kotest-extensions-htmlreporter = { group = "io.kotest", name = "kotest-extensions-htmlreporter", version.ref = "kotest" }
 kotest-extensions-junitxml = { group = "io.kotest", name = "kotest-extensions-junitxml", version.ref = "kotest" }
@@ -136,6 +138,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
+kotest = { id = "io.kotest", version.ref = "kotest" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
