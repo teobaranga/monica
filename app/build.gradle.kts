@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.sentry.kmp)
     alias(libs.plugins.sentry.android)
+    alias(libs.plugins.kotest)
 }
 
 kotlin {
@@ -95,6 +96,8 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(project(":core:test"))
+                implementation(libs.kotest.assertions.core)
+                implementation(libs.kotest.framework.engine)
             }
         }
     }

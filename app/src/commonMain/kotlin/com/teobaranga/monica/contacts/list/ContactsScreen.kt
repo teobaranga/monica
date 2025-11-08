@@ -43,6 +43,7 @@ import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contacts.detail.ContactDetailRoute
 import com.teobaranga.monica.contacts.edit.ContactEditRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshBox
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.core.ui.theme.MonicaTheme

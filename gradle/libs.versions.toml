@@ -13,8 +13,8 @@ androidTools = "31.13.0"
 # Plugins
 dependency-analysis = "3.4.1"
 detekt = "1.23.8"
-jetbrains-compose = "1.10.0-alpha03"
-ksp = "2.3.0"
+jetbrains-compose = "1.10.0-beta01"
+ksp = "2.3.2"
 kotlin = "2.2.21"
 
 # Libraries
@@ -35,7 +35,9 @@ kotlin-inject-viewmodel = "0.3.0"
 kotlinx-coroutines = "1.10.2"
 kotlinx-datetime = "0.7.1"
 kotlinx-serialization = "1.9.0"
-ktor = "3.3.1"
+ktor = "3.3.2"
+material3 = "1.10.0-alpha04"
+material-icons-extended = "1.7.3"
 materialKolor = "4.0.3"
 mockk = "1.14.6"
 okio = "3.16.2"
@@ -43,7 +45,7 @@ paging = "3.4.0-alpha04"
 robolectric = "4.16"
 room = "2.8.3"
 sandwich = "2.1.3"
-sentry-android = "5.12.1"
+sentry-android = "5.12.2"
 sentry-kmp = "0.21.0"
 signum = "3.18.2"
 sqlite = "2.6.1"
@@ -63,16 +65,26 @@ browser = { group = "androidx.browser", name = "browser", version.ref = "browser
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 compose-placeholder = { group = "com.eygraber", name = "compose-placeholder-material3", version.ref = "compose-placeholder" }
 compose-rules = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "compose-rules"  }
-compose-runtime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "jetbrains-compose" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
-jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version = "1.9.2" }
+jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrains-compose" }
+jetbrains-compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrains-compose" }
+jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
+jetbrains-compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "material-icons-extended" }
+jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui-test = { module = "org.jetbrains.compose.ui:ui-test", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "jetbrains-compose" }
+jetbrains-compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "jetbrains-compose" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
 jetbrains-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "jetbrains-navigation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 junit-vintage = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit-vintage" }
 kmlogging = { group = "com.diamondedge", name = "logging", version.ref = "kmlogging" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 kotest-extensions-htmlreporter = { group = "io.kotest", name = "kotest-extensions-htmlreporter", version.ref = "kotest" }
 kotest-extensions-junitxml = { group = "io.kotest", name = "kotest-extensions-junitxml", version.ref = "kotest" }
@@ -126,6 +138,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
+kotest = { id = "io.kotest", version.ref = "kotest" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -39,6 +39,7 @@ import androidx.paging.compose.itemKey
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
+import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshBox
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshState
 import com.teobaranga.monica.core.ui.theme.MonicaTheme

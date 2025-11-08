@@ -6,7 +6,6 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.compose.ComposePlugin
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
@@ -15,7 +14,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 @Suppress("unused") // Registered as a plugin in build.gradle.kts
 class ComposeMultiplatformConventionPlugin : Plugin<Project> {
 
-    @OptIn(ExperimentalComposeLibrary::class)
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
@@ -32,15 +30,15 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                         dependencies {
                             implementation(project(":core:datetime"))
 
+                            implementation(libs.jetbrains.compose.components.resources)
+                            implementation(libs.jetbrains.compose.foundation)
+                            implementation(libs.jetbrains.compose.material3)
+                            implementation(libs.jetbrains.compose.material.icons.extended)
+                            implementation(libs.jetbrains.compose.runtime)
+                            implementation(libs.jetbrains.compose.ui)
                             implementation(libs.jetbrains.compose.ui.backhandler)
+                            implementation(libs.jetbrains.compose.ui.tooling.preview)
                             implementation(libs.jetbrains.navigation)
-                            implementation(compose.ui)
-                            implementation(compose.components.resources)
-                            implementation(compose.preview)
-                            implementation(compose.material3)
-                            implementation(compose.materialIconsExtended)
-                            implementation(compose.runtime)
-                            implementation(compose.foundation)
                         }
                     }
                     afterEvaluate {
@@ -48,7 +46,7 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                             dependencies {
                                 // Robolectric UI tests
                                 implementation(libs.robolectric)
-                                implementation(compose.uiTest)
+                                implementation(libs.jetbrains.compose.ui.test)
                                 // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
                                 implementation(libs.junit.vintage)
                             }
@@ -62,7 +60,7 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                 afterEvaluate {
                     if (sourceSets.findByName("androidMain") != null) {
                         target.dependencies {
-                            debugImplementation(compose.uiTooling)
+                            debugImplementation(libs.jetbrains.compose.ui.tooling)
                         }
                     }
                 }
