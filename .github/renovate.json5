@@ -31,9 +31,7 @@
       // kotest 6.0.4 seems to be broken with:
       //   Cannot read field "test" because the return value of "java.util.Map.get(Object)" is null
       "matchPackageNames": [
-        "io.kotest:kotest-extensions-junitxml",
-        "io.kotest:kotest-extensions-htmlreporter",
-        "io.kotest:kotest-runner-junit5",
+        "io.kotest",
       ],
       "matchNewValue": "6.0.4",
       "enabled": false
