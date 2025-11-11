@@ -7,8 +7,8 @@ compileSdk = "36"
 # Included build
 # On 9.0.0 bump:
 # - remove failOnNoDiscoveredTests
-androidGradlePlugin = "8.13.0"
-androidTools = "31.13.0"
+androidGradlePlugin = "8.13.1"
+androidTools = "31.13.1"
 
 # Plugins
 dependency-analysis = "3.4.1"
