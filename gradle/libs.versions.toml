@@ -13,7 +13,7 @@ androidTools = "31.13.1"
 # Plugins
 dependency-analysis = "3.5.1"
 detekt = "1.23.8"
-jetbrains-compose = "1.10.0-beta02"
+jetbrains-compose = "1.10.0-rc01"
 ksp = "2.3.3"
 kotlin = "2.2.21"
 
