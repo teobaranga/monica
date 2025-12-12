@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Setup composite build caching
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             build-logic/build
@@ -22,7 +22,7 @@ jobs:
           key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
 
       - name: Kotlin Native cache - restore and save
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         if: github.ref == 'refs/heads/main'
         with:
           path: ~/.konan
@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-konan-${{ github.job }}
 
       - name: Kotlin Native cache - restore only
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         if: github.ref != 'refs/heads/main'
         with:
           path: ~/.konan
@@ -74,7 +74,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Setup composite build caching
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             build-logic/build
@@ -82,7 +82,7 @@ jobs:
           key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
 
       - name: Kotlin Native cache - restore and save
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         if: github.ref == 'refs/heads/main'
         with:
           path: ~/.konan
@@ -91,7 +91,7 @@ jobs:
             ${{ runner.os }}-konan-${{ github.job }}
 
       - name: Kotlin Native cache - restore only
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         if: github.ref != 'refs/heads/main'
         with:
           path: ~/.konan
@@ -148,7 +148,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Setup composite build caching
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             build-logic/build
@@ -156,7 +156,7 @@ jobs:
           key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
 
       - name: Kotlin Native cache - restore and save
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         if: github.ref == 'refs/heads/main'
         with:
           path: ~/.konan
@@ -165,7 +165,7 @@ jobs:
             ${{ runner.os }}-konan-${{ github.job }}
 
       - name: Kotlin Native cache - restore only
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         if: github.ref != 'refs/heads/main'
         with:
           path: ~/.konan
