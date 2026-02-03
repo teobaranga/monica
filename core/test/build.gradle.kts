@@ -1,11 +1,13 @@
 import com.teobaranga.monica.libs
 
 plugins {
-    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.kmp)
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "com.teobaranga.monica.test"
+    }
     sourceSets {
         commonMain {
             dependencies {
@@ -13,8 +15,4 @@ kotlin {
             }
         }
     }
-}
-
-android {
-    namespace = "com.teobaranga.monica.test"
 }

@@ -1,3 +1,4 @@
+
 import com.teobaranga.monica.InjectHandler
 import com.teobaranga.monica.MonicaExtension
 import com.teobaranga.monica.libs
@@ -67,11 +68,14 @@ class KotlinInjectConventionPlugin : Plugin<Project> {
                                     },
                                 )
                             }
-                            if (targetName == "android") {
-                                // TODO there's a bug in the ViewModel compiler, add in here when fixed
-                                dependencies.add("kspAndroidTest", libs.kotlin.inject.compiler)
-                                dependencies.add("kspAndroidTest", libs.kotlin.inject.anvil.compiler)
-                            }
+                        }
+                    }
+                }
+                configurations.all {
+                    when (name) {
+                        "kspAndroidHostTest" -> {
+                            target.dependencies.add(name, libs.kotlin.inject.compiler)
+                            target.dependencies.add(name, libs.kotlin.inject.anvil.compiler)
                         }
                     }
                 }

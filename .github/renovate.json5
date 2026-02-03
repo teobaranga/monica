@@ -13,7 +13,6 @@
   ],
   ignoreDeps: [
     'monica.android.application',
-    'monica.android.library',
     'monica.cmp',
     'monica.kmp',
     'monica.kotlin.inject',

@@ -9,7 +9,8 @@ import coil3.SingletonImageLoader
 import com.diamondedge.logging.KmLogging
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOwner
 import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
-import com.teobaranga.monica.di.createAppComponent
+import com.teobaranga.monica.di.AppComponent
+import com.teobaranga.monica.di.create
 import com.teobaranga.monica.setup.domain.SYNC_WORKER_WORK_NAME
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.reflect.KClass
@@ -20,15 +21,12 @@ class MonicaApp :
     Configuration.Provider,
     ScopedViewModelFactoryProvider {
 
-    init {
-        instance = this
-    }
 
     /**
      * DI component for the entire app. Should not be publicly exposed because this class is not available
      * outside of the app module so any different modules would not be able to access it directly.
      */
-    private val appComponent = createAppComponent()
+    private val appComponent = AppComponent::class.create(this)
 
     override fun onCreate() {
         super.onCreate()
@@ -60,10 +58,5 @@ class MonicaApp :
 
             else -> error("Unknown scope $scope")
         }
-    }
-
-    companion object {
-        lateinit var instance: MonicaApp
-            private set
     }
 }

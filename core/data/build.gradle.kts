@@ -1,10 +1,12 @@
 plugins {
-    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.kmp)
     alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "com.teobaranga.monica.core.data"
+    }
     sourceSets {
         commonMain {
             dependencies {
@@ -19,10 +21,6 @@ kotlin {
             }
         }
     }
-}
-
-android {
-    namespace = "com.teobaranga.monica.core.data"
 }
 
 monica {

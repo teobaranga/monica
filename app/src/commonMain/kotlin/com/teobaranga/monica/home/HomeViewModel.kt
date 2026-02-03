@@ -8,7 +8,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
 @Inject
 @ContributesViewModel(AppScope::class)
-class HomeViewModel internal constructor(
+class HomeViewModel(
     authorizationRepository: AuthorizationRepository,
 ) : ViewModel() {
 

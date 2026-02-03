@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import androidx.work.WorkerFactory
 import coil3.PlatformContext
-import com.teobaranga.monica.MonicaApp
 import com.teobaranga.monica.core.inject.ApplicationContext
 import com.teobaranga.monica.log.LoggerOwner
 import com.teobaranga.monica.ui.CoilOwner
@@ -16,11 +15,10 @@ import software.amazon.lastmile.kotlin.inject.anvil.ForScope
 import software.amazon.lastmile.kotlin.inject.anvil.MergeComponent
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-actual fun createAppComponent(): AppComponent = AppComponent::class.create(MonicaApp.instance)
 
 @MergeComponent(AppScope::class)
 @SingleIn(AppScope::class)
-actual abstract class AppComponent(
+abstract class AppComponent(
     /**
      * The Android application that is provided to this object graph.
      */
@@ -28,7 +26,7 @@ actual abstract class AppComponent(
 ) : CoilOwner, WorkerFactoryOwner, LoggerOwner {
 
     @ForScope(AppScope::class)
-    actual abstract val viewModelFactory: ViewModelProvider.Factory
+    abstract val viewModelFactory: ViewModelProvider.Factory
 
     abstract val workerFactory: WorkerFactory
 

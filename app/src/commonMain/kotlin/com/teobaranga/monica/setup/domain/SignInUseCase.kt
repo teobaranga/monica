@@ -21,7 +21,7 @@ import me.tatarka.inject.annotations.Inject
 const val SYNC_WORKER_WORK_NAME = "SyncWorkName"
 
 @Inject
-class SignInUseCase internal constructor(
+class SignInUseCase(
     private val dispatcher: Dispatcher,
     private val monicaApi: MonicaApi,
     private val dataStore: DataStore<Preferences>,

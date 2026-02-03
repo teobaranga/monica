@@ -33,7 +33,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Inject
 @ContributesViewModel(AppScope::class, assistedFactory = EditContactActivityViewModel.Factory::class)
-class EditContactActivityViewModel internal constructor(
+class EditContactActivityViewModel(
     @Assisted
     private val savedStateHandle: SavedStateHandle,
     private val getNowLocalDate: () -> LocalDate,

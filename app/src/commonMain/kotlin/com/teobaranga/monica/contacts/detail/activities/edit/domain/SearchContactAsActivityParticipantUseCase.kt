@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.map
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-internal class SearchContactAsActivityParticipantUseCase(
+class SearchContactAsActivityParticipantUseCase(
     private val searchContactUseCase: SearchContactUseCase,
     private val mapContactToActivityParticipant: MapContactToActivityParticipant,
 ) {

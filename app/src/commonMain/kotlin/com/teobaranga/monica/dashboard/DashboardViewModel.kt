@@ -26,7 +26,7 @@ private const val PAGE_SIZE = 10
 
 @Inject
 @ContributesViewModel(AppScope::class)
-class DashboardViewModel internal constructor(
+class DashboardViewModel(
     private val dispatcher: Dispatcher,
     userRepository: IUserRepository,
     contactRepository: ContactRepository,

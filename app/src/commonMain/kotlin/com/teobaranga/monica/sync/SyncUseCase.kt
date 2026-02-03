@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-internal class SyncUseCase(
+class SyncUseCase(
     private val dataStore: DataStore<Preferences>,
     private val userRepository: IUserRepository,
     private val genderRepository: GenderRepository,

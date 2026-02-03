@@ -64,7 +64,7 @@ class ContactRepository(
         }
         return Pager(
             config = config,
-            pagingSourceFactory = pagingSourceFactory,
+            pagingSourceFactory = { pagingSourceFactory() },
         ).flow
     }
 

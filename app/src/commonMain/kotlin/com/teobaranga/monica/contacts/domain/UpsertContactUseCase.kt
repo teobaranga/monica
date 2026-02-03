@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-internal class UpsertContactUseCase(
+class UpsertContactUseCase(
     private val dispatcher: Dispatcher,
     private val contactRepository: ContactRepository,
 ) {

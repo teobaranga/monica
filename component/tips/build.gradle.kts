@@ -1,10 +1,12 @@
 plugins {
-    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.kmp)
     alias(libs.plugins.monica.kotlin.inject)
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "com.teobaranga.monica.component.tips"
+    }
     sourceSets {
         commonMain {
             dependencies {
@@ -13,10 +15,6 @@ kotlin {
             }
         }
     }
-}
-
-android {
-    namespace = "com.teobaranga.monica.component.tips"
 }
 
 dependencies {
