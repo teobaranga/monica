@@ -13,11 +13,13 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @MergeComponent(AppScope::class)
 @SingleIn(AppScope::class)
-actual abstract class AppComponent : CoilOwner, WorkerFactoryOwner, LoggerOwner {
+abstract class AppComponent : CoilOwner, WorkerFactoryOwner, LoggerOwner {
 
     @ForScope(AppScope::class)
-    actual abstract val viewModelFactory: ViewModelProvider.Factory
+    abstract val viewModelFactory: ViewModelProvider.Factory
 
     @Provides
     fun providePlatformContext(): PlatformContext = PlatformContext.INSTANCE
 }
+
+expect fun createAppComponent(): AppComponent
