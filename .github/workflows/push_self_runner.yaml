@@ -65,7 +65,7 @@ jobs:
         run: |
           # https://github.com/actions/runner/issues/598#issuecomment-721151364
           export RUNNER_TRACKING_ID=""
-          ./gradlew :app:assembleDebug :app:assembleRelease --stacktrace \
+          ./gradlew :androidApp:assembleDebug :androidApp:assembleRelease --stacktrace \
             -Pandroid.experimental.settings.executionProfile=ci \
             -PisMappingFileUploadEnabled=${{ github.event.inputs.is_mapping_file_upload_enabled || 'false' }}
 
@@ -73,13 +73,13 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: apk-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: androidApp/build/outputs/apk/debug/androidApp-debug.apk
 
       - name: Upload APK (release)
         uses: actions/upload-artifact@v6
         with:
           name: apk-release
-          path: app/build/outputs/apk/release/app-release.apk
+          path: androidApp/build/outputs/apk/release/androidApp-release.apk
 
   build-ios:
     name: Build (iOS Simulator)
