@@ -47,12 +47,12 @@ jobs:
           build-scan-terms-of-use-agree: "yes"
 
       - name: Run local tests
-        run: ./gradlew testDebug
+        run: ./gradlew testAndroidHostTest
 
       - name: Generate coverage output
         if: github.ref == 'refs/heads/main'
         run: |
-          echo "COVERAGE=$(./gradlew -q testDebugUnitTest koverLineCoverage -Pkover koverXmlReport)" >> $GITHUB_ENV
+          echo "COVERAGE=$(./gradlew -q testAndroidHostTest koverLineCoverage -Pkover koverXmlReport)" >> $GITHUB_ENV
 
       - name: Update dynamic badge gist
         uses: schneegans/dynamic-badges-action@v1.7.0

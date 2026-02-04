@@ -17,12 +17,12 @@ jobs:
         run: |
           # https://github.com/actions/runner/issues/598#issuecomment-721151364
           export RUNNER_TRACKING_ID=""
-          ./gradlew testDebug
+          ./gradlew testAndroidHostTest
 
       - name: Generate coverage output
         if: github.ref == 'refs/heads/main'
         run: |
-          echo "COVERAGE=$(./gradlew -q testDebugUnitTest koverLineCoverage -Pkover koverXmlReport)" >> $GITHUB_ENV
+          echo "COVERAGE=$(./gradlew -q testAndroidHostTest koverLineCoverage -Pkover koverXmlReport)" >> $GITHUB_ENV
 
       - name: Update dynamic badge gist
         uses: schneegans/dynamic-badges-action@v1.7.0

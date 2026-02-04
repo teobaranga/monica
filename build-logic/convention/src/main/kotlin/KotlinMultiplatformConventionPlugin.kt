@@ -59,6 +59,37 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
         }
     }
 
+    with(sourceSets) {
+        commonTest {
+            dependencies {
+                implementation(project(":core:test"))
+                implementation(libs.kotest.assertions.core)
+                implementation(libs.kotest.framework.engine)
+
+                implementation(libs.junit)
+                implementation(libs.kotlinx.coroutines.test)
+
+                implementation(libs.turbine)
+            }
+        }
+        all {
+            when (name) {
+                "androidHostTest" -> {
+                    // TODO run tests in common source set and don't forget about CI setup
+                    dependencies {
+                        implementation(libs.kotest.runner.junit5)
+                        implementation(libs.kotest.extensions.htmlreporter)
+                        implementation(libs.kotest.extensions.junitxml)
+                        // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
+                        implementation(libs.junit.vintage)
+
+                        implementation(libs.mockk)
+                    }
+                }
+            }
+        }
+    }
+
     // Treat all Kotlin warnings as errors (disabled by default)
     // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
     val warningsAsErrors: String? by project

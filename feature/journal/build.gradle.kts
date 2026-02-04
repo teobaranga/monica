@@ -7,6 +7,14 @@ plugins {
 kotlin {
     androidLibrary {
         namespace = "com.teobaranga.monica.journal"
+
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+
+        androidResources {
+            enable = true
+        }
     }
     sourceSets {
         commonMain {

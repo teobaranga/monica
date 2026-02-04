@@ -21,6 +21,10 @@ kotlin {
         withHostTest {
             isIncludeAndroidResources = true
         }
+
+        androidResources {
+            enable = true
+        }
     }
 
     listOf(
@@ -41,18 +45,6 @@ kotlin {
                 implementation(libs.work)
 
                 implementation(libs.browser)
-            }
-        }
-        getByName("androidHostTest") {
-            // TODO run tests in common source set
-            dependencies {
-                implementation(libs.kotest.runner.junit5)
-                implementation(libs.kotest.extensions.htmlreporter)
-                implementation(libs.kotest.extensions.junitxml)
-                // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
-                implementation(libs.junit.vintage)
-
-                implementation(libs.mockk)
             }
         }
         commonMain {
@@ -90,18 +82,6 @@ kotlin {
                 implementation(libs.kmlogging)
 
                 implementation(libs.signum.indispensable)
-            }
-        }
-        commonTest {
-            dependencies {
-                implementation(project(":core:test"))
-                implementation(libs.kotest.assertions.core)
-                implementation(libs.kotest.framework.engine)
-
-                implementation(libs.junit)
-                implementation(libs.kotlinx.coroutines.test)
-
-                implementation(libs.turbine)
             }
         }
     }

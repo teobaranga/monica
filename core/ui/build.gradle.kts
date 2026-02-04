@@ -5,6 +5,10 @@ plugins {
 kotlin {
     androidLibrary {
         namespace = "com.teobaranga.monica.core.ui"
+
+        androidResources {
+            enable = true
+        }
     }
     sourceSets {
         commonMain {
