@@ -110,7 +110,7 @@ jobs:
         run: |
           # Decode keystore and save in expected place
           echo ${{ secrets.RELEASE_KEYSTORE_BASE64 }} > keystore_base64.txt
-          base64 -d -i keystore_base64.txt -o app/release.jks
+          base64 -d -i keystore_base64.txt -o androidApp/release.jks
           # Retrieve other secrets and place in expected place
           touch local.properties
           echo "RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}" >> local.properties

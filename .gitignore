@@ -45,10 +45,7 @@ _sandbox
 captures/
 
 # Keystore
-app/release.jks
-
-# Firebase
-app/google-services.json
+androidApp/release.jks
 
 # Kotlin
 .kotlin/
