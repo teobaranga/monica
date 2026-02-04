@@ -5,8 +5,6 @@ targetSdk = "36"
 compileSdk = "36"
 
 # Included build
-# On 9.0.0 bump:
-# - remove failOnNoDiscoveredTests
 androidGradlePlugin = "9.0.0"
 androidTools = "32.0.0"
 
