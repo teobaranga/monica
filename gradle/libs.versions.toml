@@ -13,7 +13,7 @@ dependency-analysis = "3.5.1"
 detekt = "1.23.8"
 jetbrains-compose = "1.10.0"
 ksp = "2.3.5"
-kotlin = "2.3.0"
+kotlin = "2.3.10"
 
 # Libraries
 androidx-viewmodel = "2.10.0"
@@ -46,9 +46,7 @@ room = "2.8.4"
 sandwich = "2.2.0"
 sentry-android = "6.0.0"
 sentry-kmp = "0.23.1"
-# https://youtrack.jetbrains.com/projects/KT/issues/KT-83266/
-# Update beyond 3.19.0 possible only with Kotlin 2.3.10
-signum = "3.19.0"
+signum = "3.19.3"
 sqlite = "2.6.2"
 turbine = "1.2.1"
 work = "2.11.1"
