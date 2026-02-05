@@ -1,11 +1,21 @@
 plugins {
-    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.cmp)
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "com.teobaranga.monica.journal"
+
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+
+        androidResources {
+            enable = true
+        }
+    }
     sourceSets {
         commonMain {
             dependencies {
@@ -37,10 +47,6 @@ kotlin {
             }
         }
     }
-}
-
-android {
-    namespace = "com.teobaranga.monica.journal"
 }
 
 dependencies {

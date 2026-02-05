@@ -55,7 +55,7 @@ class JournalRepository(
                 enablePlaceholders = false,
                 initialLoadSize = PAGE_SIZE,
             ),
-            pagingSourceFactory = pagingSourceFactory,
+            pagingSourceFactory = { pagingSourceFactory() },
         ).flow
     }
 

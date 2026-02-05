@@ -1,9 +1,11 @@
 plugins {
-    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.cmp)
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "com.teobaranga.monica.component.user_avatar"
+    }
     sourceSets {
         commonMain {
             dependencies {
@@ -15,8 +17,4 @@ kotlin {
             }
         }
     }
-}
-
-android {
-    namespace = "com.teobaranga.monica.component.user_avatar"
 }

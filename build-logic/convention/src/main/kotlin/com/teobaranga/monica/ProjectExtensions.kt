@@ -18,7 +18,6 @@ package com.teobaranga.monica
 
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.AbstractTestTask
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.withType
@@ -28,14 +27,6 @@ val Project.libs
 
 fun DependencyHandlerScope.implementation(dependencyNotation: Any) {
     add("implementation", dependencyNotation)
-}
-
-fun DependencyHandlerScope.debugImplementation(dependencyNotation: Any) {
-    add("debugImplementation", dependencyNotation)
-}
-
-fun DependencyHandlerScope.testImplementation(dependencyNotation: Any) {
-    add("testImplementation", dependencyNotation)
 }
 
 fun DependencyHandlerScope.coreLibraryDesugaring(dependencyNotation: Any) {
@@ -60,10 +51,5 @@ fun Project.configureUnitTests() {
         systemProperty("kotest.framework.classpath.scanning.config.disable", true)
         systemProperty("kotest.framework.classpath.scanning.autoscan.disable", true)
         systemProperty("kotest.framework.config.fqn", "com.teobaranga.monica.KotestConfig")
-    }
-
-    // https://issuetracker.google.com/issues/411739086?pli=1
-    tasks.withType<AbstractTestTask>().configureEach {
-        failOnNoDiscoveredTests.set(false)
     }
 }

@@ -28,7 +28,7 @@ private const val PAGE_SIZE = 15
 
 @Inject
 @ContributesViewModel(AppScope::class)
-class ContactsViewModel internal constructor(
+class ContactsViewModel(
     private val dispatcher: Dispatcher,
     userRepository: IUserRepository,
     contactRepository: ContactRepository,

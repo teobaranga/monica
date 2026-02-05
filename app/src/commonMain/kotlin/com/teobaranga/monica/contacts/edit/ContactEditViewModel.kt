@@ -27,7 +27,7 @@ private const val ID_CONTACT_UNDEFINED = -1
 
 @Inject
 @ContributesViewModel(scope = AppScope::class, assistedFactory = ContactEditViewModel.Factory::class)
-class ContactEditViewModel internal constructor(
+class ContactEditViewModel(
     @Assisted
     savedStateHandle: SavedStateHandle,
     private val getContactUseCase: GetContactUseCase,

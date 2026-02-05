@@ -1,13 +1,15 @@
 import com.teobaranga.monica.InjectHandler
 
 plugins {
-    alias(libs.plugins.monica.android.library)
     alias(libs.plugins.monica.cmp)
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "com.teobaranga.monica.certificate"
+    }
     sourceSets {
         commonMain {
             dependencies {
@@ -22,10 +24,6 @@ kotlin {
             }
         }
     }
-}
-
-android {
-    namespace = "com.teobaranga.monica.certificate"
 }
 
 monica {

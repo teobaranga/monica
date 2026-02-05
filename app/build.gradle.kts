@@ -1,9 +1,7 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.teobaranga.monica.InjectHandler
 import com.teobaranga.monica.libs
 
 plugins {
-    alias(libs.plugins.monica.android.application)
     alias(libs.plugins.monica.cmp)
     alias(libs.plugins.monica.kotlin.inject)
     alias(libs.plugins.monica.network)
@@ -11,14 +9,23 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.room)
     alias(libs.plugins.sentry.kmp)
-    alias(libs.plugins.sentry.android)
     alias(libs.plugins.kotest)
 }
 
 kotlin {
     applyDefaultHierarchyTemplate()
 
-    androidTarget()
+    androidLibrary {
+        namespace = "com.teobaranga.monica.app"
+
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+
+        androidResources {
+            enable = true
+        }
+    }
 
     listOf(
         iosArm64(),
@@ -38,22 +45,6 @@ kotlin {
                 implementation(libs.work)
 
                 implementation(libs.browser)
-            }
-        }
-        androidUnitTest {
-            // TODO run tests in common source set
-            dependencies {
-                implementation(libs.kotest.runner.junit5)
-                implementation(libs.kotest.extensions.htmlreporter)
-                implementation(libs.kotest.extensions.junitxml)
-                implementation(libs.junit)
-                // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
-                implementation(libs.junit.vintage)
-                implementation(libs.kotlinx.coroutines.test)
-
-                implementation(libs.turbine)
-
-                implementation(libs.mockk)
             }
         }
         commonMain {
@@ -93,13 +84,6 @@ kotlin {
                 implementation(libs.signum.indispensable)
             }
         }
-        commonTest {
-            dependencies {
-                implementation(project(":core:test"))
-                implementation(libs.kotest.assertions.core)
-                implementation(libs.kotest.framework.engine)
-            }
-        }
     }
 }
 
@@ -110,61 +94,6 @@ dependencies {
 
     detektPlugins(libs.compose.rules)
     detektPlugins(libs.detekt.formatting)
-}
-
-android {
-    namespace = "com.teobaranga.monica"
-
-    defaultConfig {
-        applicationId = "com.teobaranga.monica"
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-    }
-
-    signingConfigs {
-        create("release") {
-            val localProperties = gradleLocalProperties(rootDir, providers)
-            storeFile = file("release.jks")
-            storePassword = localProperties["RELEASE_STORE_PASSWORD"] as String?
-            keyAlias = localProperties["RELEASE_KEY_ALIAS"] as String?
-            keyPassword = localProperties["RELEASE_KEY_PASSWORD"] as String?
-        }
-    }
-
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
-
-    buildTypes {
-        debug {
-            applicationIdSuffix = ".debug"
-        }
-        release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-            excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
-        }
-    }
-
-    testOptions.unitTests {
-        isIncludeAndroidResources = true
-        all { test ->
-            test.systemProperties["robolectric.logging.enabled"] = "true"
-        }
-    }
 }
 
 room {
@@ -179,17 +108,4 @@ monica {
     inject {
         injectIn = InjectHandler.Target.SEPARATE
     }
-}
-
-sentry {
-    autoInstallation {
-        // Installed by the KMP plugin instead
-        enabled = false
-    }
-
-    // this will upload your source code to Sentry to show it as part of the stack traces
-    // disable if you don't want to expose your sources
-    includeSourceContext = true
-
-    ignoredBuildTypes = listOf("debug")
 }

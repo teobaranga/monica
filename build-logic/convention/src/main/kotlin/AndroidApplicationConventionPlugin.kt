@@ -18,11 +18,13 @@
  */
 
 import com.android.build.api.dsl.ApplicationExtension
-import com.teobaranga.monica.configureKotlinAndroid
 import com.teobaranga.monica.configureUnitTests
+import com.teobaranga.monica.coreLibraryDesugaring
 import com.teobaranga.monica.libs
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 
 @Suppress("unused") // Registered as a plugin in build.gradle.kts
 class AndroidApplicationConventionPlugin : MonicaPlugin() {
@@ -36,8 +38,26 @@ class AndroidApplicationConventionPlugin : MonicaPlugin() {
             }
 
             extensions.configure<ApplicationExtension> {
-                configureKotlinAndroid(this)
-                defaultConfig.targetSdk = libs.versions.targetSdk.get().toInt()
+                compileSdk = libs.versions.compileSdk.get().toInt()
+
+                defaultConfig {
+                    minSdk = libs.versions.minSdk.get().toInt()
+                    targetSdk = libs.versions.targetSdk.get().toInt()
+                }
+
+                compileOptions {
+                    // Java 11+ APIs available through desugaring
+                    // https://developer.android.com/studio/write/java11-default-support-table
+                    sourceCompatibility = JavaVersion.VERSION_21
+                    targetCompatibility = JavaVersion.VERSION_21
+                    isCoreLibraryDesugaringEnabled = true
+                }
+
+
+                dependencies {
+                    coreLibraryDesugaring(libs.desugar.jdk.libs)
+                }
+
                 testOptions.animationsDisabled = true
             }
 

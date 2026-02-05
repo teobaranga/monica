@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.emptyFlow
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-internal class SearchContactUseCase(
+class SearchContactUseCase(
     private val contactRepository: ContactRepository,
 ) {
     operator fun invoke(query: String, excludeContacts: List<Int> = emptyList()): Flow<List<ContactEntity>> {

@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-internal class GetActivityUseCase(
+class GetActivityUseCase(
     private val dispatcher: Dispatcher,
     private val contactActivitiesRepository: ContactActivitiesRepository,
     private val mapContactToActivityParticipant: MapContactToActivityParticipant,

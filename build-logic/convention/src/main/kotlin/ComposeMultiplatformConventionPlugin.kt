@@ -1,11 +1,8 @@
-import com.teobaranga.monica.debugImplementation
 import com.teobaranga.monica.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
@@ -23,8 +20,6 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
             }
 
             configure<KotlinMultiplatformExtension> {
-                val compose = extensions.getByType<ComposePlugin.Dependencies>()
-
                 with(sourceSets) {
                     commonMain {
                         dependencies {
@@ -41,26 +36,25 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                             implementation(libs.jetbrains.navigation)
                         }
                     }
-                    afterEvaluate {
-                        findByName("androidUnitTest")?.run {
-                            dependencies {
-                                // Robolectric UI tests
-                                implementation(libs.robolectric)
-                                implementation(libs.jetbrains.compose.ui.test)
-                                // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
-                                implementation(libs.junit.vintage)
+                    all {
+                        when (name) {
+                            "androidMain" -> {
+                                logger.info("androidMain for $project")
+                                target.dependencies {
+                                    "androidRuntimeClasspath"(libs.jetbrains.compose.ui.tooling)
+                                }
                             }
-                            project.dependencies {
-                                debugImplementation(libs.compose.ui.test.manifest)
+                            "androidHostTest" -> {
+                                logger.info("androidHostTest for $project")
+                                dependencies {
+                                    // Robolectric UI tests
+                                    implementation(libs.robolectric)
+                                    implementation(libs.jetbrains.compose.ui.test)
+                                    // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
+                                    implementation(libs.junit.vintage)
+                                    implementation(libs.compose.ui.test.manifest)
+                                }
                             }
-                        }
-                    }
-                }
-
-                afterEvaluate {
-                    if (sourceSets.findByName("androidMain") != null) {
-                        target.dependencies {
-                            debugImplementation(libs.jetbrains.compose.ui.tooling)
                         }
                     }
                 }

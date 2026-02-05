@@ -28,7 +28,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Inject
 @ContributesViewModel(AppScope::class, assistedFactory = ContactDetailViewModel.Factory::class)
-class ContactDetailViewModel internal constructor(
+class ContactDetailViewModel(
     contactRepository: ContactRepository,
     @Assisted
     private val savedStateHandle: SavedStateHandle,

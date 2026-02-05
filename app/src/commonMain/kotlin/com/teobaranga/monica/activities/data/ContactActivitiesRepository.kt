@@ -16,7 +16,7 @@ import kotlin.uuid.Uuid
 
 @Inject
 @SingleIn(AppScope::class)
-internal class ContactActivitiesRepository(
+class ContactActivitiesRepository(
     dispatcher: Dispatcher,
     private val clock: Clock,
     private val contactActivitiesDao: ContactActivitiesDao,

@@ -19,7 +19,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Inject
 @ContributesViewModel(AppScope::class, assistedFactory = ContactActivitiesViewModel.Factory::class)
-class ContactActivitiesViewModel internal constructor(
+class ContactActivitiesViewModel(
     contactActivitiesRepository: ContactActivitiesRepository,
     dispatcher: Dispatcher,
     @Assisted

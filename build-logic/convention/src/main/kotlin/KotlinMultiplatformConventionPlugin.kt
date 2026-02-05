@@ -1,4 +1,6 @@
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.teobaranga.monica.MonicaExtension
+import com.teobaranga.monica.configureUnitTests
 import com.teobaranga.monica.libs
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
@@ -8,7 +10,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
- * Pure Kotlin multiplatform library.
+ * Kotlin multiplatform library convention plugin, defining all the supported targets.
  */
 @Suppress("unused") // Registered as a plugin in build.gradle.kts
 class KotlinMultiplatformConventionPlugin : MonicaPlugin() {
@@ -19,16 +21,22 @@ class KotlinMultiplatformConventionPlugin : MonicaPlugin() {
         with(target) {
             with(pluginManager) {
                 apply(libs.plugins.kotlin.multiplatform.get().pluginId)
+                apply(libs.plugins.android.kotlin.multiplatform.library.get().pluginId)
             }
 
             configureKotlinMultiplatform()
+
+            configureUnitTests()
         }
     }
 }
 
 private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatformExtension> {
 
-    androidTarget {
+    configure<KotlinMultiplatformAndroidLibraryTarget> {
+        compileSdk = libs.versions.compileSdk.get().toInt()
+        minSdk = libs.versions.minSdk.get().toInt()
+
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
         }
@@ -48,6 +56,37 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
         }
         iosSimulatorArm64Main {
             kotlin.srcDir("build/generated/ksp/iosSimulatorArm64/iosSimulatorArm64Main/kotlin")
+        }
+    }
+
+    with(sourceSets) {
+        commonTest {
+            dependencies {
+                implementation(project(":core:test"))
+                implementation(libs.kotest.assertions.core)
+                implementation(libs.kotest.framework.engine)
+
+                implementation(libs.junit)
+                implementation(libs.kotlinx.coroutines.test)
+
+                implementation(libs.turbine)
+            }
+        }
+        all {
+            when (name) {
+                "androidHostTest" -> {
+                    // TODO run tests in common source set and don't forget about CI setup
+                    dependencies {
+                        implementation(libs.kotest.runner.junit5)
+                        implementation(libs.kotest.extensions.htmlreporter)
+                        implementation(libs.kotest.extensions.junitxml)
+                        // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
+                        implementation(libs.junit.vintage)
+
+                        implementation(libs.mockk)
+                    }
+                }
+            }
         }
     }
 

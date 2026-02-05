@@ -17,7 +17,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
 @Inject
 @ContributesViewModel(scope = AppScope::class, assistedFactory = BirthdayPickerViewModel.Factory::class)
-class BirthdayPickerViewModel internal constructor(
+class BirthdayPickerViewModel(
     @Assisted
     private val initialBirthday: Birthday?,
     getNowLocalDate: () -> LocalDate,
