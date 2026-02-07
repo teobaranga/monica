@@ -17,7 +17,7 @@ jobs:
         id: download-artifact
         uses: dawidd6/action-download-artifact@v14
         with:
-          workflow: push_self_runner.yaml
+          workflow: push.yaml
           branch: main
           name: apk-release
       - name: Upload release APK
@@ -26,5 +26,5 @@ jobs:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          file: app-release.apk
+          file: androidApp-release.apk
           releaseNotes: ${{ inputs.release-notes }}
