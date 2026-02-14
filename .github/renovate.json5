@@ -26,13 +26,5 @@
       "matchNewValue": "0.7.1-0.6.x-compat",
       "enabled": false
     },
-    {
-      // Kover 0.9.6+ breaks due to some error where it looks for non-existing java sources
-      "matchPackageNames": [
-        "org.jetbrains.kotlinx.kover.aggregation",
-      ],
-      "matchNewValue": "0.9.6",
-      "enabled": false
-    },
   ]
 }
