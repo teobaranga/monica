@@ -5,8 +5,8 @@ targetSdk = "36"
 compileSdk = "36"
 
 # Included build
-androidGradlePlugin = "9.0.0"
-androidTools = "32.0.0"
+androidGradlePlugin = "9.0.1"
+androidTools = "32.0.1"
 
 # Plugins
 dependency-analysis = "3.5.1"
