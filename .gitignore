@@ -5,6 +5,12 @@
 # files for the dex VM
 *.dex
 
+# DexMetadata (including Baseline Profiles)
+*.dm
+
+# Output metadata (generated when building APKs)
+output-metadata.json
+
 # Java class files
 *.class
 
@@ -66,3 +72,9 @@ site/
 
 # Sentry Config File
 sentry.properties
+
+# DataStore preferences - ProtoBuf
+*.preferences_pb
+
+# Ignore private HTTP config
+/http/http-client.private.env.json

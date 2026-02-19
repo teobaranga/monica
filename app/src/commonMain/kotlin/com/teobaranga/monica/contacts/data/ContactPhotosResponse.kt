@@ -19,7 +19,8 @@ data class ContactPhotosResponse(
         val fileName: String,
         @SerialName("dataUrl")
         val data: String,
+        // Some pictures are not attached to a contact due to server bugs, mark as nullable
         @SerialName("contact")
-        val contact: ContactResponse,
+        val contact: ContactResponse?,
     )
 }
