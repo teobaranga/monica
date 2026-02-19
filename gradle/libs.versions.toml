@@ -16,7 +16,6 @@ ksp = "2.3.6"
 kotlin = "2.3.10"
 
 # Libraries
-androidx-viewmodel = "2.10.0"
 browser = "1.9.0"
 coil = "3.3.0"
 compose-placeholder = "1.0.12"
@@ -60,7 +59,6 @@ jetbrains-compose-gradlePlugin = { module = "org.jetbrains.compose:org.jetbrains
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 # Features & components
-androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-viewmodel" }
 browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 compose-placeholder = { group = "com.eygraber", name = "compose-placeholder-material3", version.ref = "compose-placeholder" }
