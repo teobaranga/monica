@@ -23,7 +23,11 @@ More to come...
 
 ## Screenshots
 
-TBD
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://monica.teobaranga.com/assets/screenshots_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://monica.teobaranga.com/assets/screenshots_light.png">
+  <img alt="Fallback image description" src="https://monica.teobaranga.com/assets/screenshots_light.png">
+</picture>
 
 # License
 
