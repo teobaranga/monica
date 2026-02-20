@@ -85,7 +85,6 @@ dependencies {
     implementation(project(":feature:journal"))
     implementation(project(":feature:user-api"))
 
-    implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.datastore.preferences)
     implementation(libs.browser)
     implementation(libs.coil)

@@ -1,0 +1,5 @@
+### Get all photos entries
+GET {{baseUrl}}/photos?page=1
+Authorization: Bearer {{pat}}
+
+###

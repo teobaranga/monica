@@ -45,7 +45,7 @@ class PhotoSynchronizer(
                     return
                 }
             val photoEntities = photosResponse.data
-                .map {
+                .mapNotNull {
                     it.toEntity()
                 }
 
@@ -70,7 +70,11 @@ class PhotoSynchronizer(
         isSyncEnabled = false
     }
 
-    private fun ContactPhotosResponse.Photo.toEntity(): PhotoEntity {
+    private fun ContactPhotosResponse.Photo.toEntity(): PhotoEntity? {
+        // Ignore disconnected pictures
+        if (contact == null) {
+            return null
+        }
         return PhotoEntity(
             id = id,
             fileName = fileName,
