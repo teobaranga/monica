@@ -24,9 +24,9 @@ More to come...
 ## Screenshots
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://monica.teobaranga.com/assets/screenshots_dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://monica.teobaranga.com/assets/screenshots_light.png">
-  <img alt="Fallback image description" src="https://monica.teobaranga.com/assets/screenshots_light.png">
+  <source media="(prefers-color-scheme: dark)" srcset="https://monica.teobaranga.com/assets/screenshots_dark.webp">
+  <source media="(prefers-color-scheme: light)" srcset="https://monica.teobaranga.com/assets/screenshots_light.webp">
+  <img alt="Screenshots" src="https://monica.teobaranga.com/assets/screenshots_light.webp">
 </picture>
 
 # License
