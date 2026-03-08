@@ -16,7 +16,7 @@ dependencyResolutionManagement {
 
 plugins {
     id("org.jetbrains.kotlinx.kover.aggregation") version "0.9.7"
-    id("com.android.settings") version "9.0.1"
+    id("com.android.settings") version "9.1.0"
 }
 
 android {
