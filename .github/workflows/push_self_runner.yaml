@@ -70,13 +70,13 @@ jobs:
             -PisMappingFileUploadEnabled=${{ github.event.inputs.is_mapping_file_upload_enabled || 'false' }}
 
       - name: Upload APK (debug)
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: apk-debug
           path: androidApp/build/outputs/apk/debug/androidApp-debug.apk
 
       - name: Upload APK (release)
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: apk-release
           path: androidApp/build/outputs/apk/release/androidApp-release.apk
