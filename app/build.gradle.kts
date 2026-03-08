@@ -15,7 +15,7 @@ plugins {
 kotlin {
     applyDefaultHierarchyTemplate()
 
-    androidLibrary {
+    android {
         namespace = "com.teobaranga.monica.app"
 
         withHostTest {

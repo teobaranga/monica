@@ -7,7 +7,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "com.teobaranga.monica.certificate"
     }
     sourceSets {

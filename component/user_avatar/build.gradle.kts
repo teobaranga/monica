@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "com.teobaranga.monica.component.user_avatar"
     }
     sourceSets {
