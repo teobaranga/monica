@@ -1,10 +1,10 @@
 package com.teobaranga.monica.database
 
-import com.teobaranga.monica.activities.data.ContactActivitiesDao
-import com.teobaranga.monica.activities.data.ContactActivityCrossRef
-import com.teobaranga.monica.activities.data.ContactActivityEntity
-import com.teobaranga.monica.activities.data.ContactActivityWithParticipants
-import com.teobaranga.monica.contacts.data.ContactEntity
+import com.teobaranga.monica.activity.data.ContactActivitiesDao
+import com.teobaranga.monica.activity.data.ContactActivityCrossRef
+import com.teobaranga.monica.activity.data.ContactActivityEntity
+import com.teobaranga.monica.activity.data.ContactActivityWithParticipants
+import com.teobaranga.monica.contact.data.local.ContactEntity
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.data.DaosComponent
 import io.mockk.every
@@ -24,7 +24,7 @@ import kotlin.uuid.Uuid
     scope = AppScope::class,
     replaces = [DaosComponent::class],
 )
-class ContactActivitiesDao : ContactActivitiesDao() {
+class TestContactActivitiesDao : ContactActivitiesDao() {
 
     private val activities = MutableStateFlow<List<ContactActivityEntity>>(emptyList())
 

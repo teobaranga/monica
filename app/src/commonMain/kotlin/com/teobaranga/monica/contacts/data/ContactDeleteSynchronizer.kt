@@ -4,6 +4,7 @@ import com.diamondedge.logging.logging
 import com.skydoves.sandwich.ktor.bodyString
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
+import com.teobaranga.monica.contact.data.remote.ContactApi
 import com.teobaranga.monica.core.data.remote.ERROR_CODE_DATA_UNAVAILABLE
 import com.teobaranga.monica.core.data.remote.ErrorResponse
 import com.teobaranga.monica.core.data.sync.SyncStatus

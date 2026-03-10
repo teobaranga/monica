@@ -1,4 +1,4 @@
-package com.teobaranga.monica.activities.data
+package com.teobaranga.monica.activity.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

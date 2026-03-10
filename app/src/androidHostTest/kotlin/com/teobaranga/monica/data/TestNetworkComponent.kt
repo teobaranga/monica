@@ -1,6 +1,7 @@
 package com.teobaranga.monica.data
 
-import com.teobaranga.monica.contacts.data.ContactApi
+import com.teobaranga.monica.activity.data.ActivityApi
+import com.teobaranga.monica.contact.data.remote.ContactApi
 import com.teobaranga.monica.core.network.AndroidNetworkComponent
 import com.teobaranga.monica.genders.data.GendersApi
 import io.ktor.client.HttpClient
@@ -51,6 +52,10 @@ interface TestNetworkComponent {
     @Provides
     @SingleIn(AppScope::class)
     fun provideContactApi(): ContactApi = mockk<ContactApi>()
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun provideActivityApi(): ActivityApi = mockk<ActivityApi>()
 
     @Provides
     @SingleIn(AppScope::class)

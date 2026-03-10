@@ -1,7 +1,8 @@
 package com.teobaranga.monica.contacts
 
 import androidx.lifecycle.SavedStateHandle
-import com.teobaranga.monica.contacts.data.ContactApi
+import com.teobaranga.monica.activity.data.ActivityApi
+import com.teobaranga.monica.contact.data.remote.ContactApi
 import com.teobaranga.monica.contacts.data.ContactDao
 import com.teobaranga.monica.contacts.detail.activities.ui.ContactActivitiesViewModel
 import com.teobaranga.monica.contacts.edit.ContactEditViewModel
@@ -19,6 +20,8 @@ interface ContactComponent: GendersComponent {
     fun contactEditViewModel(): (SavedStateHandle) -> ContactEditViewModel
 
     fun contactApi(): ContactApi
+
+    fun activityApi(): ActivityApi
 
     fun contactDao(): ContactDao
 }

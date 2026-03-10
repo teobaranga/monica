@@ -1,10 +1,9 @@
-package com.teobaranga.monica.activities.data
+package com.teobaranga.monica.activity.data
 
 import com.diamondedge.logging.logging
 import com.skydoves.sandwich.ktor.bodyString
 import com.skydoves.sandwich.suspendOnError
 import com.skydoves.sandwich.suspendOnSuccess
-import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.core.data.remote.ERROR_CODE_DATA_UNAVAILABLE
 import com.teobaranga.monica.core.data.remote.ErrorResponse
 import com.teobaranga.monica.core.data.sync.SyncStatus
@@ -14,7 +13,7 @@ import me.tatarka.inject.annotations.Inject
 
 @Inject
 class ContactActivityDeletedSynchronizer(
-    private val contactApi: ContactApi,
+    private val activityApi: ActivityApi,
     private val contactActivitiesDao: ContactActivitiesDao,
     private val json: Json,
 ) {
@@ -25,7 +24,7 @@ class ContactActivityDeletedSynchronizer(
         contactActivitiesDao.getActivitiesByStatus(SyncStatus.DELETED)
             .forEach { deletedEntry ->
                 val activityId = deletedEntry.activity.activityId
-                contactApi.deleteActivity(activityId)
+                activityApi.deleteActivity(activityId)
                     .suspendOnSuccess {
                         contactActivitiesDao.delete(listOf(data.id))
                     }

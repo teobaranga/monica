@@ -1,4 +1,4 @@
-package com.teobaranga.monica.activities.data
+package com.teobaranga.monica.activity.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

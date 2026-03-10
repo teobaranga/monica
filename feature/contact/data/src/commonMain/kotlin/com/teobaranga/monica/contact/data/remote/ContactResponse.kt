@@ -1,4 +1,4 @@
-package com.teobaranga.monica.contacts.data
+package com.teobaranga.monica.contact.data.remote
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

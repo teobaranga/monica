@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
-import com.teobaranga.monica.activities.data.ContactActivitiesRepository
+import com.teobaranga.monica.activity.data.ContactActivitiesRepository
 import com.teobaranga.monica.contacts.detail.activities.edit.domain.GetActivityUseCase
 import com.teobaranga.monica.contacts.detail.activities.edit.domain.SearchContactAsActivityParticipantUseCase
 import com.teobaranga.monica.contacts.domain.GetContactUseCase

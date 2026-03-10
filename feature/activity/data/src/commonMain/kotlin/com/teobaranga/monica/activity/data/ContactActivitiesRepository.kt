@@ -1,4 +1,4 @@
-package com.teobaranga.monica.activities.data
+package com.teobaranga.monica.activity.data
 
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.dispatcher.Dispatcher

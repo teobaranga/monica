@@ -1,4 +1,4 @@
-package com.teobaranga.monica.activities.data
+package com.teobaranga.monica.activity.data
 
 import androidx.room.Dao
 import androidx.room.Query
