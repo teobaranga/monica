@@ -1,4 +1,4 @@
-package com.teobaranga.monica.contacts.data
+package com.teobaranga.monica.contact.data.remote
 
 import com.teobaranga.monica.core.datetime.serializer.MonicaLocalDateSerializer
 import kotlinx.datetime.LocalDate

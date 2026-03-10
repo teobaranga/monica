@@ -1,4 +1,4 @@
-package com.teobaranga.monica.activities.data
+package com.teobaranga.monica.activity.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

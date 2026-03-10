@@ -1,5 +1,9 @@
 package com.teobaranga.monica.contacts.data
 
+import com.teobaranga.monica.contact.data.local.ContactEntity
+import com.teobaranga.monica.contact.data.local.ContactEntityAvatar
+import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
+import com.teobaranga.monica.contact.data.remote.ContactResponse
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.genders.data.GenderRepository
 import me.tatarka.inject.annotations.Inject
@@ -19,7 +23,7 @@ class ContactEntityMapper(
                 nickname = nickname,
                 completeName = completeName,
                 initials = initials,
-                avatar = ContactEntity.Avatar(
+                avatar = ContactEntityAvatar(
                     url = info.avatar.url,
                     color = info.avatar.color,
                 ),
@@ -31,9 +35,9 @@ class ContactEntityMapper(
         }
     }
 
-    private fun ContactResponse.Information.Dates.Birthdate.toBirthday(): ContactEntity.Birthdate? {
+    private fun ContactResponse.Information.Dates.Birthdate.toBirthday(): ContactEntityBirthdate? {
         return date?.let { date ->
-            ContactEntity.Birthdate(
+            ContactEntityBirthdate(
                 isAgeBased = isAgeBased == true,
                 isYearUnknown = isYearUnknown == true,
                 date = date,

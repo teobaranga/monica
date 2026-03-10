@@ -1,13 +1,12 @@
-package com.teobaranga.monica.activities.data
+package com.teobaranga.monica.activity.data
 
 import com.skydoves.sandwich.ApiResponse
-import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import me.tatarka.inject.annotations.Inject
 
 @Inject
 class ContactActivityNewSynchronizer(
-    private val contactApi: ContactApi,
+    private val activityApi: ActivityApi,
     private val contactActivitiesDao: ContactActivitiesDao,
 ) {
 
@@ -17,7 +16,7 @@ class ContactActivityNewSynchronizer(
         val newEntries = contactActivitiesDao.getActivitiesByStatus(SyncStatus.NEW)
 
         for (newEntry in newEntries) {
-            val response = contactApi.createActivity(
+            val response = activityApi.createActivity(
                 CreateActivityRequest(
                     activityTypeId = null,
                     summary = newEntry.activity.title,

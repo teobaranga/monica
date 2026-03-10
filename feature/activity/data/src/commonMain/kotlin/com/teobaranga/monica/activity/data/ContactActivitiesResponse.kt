@@ -1,6 +1,6 @@
-package com.teobaranga.monica.activities.data
+package com.teobaranga.monica.activity.data
 
-import com.teobaranga.monica.contacts.data.ContactResponse
+import com.teobaranga.monica.contact.data.remote.ContactResponse
 import com.teobaranga.monica.core.data.remote.MetaResponse
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName

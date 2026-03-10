@@ -1,9 +1,9 @@
-package com.teobaranga.monica.activities.data
+package com.teobaranga.monica.activity.data
 
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
-import com.teobaranga.monica.contacts.data.ContactEntity
+import com.teobaranga.monica.contact.data.local.ContactEntity
 
 data class ContactActivityWithParticipants(
     @Embedded

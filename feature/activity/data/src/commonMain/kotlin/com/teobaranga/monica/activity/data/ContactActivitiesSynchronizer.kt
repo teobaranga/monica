@@ -1,10 +1,9 @@
-package com.teobaranga.monica.activities.data
+package com.teobaranga.monica.activity.data
 
 import com.diamondedge.logging.logging
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onFailure
-import com.teobaranga.monica.contacts.data.ContactApi
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.data.sync.Synchronizer
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +16,7 @@ import kotlin.uuid.Uuid
 class ContactActivitiesSynchronizer(
     @Assisted
     private val contactId: Int,
-    private val contactApi: ContactApi,
+    private val activityApi: ActivityApi,
     private val contactActivitiesDao: ContactActivitiesDao,
     private val contactActivityNewSynchronizer: ContactActivityNewSynchronizer,
     private val contactActivityUpdateSynchronizer: ContactActivityUpdateSynchronizer,
@@ -51,7 +50,7 @@ class ContactActivitiesSynchronizer(
 
         var nextPage: Int? = 1
         while (nextPage != null) {
-            val contactActivitiesResponse = contactApi.getContactActivities(id = contactId, page = nextPage)
+            val contactActivitiesResponse = activityApi.getContactActivities(id = contactId, page = nextPage)
                 .onFailure {
                     log.e { "Error while loading contact activities: ${message()}" }
                 }

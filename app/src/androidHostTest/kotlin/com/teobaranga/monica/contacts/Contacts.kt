@@ -1,8 +1,10 @@
 package com.teobaranga.monica.contacts
 
-import com.teobaranga.monica.contacts.data.ContactEntity
-import com.teobaranga.monica.contacts.data.ContactResponse
-import com.teobaranga.monica.contacts.data.CreateContactRequest
+import com.teobaranga.monica.contact.data.local.ContactEntity
+import com.teobaranga.monica.contact.data.local.ContactEntityAvatar
+import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
+import com.teobaranga.monica.contact.data.remote.ContactResponse
+import com.teobaranga.monica.contact.data.remote.CreateContactRequest
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.genders.data.genderMale
 import kotlinx.datetime.LocalDate
@@ -13,13 +15,13 @@ const val TEST_CONTACT_ID = 123
 fun newContactEntity(
     contactId: Int,
     firstName: String,
-    avatar: ContactEntity.Avatar = ContactEntity.Avatar(
+    avatar: ContactEntityAvatar = ContactEntityAvatar(
         url = null,
         color = "#000000",
     ),
     lastName: String? = null,
     nickname: String? = null,
-    birthdate: ContactEntity.Birthdate? = null,
+    birthdate: ContactEntityBirthdate? = null,
     genderId: Int? = null,
     updated: Instant? = null,
     syncStatus: SyncStatus = SyncStatus.NEW,

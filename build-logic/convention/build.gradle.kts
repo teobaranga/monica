@@ -78,5 +78,9 @@ gradlePlugin {
             id = "monica.network"
             implementationClass = "NetworkConventionPlugin"
         }
+        register("data-module") {
+            id = "monica.module.data"
+            implementationClass = "DataModuleConventionPlugin"
+        }
     }
 }

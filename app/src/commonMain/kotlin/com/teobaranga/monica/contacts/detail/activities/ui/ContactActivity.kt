@@ -1,7 +1,7 @@
 package com.teobaranga.monica.contacts.detail.activities.ui
 
 import androidx.compose.runtime.Immutable
-import com.teobaranga.monica.activities.data.ContactActivityWithParticipants
+import com.teobaranga.monica.activity.data.ContactActivityWithParticipants
 import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contacts.data.toExternalModel
 import kotlinx.datetime.LocalDate
