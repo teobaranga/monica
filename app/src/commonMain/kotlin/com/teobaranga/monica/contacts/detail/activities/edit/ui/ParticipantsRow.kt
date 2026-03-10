@@ -30,53 +30,51 @@ fun ParticipantsRow(
     state: ParticipantsState,
     modifier: Modifier = Modifier.Companion,
 ) {
-    if (state.participants.isNotEmpty()) {
-        val navigator = LocalNavigator.current
-        LazyRow(
-            modifier = modifier,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = 20.dp)
-        ) {
-            for (contact in state.participants) {
-                item(contact.contactId) {
-                    val dropdownMenuState = rememberDropdownMenuState()
-                    DropdownMenu(
-                        modifier = Modifier
-                            .animateItem(),
-                        state = dropdownMenuState,
-                        anchor = {
-                            UserAvatar(
-                                modifier = Modifier
-                                    .menuAnchor(type = ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                                    .size(64.dp),
-                                userAvatar = contact.avatar,
-                            )
-                        },
-                        menuItems = {
-                            Text(
-                                modifier = Modifier
-                                    .padding(MenuDefaults.DropdownMenuItemContentPadding)
-                                    .padding(vertical = 8.dp),
-                                text = contact.name,
-                                style = MaterialTheme.typography.labelMedium,
-                            )
+    val navigator = LocalNavigator.current
+    LazyRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 20.dp)
+    ) {
+        for (contact in state.participants) {
+            item(contact.contactId) {
+                val dropdownMenuState = rememberDropdownMenuState()
+                DropdownMenu(
+                    modifier = Modifier
+                        .animateItem(),
+                    state = dropdownMenuState,
+                    anchor = {
+                        UserAvatar(
+                            modifier = Modifier
+                                .menuAnchor(type = ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                                .size(64.dp),
+                            userAvatar = contact.avatar,
+                        )
+                    },
+                    menuItems = {
+                        Text(
+                            modifier = Modifier
+                                .padding(MenuDefaults.DropdownMenuItemContentPadding)
+                                .padding(vertical = 8.dp),
+                            text = contact.name,
+                            style = MaterialTheme.typography.labelMedium,
+                        )
 
-                            ViewProfileDropdownMenuItem(
-                                onClick = {
-                                    dropdownMenuState.expanded = false
-                                    navigator.navigate(ContactDetailRoute(contact.contactId))
-                                },
-                            )
+                        ViewProfileDropdownMenuItem(
+                            onClick = {
+                                dropdownMenuState.expanded = false
+                                navigator.navigate(ContactDetailRoute(contact.contactId))
+                            },
+                        )
 
-                            DeleteParticipantDropdownMenuItem(
-                                onClick = {
-                                    dropdownMenuState.expanded = false
-                                    state.participants.remove(contact)
-                                }
-                            )
-                        },
-                    )
-                }
+                        DeleteParticipantDropdownMenuItem(
+                            onClick = {
+                                dropdownMenuState.expanded = false
+                                state.participants.remove(contact)
+                            }
+                        )
+                    },
+                )
             }
         }
     }

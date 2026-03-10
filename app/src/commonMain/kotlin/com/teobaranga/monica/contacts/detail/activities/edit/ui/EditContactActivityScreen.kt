@@ -1,5 +1,6 @@
 package com.teobaranga.monica.contacts.detail.activities.edit.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ScrollState
@@ -208,11 +209,15 @@ private fun EditContactActivityScreenLoaded(
             )
         }
 
-        ParticipantsRow(
-            modifier = Modifier
-                .fillMaxWidth(),
-            state = uiState.participantsState,
-        )
+        AnimatedVisibility(
+            visible = uiState.participantsState.participants.isNotEmpty(),
+        ) {
+            ParticipantsRow(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                state = uiState.participantsState,
+            )
+        }
 
         SummarySection(
             uiState = uiState,
