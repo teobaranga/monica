@@ -1,8 +1,8 @@
 package com.teobaranga.monica.contacts.detail.activities.edit.domain
 
 import com.teobaranga.monica.contact.data.local.ContactEntity
+import com.teobaranga.monica.contact.userAvatar
 import com.teobaranga.monica.contacts.detail.activities.edit.ui.ActivityParticipant
-import com.teobaranga.monica.contacts.list.userAvatar
 import me.tatarka.inject.annotations.Inject
 
 @Inject

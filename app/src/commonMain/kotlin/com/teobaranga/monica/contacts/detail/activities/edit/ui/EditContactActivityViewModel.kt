@@ -8,10 +8,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.activity.data.ContactActivitiesRepository
+import com.teobaranga.monica.activity.edit.ContactActivityEditRoute
+import com.teobaranga.monica.contact.userAvatar
 import com.teobaranga.monica.contacts.detail.activities.edit.domain.GetActivityUseCase
 import com.teobaranga.monica.contacts.detail.activities.edit.domain.SearchContactAsActivityParticipantUseCase
 import com.teobaranga.monica.contacts.domain.GetContactUseCase
-import com.teobaranga.monica.contacts.list.userAvatar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.debounce
@@ -40,15 +41,18 @@ class EditContactActivityViewModel(
     private val contactActivitiesRepository: ContactActivitiesRepository,
 ) : ViewModel() {
 
-    val contactActivityEditRoute = savedStateHandle.toRoute<ContactActivityEditRoute>()
+    private val contactActivityEditRoute = savedStateHandle.toRoute<ContactActivityEditRoute>()
+
+    val contactId = contactActivityEditRoute.contactId
+    val activityId = contactActivityEditRoute.activityId
 
     val uiState = flow {
         val uiState = EditContactActivityUiState.Loaded(
             initialDate = getNowLocalDate(),
         )
         when {
-            contactActivityEditRoute.activityId != null -> {
-                val activity = getActivity(contactActivityEditRoute.activityId)
+            activityId != null -> {
+                val activity = getActivity(activityId)
                 uiState.apply {
                     summary.setTextAndPlaceCursorAtEnd(activity.summary)
                     details.setTextAndPlaceCursorAtEnd(activity.details.orEmpty())
@@ -57,8 +61,8 @@ class EditContactActivityViewModel(
                 }
             }
 
-            contactActivityEditRoute.contactId != null -> {
-                val contact = getContact(contactActivityEditRoute.contactId)
+            contactId != null -> {
+                val contact = getContact(contactId)
                 val contactParticipant = ActivityParticipant.Contact(
                     contactId = contact.contactId,
                     name = contact.completeName,
@@ -82,7 +86,7 @@ class EditContactActivityViewModel(
         val uiState = getLoadedUiState() ?: return
         viewModelScope.launch {
             contactActivitiesRepository.upsertActivity(
-                activityId = contactActivityEditRoute.activityId,
+                activityId = activityId,
                 title = uiState.summary.text.toString(),
                 description = uiState.details.text.toString().takeUnless { it.isEmpty() },
                 date = uiState.date,
@@ -92,11 +96,11 @@ class EditContactActivityViewModel(
     }
 
     fun onDelete() {
-        if (contactActivityEditRoute.activityId == null) {
+        if (activityId == null) {
             return
         }
         viewModelScope.launch {
-            contactActivitiesRepository.deleteActivity(contactActivityEditRoute.activityId)
+            contactActivitiesRepository.deleteActivity(activityId)
         }
     }
 

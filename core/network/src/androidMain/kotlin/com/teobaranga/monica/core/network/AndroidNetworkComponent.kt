@@ -10,7 +10,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 lateinit var httpClient: HttpClient
 
 @ContributesTo(AppScope::class)
-interface AndroidNetworkComponent: NetworkComponent {
+interface AndroidNetworkComponent {
 
     @Provides
     fun provideHttpClient(

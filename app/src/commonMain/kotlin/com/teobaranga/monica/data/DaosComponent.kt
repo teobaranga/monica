@@ -16,7 +16,6 @@
 
 package com.teobaranga.monica.data
 
-import com.teobaranga.monica.activity.data.ContactActivitiesDao
 import com.teobaranga.monica.contacts.data.ContactDao
 import com.teobaranga.monica.data.photo.PhotoDao
 import com.teobaranga.monica.data.user.UserDao
@@ -33,9 +32,6 @@ interface DaosComponent {
 
     @Provides
     fun providesContactDao(database: MonicaDatabase): ContactDao = database.contactDao()
-
-    @Provides
-    fun providesContactActivitiesDao(database: MonicaDatabase): ContactActivitiesDao = database.contactActivitiesDao()
 
     @Provides
     fun providesPhotoDao(database: MonicaDatabase): PhotoDao = database.photoDao()

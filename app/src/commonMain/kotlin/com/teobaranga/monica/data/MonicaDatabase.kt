@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
-import com.teobaranga.monica.activity.data.ContactActivitiesDao
 import com.teobaranga.monica.activity.data.ContactActivityCrossRef
 import com.teobaranga.monica.activity.data.ContactActivityEntity
+import com.teobaranga.monica.activity.data.di.ActivityTableOwner
 import com.teobaranga.monica.component.tips.TipEntity
 import com.teobaranga.monica.component.tips.di.TipsTableOwner
 import com.teobaranga.monica.contact.data.local.ContactEntity
@@ -44,10 +44,9 @@ import com.teobaranga.monica.journal.data.local.JournalEntryEntity
     LocalDateAdapter::class,
     UuidAdapter::class,
 )
-abstract class MonicaDatabase : RoomDatabase(), JournalDatabaseOwner, TipsTableOwner {
+abstract class MonicaDatabase : RoomDatabase(), JournalDatabaseOwner, TipsTableOwner, ActivityTableOwner {
     abstract fun userDao(): UserDao
     abstract fun contactDao(): ContactDao
-    abstract fun contactActivitiesDao(): ContactActivitiesDao
     abstract fun photoDao(): PhotoDao
     abstract fun gendersDao(): GendersDao
 }

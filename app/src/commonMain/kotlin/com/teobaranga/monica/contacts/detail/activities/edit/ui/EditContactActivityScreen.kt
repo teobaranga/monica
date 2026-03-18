@@ -76,7 +76,7 @@ internal fun EditContactActivity(
         uiState = uiState,
         topAppBar = { topAppBarScrollBehaviour ->
             EditContactActivityTopAppBar(
-                isEdit = viewModel.contactActivityEditRoute.activityId != null,
+                isEdit = viewModel.activityId != null,
                 onBack = navigator::popBackStack,
                 onDelete = {
                     viewModel.onDelete()

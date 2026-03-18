@@ -25,7 +25,7 @@ data class ContactEntity(
      */
     val initials: String,
     /**
-     * ContactEntityAvatar of the user.
+     * Avatar of the user.
      * Server-driven.
      */
     @Embedded(prefix = "avatar_")

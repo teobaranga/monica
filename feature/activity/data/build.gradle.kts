@@ -5,6 +5,9 @@ plugins {
 kotlin {
     android {
         namespace = "com.teobaranga.monica.activity.data"
+
+        withHostTest {
+        }
     }
     sourceSets {
         commonMain {

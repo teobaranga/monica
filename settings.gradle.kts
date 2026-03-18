@@ -45,6 +45,16 @@ android {
 kover {
     enableCoverage()
 
+    // Skip intermediary group projects
+    skipProjects(
+        ":",
+        ":component",
+        ":core",
+        ":feature",
+        ":feature:activity",
+        ":feature:contact",
+    )
+
     reports {
         excludedClasses.addAll(
             "amazon.lastmile.inject.*",
@@ -53,6 +63,8 @@ kover {
             "*ViewModelComponent*",
             "*ViewModelFactory*",
             "*ComposableSingletons*",
+            // Compose generated resources
+            "*.generated.resources.*",
         )
         excludesAnnotatedBy.addAll(
             "androidx.compose.ui.tooling.preview.Preview",
@@ -73,6 +85,8 @@ include(":component:tips")
 include(":component:user_avatar")
 include(":feature:account")
 include(":feature:activity:data")
+include(":feature:activity:ui")
+include(":feature:activity:test")
 include(":feature:certificate")
 include(":feature:configuration")
 include(":feature:contact:data")

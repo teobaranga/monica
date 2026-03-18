@@ -79,6 +79,7 @@ dependencies {
 
     implementation(project(":feature:account"))
     implementation(project(":feature:activity:data"))
+    implementation(project(":feature:activity:ui"))
     implementation(project(":feature:certificate"))
     implementation(project(":feature:configuration"))
     implementation(project(":feature:contact-api"))

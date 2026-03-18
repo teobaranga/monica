@@ -124,7 +124,7 @@ class ContactRepository(
             birthdate = birthdate,
             genderId = gender?.id,
             updated = createdDate,
-            // ContactEntityAvatar is set separately
+            // Avatar is set separately
             avatar = getRandomAvatar(),
             syncStatus = SyncStatus.NEW,
         )

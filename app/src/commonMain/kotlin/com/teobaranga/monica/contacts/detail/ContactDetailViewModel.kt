@@ -7,8 +7,8 @@ import androidx.navigation.toRoute
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.contact.data.local.ContactEntity
 import com.teobaranga.monica.contacts.data.ContactRepository
-import com.teobaranga.monica.contacts.detail.activities.ui.ContactInfoActivitiesSection
 import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection
+import com.teobaranga.monica.contacts.detail.section.ContactInfoActivitiesSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoContactSection
 import com.teobaranga.monica.contacts.detail.ui.ContactInfoRelationshipsSection
 import com.teobaranga.monica.contacts.edit.birthday.BirthdayMapper

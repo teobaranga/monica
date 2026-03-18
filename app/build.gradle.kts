@@ -60,6 +60,7 @@ kotlin {
                 implementation(project(":component:tips"))
                 implementation(project(":feature:account"))
                 implementation(project(":feature:activity:data"))
+                implementation(project(":feature:activity:ui"))
                 implementation(project(":feature:certificate"))
                 implementation(project(":feature:configuration"))
                 implementation(project(":feature:contact:data"))
@@ -67,8 +68,6 @@ kotlin {
                 implementation(project(":feature:genders"))
                 implementation(project(":feature:journal"))
                 implementation(project(":feature:user-api"))
-
-                implementation(libs.compose.placeholder)
 
                 implementation(libs.coil)
 
