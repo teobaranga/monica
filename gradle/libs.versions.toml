@@ -11,9 +11,9 @@ androidTools = "32.1.0"
 # Plugins
 dependency-analysis = "3.6.1"
 detekt = "1.23.8"
-jetbrains-compose = "1.10.2"
+jetbrains-compose = "1.10.3"
 ksp = "2.3.6"
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 
 # Libraries
 browser = "1.9.0"
@@ -22,6 +22,7 @@ compose-placeholder = "1.0.12"
 compose-rules = "0.5.6"
 datastore = "1.2.1"
 desugar-jdk-libs = "2.1.5"
+jetbrains-lifecycle-runtime-compose = "2.10.0"
 jetbrains-navigation = "2.9.2"
 junit = "4.13.2"
 junit-vintage = "6.0.3"
@@ -43,8 +44,8 @@ paging = "3.4.2"
 robolectric = "4.16.1"
 room = "2.8.4"
 sandwich = "2.2.1"
-sentry-android = "6.1.0"
-sentry-kmp = "0.24.0"
+sentry-android = "6.2.0"
+sentry-kmp = "0.25.0"
 signum = "3.19.3"
 sqlite = "2.6.2"
 turbine = "1.2.1"
@@ -77,6 +78,7 @@ jetbrains-compose-ui-test = { module = "org.jetbrains.compose.ui:ui-test", versi
 jetbrains-compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "jetbrains-compose" }
 jetbrains-compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "jetbrains-compose" }
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrains-compose" }
+jetbrains-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle-runtime-compose" }
 jetbrains-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "jetbrains-navigation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 junit-vintage = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit-vintage" }
