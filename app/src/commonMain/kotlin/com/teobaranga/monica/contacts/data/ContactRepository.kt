@@ -8,6 +8,10 @@ import com.diamondedge.logging.logging
 import com.skydoves.sandwich.getOrNull
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.contact.data.local.ContactEntity
+import com.teobaranga.monica.contact.data.local.ContactEntityAvatar
+import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
+import com.teobaranga.monica.contact.data.remote.ContactApi
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.data.photo.ContactPhotos
@@ -92,7 +96,7 @@ class ContactRepository(
         lastName: String?,
         nickname: String?,
         gender: Gender?,
-        birthdate: ContactEntity.Birthdate?,
+        birthdate: ContactEntityBirthdate?,
     ) {
         if (contactId != null) {
             updateContact(contactId, firstName, lastName, nickname, gender, birthdate)
@@ -106,7 +110,7 @@ class ContactRepository(
         lastName: String?,
         nickname: String?,
         gender: Gender?,
-        birthdate: ContactEntity.Birthdate?,
+        birthdate: ContactEntityBirthdate?,
     ) {
         val localId = contactDao.getMaxId() + 1
         val createdDate = clock.now()
@@ -120,7 +124,7 @@ class ContactRepository(
             birthdate = birthdate,
             genderId = gender?.id,
             updated = createdDate,
-            // Avatar is set separately
+            // ContactEntityAvatar is set separately
             avatar = getRandomAvatar(),
             syncStatus = SyncStatus.NEW,
         )
@@ -138,7 +142,7 @@ class ContactRepository(
         lastName: String?,
         nickname: String?,
         gender: Gender?,
-        birthdate: ContactEntity.Birthdate?,
+        birthdate: ContactEntityBirthdate?,
     ) {
         val originalContact = contactDao.getContact(contactId).firstOrNull() ?: return
         val updatedContact = originalContact.copy(
@@ -183,10 +187,10 @@ class ContactRepository(
         }
     }
 
-    private fun getRandomAvatar(): ContactEntity.Avatar {
+    private fun getRandomAvatar(): ContactEntityAvatar {
         // List of colours should match the ones on the web
         val colors = listOf("#fdb660", "#93521e", "#bd5067", "#b3d5fe", "#ff9807", "#709512", "#5f479a", "#e5e5cd")
-        return ContactEntity.Avatar(
+        return ContactEntityAvatar(
             url = null,
             color = colors.random(),
         )

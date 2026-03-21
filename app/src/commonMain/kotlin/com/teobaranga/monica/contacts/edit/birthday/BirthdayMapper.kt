@@ -1,6 +1,6 @@
 package com.teobaranga.monica.contacts.edit.birthday
 
-import com.teobaranga.monica.contacts.data.ContactEntity
+import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
 import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.core.datetime.MonthDay
 import kotlinx.datetime.DateTimeUnit
@@ -24,7 +24,7 @@ class BirthdayMapper(
     private val getNowLocalDate: () -> LocalDate,
 ) {
 
-    fun toUi(birthdate: ContactEntity.Birthdate): Birthday {
+    fun toUi(birthdate: ContactEntityBirthdate): Birthday {
         return when {
             birthdate.isAgeBased -> {
                 Birthday.AgeBased(birthdate.date.yearsUntil(clock.now(), timeZone))
@@ -41,9 +41,9 @@ class BirthdayMapper(
         }
     }
 
-    fun toDomain(birthday: Birthday): ContactEntity.Birthdate {
+    fun toDomain(birthday: Birthday): ContactEntityBirthdate {
         return when (birthday) {
-            is Birthday.AgeBased -> ContactEntity.Birthdate(
+            is Birthday.AgeBased -> ContactEntityBirthdate(
                 isAgeBased = true,
                 isYearUnknown = false,
                 date = getNowLocalDate()
@@ -51,7 +51,7 @@ class BirthdayMapper(
                     .atStartOfDayIn(timeZone),
             )
 
-            is Birthday.UnknownYear -> ContactEntity.Birthdate(
+            is Birthday.UnknownYear -> ContactEntityBirthdate(
                 isAgeBased = false,
                 isYearUnknown = true,
                 date = run {
@@ -72,7 +72,7 @@ class BirthdayMapper(
                 },
             )
 
-            is Birthday.Full -> ContactEntity.Birthdate(
+            is Birthday.Full -> ContactEntityBirthdate(
                 isAgeBased = false,
                 isYearUnknown = false,
                 date = birthday.date.atStartOfDayIn(timeZone),

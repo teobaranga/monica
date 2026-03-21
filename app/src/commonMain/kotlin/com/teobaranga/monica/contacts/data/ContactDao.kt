@@ -6,6 +6,7 @@ import androidx.room.RawQuery
 import androidx.room.RoomRawQuery
 import androidx.room.Transaction
 import androidx.room.Upsert
+import com.teobaranga.monica.contact.data.local.ContactEntity
 import com.teobaranga.monica.core.data.local.OrderBy
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.data.photo.ContactPhotos

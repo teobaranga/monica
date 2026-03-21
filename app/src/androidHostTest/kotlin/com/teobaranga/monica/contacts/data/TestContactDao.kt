@@ -1,6 +1,7 @@
 package com.teobaranga.monica.contacts.data
 
 import androidx.room.RoomRawQuery
+import com.teobaranga.monica.contact.data.local.ContactEntity
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.data.DaosComponent
 import com.teobaranga.monica.data.photo.ContactPhotos

@@ -1,5 +1,7 @@
 package com.teobaranga.monica.contacts.data
 
+import com.teobaranga.monica.contact.data.local.ContactEntity
+import com.teobaranga.monica.contact.data.remote.CreateContactRequest
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime

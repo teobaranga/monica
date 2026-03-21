@@ -3,10 +3,10 @@ package com.teobaranga.monica.contacts.edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.skydoves.sandwich.ApiResponse
+import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
+import com.teobaranga.monica.contact.data.remote.SingleContactResponse
 import com.teobaranga.monica.contacts.ContactComponent
 import com.teobaranga.monica.contacts.create
-import com.teobaranga.monica.contacts.data.ContactEntity
-import com.teobaranga.monica.contacts.data.SingleContactResponse
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.contacts.toCreateRequest
 import com.teobaranga.monica.contacts.toResponse
@@ -81,7 +81,7 @@ class ContactBirthdayTest : BehaviorSpec(
                 Then("contact has correct birthday") {
 
                     val updatedContact = contactDao.getContact(validContact.contactId).first()
-                    updatedContact.birthdate shouldBe ContactEntity.Birthdate(
+                    updatedContact.birthdate shouldBe ContactEntityBirthdate(
                         isAgeBased = false,
                         isYearUnknown = true,
                         date = expectedBirthday,
@@ -128,7 +128,7 @@ class ContactBirthdayTest : BehaviorSpec(
                 Then("contact has correct birthday") {
 
                     val updatedContact = contactDao.getContact(validContact.contactId).first()
-                    updatedContact.birthdate shouldBe ContactEntity.Birthdate(
+                    updatedContact.birthdate shouldBe ContactEntityBirthdate(
                         isAgeBased = true,
                         isYearUnknown = false,
                         date = expectedBirthday,
@@ -170,7 +170,7 @@ class ContactBirthdayTest : BehaviorSpec(
                 Then("contact has correct birthday") {
 
                     val updatedContact = contactDao.getContact(validContact.contactId).first()
-                    updatedContact.birthdate shouldBe ContactEntity.Birthdate(
+                    updatedContact.birthdate shouldBe ContactEntityBirthdate(
                         isAgeBased = false,
                         isYearUnknown = false,
                         date = expectedBirthday,
