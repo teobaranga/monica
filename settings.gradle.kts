@@ -15,7 +15,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    id("org.jetbrains.kotlinx.kover.aggregation") version "0.9.7"
+    id("org.jetbrains.kotlinx.kover.aggregation") version "0.9.8"
     id("com.android.settings") version "9.1.0"
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
