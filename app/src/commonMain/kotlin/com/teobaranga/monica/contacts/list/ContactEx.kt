@@ -1,6 +1,6 @@
 package com.teobaranga.monica.contacts.list
 
-import com.teobaranga.monica.contacts.data.ContactEntity
+import com.teobaranga.monica.contact.data.local.ContactEntity
 import com.teobaranga.monica.useravatar.UserAvatar
 
 val ContactEntity.userAvatar: UserAvatar

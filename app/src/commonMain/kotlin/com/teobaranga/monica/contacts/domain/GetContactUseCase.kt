@@ -1,6 +1,6 @@
 package com.teobaranga.monica.contacts.domain
 
-import com.teobaranga.monica.contacts.data.ContactEntity
+import com.teobaranga.monica.contact.data.local.ContactEntity
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import kotlinx.coroutines.flow.first
