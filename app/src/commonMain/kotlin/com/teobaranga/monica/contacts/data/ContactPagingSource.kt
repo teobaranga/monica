@@ -1,5 +1,6 @@
 package com.teobaranga.monica.contacts.data
 
+import com.teobaranga.monica.contact.data.local.ContactEntity
 import com.teobaranga.monica.core.data.local.OrderBy
 import com.teobaranga.monica.core.data.local.RoomPagingSource
 import com.teobaranga.monica.core.dispatcher.Dispatcher

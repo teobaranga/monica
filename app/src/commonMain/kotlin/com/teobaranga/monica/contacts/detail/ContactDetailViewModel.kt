@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
-import com.teobaranga.monica.contacts.data.ContactEntity
+import com.teobaranga.monica.contact.data.local.ContactEntity
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.contacts.detail.activities.ui.ContactInfoActivitiesSection
 import com.teobaranga.monica.contacts.detail.bio.ui.ContactInfoBioSection

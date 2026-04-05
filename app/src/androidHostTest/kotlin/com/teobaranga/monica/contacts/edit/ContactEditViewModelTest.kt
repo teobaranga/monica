@@ -4,11 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import app.cash.turbine.test
 import com.skydoves.sandwich.ApiResponse
+import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
+import com.teobaranga.monica.contact.data.remote.ContactResponse
+import com.teobaranga.monica.contact.data.remote.SingleContactResponse
 import com.teobaranga.monica.contacts.ContactComponent
 import com.teobaranga.monica.contacts.create
-import com.teobaranga.monica.contacts.data.ContactEntity
-import com.teobaranga.monica.contacts.data.ContactResponse
-import com.teobaranga.monica.contacts.data.SingleContactResponse
 import com.teobaranga.monica.contacts.edit.ui.ContactEditUiState
 import com.teobaranga.monica.contacts.ui.Birthday
 import com.teobaranga.monica.contacts.validContact
@@ -114,7 +114,7 @@ class ContactEditViewModelTest : BehaviorSpec(
                 contactDao.upsertContacts(
                     listOf(
                         validContact.copy(
-                            birthdate = ContactEntity.Birthdate(
+                            birthdate = ContactEntityBirthdate(
                                 isAgeBased = false,
                                 isYearUnknown = false,
                                 date = birthdate
@@ -145,7 +145,7 @@ class ContactEditViewModelTest : BehaviorSpec(
                 contactDao.upsertContacts(
                     listOf(
                         validContact.copy(
-                            birthdate = ContactEntity.Birthdate(
+                            birthdate = ContactEntityBirthdate(
                                 isAgeBased = true,
                                 isYearUnknown = false,
                                 date = birthdate,
@@ -176,7 +176,7 @@ class ContactEditViewModelTest : BehaviorSpec(
                 contactDao.upsertContacts(
                     listOf(
                         validContact.copy(
-                            birthdate = ContactEntity.Birthdate(
+                            birthdate = ContactEntityBirthdate(
                                 isAgeBased = false,
                                 isYearUnknown = true,
                                 date = birthdate,

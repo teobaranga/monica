@@ -1,7 +1,7 @@
 package com.teobaranga.monica.contacts.detail.activities.ui
 
 import com.skydoves.sandwich.ApiResponse
-import com.teobaranga.monica.activities.data.ContactActivitiesResponse
+import com.teobaranga.monica.activity.data.ContactActivitiesResponse
 import com.teobaranga.monica.contacts.ContactComponent
 import com.teobaranga.monica.contacts.TEST_CONTACT_ID
 import com.teobaranga.monica.contacts.create
@@ -25,11 +25,11 @@ class ContactActivitiesViewModelTest : BehaviorSpec(
 
         val component = ContactComponent::class.create()
         val viewModel = component.contactActivitiesViewModel()(TEST_CONTACT_ID)
-        val contactApi = component.contactApi()
+        val activityApi = component.activityApi()
 
         Given("activities collected") {
 
-            coEvery { contactApi.getContactActivities(id = TEST_CONTACT_ID, page = 1) } returns ApiResponse.of {
+            coEvery { activityApi.getContactActivities(id = TEST_CONTACT_ID, page = 1) } returns ApiResponse.of {
                 ContactActivitiesResponse(
                     data = emptyList(),
                     meta = MetaResponse(
@@ -44,7 +44,7 @@ class ContactActivitiesViewModelTest : BehaviorSpec(
             }
 
             Then("refresh is triggered") {
-                coVerify(exactly = 1) { contactApi.getContactActivities(id = TEST_CONTACT_ID, page = 1) }
+                coVerify(exactly = 1) { activityApi.getContactActivities(id = TEST_CONTACT_ID, page = 1) }
             }
 
             When("off-screen and 5 seconds have passed") {
@@ -56,7 +56,7 @@ class ContactActivitiesViewModelTest : BehaviorSpec(
                 }
 
                 Then("refresh is not triggered again") {
-                    coVerify(exactly = 1) { contactApi.getContactActivities(id = TEST_CONTACT_ID, page = 1) }
+                    coVerify(exactly = 1) { activityApi.getContactActivities(id = TEST_CONTACT_ID, page = 1) }
                 }
             }
         }

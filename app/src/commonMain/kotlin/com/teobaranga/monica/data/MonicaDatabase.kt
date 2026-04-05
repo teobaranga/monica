@@ -5,13 +5,13 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
-import com.teobaranga.monica.activities.data.ContactActivitiesDao
-import com.teobaranga.monica.activities.data.ContactActivityCrossRef
-import com.teobaranga.monica.activities.data.ContactActivityEntity
+import com.teobaranga.monica.activity.data.ContactActivitiesDao
+import com.teobaranga.monica.activity.data.ContactActivityCrossRef
+import com.teobaranga.monica.activity.data.ContactActivityEntity
 import com.teobaranga.monica.component.tips.TipEntity
 import com.teobaranga.monica.component.tips.di.TipsTableOwner
+import com.teobaranga.monica.contact.data.local.ContactEntity
 import com.teobaranga.monica.contacts.data.ContactDao
-import com.teobaranga.monica.contacts.data.ContactEntity
 import com.teobaranga.monica.data.photo.PhotoDao
 import com.teobaranga.monica.data.photo.PhotoEntity
 import com.teobaranga.monica.data.user.MeEntity

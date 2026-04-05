@@ -1,6 +1,6 @@
 package com.teobaranga.monica.data.user
 
-import com.teobaranga.monica.contacts.data.ContactResponse
+import com.teobaranga.monica.contact.data.remote.ContactResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant

@@ -1,6 +1,6 @@
 package com.teobaranga.monica.contacts.domain
 
-import com.teobaranga.monica.contacts.data.ContactEntity
+import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
 import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.genders.domain.Gender
@@ -18,7 +18,7 @@ class UpsertContactUseCase(
         lastName: CharSequence?,
         nickname: CharSequence?,
         gender: Gender?,
-        birthdate: ContactEntity.Birthdate?,
+        birthdate: ContactEntityBirthdate?,
     ) {
         return withContext(dispatcher.io) {
             // TODO validation
