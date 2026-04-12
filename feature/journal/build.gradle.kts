@@ -41,11 +41,6 @@ kotlin {
                 implementation(libs.paging.compose)
             }
         }
-        commonTest {
-            dependencies {
-                implementation(project(":core:test"))
-            }
-        }
     }
 }
 

@@ -15,7 +15,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 // TODO: implement a Hilt-like approach to generating this class
 @Inject
 @ContributesBinding(AppScope::class)
-class InjectedWorkerFactory internal constructor(
+class InjectedWorkerFactory(
     private val syncWorkerFactory: (Context, WorkerParameters) -> SyncWorker,
 ) : WorkerFactory() {
 

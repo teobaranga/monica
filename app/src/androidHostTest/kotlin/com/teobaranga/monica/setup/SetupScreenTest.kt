@@ -13,7 +13,6 @@ import androidx.navigation.NavHostController
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.browser.PlatformWebBrowser
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
-import com.teobaranga.monica.test.setupAndroidContextProvider
 import io.ktor.http.encodeURLParameter
 import io.mockk.every
 import io.mockk.mockk
@@ -28,7 +27,6 @@ import monica.app.generated.resources.setup_server_address_label
 import monica.app.generated.resources.setup_sign_in
 import org.jetbrains.compose.resources.getString
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -41,11 +39,6 @@ class SetupScreenTest {
     val savedStateHandle = SavedStateHandle()
     val navigator = mockk<NavHostController>()
     val webBrowser = mockk<PlatformWebBrowser>()
-
-    @Before
-    fun setup() {
-        setupAndroidContextProvider()
-    }
 
     @After
     fun tearDown() {

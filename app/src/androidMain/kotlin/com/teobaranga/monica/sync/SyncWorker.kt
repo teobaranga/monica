@@ -17,7 +17,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.teobaranga.monica.R
+import com.teobaranga.monica.app.R
 import com.teobaranga.monica.setup.domain.SYNC_WORKER_WORK_NAME
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
@@ -26,7 +26,7 @@ private const val SYNC_NOTIFICATION_ID = 0
 private const val SYNC_NOTIFICATION_CHANNEL_ID = "SyncNotificationChannel"
 
 @Inject
-internal class SyncWorker(
+class SyncWorker(
     @Assisted
     private val appContext: Context,
     @Assisted
