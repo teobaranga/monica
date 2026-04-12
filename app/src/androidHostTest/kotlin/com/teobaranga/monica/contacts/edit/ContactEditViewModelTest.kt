@@ -27,9 +27,12 @@ import io.mockk.every
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
-import kotlin.time.Instant
 
-private val birthdate = Instant.parse("2010-06-01T22:19:44.475Z")
+private val birthdate = LocalDate(
+    year = 2010,
+    month = Month.JUNE,
+    day = 1,
+)
 
 class ContactEditViewModelTest : BehaviorSpec(
     {

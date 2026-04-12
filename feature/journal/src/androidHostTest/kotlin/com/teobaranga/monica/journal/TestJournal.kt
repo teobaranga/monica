@@ -24,7 +24,7 @@ val validJournalEntry = JournalEntryEntity(
     syncStatus = SyncStatus.UP_TO_DATE,
 )
 
-fun JournalEntryEntity.toResponse(date: Instant): JournalEntry {
+fun JournalEntryEntity.toResponse(date: LocalDate): JournalEntry {
     return JournalEntry(
         id = id,
         uuid = uuid,

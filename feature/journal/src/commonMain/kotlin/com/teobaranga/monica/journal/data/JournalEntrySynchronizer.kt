@@ -15,8 +15,6 @@ import com.teobaranga.monica.journal.data.remote.JournalEntry
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import me.tatarka.inject.annotations.Inject
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
@@ -113,7 +111,7 @@ fun JournalEntry.toEntity(): JournalEntryEntity {
         uuid = uuid,
         title = title,
         post = post,
-        date = date.toLocalDateTime(TimeZone.currentSystemDefault()).date,
+        date = date,
         created = created,
         updated = updated,
         syncStatus = SyncStatus.UP_TO_DATE,

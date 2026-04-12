@@ -5,6 +5,7 @@ import com.teobaranga.monica.contacts.data.ContactResponse
 import com.teobaranga.monica.contacts.data.CreateContactRequest
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.genders.data.genderMale
+import kotlinx.datetime.LocalDate
 import kotlin.time.Instant
 
 const val TEST_CONTACT_ID = 123
@@ -89,7 +90,7 @@ fun ContactEntity.toCreateRequest(
 
 fun ContactEntity.toResponse(
     gender: String? = null,
-    birthday: Instant? = birthdate?.date,
+    birthday: LocalDate? = birthdate?.date,
     birthdateIsAgeBased: Boolean = false,
     birthdateIsYearUnknown: Boolean = false,
 ): ContactResponse {

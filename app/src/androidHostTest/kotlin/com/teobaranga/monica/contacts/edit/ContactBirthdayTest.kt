@@ -27,7 +27,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Instant
 
 class ContactBirthdayTest : BehaviorSpec(
     {
@@ -47,7 +46,11 @@ class ContactBirthdayTest : BehaviorSpec(
         }
 
         Given("unknown year birthday") {
-            val expectedBirthday = Instant.parse("${testNow.toLocalDateTime(testTimeZone).year}-06-01T00:00:00.000Z")
+            val expectedBirthday = LocalDate(
+                year = testNow.toLocalDateTime(testTimeZone).year,
+                month = Month.JUNE,
+                day = 1,
+            )
             coEvery {
                 contactApi.updateContact(
                     id = validContact.contactId,
@@ -94,7 +97,11 @@ class ContactBirthdayTest : BehaviorSpec(
             val currentYear = testNow.toLocalDateTime(testTimeZone).year
             val age = 18
             val birthdayYear = currentYear - age
-            val expectedBirthday = Instant.parse("${birthdayYear}-01-01T00:00:00.000Z")
+            val expectedBirthday = LocalDate(
+                year = birthdayYear,
+                month = Month.JANUARY,
+                day = 1,
+            )
             coEvery {
                 contactApi.updateContact(
                     id = validContact.contactId,
@@ -138,7 +145,11 @@ class ContactBirthdayTest : BehaviorSpec(
         }
 
         Given("exact birthday") {
-            val expectedBirthday = Instant.parse("1995-02-01T00:00:00.000Z")
+            val expectedBirthday = LocalDate(
+                year = 1995,
+                month = Month.FEBRUARY,
+                day = 1,
+            )
             coEvery {
                 contactApi.updateContact(
                     id = validContact.contactId,

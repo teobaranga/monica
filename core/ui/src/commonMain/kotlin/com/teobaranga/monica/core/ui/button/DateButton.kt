@@ -52,7 +52,7 @@ fun DateButton(date: LocalDate, onDateSelect: (LocalDate) -> Unit, modifier: Mod
     if (showDatePickerDialog) {
         val datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = date
-                .atStartOfDayIn(TimeZone.currentSystemDefault())
+                .atStartOfDayIn(TimeZone.UTC)
                 .toEpochMilliseconds(),
         )
         DatePickerDialog(
@@ -61,7 +61,7 @@ fun DateButton(date: LocalDate, onDateSelect: (LocalDate) -> Unit, modifier: Mod
                     onClick = {
                         datePickerState.selectedDateMillis?.let {
                             val date = Instant.fromEpochMilliseconds(it)
-                                .toLocalDateTime(TimeZone.currentSystemDefault())
+                                .toLocalDateTime(TimeZone.UTC)
                                 .date
                             onDateSelect(date)
                         }
@@ -89,7 +89,7 @@ fun DateButton(date: LocalDate, onDateSelect: (LocalDate) -> Unit, modifier: Mod
 private fun PreviewDateButton() {
     MonicaTheme {
         DateButton(
-            date = LocalSystemClock.current.todayIn(TimeZone.currentSystemDefault()),
+            date = LocalSystemClock.current.todayIn(TimeZone.UTC),
             onDateSelect = { },
         )
     }
