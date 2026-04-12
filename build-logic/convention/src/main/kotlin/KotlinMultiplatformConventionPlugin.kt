@@ -62,7 +62,6 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
     with(sourceSets) {
         commonTest {
             dependencies {
-                implementation(project(":core:test"))
                 implementation(libs.kotest.assertions.core)
                 implementation(libs.kotest.framework.engine)
 

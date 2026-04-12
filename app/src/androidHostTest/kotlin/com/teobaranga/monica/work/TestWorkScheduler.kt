@@ -9,6 +9,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 @SingleIn(AppScope::class)
 @ContributesBinding(
     scope = AppScope::class,
+    replaces = [WorkManagerWorkScheduler::class],
 )
 class TestWorkScheduler : WorkScheduler {
 
