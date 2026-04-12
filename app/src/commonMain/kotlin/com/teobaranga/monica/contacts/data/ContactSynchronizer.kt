@@ -1,6 +1,7 @@
 package com.teobaranga.monica.contacts.data
 
 import com.diamondedge.logging.logging
+import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.getOrElse
 import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onFailure
@@ -48,7 +49,14 @@ class ContactSynchronizer(
         while (nextPage != null) {
             val contactsResponse = contactApi.getContacts(page = nextPage, sort = "-updated_at")
                 .onFailure {
-                    log.e { "Error while loading contacts: ${message()}" }
+                    when (this) {
+                        is ApiResponse.Failure.Error -> {
+                            log.e { "Error while loading contacts: ${message()}" }
+                        }
+                        is ApiResponse.Failure.Exception -> {
+                            log.e(throwable) { "Error while loading contacts" }
+                        }
+                    }
                 }
                 .getOrElse {
                     syncState.value = Synchronizer.State.IDLE

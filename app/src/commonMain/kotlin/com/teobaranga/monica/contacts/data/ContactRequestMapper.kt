@@ -1,16 +1,13 @@
 package com.teobaranga.monica.contacts.data
 
-import kotlinx.datetime.TimeZone
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.yearsUntil
 import me.tatarka.inject.annotations.Inject
-import kotlin.time.Clock
 
 @Inject
 class ContactRequestMapper(
-    private val clock: Clock,
-    private val timeZone: TimeZone,
+    private val nowDate: () -> LocalDate,
 ) {
 
     operator fun invoke(entity: ContactEntity): CreateContactRequest {
@@ -35,7 +32,7 @@ class ContactRequestMapper(
             if (isAgeBased) {
                 null
             } else {
-                date.toLocalDateTime(timeZone).day
+                date.day
             }
         }
     }
@@ -45,21 +42,21 @@ class ContactRequestMapper(
             if (isAgeBased) {
                 null
             } else {
-                date.toLocalDateTime(timeZone).month.number
+                date.month.number
             }
         }
     }
 
     private fun ContactEntity.getBirthdateYear(): Int? {
         return birthdate?.run {
-            date.toLocalDateTime(timeZone).year.takeIf { !isYearUnknown }
+            date.year.takeIf { !isYearUnknown }
         }
     }
 
     private fun ContactEntity.getBirthdateAge(): Int? {
         return birthdate?.run {
             if (isAgeBased) {
-                date.yearsUntil(clock.now(), timeZone)
+                date.yearsUntil(nowDate())
             } else {
                 null
             }

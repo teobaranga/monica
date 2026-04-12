@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contacts.list.userAvatar
 import com.teobaranga.monica.core.data.sync.SyncStatus
+import kotlinx.datetime.LocalDate
 import kotlin.time.Instant
 
 @Entity(tableName = "contacts")
@@ -48,7 +49,7 @@ data class ContactEntity(
     data class Birthdate(
         val isAgeBased: Boolean,
         val isYearUnknown: Boolean,
-        val date: Instant,
+        val date: LocalDate,
     )
 }
 

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.monica.kmp)
     alias(libs.plugins.monica.kotlin.inject)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
@@ -14,6 +15,8 @@ kotlin {
 
                 implementation(libs.jetbrains.compose.runtime)
                 api(libs.kotlinx.datetime)
+
+                implementation(libs.kotlinx.serialization)
             }
         }
     }

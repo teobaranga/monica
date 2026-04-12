@@ -1,5 +1,7 @@
 package com.teobaranga.monica.contacts.data
 
+import com.teobaranga.monica.core.datetime.serializer.MonicaLocalDateSerializer
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
@@ -52,7 +54,8 @@ data class ContactResponse(
                 @SerialName("is_year_unknown")
                 val isYearUnknown: Boolean?,
                 @SerialName("date")
-                val date: Instant?,
+                @Serializable(with = MonicaLocalDateSerializer::class)
+                val date: LocalDate?,
             )
         }
     }
