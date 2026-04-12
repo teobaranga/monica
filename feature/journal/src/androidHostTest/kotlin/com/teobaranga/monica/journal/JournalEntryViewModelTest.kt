@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.todayIn
 import kotlin.time.Clock
 
@@ -128,7 +127,7 @@ class JournalEntryViewModelTest : BehaviorSpec(
                 } returns ApiResponse.of {
                     JournalEntryResponse(
                         data = validJournalEntry.toResponse(
-                            date = testDate.atStartOfDayIn(TimeZone.UTC),
+                            date = testDate,
                         )
                     )
                 }
