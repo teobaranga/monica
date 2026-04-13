@@ -7,7 +7,7 @@ import coil3.fetch.FetchResult
 import coil3.fetch.Fetcher
 import coil3.fetch.SourceFetchResult
 import coil3.request.Options
-import com.teobaranga.monica.contacts.data.ContactRepository
+import com.teobaranga.monica.photo.data.local.PhotoRepository
 import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Inject
@@ -16,30 +16,31 @@ import okio.ByteString.Companion.decodeBase64
 
 @Inject
 class UserAvatarFetcherFactory(
-    private val contactRepository: ContactRepository,
+    private val photoRepository: PhotoRepository,
 ) : Fetcher.Factory<UserAvatar> {
 
     /**
      * Fetcher implementation similar to `ByteBufferFetcher` where the data is fetched from our Room database.
      */
     private class UserAvatarFetcher(
-        private val contactRepository: ContactRepository,
+        private val photoRepository: PhotoRepository,
         private val data: UserAvatar,
         private val options: Options,
     ) : Fetcher {
         override suspend fun fetch(): FetchResult? {
-            val contactPhotos = contactRepository.getContactPhotos(data.contactId)
+            val contactPhotos = photoRepository.getContactPhotos(data.contactId)
                 .first {
                     it.avatarUrl == null || it.photos.isNotEmpty()
                 }
 
-            if (contactPhotos.avatarUrl == null || contactPhotos.photos.isEmpty()) {
+            val avatarUrl = contactPhotos.avatarUrl
+            if (avatarUrl == null || contactPhotos.photos.isEmpty()) {
                 return null
             }
 
             val avatar = contactPhotos.photos
                 .first {
-                    it.fileName in contactPhotos.avatarUrl
+                    it.fileName in avatarUrl
                 }
 
             val byteString = avatar.data?.decodeBase64() ?: return null
@@ -60,6 +61,6 @@ class UserAvatarFetcherFactory(
     }
 
     override fun create(data: UserAvatar, options: Options, imageLoader: ImageLoader): Fetcher {
-        return UserAvatarFetcher(contactRepository, data, options)
+        return UserAvatarFetcher(photoRepository, data, options)
     }
 }

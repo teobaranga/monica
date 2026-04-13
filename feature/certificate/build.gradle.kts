@@ -18,7 +18,6 @@ kotlin {
                 implementation(project(":core:ui"))
                 implementation(libs.jetbrains.navigation)
                 implementation(libs.kotlinx.serialization)
-                implementation(libs.kmlogging)
                 implementation(libs.okio)
                 implementation(libs.signum.indispensable)
             }

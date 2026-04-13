@@ -22,6 +22,11 @@ class TestFixtureModuleConventionPlugin : Plugin<Project> {
 
             extensions.configure<KotlinMultiplatformExtension> {
                 with(sourceSets) {
+                    androidMain {
+                        dependencies {
+                            implementation(libs.mockk)
+                        }
+                    }
                     commonMain {
                         dependencies {
                             // Test fixture modules will most likely require coroutines and serialization

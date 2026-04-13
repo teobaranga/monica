@@ -21,11 +21,19 @@ class ContactActivitiesRepository(
     private val dispatcher: Dispatcher,
     private val clock: Clock,
     private val contactActivitiesDao: ContactActivitiesDao,
+    private val contactActivitiesSynchronizerFactory: (contactId: Int) -> ContactActivitiesSynchronizer,
     private val contactActivityNewSynchronizer: ContactActivityNewSynchronizer,
     private val contactActivityUpdateSynchronizer: ContactActivityUpdateSynchronizer,
     private val contactActivityDeletedSynchronizer: ContactActivityDeletedSynchronizer,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
+
+    suspend fun syncActivities(contactId: Int) {
+        withContext(dispatcher.io) {
+            contactActivitiesSynchronizerFactory(contactId)
+                .sync()
+        }
+    }
 
     fun getActivities(contactId: Int): Flow<List<ContactActivityWithParticipants>> {
         return contactActivitiesDao.getContactActivities(contactId)

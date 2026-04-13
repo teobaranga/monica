@@ -60,13 +60,19 @@ kotlin {
                 implementation(project(":component:tips"))
                 implementation(project(":feature:account"))
                 implementation(project(":feature:activity:data"))
+                implementation(project(":feature:activity:domain"))
                 implementation(project(":feature:activity:ui"))
+                implementation(project(":feature:activity:nav"))
                 implementation(project(":feature:certificate"))
                 implementation(project(":feature:configuration"))
                 implementation(project(":feature:contact:data"))
+                implementation(project(":feature:contact:domain"))
+                implementation(project(":feature:contact:ui"))
+                implementation(project(":feature:contact:nav"))
                 implementation(project(":feature:contact-api"))
                 implementation(project(":feature:genders"))
                 implementation(project(":feature:journal"))
+                implementation(project(":feature:photo:data"))
                 implementation(project(":feature:user-api"))
 
                 implementation(libs.coil)
@@ -79,8 +85,6 @@ kotlin {
 
                 implementation(libs.room.runtime)
                 implementation(libs.sqlite.bundled)
-
-                implementation(libs.kmlogging)
 
                 implementation(libs.signum.indispensable)
             }

@@ -5,6 +5,9 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
+/**
+ * Data modules contain both remote and local data models, along with repositories and any synchronizers.
+ */
 @Suppress("unused")
 class DataModuleConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -20,8 +23,8 @@ class DataModuleConventionPlugin : Plugin<Project> {
                 with(sourceSets) {
                     commonMain {
                         dependencies {
-                            // Room because data modules have both remote and local data
                             implementation(libs.room.runtime)
+                            implementation(libs.paging.common)
 
                             implementation(project(":core:data"))
                             implementation(project(":core:dispatcher"))

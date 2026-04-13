@@ -12,8 +12,6 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kmlogging)
-
                 implementation(project(":feature:contact:data"))
             }
         }

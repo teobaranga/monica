@@ -42,7 +42,7 @@ import androidx.paging.compose.itemKey
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.contact.Contact
-import com.teobaranga.monica.contacts.detail.ContactDetailRoute
+import com.teobaranga.monica.contact.nav.ContactDetailRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.topappbar.MonicaTopAppBar

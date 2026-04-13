@@ -1,8 +1,8 @@
 package com.teobaranga.monica.data.user
 
 import com.skydoves.sandwich.getOrNull
+import com.teobaranga.monica.contact.data.ContactRepository
 import com.teobaranga.monica.contact.toExternalModel
-import com.teobaranga.monica.contacts.data.ContactRepository
 import com.teobaranga.monica.user.data.local.IUserRepository
 import com.teobaranga.monica.user.data.local.Me
 import kotlinx.coroutines.flow.filterNotNull

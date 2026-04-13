@@ -1,11 +1,11 @@
 package com.teobaranga.monica.home
 
 import androidx.navigation.NavGraphBuilder
-import com.teobaranga.monica.activity.edit.contactActivityEdit
+import com.teobaranga.monica.activity.edit.ui.contactActivityEdit
 import com.teobaranga.monica.certificate.nav.certificateListAndDetails
+import com.teobaranga.monica.contact.detail.contactDetail
+import com.teobaranga.monica.contact.edit.contactEdit
 import com.teobaranga.monica.contacts.contacts
-import com.teobaranga.monica.contacts.detail.contactDetail
-import com.teobaranga.monica.contacts.edit.contactEdit
 import com.teobaranga.monica.dashboard.dashboard
 import com.teobaranga.monica.journal.list.journalEntries
 import com.teobaranga.monica.journal.view.journalEntry

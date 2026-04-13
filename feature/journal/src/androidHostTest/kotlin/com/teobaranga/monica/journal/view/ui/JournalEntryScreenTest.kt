@@ -13,6 +13,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavHostController
 import androidx.savedstate.serialization.encodeToSavedState
 import com.teobaranga.monica.core.data.sync.SyncStatus
+import com.teobaranga.monica.core.test.testNow
+import com.teobaranga.monica.core.test.testTimeZone
 import com.teobaranga.monica.core.ui.CoreRes
 import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
 import com.teobaranga.monica.core.ui.datetime.LocalDateFormatter
@@ -69,8 +71,7 @@ class JournalEntryScreenTest {
         onNodeWithText("Entry")
             .assertIsDisplayed()
 
-        val date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-            .date
+        val date = testNow.toLocalDateTime(testTimeZone).date
         val formattedButtonDate = localDateFormatter.format(date)
         onNodeWithText(formattedButtonDate)
             .assertIsDisplayed()

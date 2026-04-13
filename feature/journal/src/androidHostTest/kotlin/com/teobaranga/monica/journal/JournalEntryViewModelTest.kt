@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import app.cash.turbine.test
 import com.skydoves.sandwich.ApiResponse
+import com.teobaranga.monica.core.test.testNow
+import com.teobaranga.monica.core.test.testTimeZone
 import com.teobaranga.monica.journal.data.JournalTips
 import com.teobaranga.monica.journal.data.remote.JournalEntryCreateRequest
 import com.teobaranga.monica.journal.data.remote.JournalEntryResponse
@@ -19,9 +21,7 @@ import io.mockk.every
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.todayIn
-import kotlin.time.Clock
+import kotlinx.datetime.toLocalDateTime
 
 class JournalEntryViewModelTest : BehaviorSpec(
     {
@@ -44,7 +44,7 @@ class JournalEntryViewModelTest : BehaviorSpec(
                         id = -1,
                         initialTitle = null,
                         initialPost = "",
-                        initialDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+                        initialDate = testNow.toLocalDateTime(testTimeZone).date,
                         showTitleBugInfo = true,
                     )
                 }

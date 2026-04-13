@@ -6,6 +6,8 @@ import com.teobaranga.monica.activity.data.di.ActivityTableOwner
 import com.teobaranga.monica.component.tips.di.TipsTableOwner
 import com.teobaranga.monica.configuration.domain.ConfigurationDataStore
 import com.teobaranga.monica.configuration.domain.ConfigurationItem
+import com.teobaranga.monica.contact.data.di.ContactTableOwner
+import com.teobaranga.monica.genders.di.GenderTableOwner
 import com.teobaranga.monica.journal.data.local.JournalDatabaseOwner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -54,4 +56,12 @@ interface DatabaseComponent {
     @Provides
     @SingleIn(AppScope::class)
     fun providesActivityTableOwner(database: MonicaDatabase): ActivityTableOwner = database
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun providesGenderTableOwner(database: MonicaDatabase): GenderTableOwner = database
+
+    @Provides
+    @SingleIn(AppScope::class)
+    fun providesContactTableOwner(database: MonicaDatabase): ContactTableOwner = database
 }

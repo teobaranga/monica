@@ -6,9 +6,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
+import com.teobaranga.monica.contact.data.ContactRepository
+import com.teobaranga.monica.contact.data.ContactSynchronizer
 import com.teobaranga.monica.contact.toExternalModel
-import com.teobaranga.monica.contacts.data.ContactRepository
-import com.teobaranga.monica.contacts.data.ContactSynchronizer
 import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshState

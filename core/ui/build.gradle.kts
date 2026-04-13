@@ -10,11 +10,4 @@ kotlin {
             enable = true
         }
     }
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation(libs.kmlogging)
-            }
-        }
-    }
 }
