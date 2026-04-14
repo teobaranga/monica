@@ -1,3 +1,5 @@
+import com.teobaranga.monica.optInFlowPreview
+
 plugins {
     alias(libs.plugins.monica.cmp)
     alias(libs.plugins.monica.kotlin.inject)
@@ -23,5 +25,9 @@ kotlin {
                 implementation(project(":feature:contact-api"))
             }
         }
+    }
+
+    compilerOptions {
+        optInFlowPreview()
     }
 }

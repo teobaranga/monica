@@ -16,10 +16,3 @@ kotlin {
         }
     }
 }
-
-monica {
-    optIn {
-        experimentalCoroutinesApi = false
-        flowPreview = false
-    }
-}

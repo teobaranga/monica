@@ -1,6 +1,5 @@
 
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
-import com.teobaranga.monica.MonicaExtension
 import com.teobaranga.monica.configureUnitTests
 import com.teobaranga.monica.libs
 import org.gradle.api.Project
@@ -108,16 +107,5 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
             "-opt-in=kotlin.uuid.ExperimentalUuidApi",
             "-opt-in=kotlin.time.ExperimentalTime",
         )
-
-        afterEvaluate {
-            project.extensions.configure<MonicaExtension> {
-                if (optIn.experimentalCoroutinesApi) {
-                    this@compilerOptions.optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
-                }
-                if (optIn.flowPreview) {
-                    this@compilerOptions.optIn.add("kotlinx.coroutines.FlowPreview")
-                }
-            }
-        }
     }
 }

@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.teobaranga.monica.certificate.data.CertificateTrustStatus
-import com.teobaranga.monica.core.ui.icons.KeyboardArrowRight
+import com.teobaranga.monica.core.ui.icon.KeyboardArrowRight
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import kotlinx.datetime.format
 import kotlinx.datetime.format.DateTimeComponents

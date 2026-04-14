@@ -41,7 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.clipboard.setPlainText
-import com.teobaranga.monica.core.ui.icons.Delete
+import com.teobaranga.monica.core.ui.icon.Delete
 import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.core.ui.util.debounce

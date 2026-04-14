@@ -1,6 +1,9 @@
 package com.teobaranga.monica.contact.detail.section.activity
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -19,6 +22,7 @@ import com.teobaranga.monica.activity.nav.ContactActivityEditRoute
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ActivityListScreen(
     contactId: Int,
@@ -51,16 +55,18 @@ fun ActivityListScreen(
         },
         contentWindowInsets = WindowInsets.Zero,
     ) { contentPadding ->
-        Crossfade(
-            targetState = activitiesUiState::class,
-            label = "Contact Activities",
-        ) { uiStateClass ->
-            when (uiStateClass) {
-                ContactActivitiesUiState.Loading::class -> {
+        val transition = updateTransition(activitiesUiState)
+        transition.Crossfade(
+            modifier = modifier,
+            animationSpec = tween(),
+            contentKey = { it::class },
+        ) { uiState ->
+            when (uiState) {
+                is ContactActivitiesUiState.Loading -> {
                     ContactActivityPlaceholder()
                 }
 
-                ContactActivitiesUiState.Empty::class -> {
+                is ContactActivitiesUiState.Empty -> {
                     ContactActivityEmpty(
                         modifier = Modifier
                             .padding(contentPadding)
@@ -68,7 +74,7 @@ fun ActivityListScreen(
                     )
                 }
 
-                ContactActivitiesUiState.Loaded::class -> {
+                is ContactActivitiesUiState.Loaded -> {
                     ContactActivitiesColumn(
                         modifier = Modifier
                             .padding(contentPadding),

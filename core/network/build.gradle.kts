@@ -21,10 +21,6 @@ kotlin {
 }
 
 monica {
-    optIn {
-        experimentalCoroutinesApi = false
-        flowPreview = false
-    }
     inject {
         injectIn = InjectHandler.Target.SEPARATE
     }

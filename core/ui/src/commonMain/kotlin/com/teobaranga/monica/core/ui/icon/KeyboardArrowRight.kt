@@ -1,4 +1,4 @@
-package com.teobaranga.monica.core.ui.icons
+package com.teobaranga.monica.core.ui.icon
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor

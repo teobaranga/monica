@@ -7,10 +7,3 @@ kotlin {
         namespace = "com.teobaranga.monica.core.account"
     }
 }
-
-monica {
-    optIn {
-        experimentalCoroutinesApi = false
-        flowPreview = false
-    }
-}

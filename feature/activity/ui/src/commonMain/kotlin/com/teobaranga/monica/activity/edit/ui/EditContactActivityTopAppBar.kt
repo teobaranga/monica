@@ -70,7 +70,10 @@ fun EditContactActivityTopAppBar(
 
     if (showDeleteConfirmDialog) {
         DeleteAlertDialog(
-            onConfirm = onDelete,
+            onConfirm = {
+                showDeleteConfirmDialog = false
+                onDelete()
+            },
             onCancel = {
                 showDeleteConfirmDialog = false
             },

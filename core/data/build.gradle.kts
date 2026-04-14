@@ -20,9 +20,3 @@ kotlin {
         }
     }
 }
-
-monica {
-    optIn {
-        flowPreview = false
-    }
-}
