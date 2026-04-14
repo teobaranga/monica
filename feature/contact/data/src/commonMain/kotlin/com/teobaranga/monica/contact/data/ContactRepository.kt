@@ -1,0 +1,235 @@
+package com.teobaranga.monica.contact.data
+
+import androidx.paging.InvalidatingPagingSourceFactory
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.diamondedge.logging.logging
+import com.skydoves.sandwich.getOrNull
+import com.skydoves.sandwich.message
+import com.skydoves.sandwich.onFailure
+import com.teobaranga.monica.contact.data.local.ContactDao
+import com.teobaranga.monica.contact.data.local.ContactEntity
+import com.teobaranga.monica.contact.data.local.ContactEntityAvatar
+import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
+import com.teobaranga.monica.contact.data.local.ContactEntityMapper
+import com.teobaranga.monica.contact.data.local.ContactPagingSource
+import com.teobaranga.monica.contact.data.remote.ContactApi
+import com.teobaranga.monica.core.data.sync.SyncStatus
+import com.teobaranga.monica.core.dispatcher.Dispatcher
+import com.teobaranga.monica.genders.domain.Gender
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
+import kotlin.time.Clock
+
+private const val PAGE_SIZE = 10
+
+@Inject
+@SingleIn(AppScope::class)
+class ContactRepository(
+    private val dispatcher: Dispatcher,
+    private val clock: Clock,
+    private val contactApi: ContactApi,
+    private val contactDao: ContactDao,
+    private val contactPagingSourceFactory: (orderBy: OrderBy) -> ContactPagingSource,
+    private val contactNewSynchronizer: ContactNewSynchronizer,
+    private val contactUpdateSynchronizer: ContactUpdateSynchronizer,
+    private val contactDeleteSynchronizer: ContactDeleteSynchronizer,
+    private val contactEntityMapper: ContactEntityMapper,
+) {
+    private val scope = CoroutineScope(SupervisorJob() + dispatcher.io)
+
+    private val pagingSourceFactoryMap = mutableMapOf<OrderBy, InvalidatingPagingSourceFactory<Int, ContactEntity>>()
+
+    fun syncContact(contactId: Int) {
+        scope.launch(dispatcher.io) {
+            val singleContactResponse = contactApi.getContact(contactId)
+                .onFailure {
+                    log.e { "Error while loading contact $contactId: ${message()}" }
+                }
+                .getOrNull() ?: return@launch
+            val contact = contactEntityMapper(singleContactResponse.data)
+            contactDao.upsertContacts(listOf(contact))
+        }
+    }
+
+    fun getContactsPagingData(
+        orderBy: OrderBy,
+        config: PagingConfig = DefaultPagingConfig,
+    ): Flow<PagingData<ContactEntity>> {
+        val pagingSourceFactory = pagingSourceFactoryMap.getOrPut(orderBy) {
+            InvalidatingPagingSourceFactory {
+                contactPagingSourceFactory(orderBy)
+            }
+        }
+        return Pager(
+            config = config,
+            pagingSourceFactory = { pagingSourceFactory() },
+        ).flow
+    }
+
+    private fun invalidatePages() {
+        pagingSourceFactoryMap.values.forEach { invalidatingPagingSourceFactory ->
+            invalidatingPagingSourceFactory.invalidate()
+        }
+    }
+
+    fun searchContact(query: String, excludeIds: List<Int> = emptyList()): Flow<List<ContactEntity>> {
+        return contactDao.searchContacts(query, excludeIds)
+    }
+
+    fun getContact(id: Int): Flow<ContactEntity> {
+        return contactDao.getContact(id)
+    }
+
+    suspend fun upsertContact(
+        contactId: Int?,
+        firstName: String,
+        lastName: String?,
+        nickname: String?,
+        gender: Gender?,
+        birthdate: ContactEntityBirthdate?,
+    ) {
+        if (contactId != null) {
+            updateContact(contactId, firstName, lastName, nickname, gender, birthdate)
+        } else {
+            insertContact(firstName, lastName, nickname, gender, birthdate)
+        }
+    }
+
+    private suspend fun insertContact(
+        firstName: String,
+        lastName: String?,
+        nickname: String?,
+        gender: Gender?,
+        birthdate: ContactEntityBirthdate?,
+    ) {
+        val localId = contactDao.getMaxId() + 1
+        val createdDate = clock.now()
+        val entity = ContactEntity(
+            contactId = localId,
+            firstName = firstName,
+            lastName = lastName,
+            nickname = nickname,
+            completeName = getCompleteName(firstName, lastName, nickname),
+            initials = getInitials(firstName, lastName),
+            birthdate = birthdate,
+            genderId = gender?.id,
+            updated = createdDate,
+            // Avatar is set separately
+            avatar = getRandomAvatar(),
+            syncStatus = SyncStatus.NEW,
+        )
+        contactDao.upsertContacts(listOf(entity))
+        invalidatePages()
+        scope.launch {
+            contactNewSynchronizer.sync()
+            invalidatePages()
+        }
+    }
+
+    private suspend fun updateContact(
+        contactId: Int,
+        firstName: String,
+        lastName: String?,
+        nickname: String?,
+        gender: Gender?,
+        birthdate: ContactEntityBirthdate?,
+    ) {
+        val originalContact = contactDao.getContact(contactId).firstOrNull() ?: return
+        val updatedContact = originalContact.copy(
+            firstName = firstName,
+            lastName = lastName,
+            nickname = nickname,
+            completeName = getCompleteName(firstName, lastName, nickname),
+            initials = getInitials(firstName, lastName),
+            genderId = gender?.id,
+            birthdate = birthdate,
+            updated = clock.now(),
+            syncStatus = SyncStatus.EDITED,
+        )
+        contactDao.upsertContacts(listOf(updatedContact))
+        invalidatePages()
+        scope.launch {
+            contactUpdateSynchronizer.sync()
+            invalidatePages()
+        }
+    }
+
+    private fun getCompleteName(firstName: String, lastName: String?, nickname: String?): String {
+        return buildString {
+            append(firstName)
+            if (lastName != null) {
+                append(" ")
+                append(lastName)
+            }
+            if (nickname != null) {
+                append(" ")
+                append("($nickname)")
+            }
+        }
+    }
+
+    private fun getInitials(firstName: String, lastName: String?): String {
+        return buildString {
+            append(firstName.first().uppercase())
+            if (lastName != null) {
+                append(lastName.first().uppercase())
+            }
+        }
+    }
+
+    private fun getRandomAvatar(): ContactEntityAvatar {
+        // List of colours should match the ones on the web
+        val colors = listOf("#fdb660", "#93521e", "#bd5067", "#b3d5fe", "#ff9807", "#709512", "#5f479a", "#e5e5cd")
+        return ContactEntityAvatar(
+            url = null,
+            color = colors.random(),
+        )
+    }
+
+    suspend fun deleteContact(contactId: Int) {
+        contactDao.setSyncStatus(contactId, SyncStatus.DELETED)
+        invalidatePages()
+        scope.launch {
+            contactDeleteSynchronizer.sync()
+            invalidatePages()
+        }
+    }
+
+    sealed interface OrderBy {
+
+        val columnName: String
+
+        val isAscending: Boolean
+
+        data class Name(
+            override val isAscending: Boolean,
+        ) : OrderBy {
+            override val columnName = "completeName"
+        }
+
+        data class Updated(
+            override val isAscending: Boolean,
+        ) : OrderBy {
+            override val columnName = "datetime(updated)"
+        }
+    }
+
+    companion object {
+
+        private val log = logging()
+
+        val DefaultPagingConfig = PagingConfig(
+            pageSize = PAGE_SIZE,
+            enablePlaceholders = false,
+            initialLoadSize = PAGE_SIZE,
+        )
+    }
+}

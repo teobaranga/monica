@@ -16,11 +16,8 @@
 
 package com.teobaranga.monica.data
 
-import com.teobaranga.monica.activities.data.ContactActivitiesDao
-import com.teobaranga.monica.contacts.data.ContactDao
-import com.teobaranga.monica.data.photo.PhotoDao
 import com.teobaranga.monica.data.user.UserDao
-import com.teobaranga.monica.genders.data.GendersDao
+import com.teobaranga.monica.photo.data.local.PhotoDao
 import me.tatarka.inject.annotations.Provides
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
@@ -32,14 +29,5 @@ interface DaosComponent {
     fun providesUserDao(database: MonicaDatabase): UserDao = database.userDao()
 
     @Provides
-    fun providesContactDao(database: MonicaDatabase): ContactDao = database.contactDao()
-
-    @Provides
-    fun providesContactActivitiesDao(database: MonicaDatabase): ContactActivitiesDao = database.contactActivitiesDao()
-
-    @Provides
     fun providesPhotoDao(database: MonicaDatabase): PhotoDao = database.photoDao()
-
-    @Provides
-    fun providesGendersDao(database: MonicaDatabase): GendersDao = database.gendersDao()
 }

@@ -8,7 +8,7 @@ import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @ContributesTo(AppScope::class)
-interface IosNetworkComponent: NetworkComponent {
+interface IosNetworkComponent {
 
     @Provides
     @SingleIn(AppScope::class)

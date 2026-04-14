@@ -11,6 +11,7 @@ kotlin {
             dependencies {
                 implementation(project(":core:datetime"))
                 implementation(project(":component:user_avatar"))
+                implementation(project(":feature:contact:data"))
             }
         }
     }

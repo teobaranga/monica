@@ -1,3 +1,4 @@
+
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.teobaranga.monica.MonicaExtension
 import com.teobaranga.monica.configureUnitTests
@@ -60,8 +61,15 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
     }
 
     with(sourceSets) {
+        commonMain {
+            dependencies {
+                // Logging support everywhere
+                implementation(libs.kmlogging)
+            }
+        }
         commonTest {
             dependencies {
+                implementation(project(":core:test"))
                 implementation(libs.kotest.assertions.core)
                 implementation(libs.kotest.framework.engine)
 

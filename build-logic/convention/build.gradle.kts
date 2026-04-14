@@ -78,5 +78,13 @@ gradlePlugin {
             id = "monica.network"
             implementationClass = "NetworkConventionPlugin"
         }
+        register("data-module") {
+            id = "monica.module.data"
+            implementationClass = "DataModuleConventionPlugin"
+        }
+        register("test-fixture-module") {
+            id = "monica.module.test.fixture"
+            implementationClass = "TestFixtureModuleConventionPlugin"
+        }
     }
 }

@@ -2,7 +2,7 @@ package com.teobaranga.monica.data.user
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.teobaranga.monica.contacts.data.ContactEntity
+import com.teobaranga.monica.contact.data.local.ContactEntity
 
 data class MeFullDetails(
     @Embedded

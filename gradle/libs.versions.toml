@@ -130,6 +130,8 @@ monica-cmp = { id = "monica.cmp", version = "unspecified" }
 monica-kotlin-inject = { id = "monica.kotlin.inject", version = "unspecified" }
 monica-kmp = { id = "monica.kmp", version = "unspecified" }
 monica-network = { id = "monica.network", version = "unspecified" }
+monica-module-data = { id = "monica.module.data", version = "unspecified" }
+monica-module-test-fixture = { id = "monica.module.test.fixture", version = "unspecified" }
 
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

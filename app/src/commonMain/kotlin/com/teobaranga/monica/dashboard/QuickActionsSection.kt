@@ -15,7 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.teobaranga.monica.contacts.detail.activities.edit.ui.ContactActivityEditRoute
+import com.teobaranga.monica.activity.nav.ContactActivityEditRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.journal.view.JournalEntryRoute
 

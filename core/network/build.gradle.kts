@@ -15,7 +15,6 @@ kotlin {
             dependencies {
                 implementation(project(":core:dispatcher"))
                 implementation(project(":core:inject"))
-                implementation(libs.kmlogging)
             }
         }
     }

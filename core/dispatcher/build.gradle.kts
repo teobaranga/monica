@@ -10,6 +10,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":core:inject"))
                 implementation(libs.kotlinx.coroutines.core)
             }
         }

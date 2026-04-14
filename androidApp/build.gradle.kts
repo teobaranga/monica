@@ -78,12 +78,18 @@ dependencies {
     implementation(project(":component:user_avatar"))
 
     implementation(project(":feature:account"))
+    implementation(project(":feature:activity:data"))
+    implementation(project(":feature:activity:ui"))
     implementation(project(":feature:certificate"))
     implementation(project(":feature:configuration"))
     implementation(project(":feature:contact-api"))
+    implementation(project(":feature:contact:data"))
+    implementation(project(":feature:contact:domain"))
+    implementation(project(":feature:contact:ui"))
     implementation(project(":feature:genders"))
     implementation(project(":feature:journal"))
     implementation(project(":feature:user-api"))
+    implementation(project(":feature:photo:data"))
 
     implementation(libs.datastore.preferences)
     implementation(libs.browser)

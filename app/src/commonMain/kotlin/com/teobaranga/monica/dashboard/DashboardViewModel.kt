@@ -6,11 +6,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
-import com.teobaranga.monica.contacts.data.ContactRepository
-import com.teobaranga.monica.contacts.data.ContactSynchronizer
-import com.teobaranga.monica.contacts.data.toExternalModel
+import com.teobaranga.monica.contact.data.ContactRepository
+import com.teobaranga.monica.contact.data.ContactSynchronizer
+import com.teobaranga.monica.contact.toExternalModel
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.data.photo.PhotoSynchronizer
+import com.teobaranga.monica.photo.data.PhotoSynchronizer
 import com.teobaranga.monica.user.data.local.IUserRepository
 import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.flow.SharingStarted
