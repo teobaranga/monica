@@ -1,6 +1,9 @@
 package com.teobaranga.monica.journal.view.ui
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -51,6 +54,7 @@ import monica.feature.journal.generated.resources.journal_entry_empty_error
 import monica.feature.journal.generated.resources.journal_title_info_mandatory_title_bug
 import org.jetbrains.compose.resources.stringResource
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun JournalEntryScreen(
     uiState: JournalEntryUiState,
@@ -77,9 +81,11 @@ fun JournalEntryScreen(
         },
         contentWindowInsets = WindowInsets.Zero,
     ) { contentPadding ->
-        Crossfade(
-            targetState = uiState,
-            label = "Journal Entry Screen",
+        val transition = updateTransition(uiState)
+        transition.Crossfade(
+            modifier = modifier,
+            animationSpec = tween(),
+            contentKey = { it::class },
         ) { uiState ->
             when (uiState) {
                 is JournalEntryUiState.Loading -> {
