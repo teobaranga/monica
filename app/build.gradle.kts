@@ -1,5 +1,6 @@
 import com.teobaranga.monica.InjectHandler
 import com.teobaranga.monica.libs
+import com.teobaranga.monica.optInExperimentalCoroutinesApi
 
 plugins {
     alias(libs.plugins.monica.cmp)
@@ -89,6 +90,10 @@ kotlin {
                 implementation(libs.signum.indispensable)
             }
         }
+    }
+
+    compilerOptions {
+        optInExperimentalCoroutinesApi()
     }
 }
 

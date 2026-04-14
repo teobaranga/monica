@@ -17,13 +17,8 @@ import javax.inject.Inject
 open class MonicaExtension @Inject constructor(
     objects: ObjectFactory,
 ) {
-    val optIn = objects.newInstance(OptInHandler::class.java)
 
     val inject = objects.newInstance(InjectHandler::class.java)
-
-    fun optIn(action: Action<OptInHandler>) {
-        action.execute(optIn)
-    }
 
     fun inject(action: Action<InjectHandler>) {
         action.execute(inject)
@@ -35,13 +30,6 @@ open class MonicaExtension @Inject constructor(
                 ?: create<MonicaExtension>("monica")
         }
     }
-}
-
-open class OptInHandler @Inject constructor() {
-
-    var experimentalCoroutinesApi: Boolean = true
-
-    var flowPreview: Boolean = true
 }
 
 open class InjectHandler @Inject constructor(project: Project) {

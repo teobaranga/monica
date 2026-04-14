@@ -1,3 +1,5 @@
+import com.teobaranga.monica.optInExperimentalCoroutinesApi
+
 plugins {
     alias(libs.plugins.monica.cmp)
     alias(libs.plugins.monica.kotlin.inject)
@@ -38,5 +40,9 @@ kotlin {
                 implementation(libs.compose.placeholder)
             }
         }
+    }
+
+    compilerOptions {
+        optInExperimentalCoroutinesApi()
     }
 }
