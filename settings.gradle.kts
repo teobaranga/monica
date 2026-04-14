@@ -66,6 +66,7 @@ kover {
             // Compose generated resources
             "*.generated.resources.*",
             // Icons (ImageVector)
+            // TODO: drop once screenshot tests are added
             "*.icon.*",
             // Test fixtures
             "com.teobaranga.monica.core.test.*",
