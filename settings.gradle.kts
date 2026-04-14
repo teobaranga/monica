@@ -65,9 +65,22 @@ kover {
             "*ComposableSingletons*",
             // Compose generated resources
             "*.generated.resources.*",
+            // Icons (ImageVector)
+            "*.icon.*",
+            // Test fixtures
+            "com.teobaranga.monica.core.test.*",
         )
         excludesAnnotatedBy.addAll(
             "androidx.compose.ui.tooling.preview.Preview",
+            // DAOs are faked in tests, avoid including them in coverage
+            // TODO: remove this once Robolectric Dao tests are included
+            "androidx.room.Dao",
+            "androidx.room.Database",
+            // DI wiring
+            "software.amazon.lastmile.kotlin.inject.anvil.ContributesTo",
+            "software.amazon.lastmile.kotlin.inject.anvil.SingleIn",
+            "software.amazon.lastmile.kotlin.inject.anvil.MergeComponent",
+            "me.tatarka.inject.annotations.Provides",
         )
     }
 }
