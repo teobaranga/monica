@@ -78,7 +78,6 @@ kover {
             "androidx.room.Database",
             // DI wiring
             "software.amazon.lastmile.kotlin.inject.anvil.ContributesTo",
-            "software.amazon.lastmile.kotlin.inject.anvil.SingleIn",
             "software.amazon.lastmile.kotlin.inject.anvil.MergeComponent",
             "me.tatarka.inject.annotations.Provides",
         )

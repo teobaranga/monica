@@ -3,6 +3,7 @@ package com.teobaranga.monica.contact.data.remote
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ktor.deleteApiResponse
 import com.skydoves.sandwich.ktor.getApiResponse
+import com.skydoves.sandwich.ktor.postApiResponse
 import com.skydoves.sandwich.ktor.putApiResponse
 import com.teobaranga.monica.core.data.remote.DeleteResponse
 import com.teobaranga.monica.core.network.HttpRequestMaker
@@ -36,7 +37,7 @@ class ContactApi(private val httpRequestMaker: HttpRequestMaker) {
 
     suspend fun createContact(request: CreateContactRequest): ApiResponse<SingleContactResponse> {
         return httpRequestMaker.call {
-            getApiResponse("api/contacts") {
+            postApiResponse("api/contacts") {
                 setBody(request)
             }
         }
