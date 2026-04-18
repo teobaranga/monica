@@ -119,17 +119,6 @@ private fun AccountScreen(
                 )
             }
             item {
-                InfoCard(
-                    modifier = Modifier.padding(top = 16.dp),
-                    items = listOf(
-                        "App version" to "-",
-                        "Server URL" to "-",
-                        "Server version" to "-",
-                        "Latest version" to "-",
-                    ),
-                )
-            }
-            item {
                 ActionGroup(
                     modifier = Modifier.padding(top = 12.dp),
                     items = listOf(
@@ -196,41 +185,6 @@ private fun PlaceholderAvatar(modifier: Modifier = Modifier) {
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.secondaryContainer),
     )
-}
-
-@Composable
-private fun InfoCard(
-    items: List<Pair<String, String>>,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        items.forEach { (label, value) ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = label,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Text(
-                    text = value,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-    }
 }
 
 private data class ActionItem(
