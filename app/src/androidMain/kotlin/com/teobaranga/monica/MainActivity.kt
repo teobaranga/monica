@@ -6,12 +6,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.core.util.Consumer
 import androidx.navigation.compose.rememberNavController
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.LocalViewModelFactoryOwner
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOwner
 import com.teobaranga.monica.applinks.AppLinksHandler
-import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
             CompositionLocalProvider(
                 LocalViewModelFactoryOwner provides getViewModelFactoryOwner(),
                 LocalNavigator provides navController,
-                LocalWebBrowser provides AndroidWebBrowser(this),
+                LocalUriHandler provides CustomTabsUriHandler(this),
             ) {
                 MonicaApp(
                     navController = navController,

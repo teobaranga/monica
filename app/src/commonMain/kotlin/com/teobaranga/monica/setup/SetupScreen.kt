@@ -23,7 +23,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,14 +31,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.applinks.AppLinksHandler
-import com.teobaranga.monica.browser.LocalWebBrowser
-import com.teobaranga.monica.browser.PreviewPlatformWebBrowser
 import com.teobaranga.monica.core.ui.icon.MonicaLogo
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
@@ -67,7 +65,7 @@ private const val SETUP_INFO_URL = "https://monica.teobaranga.com/setup"
 fun Setup(
     viewModel: SetupViewModel = injectedViewModel(),
 ) {
-    val webBrowser = LocalWebBrowser.current
+    val uriHandler = LocalUriHandler.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
     var insecureSetupUrl by remember { mutableStateOf<String?>(null) }
@@ -80,7 +78,7 @@ fun Setup(
                 when (url) {
                     is SetupEvent.Login -> {
                         if (url.isSecure) {
-                            webBrowser.open(url.setupUrl)
+                            uriHandler.openUri(url.setupUrl)
                         } else {
                             insecureSetupUrl = url.setupUrl
                         }
@@ -110,7 +108,7 @@ fun Setup(
             },
             onAccept = {
                 insecureSetupUrl = null
-                webBrowser.open(it)
+                uriHandler.openUri(it)
             },
         )
     }
@@ -265,7 +263,7 @@ private fun Logo(modifier: Modifier = Modifier) {
 
 @Composable
 private fun SetupSectionTitle(modifier: Modifier = Modifier) {
-    val webBrowser = LocalWebBrowser.current
+    val uriHandler = LocalUriHandler.current
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -279,7 +277,7 @@ private fun SetupSectionTitle(modifier: Modifier = Modifier) {
 
         IconButton(
             onClick = {
-                webBrowser.open(SETUP_INFO_URL)
+                uriHandler.openUri(SETUP_INFO_URL)
             },
         ) {
             Icon(
@@ -294,13 +292,9 @@ private fun SetupSectionTitle(modifier: Modifier = Modifier) {
 @Composable
 private fun PreviewSetupScreen() {
     MonicaTheme {
-        CompositionLocalProvider(
-            LocalWebBrowser provides PreviewPlatformWebBrowser,
-        ) {
-            SetupScreen(
-                uiState = UiState(),
-                onSignIn = { },
-            )
-        }
+        SetupScreen(
+            uiState = UiState(),
+            onSignIn = { },
+        )
     }
 }
