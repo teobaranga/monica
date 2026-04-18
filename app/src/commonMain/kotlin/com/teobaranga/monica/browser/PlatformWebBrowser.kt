@@ -8,12 +8,3 @@ interface PlatformWebBrowser {
 
     fun open(url: String)
 }
-
-/**
- * Only used for previews.
- */
-object PreviewPlatformWebBrowser : PlatformWebBrowser {
-    override fun open(url: String) {
-        // Do nothing
-    }
-}

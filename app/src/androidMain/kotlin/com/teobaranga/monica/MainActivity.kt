@@ -6,10 +6,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.core.util.Consumer
 import androidx.navigation.compose.rememberNavController
 import com.teobaranga.monica.applinks.AppLinksHandler
-import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import dev.zacsweers.metro.AppScope
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
             CompositionLocalProvider(
                 LocalMetroViewModelFactory provides getViewModelFactory(),
                 LocalNavigator provides navController,
-                LocalWebBrowser provides AndroidWebBrowser(this),
+                LocalUriHandler provides CustomTabsUriHandler(this),
             ) {
                 MonicaApp(
                     navController = navController,
