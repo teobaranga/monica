@@ -9,7 +9,7 @@ androidGradlePlugin = "9.1.1"
 androidTools = "32.1.1"
 
 # Plugins
-dependency-analysis = "3.7.0"
+dependency-analysis = "3.8.0"
 detekt = "1.23.8"
 jetbrains-compose = "1.10.3"
 ksp = "2.3.6"
