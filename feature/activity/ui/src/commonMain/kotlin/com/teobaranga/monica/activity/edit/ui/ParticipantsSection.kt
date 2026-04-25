@@ -146,14 +146,14 @@ private fun PreviewParticipantsSection() {
                     ActivityParticipant.Contact(
                         contactId = 1,
                         name = "John",
-                        avatar = UserAvatar.default("JD")
+                        avatar = UserAvatar.default("John", "Doe")
                     )
                 )
                 participants.add(
                     ActivityParticipant.Contact(
                         contactId = 2,
                         name = "Jane",
-                        avatar = UserAvatar.default("JD")
+                        avatar = UserAvatar.default("John", "Doe")
                     )
                 )
             }

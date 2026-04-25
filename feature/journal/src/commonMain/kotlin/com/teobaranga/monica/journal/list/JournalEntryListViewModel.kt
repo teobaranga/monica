@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import androidx.paging.insertSeparators
 import androidx.paging.map
 import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
+import com.teobaranga.monica.contact.userAvatar
 import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.datetime.Year
 import com.teobaranga.monica.core.dispatcher.Dispatcher
@@ -14,7 +15,7 @@ import com.teobaranga.monica.journal.data.JournalEntrySynchronizer
 import com.teobaranga.monica.journal.data.JournalRepository
 import com.teobaranga.monica.journal.data.local.JournalEntryEntity
 import com.teobaranga.monica.journal.list.ui.JournalEntryListItem
-import com.teobaranga.monica.user.data.local.IUserRepository
+import com.teobaranga.monica.user.data.UserRepository
 import com.teobaranga.monica.useravatar.UserAvatar
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -32,7 +33,7 @@ private const val MAX_PREVIEW_CHARS = 300
 @ContributesViewModel(AppScope::class)
 class JournalEntryListViewModel(
     private val dispatcher: Dispatcher,
-    userRepository: IUserRepository,
+    userRepository: UserRepository,
     journalRepository: JournalRepository,
     private val journalEntrySynchronizer: JournalEntrySynchronizer,
     private val getNowYear: () -> Year,
@@ -40,7 +41,7 @@ class JournalEntryListViewModel(
 
     val userAvatar = userRepository.me
         .mapLatest { me ->
-            me.contact?.avatar ?: UserAvatar.default(me.firstName)
+            me.contact?.userAvatar ?: UserAvatar.default(me.info.firstName, me.info.lastName)
         }
         .stateIn(
             scope = viewModelScope,

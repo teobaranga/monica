@@ -75,6 +75,7 @@ dependencies {
     implementation(project(":core:ui"))
 
     implementation(project(":component:tips"))
+    implementation(project(":component:user:data"))
     implementation(project(":component:user_avatar"))
 
     implementation(project(":feature:account"))
@@ -88,7 +89,6 @@ dependencies {
     implementation(project(":feature:contact:ui"))
     implementation(project(":feature:genders"))
     implementation(project(":feature:journal"))
-    implementation(project(":feature:user-api"))
     implementation(project(":feature:photo:data"))
 
     implementation(libs.datastore.preferences)

@@ -45,6 +45,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
@@ -54,6 +55,7 @@ import com.teobaranga.monica.certificate.list.CertificateListRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import com.teobaranga.monica.user.data.local.MeFullDetails
 
 fun NavGraphBuilder.account() {
     composable<AccountRoute>(
@@ -86,7 +88,9 @@ fun Account(
 ) {
     val navigator = LocalNavigator.current
     val uiState = viewModel.uiState
+    val meFullDetails by viewModel.userAvatar.collectAsStateWithLifecycle()
     AccountScreen(
+        meFullDetails = meFullDetails,
         uiState = uiState,
         onActionClick = { action ->
             when (action) {
@@ -113,6 +117,7 @@ fun Account(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AccountScreen(
+    meFullDetails: MeFullDetails?,
     uiState: AccountUiState,
     onActionClick: (AccountAction) -> Unit,
 ) {
@@ -131,7 +136,7 @@ private fun AccountScreen(
             item {
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp),
-                    text = uiState.email,
+                    text = meFullDetails?.info?.email ?: "...",
                     style = MaterialTheme.typography.bodyLarge,
                 )
             }
@@ -166,7 +171,9 @@ private fun AccountScreen(
 }
 
 @Composable
-private fun PlaceholderAvatar(modifier: Modifier = Modifier) {
+private fun PlaceholderAvatar(
+    modifier: Modifier = Modifier,
+) {
     Box(
         modifier = modifier
             .size(128.dp)
@@ -372,6 +379,7 @@ private fun PreviewAccountScreen(
             verticalArrangement = Arrangement.Center,
         ) {
             AccountScreen(
+                meFullDetails = null,
                 uiState = uiState,
                 onActionClick = { },
             )

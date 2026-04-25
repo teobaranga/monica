@@ -12,8 +12,6 @@ import com.teobaranga.monica.component.tips.TipEntity
 import com.teobaranga.monica.component.tips.di.TipsTableOwner
 import com.teobaranga.monica.contact.data.di.ContactTableOwner
 import com.teobaranga.monica.contact.data.local.ContactEntity
-import com.teobaranga.monica.data.user.MeEntity
-import com.teobaranga.monica.data.user.UserDao
 import com.teobaranga.monica.database.adapter.InstantAdapter
 import com.teobaranga.monica.database.adapter.LocalDateAdapter
 import com.teobaranga.monica.database.adapter.UuidAdapter
@@ -23,6 +21,8 @@ import com.teobaranga.monica.journal.data.local.JournalDatabaseOwner
 import com.teobaranga.monica.journal.data.local.JournalEntryEntity
 import com.teobaranga.monica.photo.data.local.PhotoDao
 import com.teobaranga.monica.photo.data.local.PhotoEntity
+import com.teobaranga.monica.user.data.local.MeEntity
+import com.teobaranga.monica.user.data.local.UserDao
 
 @Database(
     version = 1,

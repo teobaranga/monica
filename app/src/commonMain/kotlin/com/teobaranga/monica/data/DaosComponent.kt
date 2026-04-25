@@ -16,8 +16,8 @@
 
 package com.teobaranga.monica.data
 
-import com.teobaranga.monica.data.user.UserDao
 import com.teobaranga.monica.photo.data.local.PhotoDao
+import com.teobaranga.monica.user.data.local.UserDao
 import me.tatarka.inject.annotations.Provides
 import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
