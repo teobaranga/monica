@@ -60,6 +60,7 @@ kotlin {
                 implementation(project(":component:user_avatar"))
                 implementation(project(":component:tips"))
                 implementation(project(":feature:account"))
+                implementation(project(":feature:account:nav"))
                 implementation(project(":feature:activity:data"))
                 implementation(project(":feature:activity:domain"))
                 implementation(project(":feature:activity:ui"))

@@ -31,7 +31,7 @@ kotlin {
                 implementation(project(":core:ui"))
                 implementation(project(":component:tips"))
                 implementation(project(":component:user_avatar"))
-                implementation(project(":feature:account"))
+                implementation(project(":feature:account:nav"))
                 implementation(project(":feature:user-api"))
 
                 // Storage

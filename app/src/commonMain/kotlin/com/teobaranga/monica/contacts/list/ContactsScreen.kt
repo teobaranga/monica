@@ -25,9 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,7 +35,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.teobaranga.monica.account.Account
+import com.teobaranga.monica.account.nav.AccountRoute
 import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contact.nav.ContactDetailRoute
 import com.teobaranga.monica.contact.nav.ContactEditRoute
@@ -65,7 +63,6 @@ internal fun Contacts(
     val refreshState by viewModel.refreshState.collectAsStateWithLifecycle()
     ContactsScreen(
         searchBar = {
-            var shouldShowAccount by remember { mutableStateOf(false) }
             MonicaTopAppBar(
                 actions = {
                     SearchIconButton(
@@ -76,19 +73,12 @@ internal fun Contacts(
                         UserAvatarIconButton(
                             userAvatar = it,
                             onClick = {
-                                shouldShowAccount = true
+                                navigator.navigate(AccountRoute)
                             },
                         )
                     }
                 },
             )
-            if (shouldShowAccount) {
-                Account(
-                    onDismissRequest = {
-                        shouldShowAccount = false
-                    },
-                )
-            }
         },
         uiState = viewModel.state,
         refreshState = refreshState,

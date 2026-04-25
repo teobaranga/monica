@@ -2,12 +2,9 @@ package com.teobaranga.monica.journal.list
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.teobaranga.monica.account.Account
+import com.teobaranga.monica.account.nav.AccountRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.topappbar.MonicaTopAppBar
 import com.teobaranga.monica.core.ui.topappbar.SearchIconButton
@@ -25,7 +22,6 @@ internal fun JournalEntryList(
     val refreshState by viewModel.refreshState.collectAsStateWithLifecycle()
     JournalEntryListScreen(
         searchBar = {
-            var shouldShowAccount by remember { mutableStateOf(false) }
             MonicaTopAppBar(
                 actions = {
                     SearchIconButton(
@@ -36,19 +32,12 @@ internal fun JournalEntryList(
                         UserAvatarIconButton(
                             userAvatar = it,
                             onClick = {
-                                shouldShowAccount = true
+                                navigator.navigate(AccountRoute)
                             },
                         )
                     }
                 },
             )
-            if (shouldShowAccount) {
-                Account(
-                    onDismissRequest = {
-                        shouldShowAccount = false
-                    },
-                )
-            }
         },
         lazyItems = lazyItems,
         refreshState = refreshState,
