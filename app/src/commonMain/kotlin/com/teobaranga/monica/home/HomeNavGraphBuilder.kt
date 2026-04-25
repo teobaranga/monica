@@ -1,6 +1,7 @@
 package com.teobaranga.monica.home
 
 import androidx.navigation.NavGraphBuilder
+import com.teobaranga.monica.account.account
 import com.teobaranga.monica.activity.edit.ui.contactActivityEdit
 import com.teobaranga.monica.certificate.nav.certificateListAndDetails
 import com.teobaranga.monica.contact.detail.contactDetail
@@ -12,6 +13,7 @@ import com.teobaranga.monica.journal.view.journalEntry
 
 val HomeNavGraphBuilder: NavGraphBuilder.() -> Unit = {
     dashboard()
+    account()
 
     contacts()
     contactDetail()

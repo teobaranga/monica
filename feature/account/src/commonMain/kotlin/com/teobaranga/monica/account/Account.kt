@@ -1,35 +1,40 @@
 package com.teobaranga.monica.account
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.SyncAlt
-import androidx.compose.material.icons.outlined.Wifi
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,139 +43,122 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
+import com.teobaranga.monica.account.nav.AccountRoute
 import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.certificate.list.CertificateListRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import com.teobaranga.monica.core.ui.plus
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 
-private const val documentationUrl = "https://monica.teobaranga.com"
-private const val githubUrl = "https://github.com/teobaranga/monica"
-private const val licensesUrl = "https://github.com/teobaranga/monica/blob/main/LICENSE"
+fun NavGraphBuilder.account() {
+    composable<AccountRoute>(
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = LinearEasing
+                )
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = LinearEasing
+                )
+            )
+        }
+    ) {
+        Account()
+    }
+}
 
 @Composable
 fun Account(
     viewModel: AccountViewModel = injectedViewModel(),
-    onDismissRequest: () -> Unit,
 ) {
     val navigator = LocalNavigator.current
-    val uriHandler = LocalUriHandler.current
+    val uiState = viewModel.uiState
     AccountScreen(
-        onClearAuthorization = {
-            viewModel.onClearAuthorization()
-            onDismissRequest()
+        uiState = uiState,
+        onActionClick = { action ->
+            when (action) {
+                AccountAction.ManageServers -> {
+                    navigator.navigate(CertificateListRoute(CertificateTrustStatus.TRUSTED)) {
+                        popUpTo<AccountRoute> {
+                            inclusive = true
+                        }
+                    }
+                }
+
+                AccountAction.SignOut -> {
+                    viewModel.onClearAuthorization()
+                }
+
+                AccountAction.ManageAccounts,
+                AccountAction.OpenSettings,
+                -> Unit
+            }
         },
-        onViewCertificates = {
-            navigator.navigate(CertificateListRoute(CertificateTrustStatus.TRUSTED))
-            onDismissRequest()
-        },
-        onOpenDocumentation = {
-            uriHandler.openUri(documentationUrl)
-        },
-        onOpenGithub = {
-            uriHandler.openUri(githubUrl)
-        },
-        onOpenLicenses = {
-            uriHandler.openUri(licensesUrl)
-        },
-        onDismissRequest = onDismissRequest,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AccountScreen(
-    onClearAuthorization: () -> Unit,
-    onViewCertificates: () -> Unit,
-    onOpenDocumentation: () -> Unit,
-    onOpenGithub: () -> Unit,
-    onOpenLicenses: () -> Unit,
-    onDismissRequest: () -> Unit,
+    uiState: AccountUiState,
+    onActionClick: (AccountAction) -> Unit,
 ) {
-    val listState = rememberLazyListState()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-    ModalBottomSheet(
-        modifier = Modifier
-            .statusBarsPadding(),
-        onDismissRequest = onDismissRequest,
-        sheetState = sheetState,
-        dragHandle = null,
-    ) {
+    Scaffold { contentPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 16.dp),
-            state = listState,
+                .padding(horizontal = 20.dp),
+            contentPadding = contentPadding
+                + PaddingValues(vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
-                PlaceholderAvatar(
-                    modifier = Modifier.padding(top = 16.dp),
-                )
+                PlaceholderAvatar()
             }
             item {
                 Text(
-                    modifier = Modifier.padding(top = 12.dp),
-                    text = "johndoe@mail.com",
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    text = uiState.email,
                     style = MaterialTheme.typography.bodyLarge,
                 )
             }
-            item {
-                ActionGroup(
-                    modifier = Modifier.padding(top = 12.dp),
-                    items = listOf(
-                        ActionItem(
-                            icon = Icons.Outlined.Wifi,
-                            label = "Server",
-                            onClick = onViewCertificates,
-                            trailingIcon = Icons.Filled.KeyboardArrowDown,
-                        ),
-                    ),
-                )
+            uiState.actionGroups.forEach { actionGroup ->
+                item {
+                    ActionGroupCard(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(top = 8.dp),
+                        actionGroup = actionGroup,
+                        onActionClick = onActionClick,
+                    )
+                }
             }
             item {
-                ActionGroup(
-                    modifier = Modifier.padding(top = 12.dp),
-                    items = listOf(
-                        ActionItem(
-                            icon = Icons.Outlined.SyncAlt,
-                            label = "Switch account",
-                            onClick = {
-                                // TODO
-                            },
-                            trailingIcon = Icons.Filled.KeyboardArrowDown,
-                        ),
-                        ActionItem(
-                            icon = Icons.AutoMirrored.Outlined.Logout,
-                            label = "Sign out",
-                            onClick = onClearAuthorization,
-                        ),
-                    ),
-                )
-            }
-            item {
-                ActionGroup(
-                    modifier = Modifier.padding(top = 12.dp),
-                    items = listOf(
-                        ActionItem(
-                            icon = Icons.Outlined.Settings,
-                            label = "Settings",
-                            onClick = {
-                                // TODO
-                            },
-                        ),
-                    ),
-                )
-            }
-            item {
+                val uriHandler = LocalUriHandler.current
                 FooterLinks(
-                    modifier = Modifier.padding(top = 16.dp),
-                    onOpenDocumentation = onOpenDocumentation,
-                    onOpenGithub = onOpenGithub,
-                    onOpenLicenses = onOpenLicenses,
+                    modifier = Modifier
+                        .padding(top = 16.dp),
+                    onOpenDocumentation = {
+                        uriHandler.openUri("https://monica.teobaranga.com")
+                    },
+                    onOpenGithub = {
+                        uriHandler.openUri("https://github.com/teobaranga/monica")
+                    },
+                    onOpenLicenses = {
+                        // TODO
+                    },
                 )
             }
         }
@@ -187,16 +175,10 @@ private fun PlaceholderAvatar(modifier: Modifier = Modifier) {
     )
 }
 
-private data class ActionItem(
-    val icon: ImageVector,
-    val label: String,
-    val onClick: () -> Unit,
-    val trailingIcon: ImageVector? = null,
-)
-
 @Composable
-private fun ActionGroup(
-    items: List<ActionItem>,
+private fun ActionGroupCard(
+    actionGroup: ActionItem,
+    onActionClick: (AccountAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -205,17 +187,55 @@ private fun ActionGroup(
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surfaceContainer),
     ) {
-        items.forEachIndexed { index, item ->
-            if (index > 0) {
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 16.dp),
+        var isExpanded by remember { mutableStateOf(true) }
+        ActionRow(
+            icon = actionGroup.icon,
+            label = actionGroup.label,
+            onClick = {
+                isExpanded = !isExpanded
+            },
+            trailingIcon = if (actionGroup.children.isNotEmpty()) {
+                if (isExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown
+            } else {
+                null
+            },
+        )
+
+        if (isExpanded && actionGroup.children.isNotEmpty()) {
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+            actionGroup.children.forEach { item ->
+                GroupItem(
+                    item = item,
+                    onActionClick = onActionClick,
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun GroupItem(
+    item: AccountGroupItem,
+    onActionClick: (AccountAction) -> Unit,
+) {
+    when (item) {
+        is ActionItem -> {
             ActionRow(
                 icon = item.icon,
                 label = item.label,
-                onClick = item.onClick,
-                trailingIcon = item.trailingIcon,
+                onClick = {
+                    item.action?.let { onActionClick(it) }
+                },
+            )
+        }
+
+        is SelectableItem -> {
+            SelectableDetailRow(
+                overline = item.overline,
+                headline = item.label,
+                selected = item.selected,
             )
         }
     }
@@ -223,7 +243,7 @@ private fun ActionGroup(
 
 @Composable
 private fun ActionRow(
-    icon: ImageVector,
+    icon: ImageVector?,
     label: String,
     onClick: () -> Unit,
     trailingIcon: ImageVector? = null,
@@ -232,12 +252,19 @@ private fun ActionRow(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
+        colors = ListItemDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        ),
         leadingContent = {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+            if (icon == null) {
+                Spacer(modifier = Modifier.size(24.dp))
+            } else {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         },
         headlineContent = {
             Text(text = label)
@@ -250,6 +277,42 @@ private fun ActionRow(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
+        },
+    )
+}
+
+@Composable
+private fun SelectableDetailRow(
+    overline: String,
+    headline: String,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    ListItem(
+        modifier = modifier.fillMaxWidth(),
+        colors = ListItemDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        ),
+        leadingContent = {
+            Spacer(modifier = Modifier.size(24.dp))
+        },
+        overlineContent = {
+            Text(
+                text = overline,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        },
+        headlineContent = {
+            Text(text = headline)
+        },
+        trailingContent = {
+            RadioButton(
+                selected = selected,
+                onClick = {
+                    // TODO
+                },
+            )
         },
     )
 }
@@ -298,19 +361,19 @@ private fun FooterBullet() {
 
 @Preview
 @Composable
-private fun PreviewAccountScreen() {
+private fun PreviewAccountScreen(
+    @PreviewParameter(provider = AccountPreviewParameterProvider::class)
+    uiState: AccountUiState,
+) {
     MonicaTheme {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
         ) {
             AccountScreen(
-                onClearAuthorization = { },
-                onViewCertificates = { },
-                onOpenDocumentation = { },
-                onOpenGithub = { },
-                onOpenLicenses = { },
-                onDismissRequest = { },
+                uiState = uiState,
+                onActionClick = { },
             )
         }
     }

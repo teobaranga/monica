@@ -25,9 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
@@ -40,7 +38,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
-import com.teobaranga.monica.account.Account
+import com.teobaranga.monica.account.nav.AccountRoute
 import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contact.nav.ContactDetailRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
@@ -60,7 +58,6 @@ internal fun Dashboard(
     val recentContacts = viewModel.recentContacts.collectAsLazyPagingItems()
     DashboardScreen(
         searchBar = {
-            var shouldShowAccount by remember { mutableStateOf(false) }
             MonicaTopAppBar(
                 actions = {
                     SearchIconButton(
@@ -71,19 +68,12 @@ internal fun Dashboard(
                         UserAvatarIconButton(
                             userAvatar = it,
                             onClick = {
-                                shouldShowAccount = true
+                                navigator.navigate(AccountRoute)
                             },
                         )
                     }
                 },
             )
-            if (shouldShowAccount) {
-                Account(
-                    onDismissRequest = {
-                        shouldShowAccount = false
-                    },
-                )
-            }
         },
         userUiState = userUiState,
         recentContacts = recentContacts,
