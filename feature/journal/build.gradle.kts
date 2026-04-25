@@ -30,9 +30,10 @@ kotlin {
                 implementation(project(":core:network"))
                 implementation(project(":core:ui"))
                 implementation(project(":component:tips"))
+                implementation(project(":component:user:data"))
                 implementation(project(":component:user_avatar"))
                 implementation(project(":feature:account:nav"))
-                implementation(project(":feature:user-api"))
+                implementation(project(":feature:contact-api"))
 
                 // Storage
                 implementation(libs.room.runtime)

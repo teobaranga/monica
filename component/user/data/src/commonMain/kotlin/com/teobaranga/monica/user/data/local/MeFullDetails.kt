@@ -1,4 +1,4 @@
-package com.teobaranga.monica.data.user
+package com.teobaranga.monica.user.data.local
 
 import androidx.room.Embedded
 import androidx.room.Relation

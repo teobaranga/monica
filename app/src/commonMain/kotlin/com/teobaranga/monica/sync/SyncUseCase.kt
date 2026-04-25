@@ -6,14 +6,14 @@ import com.diamondedge.logging.logging
 import com.teobaranga.monica.account.settings.getTokenStorage
 import com.teobaranga.monica.core.account.AccountListener
 import com.teobaranga.monica.genders.data.GenderRepository
-import com.teobaranga.monica.user.data.local.IUserRepository
+import com.teobaranga.monica.user.data.UserRepository
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.first
 
 @Inject
 class SyncUseCase(
     private val dataStore: DataStore<Preferences>,
-    private val userRepository: IUserRepository,
+    private val userRepository: UserRepository,
     private val genderRepository: GenderRepository,
     private val accountListeners: Set<AccountListener>,
 ) {

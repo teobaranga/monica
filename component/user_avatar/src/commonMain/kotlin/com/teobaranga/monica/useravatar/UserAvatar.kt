@@ -36,9 +36,12 @@ data class UserAvatar(
 
     companion object {
 
-        fun default(name: String) = UserAvatar(
+        fun default(firstName: String, lastName: String) = UserAvatar(
             contactId = -1,
-            initials = name.take(2).uppercase(),
+            initials = buildString {
+                append(firstName.first())
+                append(lastName.first())
+            }.uppercase(),
             color = "#709512",
             avatarUrl = null,
         )

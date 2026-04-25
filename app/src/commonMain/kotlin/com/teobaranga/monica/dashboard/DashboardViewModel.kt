@@ -8,9 +8,10 @@ import androidx.paging.map
 import com.teobaranga.monica.contact.data.ContactRepository
 import com.teobaranga.monica.contact.data.ContactSynchronizer
 import com.teobaranga.monica.contact.toExternalModel
+import com.teobaranga.monica.contact.userAvatar
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.photo.data.PhotoSynchronizer
-import com.teobaranga.monica.user.data.local.IUserRepository
+import com.teobaranga.monica.user.data.UserRepository
 import com.teobaranga.monica.useravatar.UserAvatar
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
@@ -30,7 +31,7 @@ private const val PAGE_SIZE = 10
 @ViewModelKey
 class DashboardViewModel(
     private val dispatcher: Dispatcher,
-    userRepository: IUserRepository,
+    userRepository: UserRepository,
     contactRepository: ContactRepository,
     private val contactSynchronizer: ContactSynchronizer,
     private val photoSynchronizer: PhotoSynchronizer,
@@ -38,7 +39,7 @@ class DashboardViewModel(
 
     val userAvatar = userRepository.me
         .mapLatest { me ->
-            me.contact?.avatar ?: UserAvatar.default(me.firstName)
+            me.contact?.userAvatar ?: UserAvatar.default(me.info.firstName, me.info.lastName)
         }
         .onStart {
             viewModelScope.launch(dispatcher.io) {
@@ -55,7 +56,7 @@ class DashboardViewModel(
         .mapLatest { me ->
             UserUiState(
                 userInfo = UserUiState.UserInfo(
-                    name = me.firstName,
+                    name = me.info.firstName,
                 ),
             )
         }

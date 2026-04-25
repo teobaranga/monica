@@ -8,10 +8,11 @@ import androidx.paging.map
 import com.teobaranga.monica.contact.data.ContactRepository
 import com.teobaranga.monica.contact.data.ContactSynchronizer
 import com.teobaranga.monica.contact.toExternalModel
+import com.teobaranga.monica.contact.userAvatar
 import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.core.ui.pulltorefresh.MonicaPullToRefreshState
-import com.teobaranga.monica.user.data.local.IUserRepository
+import com.teobaranga.monica.user.data.UserRepository
 import com.teobaranga.monica.useravatar.UserAvatar
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
@@ -32,14 +33,14 @@ private const val PAGE_SIZE = 15
 @ViewModelKey
 class ContactsViewModel(
     private val dispatcher: Dispatcher,
-    userRepository: IUserRepository,
+    userRepository: UserRepository,
     contactRepository: ContactRepository,
     private val contactSynchronizer: ContactSynchronizer,
 ) : ViewModel() {
 
     val userAvatar = userRepository.me
         .mapLatest { me ->
-            me.contact?.avatar ?: UserAvatar.default(me.firstName)
+            me.contact?.userAvatar ?: UserAvatar.default(me.info.firstName, me.info.lastName)
         }
         .stateIn(
             scope = viewModelScope,

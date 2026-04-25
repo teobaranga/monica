@@ -57,6 +57,7 @@ kotlin {
                 implementation(project(":core:inject"))
                 implementation(project(":core:network"))
                 implementation(project(":core:ui"))
+                implementation(project(":component:user:data"))
                 implementation(project(":component:user_avatar"))
                 implementation(project(":component:tips"))
                 implementation(project(":feature:account"))
@@ -75,7 +76,6 @@ kotlin {
                 implementation(project(":feature:genders"))
                 implementation(project(":feature:journal"))
                 implementation(project(":feature:photo:data"))
-                implementation(project(":feature:user-api"))
 
                 implementation(libs.coil)
 

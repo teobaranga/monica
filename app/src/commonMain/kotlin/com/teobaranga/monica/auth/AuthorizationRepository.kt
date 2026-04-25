@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.diamondedge.logging.logging
 import com.teobaranga.monica.account.settings.getTokenStorage
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import com.teobaranga.monica.data.user.UserDao
+import com.teobaranga.monica.user.data.local.UserDao
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject

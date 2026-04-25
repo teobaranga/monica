@@ -16,8 +16,8 @@
 
 package com.teobaranga.monica.data
 
-import com.teobaranga.monica.data.user.UserDao
 import com.teobaranga.monica.photo.data.local.PhotoDao
+import com.teobaranga.monica.user.data.local.UserDao
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo

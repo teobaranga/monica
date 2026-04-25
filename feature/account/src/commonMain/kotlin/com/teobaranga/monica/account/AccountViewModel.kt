@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.RoomDatabase
 import com.teobaranga.monica.account.settings.tokenStorage
 import com.teobaranga.monica.core.dispatcher.Dispatcher
+import com.teobaranga.monica.user.data.UserRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -20,6 +21,8 @@ import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @Inject
@@ -30,7 +33,16 @@ class AccountViewModel(
     private val dataStore: DataStore<Preferences>,
     private val database: RoomDatabase,
     private val httpClient: () -> HttpClient,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
+
+    // TODO: map to UI model
+    val userAvatar = userRepository.me
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = null,
+        )
 
     val uiState = AccountUiState(
         email = "johndoe@mail.com",
