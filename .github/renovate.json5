@@ -23,7 +23,7 @@
       "matchPackageNames": [
         "org.jetbrains.kotlinx:kotlinx-datetime"
       ],
-      "matchNewValue": "0.7.1-0.6.x-compat",
+      "matchNewValue": "0.8.0-0.6.x-compat",
       "enabled": false
     },
   ]
