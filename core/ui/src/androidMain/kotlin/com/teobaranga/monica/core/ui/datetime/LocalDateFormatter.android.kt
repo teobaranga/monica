@@ -1,6 +1,6 @@
 package com.teobaranga.monica.core.ui.datetime
 
-import androidx.compose.ui.text.intl.PlatformLocale
+import androidx.compose.ui.text.intl.Locale
 import com.diamondedge.logging.logging
 import com.teobaranga.monica.core.datetime.MonthDay
 import com.teobaranga.monica.core.datetime.toJavaMonthDay
@@ -17,7 +17,7 @@ import java.time.format.FormatStyle
 import java.time.format.TextStyle
 
 actual class LocalDateFormatter actual constructor(
-    private val locale: PlatformLocale,
+    private val locale: Locale,
     private val dateFormatStyle: DateFormatStyle,
     includeDay: Boolean,
     includeYear: Boolean,
@@ -34,8 +34,8 @@ actual class LocalDateFormatter actual constructor(
         var pattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
             /* dateStyle = */ dateStyle,
             /* timeStyle = */ null,
-            /* chrono = */ Chronology.ofLocale(locale),
-            /* locale = */ locale,
+            /* chrono = */ Chronology.ofLocale(locale.platformLocale),
+            /* locale = */ locale.platformLocale,
         )
         if (!includeYear) {
             pattern = pattern
@@ -56,7 +56,7 @@ actual class LocalDateFormatter actual constructor(
         return date.toJavaLocalDate().format(formatter)
     }
 
-    actual fun format(monthDay: MonthDay) : String {
+    actual fun format(monthDay: MonthDay): String {
         return monthDay.toJavaMonthDay().format(formatter)
     }
 
@@ -71,7 +71,7 @@ actual class LocalDateFormatter actual constructor(
             DateFormatStyle.LONG -> TextStyle.FULL
             DateFormatStyle.FULL -> TextStyle.FULL
         }
-        return month.toJavaMonth().getDisplayName(style, locale)
+        return month.toJavaMonth().getDisplayName(style, locale.platformLocale)
     }
 
     companion object {
