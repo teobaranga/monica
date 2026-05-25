@@ -3,12 +3,12 @@ package com.teobaranga.monica
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.ComposeUIViewController
 import androidx.navigation.compose.rememberNavController
-import com.squareup.metro.createGraph
-import com.squareup.metro.metrox.viewmodel.compose.LocalMetroViewModelFactory
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.browser.iosWebBrowser
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.di.AppComponent
+import dev.zacsweers.metro.createGraph
+import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 
 val appComponent = createGraph<AppComponent>()
 
