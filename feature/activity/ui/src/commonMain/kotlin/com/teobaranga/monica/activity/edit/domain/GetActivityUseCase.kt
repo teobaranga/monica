@@ -3,9 +3,9 @@ package com.teobaranga.monica.activity.edit.domain
 import com.teobaranga.monica.activity.data.ContactActivitiesRepository
 import com.teobaranga.monica.activity.edit.ui.MapContactToActivityParticipant
 import com.teobaranga.monica.core.dispatcher.Dispatcher
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class GetActivityUseCase(

@@ -39,7 +39,6 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contact.nav.ContactDetailRoute
@@ -49,11 +48,12 @@ import com.teobaranga.monica.core.ui.topappbar.MonicaTopAppBar
 import com.teobaranga.monica.core.ui.topappbar.SearchIconButton
 import com.teobaranga.monica.useravatar.UserAvatar
 import com.teobaranga.monica.useravatar.UserAvatarIconButton
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
 internal fun Dashboard(
-    viewModel: DashboardViewModel = injectedViewModel(),
+    viewModel: DashboardViewModel = metroViewModel(),
 ) {
     val navigator = LocalNavigator.current
     val userUiState by viewModel.userUiState.collectAsStateWithLifecycle()

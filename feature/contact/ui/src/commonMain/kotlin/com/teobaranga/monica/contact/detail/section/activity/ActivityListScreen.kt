@@ -17,10 +17,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.activity.nav.ContactActivityEditRoute
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -29,9 +29,9 @@ fun ActivityListScreen(
     modifier: Modifier = Modifier,
 ) {
     val navigator = LocalNavigator.current
-    val viewModel = injectedViewModel<ContactActivitiesViewModel, ContactActivitiesViewModel.Factory>(
-        creationCallback = { factory ->
-            factory(contactId)
+    val viewModel = assistedMetroViewModel<ContactActivitiesViewModel, ContactActivitiesViewModel.Factory>(
+        createViewModel = {
+            create(contactId)
         },
     )
     val activitiesUiState by viewModel.contactActivities.collectAsStateWithLifecycle()

@@ -9,9 +9,9 @@ import com.teobaranga.monica.contact.data.remote.ContactApi
 import com.teobaranga.monica.core.data.remote.ERROR_CODE_DATA_UNAVAILABLE
 import com.teobaranga.monica.core.data.remote.ErrorResponse
 import com.teobaranga.monica.core.data.sync.SyncStatus
+import dev.zacsweers.metro.Inject
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class ContactDeleteSynchronizer(

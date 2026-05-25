@@ -3,20 +3,22 @@ package com.teobaranga.monica.configuration.presentation
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.component.tips.TipsRepository
 import com.teobaranga.monica.configuration.domain.ConfigurationDataStore
 import com.teobaranga.monica.configuration.domain.ConfigurationItem
 import com.teobaranga.monica.configuration.domain.RestartAppUseCase
 import com.teobaranga.monica.core.dispatcher.Dispatcher
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
 @Inject
-@ContributesViewModel(AppScope::class)
+@ContributesIntoMap(AppScope::class)
+@ViewModelKey
 class ConfigurationViewModel(
     private val dispatcher: Dispatcher,
     private val configurationDataStore: ConfigurationDataStore,

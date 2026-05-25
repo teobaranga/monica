@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.contact.data.ContactRepository
 import com.teobaranga.monica.contact.data.ContactSynchronizer
 import com.teobaranga.monica.contact.toExternalModel
@@ -13,19 +12,22 @@ import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.photo.data.PhotoSynchronizer
 import com.teobaranga.monica.user.data.local.IUserRepository
 import com.teobaranga.monica.useravatar.UserAvatar
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
 private const val PAGE_SIZE = 10
 
 @Inject
-@ContributesViewModel(AppScope::class)
+@ContributesIntoMap(AppScope::class)
+@ViewModelKey
 class DashboardViewModel(
     private val dispatcher: Dispatcher,
     userRepository: IUserRepository,

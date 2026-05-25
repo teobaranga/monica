@@ -3,9 +3,9 @@ package com.teobaranga.monica.configuration.domain
 import android.content.Context
 import android.content.Intent
 import com.teobaranga.monica.core.inject.ApplicationContext
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 
 @Inject
 @ContributesBinding(AppScope::class)

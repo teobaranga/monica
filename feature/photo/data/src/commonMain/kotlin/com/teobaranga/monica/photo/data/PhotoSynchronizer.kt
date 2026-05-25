@@ -10,16 +10,17 @@ import com.teobaranga.monica.photo.data.local.PhotoDao
 import com.teobaranga.monica.photo.data.local.PhotoEntity
 import com.teobaranga.monica.photo.data.remote.ContactPhotosResponse
 import com.teobaranga.monica.photo.data.remote.PhotoApi
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @Inject
 @SingleIn(AppScope::class)
-@ContributesBinding(AppScope::class, boundType = AccountListener::class, multibinding = true)
+@ContributesIntoSet(AppScope::class, binding<AccountListener>())
 class PhotoSynchronizer(
     private val photoApi: PhotoApi,
     private val photoDao: PhotoDao,

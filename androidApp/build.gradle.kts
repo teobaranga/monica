@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.sentry.android)
+    alias(libs.plugins.metro)
 }
 
 android {
@@ -104,14 +105,8 @@ dependencies {
     implementation(libs.jetbrains.navigation)
     implementation(libs.paging.common)
 
-    implementation(libs.kotlin.inject.runtime)
-    implementation(libs.kotlin.inject.anvil.runtime)
-    implementation(libs.kotlin.inject.anvil.runtime.optional)
-    implementation(libs.kotlin.inject.viewmodel.runtime)
-    implementation(libs.kotlin.inject.viewmodel.runtime.compose)
-    ksp(libs.kotlin.inject.compiler)
-    ksp(libs.kotlin.inject.anvil.compiler)
-    ksp(libs.kotlin.inject.viewmodel.compiler)
+    implementation(libs.metrox.viewmodel)
+    implementation(libs.metrox.viewmodel.compose)
 }
 
 sentry {

@@ -9,8 +9,8 @@ import coil3.fetch.SourceFetchResult
 import coil3.request.Options
 import com.teobaranga.monica.photo.data.local.PhotoRepository
 import com.teobaranga.monica.useravatar.UserAvatar
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.first
-import me.tatarka.inject.annotations.Inject
 import okio.Buffer
 import okio.ByteString.Companion.decodeBase64
 

@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.monica.kmp)
+    alias(libs.plugins.monica.metro)
 }
 
 kotlin {
@@ -9,8 +10,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlin.inject.runtime)
-                implementation(libs.kotlin.inject.viewmodel.runtime.compose)
+                implementation(libs.metrox.viewmodel)
+                implementation(libs.metrox.viewmodel.compose)
             }
         }
     }

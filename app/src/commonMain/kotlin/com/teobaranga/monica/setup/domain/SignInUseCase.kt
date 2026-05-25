@@ -12,10 +12,10 @@ import com.teobaranga.monica.data.MonicaApi
 import com.teobaranga.monica.data.TokenErrorResponse
 import com.teobaranga.monica.data.TokenRequest
 import com.teobaranga.monica.work.WorkScheduler
+import dev.zacsweers.metro.Inject
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.withContext
-import me.tatarka.inject.annotations.Inject
 
 // This name should not be changed otherwise the app may have concurrent sync requests running
 const val SYNC_WORKER_WORK_NAME = "SyncWorkName"

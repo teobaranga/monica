@@ -6,13 +6,13 @@ import com.skydoves.sandwich.message
 import com.skydoves.sandwich.onFailure
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.data.sync.Synchronizer
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import me.tatarka.inject.annotations.Assisted
-import me.tatarka.inject.annotations.Inject
 import kotlin.uuid.Uuid
 
-@Inject
+@AssistedInject
 class ContactActivitiesSynchronizer(
     @Assisted
     private val contactId: Int,

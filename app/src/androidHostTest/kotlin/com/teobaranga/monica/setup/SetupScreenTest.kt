@@ -8,11 +8,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.v2.runAndroidComposeUiTest
-import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavHostController
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.browser.PlatformWebBrowser
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import dev.zacsweers.metro.createGraph
 import io.ktor.http.encodeURLParameter
 import io.mockk.every
 import io.mockk.mockk
@@ -35,8 +35,7 @@ import org.robolectric.RobolectricTestRunner
 @OptIn(ExperimentalTestApi::class)
 class SetupScreenTest {
 
-    val component = SetupComponent::class.create()
-    val savedStateHandle = SavedStateHandle()
+    val component = createGraph<SetupComponent>()
     val navigator = mockk<NavHostController>()
     val webBrowser = mockk<PlatformWebBrowser>()
 
@@ -47,7 +46,7 @@ class SetupScreenTest {
 
     @Test
     fun `Given insecure url, When sign in, Then display insecure alert`() = runAndroidComposeUiTest<ComponentActivity> {
-        val viewModel = component.setupViewModel()(savedStateHandle)
+        val viewModel = component.setupViewModel
 
         setContent {
             CompositionLocalProvider(
@@ -83,7 +82,7 @@ class SetupScreenTest {
     fun `Given secure url, When sign in, Then launch web browser`() = runAndroidComposeUiTest<ComponentActivity> {
         every { webBrowser.open(any()) } answers { }
 
-        val viewModel = component.setupViewModel()(savedStateHandle)
+        val viewModel = component.setupViewModel
 
         setContent {
             CompositionLocalProvider(

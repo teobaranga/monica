@@ -1,8 +1,8 @@
 package com.teobaranga.monica.core.network
 
 import com.skydoves.sandwich.ApiResponse
+import dev.zacsweers.metro.Inject
 import io.ktor.client.HttpClient
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class HttpRequestMaker(

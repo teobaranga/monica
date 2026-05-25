@@ -2,10 +2,10 @@ package com.teobaranga.monica.genders.domain
 
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.genders.data.GenderRepository
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class GetGendersUseCase(

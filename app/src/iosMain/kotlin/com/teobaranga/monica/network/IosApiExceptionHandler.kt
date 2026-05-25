@@ -2,11 +2,11 @@ package com.teobaranga.monica.network
 
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.core.network.ApiExceptionHandler
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import io.ktor.client.HttpClient
 import io.ktor.utils.io.InternalAPI
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 
 @Inject
 @ContributesBinding(scope = AppScope::class)

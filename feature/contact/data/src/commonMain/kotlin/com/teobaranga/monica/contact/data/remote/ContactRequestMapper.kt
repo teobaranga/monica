@@ -1,10 +1,10 @@
 package com.teobaranga.monica.contact.data.remote
 
 import com.teobaranga.monica.contact.data.local.ContactEntity
+import dev.zacsweers.metro.Inject
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
 import kotlinx.datetime.yearsUntil
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class ContactRequestMapper(

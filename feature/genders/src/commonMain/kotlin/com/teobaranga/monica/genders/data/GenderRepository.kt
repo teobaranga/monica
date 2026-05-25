@@ -3,10 +3,10 @@ package com.teobaranga.monica.genders.data
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.core.inject.ApplicationContext
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class GenderRepository(

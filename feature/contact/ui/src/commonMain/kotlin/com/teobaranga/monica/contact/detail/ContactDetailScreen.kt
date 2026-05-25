@@ -28,10 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.createSavedStateHandle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contact.detail.section.ContactInfoContactSection
 import com.teobaranga.monica.contact.detail.section.ContactInfoRelationshipsSection
 import com.teobaranga.monica.contact.detail.section.bio.ContactInfoBioSection
@@ -41,6 +39,7 @@ import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.useravatar.UserAvatar
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import kotlinx.coroutines.launch
 
 fun NavGraphBuilder.contactDetail() {
@@ -51,11 +50,7 @@ fun NavGraphBuilder.contactDetail() {
 
 @Composable
 internal fun ContactDetail(
-    viewModel: ContactDetailViewModel = injectedViewModel<ContactDetailViewModel, ContactDetailViewModel.Factory>(
-        creationCallback = { factory ->
-            factory(createSavedStateHandle())
-        },
-    ),
+    viewModel: ContactDetailViewModel = assistedMetroViewModel<ContactDetailViewModel>(),
 ) {
     val navigator = LocalNavigator.current
     val contactDetail by viewModel.contact.collectAsStateWithLifecycle()

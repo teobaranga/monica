@@ -1,14 +1,12 @@
 package com.teobaranga.monica.core.dispatcher
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineDispatcher
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
-
-typealias DefaultCoroutineDispatcher = CoroutineDispatcher
-typealias MainCoroutineDispatcher = CoroutineDispatcher
-typealias IoCoroutineDispatcher = CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 
 interface Dispatcher {
     val default: CoroutineDispatcher
@@ -19,8 +17,8 @@ interface Dispatcher {
 @Inject
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
-class DispatcherImpl(
-    override val default: DefaultCoroutineDispatcher,
-    override val main: MainCoroutineDispatcher,
-    override val io: IoCoroutineDispatcher,
-) : Dispatcher
+class DispatcherImpl : Dispatcher {
+    override val default = Dispatchers.Default
+    override val main = Dispatchers.Main
+    override val io = Dispatchers.IO
+}

@@ -2,17 +2,19 @@ package com.teobaranga.monica.certificate.popup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.certificate.data.CertificateRepository
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
 @Inject
-@ContributesViewModel(AppScope::class)
+@ContributesIntoMap(AppScope::class)
+@ViewModelKey
 class CertificateIssueViewModel(
     private val certificateRepository: CertificateRepository,
 ): ViewModel() {

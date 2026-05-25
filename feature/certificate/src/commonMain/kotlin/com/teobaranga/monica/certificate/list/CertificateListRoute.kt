@@ -2,13 +2,12 @@ package com.teobaranga.monica.certificate.list
 
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.createSavedStateHandle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.certificate.detail.CertificateDetailsRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -25,11 +24,7 @@ data class CertificateListRoute(private val value: String) {
 internal fun NavGraphBuilder.certificateListScreen() {
     composable<CertificateListRoute> {
         val navigator = LocalNavigator.current
-        val viewModel = injectedViewModel<CertificateListViewModel, CertificateListViewModel.Factory>(
-            creationCallback = { factory ->
-                factory(createSavedStateHandle())
-            },
-        )
+        val viewModel = assistedMetroViewModel<CertificateListViewModel>()
         val userCertificates by viewModel.certificatesListItem.collectAsStateWithLifecycle()
         CertificateListScreen(
             certificateTrustStatus = viewModel.route.certificateTrustStatus,

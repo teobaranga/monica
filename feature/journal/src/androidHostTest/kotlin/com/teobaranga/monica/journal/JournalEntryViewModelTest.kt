@@ -12,6 +12,7 @@ import com.teobaranga.monica.journal.data.remote.JournalEntryResponse
 import com.teobaranga.monica.journal.view.JournalEntryRoute
 import com.teobaranga.monica.journal.view.ui.JournalEntryError
 import com.teobaranga.monica.journal.view.ui.JournalEntryUiState
+import dev.zacsweers.metro.createGraph
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.config.DefaultTestConfig
 import io.kotest.matchers.shouldBe
@@ -27,7 +28,7 @@ class JournalEntryViewModelTest : BehaviorSpec(
     {
         defaultTestConfig = DefaultTestConfig(coroutineTestScope = true)
 
-        val component = TestJournalComponent::class.create()
+        val component = createGraph<TestJournalComponent>()
         val api = component.api()
         val dao = component.dao()
 
@@ -35,7 +36,7 @@ class JournalEntryViewModelTest : BehaviorSpec(
             val savedStateHandle = SavedStateHandle()
             every { savedStateHandle.toRoute<JournalEntryRoute>() } returns JournalEntryRoute(entryId = null)
 
-            val viewModel = component.journalEntryViewModel()(savedStateHandle)
+            val viewModel = component.journalEntryViewModelFactory.create(savedStateHandle)
 
             Then("state is blank") {
 
@@ -99,7 +100,7 @@ class JournalEntryViewModelTest : BehaviorSpec(
 
             Then("state is loaded correctly") {
 
-                val viewModel = component.journalEntryViewModel()(savedStateHandle)
+                val viewModel = component.journalEntryViewModelFactory.create(savedStateHandle)
 
                 viewModel.uiState.test {
                     awaitItem() shouldBe JournalEntryUiState.Loaded(
@@ -132,7 +133,7 @@ class JournalEntryViewModelTest : BehaviorSpec(
                     )
                 }
 
-                val viewModel = component.journalEntryViewModel()(savedStateHandle)
+                val viewModel = component.journalEntryViewModelFactory.create(savedStateHandle)
                 val uiState = viewModel.uiState.first() as JournalEntryUiState.Loaded
                 uiState.date = testDate
 

@@ -1,10 +1,10 @@
 package com.teobaranga.monica.core.test
 
 import com.teobaranga.monica.core.datetime.di.TimeZoneComponent
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
 import kotlinx.datetime.TimeZone
-import me.tatarka.inject.annotations.Provides
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 
 val testTimeZone = TimeZone.of("Europe/London")
 

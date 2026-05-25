@@ -5,11 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.CompositionLocalProvider
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.LocalViewModelFactoryOwner
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOwner
 import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
+import dev.zacsweers.metrox.viewmodel.MetroViewModelFactory
 
 class ConfigurationActivity : ComponentActivity() {
 
@@ -21,7 +21,7 @@ class ConfigurationActivity : ComponentActivity() {
                 dynamicColor = false,
             ) {
                 CompositionLocalProvider(
-                    LocalViewModelFactoryOwner provides getViewModelFactoryOwner(),
+                    LocalMetroViewModelFactory provides getViewModelFactoryOwner(),
                 ) {
                     ConfigurationScreen(
                         onClose = ::finish,
@@ -31,7 +31,7 @@ class ConfigurationActivity : ComponentActivity() {
         }
     }
 
-    private fun getViewModelFactoryOwner(): ViewModelFactoryOwner {
-        return (applicationContext as ScopedViewModelFactoryProvider).getViewModelFactoryOwner(AppScope::class)
+    private fun getViewModelFactoryOwner(): MetroViewModelFactory {
+        return (applicationContext as ScopedViewModelFactoryProvider).getViewModelFactory(AppScope::class)
     }
 }

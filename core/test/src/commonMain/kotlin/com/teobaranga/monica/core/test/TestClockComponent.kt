@@ -1,10 +1,9 @@
 package com.teobaranga.monica.core.test
 
 import com.teobaranga.monica.core.datetime.di.ClockComponent
-import com.teobaranga.monica.core.test.FixedClock
-import me.tatarka.inject.annotations.Provides
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
 import kotlin.time.Clock
 import kotlin.time.Instant
 

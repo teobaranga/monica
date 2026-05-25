@@ -36,7 +36,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.applinks.AppLinksHandler
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.browser.PreviewPlatformWebBrowser
@@ -46,6 +45,7 @@ import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.data.PARAM_CODE
 import com.teobaranga.monica.home.HomeRoute
 import com.teobaranga.monica.util.compose.keyboardAsState
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.collectLatest
 import monica.app.generated.resources.Res
 import monica.app.generated.resources.eb_garamond_variable
@@ -65,7 +65,7 @@ private const val SETUP_INFO_URL = "https://monica.teobaranga.com/setup"
 
 @Composable
 fun Setup(
-    viewModel: SetupViewModel = injectedViewModel(),
+    viewModel: SetupViewModel = metroViewModel(),
 ) {
     val webBrowser = LocalWebBrowser.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

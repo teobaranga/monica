@@ -3,11 +3,11 @@ package com.teobaranga.monica.certificate.data
 import at.asitplus.signum.indispensable.toJcaCertificate
 import at.asitplus.signum.indispensable.toKmpCertificate
 import com.teobaranga.monica.core.network.SslSettings
-import me.tatarka.inject.annotations.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import okio.ByteString
 import okio.ByteString.Companion.toByteString
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import java.security.cert.X509Certificate
 
 @Inject

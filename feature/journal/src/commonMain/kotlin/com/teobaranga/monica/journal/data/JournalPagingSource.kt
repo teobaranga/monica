@@ -5,11 +5,11 @@ import com.teobaranga.monica.core.data.local.RoomPagingSource
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.journal.data.local.JournalDao
 import com.teobaranga.monica.journal.data.local.JournalEntryEntity
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.first
-import me.tatarka.inject.annotations.Assisted
-import me.tatarka.inject.annotations.Inject
 
-@Inject
+@AssistedInject
 class JournalPagingSource(
     dispatcher: Dispatcher,
     journalEntrySynchronizer: JournalEntrySynchronizer,

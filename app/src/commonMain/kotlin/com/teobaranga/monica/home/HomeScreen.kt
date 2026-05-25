@@ -32,7 +32,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contacts.ContactsRoute
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
@@ -42,6 +41,7 @@ import com.teobaranga.monica.journal.list.JournalEntriesRoute
 import com.teobaranga.monica.setup.SetupRoute
 import com.teobaranga.monica.ui.navigation.TopLevelRoute
 import com.teobaranga.monica.util.compose.thenIf
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 val topLevelRoutes = listOf(
     TopLevelRoute("Dashboard", DashboardRoute, Icons.Default.Dashboard),
@@ -52,7 +52,7 @@ val topLevelRoutes = listOf(
 @Composable
 internal fun Home(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = injectedViewModel(),
+    viewModel: HomeViewModel = metroViewModel(),
 ) {
     val navigator = LocalNavigator.current
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()

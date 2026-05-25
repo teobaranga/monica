@@ -5,7 +5,6 @@ import androidx.navigation.toRoute
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.contact.Birthday
 import com.teobaranga.monica.contact.ContactComponent
-import com.teobaranga.monica.contact.create
 import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
 import com.teobaranga.monica.contact.data.remote.SingleContactResponse
 import com.teobaranga.monica.contact.nav.ContactEditRoute
@@ -17,6 +16,7 @@ import com.teobaranga.monica.core.test.testNow
 import com.teobaranga.monica.core.test.testTimeZone
 import com.teobaranga.monica.genders.data.genderFemale
 import com.teobaranga.monica.genders.data.genderMale
+import dev.zacsweers.metro.createGraph
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.config.DefaultTestConfig
 import io.kotest.matchers.shouldBe
@@ -32,7 +32,7 @@ class ContactBirthdayTest : BehaviorSpec(
     {
         defaultTestConfig = DefaultTestConfig(coroutineTestScope = true)
 
-        val component = ContactComponent::class.create()
+        val component = createGraph<ContactComponent>()
         val contactApi = component.contactApi()
         val contactDao = component.contactDao()
         val gendersDao = component.gendersDao()
@@ -73,7 +73,7 @@ class ContactBirthdayTest : BehaviorSpec(
                     )
                 }
 
-            val viewModel = component.contactEditViewModel()(savedStateHandle)
+            val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
             val uiState = viewModel.uiState.first() as ContactEditUiState.Loaded
             uiState.birthday = Birthday.UnknownYear(MonthDay.of(Month.JUNE, 1))
 
@@ -124,7 +124,7 @@ class ContactBirthdayTest : BehaviorSpec(
                     )
                 }
 
-            val viewModel = component.contactEditViewModel()(savedStateHandle)
+            val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
             val uiState = viewModel.uiState.first() as ContactEditUiState.Loaded
             uiState.birthday = Birthday.AgeBased(age)
 
@@ -170,7 +170,7 @@ class ContactBirthdayTest : BehaviorSpec(
                     )
                 }
 
-            val viewModel = component.contactEditViewModel()(savedStateHandle)
+            val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
             val uiState = viewModel.uiState.first() as ContactEditUiState.Loaded
             uiState.birthday = Birthday.Full(LocalDate.parse("1995-02-01"))
 

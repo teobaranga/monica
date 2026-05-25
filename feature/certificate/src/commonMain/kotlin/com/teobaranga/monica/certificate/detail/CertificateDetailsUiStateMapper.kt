@@ -27,9 +27,9 @@ import at.asitplus.signum.indispensable.pki.RelativeDistinguishedName
 import at.asitplus.signum.indispensable.pki.TbsCertificate
 import com.teobaranga.monica.certificate.data.CommonCertificate
 import com.teobaranga.monica.certificate.util.hexFormatDisplay
+import dev.zacsweers.metro.Inject
 import kotlinx.datetime.format
 import kotlinx.datetime.format.DateTimeComponents
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class CertificateDetailsUiStateMapper {

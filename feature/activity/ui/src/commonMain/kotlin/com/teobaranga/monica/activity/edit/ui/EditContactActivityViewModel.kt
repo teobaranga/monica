@@ -4,15 +4,23 @@ import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.toRoute
-import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.activity.data.ContactActivitiesRepository
 import com.teobaranga.monica.activity.edit.domain.GetActivityUseCase
 import com.teobaranga.monica.activity.nav.ContactActivityEditRoute
 import com.teobaranga.monica.contact.data.ContactRepository
 import com.teobaranga.monica.contact.domain.SearchContactUseCase
 import com.teobaranga.monica.contact.userAvatar
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactoryKey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.debounce
@@ -23,15 +31,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import me.tatarka.inject.annotations.Assisted
-import me.tatarka.inject.annotations.AssistedFactory
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
-@Inject
-@ContributesViewModel(AppScope::class, assistedFactory = EditContactActivityViewModel.Factory::class)
+@AssistedInject
 class EditContactActivityViewModel(
     @Assisted
     private val savedStateHandle: SavedStateHandle,
@@ -145,7 +148,14 @@ class EditContactActivityViewModel(
     }
 
     @AssistedFactory
-    interface Factory {
-        operator fun invoke(savedStateHandle: SavedStateHandle): EditContactActivityViewModel
+    @ViewModelAssistedFactoryKey(EditContactActivityViewModel::class)
+    @ContributesIntoMap(AppScope::class)
+    interface Factory: ViewModelAssistedFactory {
+
+        override fun create(extras: CreationExtras): ViewModel {
+            return create(extras.createSavedStateHandle())
+        }
+
+        fun create(@Assisted savedStateHandle: SavedStateHandle): EditContactActivityViewModel
     }
 }

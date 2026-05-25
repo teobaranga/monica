@@ -1,8 +1,8 @@
 package com.teobaranga.monica.setup.domain
 
 import com.teobaranga.monica.core.network.NetworkRegex
+import dev.zacsweers.metro.Inject
 import io.ktor.http.URLProtocol
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class ValidateServerAddressUseCase {

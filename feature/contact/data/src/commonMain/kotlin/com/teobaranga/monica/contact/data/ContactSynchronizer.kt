@@ -11,17 +11,18 @@ import com.teobaranga.monica.contact.data.remote.ContactApi
 import com.teobaranga.monica.core.account.AccountListener
 import com.teobaranga.monica.core.data.sync.Synchronizer
 import com.teobaranga.monica.core.dispatcher.Dispatcher
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @SingleIn(AppScope::class)
 @Inject
-@ContributesBinding(AppScope::class, AccountListener::class, multibinding = true)
+@ContributesIntoSet(AppScope::class, binding<AccountListener>())
 class ContactSynchronizer(
     private val dispatcher: Dispatcher,
     private val contactApi: ContactApi,

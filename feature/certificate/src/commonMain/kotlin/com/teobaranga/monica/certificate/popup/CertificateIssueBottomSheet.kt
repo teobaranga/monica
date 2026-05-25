@@ -23,18 +23,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.certificate.detail.CertificateDetailsRoute
 import com.teobaranga.monica.certificate.list.CertificateListRoute
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.map
 
 private val textButtonMinWidth = 64.dp
 
 @Composable
 fun UntrustedCertificatePopup(navHostController: NavHostController) {
-    val viewModel = injectedViewModel<CertificateIssueViewModel>()
+    val viewModel = metroViewModel<CertificateIssueViewModel>()
     val hasUntrustedCertificates by viewModel.hasUntrustedCertificates.collectAsStateWithLifecycle()
     val isViewingDetails by navHostController.currentBackStackEntryFlow
         .map {

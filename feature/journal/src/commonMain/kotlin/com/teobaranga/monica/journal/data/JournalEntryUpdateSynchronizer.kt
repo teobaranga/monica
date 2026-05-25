@@ -5,7 +5,7 @@ import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.journal.data.local.JournalDao
 import com.teobaranga.monica.journal.data.remote.JournalApi
 import com.teobaranga.monica.journal.data.remote.JournalEntryCreateRequest
-import me.tatarka.inject.annotations.Inject
+import dev.zacsweers.metro.Inject
 
 @Inject
 class JournalEntryUpdateSynchronizer(

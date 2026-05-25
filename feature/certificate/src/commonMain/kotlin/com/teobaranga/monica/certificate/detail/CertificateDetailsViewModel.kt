@@ -2,28 +2,31 @@ package com.teobaranga.monica.certificate.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.toRoute
-import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.certificate.data.CertificateRepository
 import com.teobaranga.monica.certificate.data.CommonCertificate
 import com.teobaranga.monica.core.inject.ApplicationContext
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactoryKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Assisted
-import me.tatarka.inject.annotations.AssistedFactory
-import me.tatarka.inject.annotations.Inject
 import okio.ByteString
 import okio.ByteString.Companion.decodeHex
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalStdlibApi::class)
-@Inject
-@ContributesViewModel(scope = AppScope::class, assistedFactory = CertificateDetailsViewModel.Factory::class)
+@AssistedInject
 class CertificateDetailsViewModel(
     @Assisted
     private val savedStateHandle: SavedStateHandle,
@@ -61,7 +64,14 @@ class CertificateDetailsViewModel(
     }
 
     @AssistedFactory
-    interface Factory {
-        operator fun invoke(savedStateHandle: SavedStateHandle): CertificateDetailsViewModel
+    @ViewModelAssistedFactoryKey(CertificateDetailsViewModel::class)
+    @ContributesIntoMap(AppScope::class)
+    interface Factory: ViewModelAssistedFactory {
+
+        override fun create(extras: CreationExtras): ViewModel {
+            return create(extras.createSavedStateHandle())
+        }
+
+        fun create(@Assisted savedStateHandle: SavedStateHandle): CertificateDetailsViewModel
     }
 }

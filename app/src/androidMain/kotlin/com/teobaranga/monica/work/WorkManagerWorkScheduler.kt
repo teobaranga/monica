@@ -3,9 +3,9 @@ package com.teobaranga.monica.work
 import androidx.work.WorkManager
 import com.teobaranga.monica.setup.domain.SYNC_WORKER_WORK_NAME
 import com.teobaranga.monica.sync.SyncWorker
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 
 @Inject
 @ContributesBinding(AppScope::class)

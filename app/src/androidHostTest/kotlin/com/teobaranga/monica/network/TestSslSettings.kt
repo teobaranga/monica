@@ -2,11 +2,11 @@ package com.teobaranga.monica.network
 
 import com.teobaranga.monica.core.network.SslSettings
 import com.teobaranga.monica.core.network.SslSettingsImpl
-import me.tatarka.inject.annotations.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import okio.ByteString
 import okio.ByteString.Companion.toByteString
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import java.security.KeyStore
 import java.security.cert.Certificate
 import javax.net.ssl.SSLContext

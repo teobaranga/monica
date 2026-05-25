@@ -1,9 +1,9 @@
-import com.teobaranga.monica.InjectHandler
 import com.teobaranga.monica.optInExperimentalCoroutinesApi
 
 plugins {
     alias(libs.plugins.monica.cmp)
-    alias(libs.plugins.monica.kotlin.inject)
+    
+    alias(libs.plugins.monica.metro)
 }
 
 kotlin {
@@ -24,11 +24,5 @@ kotlin {
     }
     compilerOptions {
         optInExperimentalCoroutinesApi()
-    }
-}
-
-monica {
-    inject {
-        injectIn.set(InjectHandler.Target.SEPARATE)
     }
 }

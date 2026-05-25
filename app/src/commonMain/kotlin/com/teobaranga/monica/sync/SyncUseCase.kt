@@ -7,8 +7,8 @@ import com.teobaranga.monica.account.settings.getTokenStorage
 import com.teobaranga.monica.core.account.AccountListener
 import com.teobaranga.monica.genders.data.GenderRepository
 import com.teobaranga.monica.user.data.local.IUserRepository
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.first
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class SyncUseCase(

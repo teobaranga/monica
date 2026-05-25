@@ -1,6 +1,6 @@
 package com.teobaranga.monica.core.inject
 
-import me.tatarka.inject.annotations.Qualifier
+import dev.zacsweers.metro.Qualifier
 
 @Qualifier
 @Target(

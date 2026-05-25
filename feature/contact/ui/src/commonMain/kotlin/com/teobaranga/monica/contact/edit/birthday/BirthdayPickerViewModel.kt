@@ -3,20 +3,21 @@ package com.teobaranga.monica.contact.edit.birthday
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.contact.Birthday
 import com.teobaranga.monica.core.datetime.MonthDay
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import me.tatarka.inject.annotations.Assisted
-import me.tatarka.inject.annotations.AssistedFactory
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 
-@Inject
-@ContributesViewModel(scope = AppScope::class, assistedFactory = BirthdayPickerViewModel.Factory::class)
+@AssistedInject
 class BirthdayPickerViewModel(
     @Assisted
     private val initialBirthday: Birthday?,
@@ -48,7 +49,9 @@ class BirthdayPickerViewModel(
     }
 
     @AssistedFactory
-    interface Factory {
-        operator fun invoke(initialBirthday: Birthday?): BirthdayPickerViewModel
+    @ManualViewModelAssistedFactoryKey
+    @ContributesIntoMap(AppScope::class)
+    interface Factory: ManualViewModelAssistedFactory {
+        fun create(initialBirthday: Birthday?): BirthdayPickerViewModel
     }
 }

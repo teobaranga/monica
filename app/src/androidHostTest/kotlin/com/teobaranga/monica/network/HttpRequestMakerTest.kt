@@ -7,6 +7,7 @@ import com.teobaranga.monica.certificate.data.CertificateRepository
 import com.teobaranga.monica.certificate.data.CommonCertificate
 import com.teobaranga.monica.certificate.testCertificate
 import com.teobaranga.monica.core.network.HttpRequestMaker
+import dev.zacsweers.metro.createGraph
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.instanceOf
@@ -30,7 +31,7 @@ class HttpRequestMakerTest : BehaviorSpec({
     lateinit var certificateRepository: CertificateRepository
 
     fun setup() {
-        val component = HttpRequestMakerComponent::class.create()
+        val component = createGraph<HttpRequestMakerComponent>()
         mockEngine = component.httpEngine()
         httpRequestMaker = component.httpRequestMaker()
         certificateRepository = component.certificateRepository()

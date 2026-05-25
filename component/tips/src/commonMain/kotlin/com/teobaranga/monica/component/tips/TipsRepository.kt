@@ -2,7 +2,7 @@ package com.teobaranga.monica.component.tips
 
 import com.teobaranga.monica.component.tips.data.local.TipsDao
 import com.teobaranga.monica.core.dispatcher.Dispatcher
-import me.tatarka.inject.annotations.Inject
+import dev.zacsweers.metro.Inject
 
 @Inject
 class TipsRepository(

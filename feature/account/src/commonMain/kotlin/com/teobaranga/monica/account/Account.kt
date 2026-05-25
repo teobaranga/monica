@@ -19,16 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.certificate.list.CertificateListRoute
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 @Composable
 fun Account(
-    viewModel: AccountViewModel = injectedViewModel(),
+    viewModel: AccountViewModel = metroViewModel(),
     onDismissRequest: () -> Unit,
 ) {
     val navigator = LocalNavigator.current

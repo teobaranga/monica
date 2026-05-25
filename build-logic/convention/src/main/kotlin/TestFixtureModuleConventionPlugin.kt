@@ -17,7 +17,7 @@ class TestFixtureModuleConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply(libs.plugins.monica.kmp.get().pluginId)
-                apply(libs.plugins.monica.kotlin.inject.get().pluginId)
+                apply(libs.plugins.monica.metro.get().pluginId)
             }
 
             extensions.configure<KotlinMultiplatformExtension> {

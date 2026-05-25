@@ -2,27 +2,20 @@ package com.teobaranga.monica
 
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.ComposeUIViewController
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.LocalViewModelFactoryOwner
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOwner
+import com.squareup.metro.createGraph
+import com.squareup.metro.metrox.viewmodel.compose.LocalMetroViewModelFactory
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.browser.iosWebBrowser
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
-import com.teobaranga.monica.di.createAppComponent
+import com.teobaranga.monica.di.AppComponent
 
-val appComponent = createAppComponent()
-
-val viewModelFactoryOwner = object : ViewModelFactoryOwner {
-    override val viewModelFactory: ViewModelProvider.Factory
-        get() = appComponent.viewModelFactory
-
-}
+val appComponent = createGraph<AppComponent>()
 
 fun MainViewController() = ComposeUIViewController {
     val navController = rememberNavController()
     CompositionLocalProvider(
-        LocalViewModelFactoryOwner provides viewModelFactoryOwner,
+        LocalMetroViewModelFactory provides appComponent.metroViewModelFactory,
         LocalNavigator provides navController,
         LocalWebBrowser provides requireNotNull(iosWebBrowser),
     ) {

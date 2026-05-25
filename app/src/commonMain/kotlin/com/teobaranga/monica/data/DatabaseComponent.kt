@@ -9,13 +9,13 @@ import com.teobaranga.monica.configuration.domain.ConfigurationItem
 import com.teobaranga.monica.contact.data.di.ContactTableOwner
 import com.teobaranga.monica.genders.di.GenderTableOwner
 import com.teobaranga.monica.journal.data.local.JournalDatabaseOwner
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.runBlocking
-import me.tatarka.inject.annotations.Provides
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 internal const val DATABASE_NAME = "monica"
 

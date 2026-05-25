@@ -20,10 +20,10 @@ import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
 import com.teobaranga.monica.core.ui.datetime.LocalDateFormatter
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.journal.TestJournalComponent
-import com.teobaranga.monica.journal.create
 import com.teobaranga.monica.journal.data.local.JournalEntryEntity
 import com.teobaranga.monica.journal.view.JournalEntry
 import com.teobaranga.monica.journal.view.JournalEntryRoute
+import dev.zacsweers.metro.createGraph
 import io.mockk.mockk
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -48,7 +48,7 @@ class JournalEntryScreenTest {
         includeYear = true,
     )
 
-    val component = TestJournalComponent::class.create()
+    val component = createGraph<TestJournalComponent>()
     val savedStateHandle = SavedStateHandle()
     val navigator = mockk<NavHostController>()
 
@@ -59,7 +59,7 @@ class JournalEntryScreenTest {
                 LocalNavigator provides navigator,
             ) {
                 JournalEntry(
-                    viewModel = component.journalEntryViewModel()(savedStateHandle),
+                    viewModel = component.journalEntryViewModelFactory.create(savedStateHandle),
                 )
             }
         }
@@ -105,7 +105,7 @@ class JournalEntryScreenTest {
                 LocalNavigator provides navigator,
             ) {
                 JournalEntry(
-                    viewModel = component.journalEntryViewModel()(savedStateHandle),
+                    viewModel = component.journalEntryViewModelFactory.create(savedStateHandle),
                 )
             }
         }
@@ -139,7 +139,7 @@ class JournalEntryScreenTest {
                 LocalNavigator provides navigator,
             ) {
                 JournalEntry(
-                    viewModel = component.journalEntryViewModel()(savedStateHandle),
+                    viewModel = component.journalEntryViewModelFactory.create(savedStateHandle),
                 )
             }
         }
@@ -159,7 +159,7 @@ class JournalEntryScreenTest {
                     LocalNavigator provides navigator,
                 ) {
                     JournalEntry(
-                        viewModel = component.journalEntryViewModel()(savedStateHandle),
+                        viewModel = component.journalEntryViewModelFactory.create(savedStateHandle),
                     )
                 }
             }
