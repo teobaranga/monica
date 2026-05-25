@@ -6,7 +6,7 @@ import androidx.compose.ui.test.AndroidComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.runAndroidComposeUiTest
+import androidx.compose.ui.test.v2.runAndroidComposeUiTest
 import com.teobaranga.monica.contact.Birthday
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.datetime.MonthDay

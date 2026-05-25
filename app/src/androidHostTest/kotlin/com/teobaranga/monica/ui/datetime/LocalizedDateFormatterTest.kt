@@ -2,7 +2,7 @@ package com.teobaranga.monica.ui.datetime
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.runAndroidComposeUiTest
+import androidx.compose.ui.test.v2.runAndroidComposeUiTest
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import kotlinx.datetime.LocalDate
 import org.junit.Assert.assertEquals
