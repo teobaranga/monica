@@ -3,7 +3,6 @@ package com.teobaranga.monica.core.ui.datetime
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.text.intl.PlatformLocale
 import com.teobaranga.monica.core.datetime.MonthDay
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -17,7 +16,7 @@ enum class DateFormatStyle {
 }
 
 expect class LocalDateFormatter(
-    locale: PlatformLocale,
+    locale: Locale,
     dateFormatStyle: DateFormatStyle = DateFormatStyle.LONG,
     includeDay: Boolean = true,
     includeYear: Boolean = true,
@@ -37,7 +36,7 @@ fun rememberLocalizedDateFormatter(
     includeDay: Boolean = true,
     includeYear: Boolean = true,
 ): LocalDateFormatter {
-    val locale = Locale.current.platformLocale
+    val locale = Locale.current
     return remember(locale, dateStyle, includeYear) {
         LocalDateFormatter(
             locale = locale,

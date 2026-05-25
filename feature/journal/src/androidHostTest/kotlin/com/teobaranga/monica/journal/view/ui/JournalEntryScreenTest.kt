@@ -7,7 +7,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.runAndroidComposeUiTest
+import androidx.compose.ui.test.v2.runAndroidComposeUiTest
 import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavHostController
@@ -42,7 +42,7 @@ import kotlin.uuid.Uuid
 class JournalEntryScreenTest {
 
     private val localDateFormatter = LocalDateFormatter(
-        locale = Locale.current.platformLocale,
+        locale = Locale.current,
         dateFormatStyle = DateFormatStyle.LONG,
         includeDay = true,
         includeYear = true,

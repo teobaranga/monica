@@ -1,6 +1,6 @@
 package com.teobaranga.monica.core.ui.datetime
 
-import androidx.compose.ui.text.intl.PlatformLocale
+import androidx.compose.ui.text.intl.Locale
 import com.teobaranga.monica.core.datetime.MonthDay
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -13,7 +13,7 @@ import platform.Foundation.NSDateComponents
 import platform.Foundation.NSDateFormatter
 
 actual class LocalDateFormatter actual constructor(
-    private val locale: PlatformLocale,
+    private val locale: Locale,
     private val dateFormatStyle: DateFormatStyle,
     private val includeDay: Boolean,
     private val includeYear: Boolean,
