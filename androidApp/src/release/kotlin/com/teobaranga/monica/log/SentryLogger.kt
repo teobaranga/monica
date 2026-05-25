@@ -1,13 +1,13 @@
 package com.teobaranga.monica.log
 
 import com.diamondedge.logging.Logger
-import io.sentry.Sentry
-import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.Inject
+import io.sentry.Sentry
 
 @Inject
-@ContributesBinding(scope = AppScope::class, multibinding = true)
+@ContributesIntoSet(scope = AppScope::class)
 class SentryLogger : Logger {
 
     private val logger = Sentry.logger()
