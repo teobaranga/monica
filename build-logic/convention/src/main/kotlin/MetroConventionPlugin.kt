@@ -1,6 +1,6 @@
-
 import com.teobaranga.monica.libs
 import dev.zacsweers.metro.gradle.MetroPluginExtension
+import dev.zacsweers.metro.gradle.RequiresIdeSupport
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -16,16 +16,15 @@ class MetroConventionPlugin : Plugin<Project> {
                 with(sourceSets) {
                     commonMain {
                         dependencies {
-                            implementation("dev.zacsweers.metro:metrox-viewmodel:1.1.1")
-                            implementation("dev.zacsweers.metro:metrox-viewmodel-compose:1.1.1")
+                            implementation(libs.metrox.viewmodel)
+                            implementation(libs.metrox.viewmodel.compose)
                         }
                     }
                 }
             }
             extensions.configure<MetroPluginExtension> {
+                @OptIn(RequiresIdeSupport::class)
                 generateAssistedFactories.set(true)
-                debug.set(true)
-                reportsDestination.set(layout.buildDirectory.dir("metro/reports"))
             }
         }
     }
