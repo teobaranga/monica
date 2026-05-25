@@ -9,8 +9,8 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.room)
     alias(libs.plugins.sentry.kmp)
-    alias(libs.plugins.kotest)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotest)
 }
 
 kotlin {
