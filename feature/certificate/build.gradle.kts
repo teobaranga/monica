@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.monica.cmp)
-    
     alias(libs.plugins.monica.metro)
     alias(libs.plugins.kotlinx.serialization)
 }
