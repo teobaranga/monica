@@ -1,22 +1,19 @@
 package com.teobaranga.monica.contact
 
-import androidx.lifecycle.SavedStateHandle
 import com.teobaranga.monica.activity.data.ActivityApi
-import com.teobaranga.monica.activity.data.MockActivityApiComponent
-import com.teobaranga.monica.contact.data.MockContactApiComponent
 import com.teobaranga.monica.contact.data.local.ContactDao
 import com.teobaranga.monica.contact.data.remote.ContactApi
 import com.teobaranga.monica.contact.edit.ContactEditViewModel
 import com.teobaranga.monica.genders.data.GendersComponent
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.MergeComponent
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.SingleIn
 
-@MergeComponent(AppScope::class)
+@DependencyGraph(AppScope::class)
 @SingleIn(AppScope::class)
-interface ContactComponent: GendersComponent, MockContactApiComponent, MockActivityApiComponent {
+interface ContactComponent : GendersComponent {
 
-    fun contactEditViewModel(): (SavedStateHandle) -> ContactEditViewModel
+    val contactEditViewModelFactory: ContactEditViewModel.Factory
 
     fun contactApi(): ContactApi
 

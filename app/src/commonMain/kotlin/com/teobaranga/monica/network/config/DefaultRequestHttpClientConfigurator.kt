@@ -2,10 +2,14 @@ package com.teobaranga.monica.network.config
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.teobaranga.monica.core.network.config.HttpClientConfigurator
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.core.inject.ApplicationContext
+import com.teobaranga.monica.core.network.config.HttpClientConfigurator
 import com.teobaranga.monica.settings.getOAuthSettings
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.http.ContentType
@@ -15,15 +19,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import kotlin.concurrent.Volatile
 
 @Inject
 @SingleIn(AppScope::class)
-@ContributesBinding(AppScope::class, multibinding = true)
+@ContributesIntoSet(AppScope::class)
 class DefaultRequestHttpClientConfigurator(
     @ApplicationContext
     appCoroutineScope: CoroutineScope,

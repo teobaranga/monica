@@ -7,12 +7,12 @@ import com.skydoves.sandwich.ktor.postApiResponse
 import com.skydoves.sandwich.ktor.putApiResponse
 import com.teobaranga.monica.core.data.remote.DeleteResponse
 import com.teobaranga.monica.core.network.HttpRequestMaker
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 interface JournalApi {
 

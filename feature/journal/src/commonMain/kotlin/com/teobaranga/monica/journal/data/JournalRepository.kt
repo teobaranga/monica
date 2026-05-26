@@ -9,6 +9,9 @@ import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.journal.data.local.JournalDao
 import com.teobaranga.monica.journal.data.local.JournalEntryEntity
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
@@ -16,9 +19,6 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
@@ -30,7 +30,7 @@ class JournalRepository(
     private val dispatcher: Dispatcher,
     private val getNow: () -> Instant,
     private val journalDao: JournalDao,
-    private val journalPagingSourceFactory: (OrderBy) -> JournalPagingSource,
+    private val journalPagingSourceFactory: JournalPagingSource.Factory,
     private val journalEntryNewSynchronizer: JournalEntryNewSynchronizer,
     private val journalEntryUpdateSynchronizer: JournalEntryUpdateSynchronizer,
     private val journalEntryDeletedSynchronizer: JournalEntryDeletedSynchronizer,
@@ -46,7 +46,7 @@ class JournalRepository(
     ): Flow<PagingData<JournalEntryEntity>> {
         val pagingSourceFactory = pagingSourceFactoryMap.getOrPut(orderBy) {
             InvalidatingPagingSourceFactory {
-                journalPagingSourceFactory(orderBy)
+                journalPagingSourceFactory.create(orderBy)
             }
         }
         return Pager(

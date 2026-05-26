@@ -1,3 +1,5 @@
+import com.teobaranga.monica.optInExperimentalCoroutinesApi
+
 plugins {
     alias(libs.plugins.monica.module.test.fixture)
 }
@@ -24,5 +26,9 @@ kotlin {
                 implementation(libs.kotest.framework.engine)
             }
         }
+    }
+
+    compilerOptions {
+        optInExperimentalCoroutinesApi()
     }
 }

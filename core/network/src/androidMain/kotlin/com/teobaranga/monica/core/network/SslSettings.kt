@@ -4,13 +4,13 @@ import android.content.Context
 import com.diamondedge.logging.logging
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.core.inject.ApplicationContext
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.withContext
-import me.tatarka.inject.annotations.Inject
 import okio.ByteString
 import okio.ByteString.Companion.toByteString
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import java.io.File
 import java.io.FileInputStream
 import java.security.KeyStore

@@ -78,9 +78,9 @@ kover {
             "androidx.room.Dao",
             "androidx.room.Database",
             // DI wiring
-            "software.amazon.lastmile.kotlin.inject.anvil.ContributesTo",
-            "software.amazon.lastmile.kotlin.inject.anvil.MergeComponent",
-            "me.tatarka.inject.annotations.Provides",
+            "dev.zacsweers.metro.ContributesTo",
+            "dev.zacsweers.metro.DependencyGraph",
+            "dev.zacsweers.metro.Provides",
         )
     }
 }

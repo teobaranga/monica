@@ -3,12 +3,11 @@ package com.teobaranga.monica.contact.edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.createSavedStateHandle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contact.nav.ContactEditRoute
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 fun NavGraphBuilder.contactEdit() {
     composable<ContactEditRoute> {
@@ -18,11 +17,7 @@ fun NavGraphBuilder.contactEdit() {
 
 @Composable
 internal fun ContactEdit(
-    viewModel: ContactEditViewModel = injectedViewModel<ContactEditViewModel, ContactEditViewModel.Factory>(
-        creationCallback = { factory ->
-            factory(createSavedStateHandle())
-        },
-    )
+    viewModel: ContactEditViewModel = assistedMetroViewModel<ContactEditViewModel>(),
 ) {
     val navigator = LocalNavigator.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

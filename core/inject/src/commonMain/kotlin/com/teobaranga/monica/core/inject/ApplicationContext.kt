@@ -1,8 +1,7 @@
 package com.teobaranga.monica.core.inject
 
-import me.tatarka.inject.annotations.Qualifier
+import dev.zacsweers.metro.Qualifier
 
-/** Annotation for an Application Context dependency. */
 @Qualifier
 @Target(
     AnnotationTarget.FIELD,

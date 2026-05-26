@@ -6,7 +6,7 @@ import com.teobaranga.monica.contact.data.local.ContactEntityMapper
 import com.teobaranga.monica.contact.data.remote.ContactApi
 import com.teobaranga.monica.contact.data.remote.ContactRequestMapper
 import com.teobaranga.monica.core.data.sync.SyncStatus
-import me.tatarka.inject.annotations.Inject
+import dev.zacsweers.metro.Inject
 
 @Inject
 class ContactUpdateSynchronizer(

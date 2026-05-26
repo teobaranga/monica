@@ -8,13 +8,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.util.Consumer
 import androidx.navigation.compose.rememberNavController
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.LocalViewModelFactoryOwner
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.ViewModelFactoryOwner
 import com.teobaranga.monica.applinks.AppLinksHandler
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
+import dev.zacsweers.metrox.viewmodel.MetroViewModelFactory
 
 class MainActivity : ComponentActivity() {
 
@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             CompositionLocalProvider(
-                LocalViewModelFactoryOwner provides getViewModelFactoryOwner(),
+                LocalMetroViewModelFactory provides getViewModelFactory(),
                 LocalNavigator provides navController,
                 LocalWebBrowser provides AndroidWebBrowser(this),
             ) {
@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
         removeOnNewIntentListener(intentListener)
     }
 
-    private fun getViewModelFactoryOwner(): ViewModelFactoryOwner {
-        return (applicationContext as ScopedViewModelFactoryProvider).getViewModelFactoryOwner(AppScope::class)
+    private fun getViewModelFactory(): MetroViewModelFactory {
+        return (applicationContext as ScopedViewModelFactoryProvider).getViewModelFactory(AppScope::class)
     }
 }

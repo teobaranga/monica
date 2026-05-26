@@ -7,19 +7,36 @@ import com.skydoves.sandwich.ktor.postApiResponse
 import com.skydoves.sandwich.ktor.putApiResponse
 import com.teobaranga.monica.core.data.remote.DeleteResponse
 import com.teobaranga.monica.core.network.HttpRequestMaker
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@Inject
-@SingleIn(AppScope::class)
-class ContactApi(private val httpRequestMaker: HttpRequestMaker) {
-
+interface ContactApi {
     suspend fun getContacts(
         page: Int? = null,
         sort: String? = null,
+    ): ApiResponse<MultipleContactsResponse>
+
+    suspend fun getContact(id: Int): ApiResponse<SingleContactResponse>
+
+    suspend fun createContact(request: CreateContactRequest): ApiResponse<SingleContactResponse>
+
+    suspend fun updateContact(id: Int, request: CreateContactRequest): ApiResponse<SingleContactResponse>
+
+    suspend fun deleteContact(id: Int): ApiResponse<DeleteResponse>
+}
+
+@Inject
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class ContactApiImpl(private val httpRequestMaker: HttpRequestMaker) : ContactApi {
+
+    override suspend fun getContacts(
+        page: Int?,
+        sort: String?,
     ): ApiResponse<MultipleContactsResponse> {
         return httpRequestMaker.call {
             getApiResponse("api/contacts") {
@@ -29,13 +46,13 @@ class ContactApi(private val httpRequestMaker: HttpRequestMaker) {
         }
     }
 
-    suspend fun getContact(id: Int): ApiResponse<SingleContactResponse> {
+    override suspend fun getContact(id: Int): ApiResponse<SingleContactResponse> {
         return httpRequestMaker.call {
             getApiResponse("api/contacts/$id")
         }
     }
 
-    suspend fun createContact(request: CreateContactRequest): ApiResponse<SingleContactResponse> {
+    override suspend fun createContact(request: CreateContactRequest): ApiResponse<SingleContactResponse> {
         return httpRequestMaker.call {
             postApiResponse("api/contacts") {
                 setBody(request)
@@ -43,7 +60,7 @@ class ContactApi(private val httpRequestMaker: HttpRequestMaker) {
         }
     }
 
-    suspend fun updateContact(id: Int, request: CreateContactRequest): ApiResponse<SingleContactResponse> {
+    override suspend fun updateContact(id: Int, request: CreateContactRequest): ApiResponse<SingleContactResponse> {
         return httpRequestMaker.call {
             putApiResponse("api/contacts/$id") {
                 setBody(request)
@@ -51,7 +68,7 @@ class ContactApi(private val httpRequestMaker: HttpRequestMaker) {
         }
     }
 
-    suspend fun deleteContact(id: Int): ApiResponse<DeleteResponse> {
+    override suspend fun deleteContact(id: Int): ApiResponse<DeleteResponse> {
         return httpRequestMaker.call {
             deleteApiResponse("api/contacts/$id")
         }

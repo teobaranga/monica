@@ -3,7 +3,7 @@ package com.teobaranga.monica.contact.domain
 import com.teobaranga.monica.contact.data.ContactRepository
 import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
 import com.teobaranga.monica.genders.domain.Gender
-import me.tatarka.inject.annotations.Inject
+import dev.zacsweers.metro.Inject
 
 @Inject
 class UpsertContactUseCase(

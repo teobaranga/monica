@@ -2,7 +2,6 @@ package com.teobaranga.monica.setup
 
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.datastore.preferences.core.edit
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.diamondedge.logging.FixedLogLevel
 import com.diamondedge.logging.KmLogging
@@ -18,6 +17,7 @@ import com.teobaranga.monica.data.TokenErrorResponse
 import com.teobaranga.monica.data.TokenResponse
 import com.teobaranga.monica.data.user.MeEntity
 import com.teobaranga.monica.setup.domain.SYNC_WORKER_WORK_NAME
+import dev.zacsweers.metro.createGraph
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.statement.HttpResponse
@@ -29,8 +29,8 @@ class SetupViewModelTest : BehaviorSpec(
     {
 
         Given("logged out user") {
-            val component = SetupComponent::class.create()
-            val viewModel = component.setupViewModel()(SavedStateHandle())
+            val component = createGraph<SetupComponent>()
+            val viewModel = component.setupViewModel
             val testWorkScheduler = component.testWorkScheduler()
             val monicaApi = component.monicaApi()
 
@@ -241,8 +241,8 @@ class SetupViewModelTest : BehaviorSpec(
         }
 
         Given("logged in user") {
-            val component = SetupComponent::class.create()
-            val viewModel = component.setupViewModel()(SavedStateHandle())
+            val component = createGraph<SetupComponent>()
+            val viewModel = component.setupViewModel
 
             afterTest {
                 component.dataStore().reset()

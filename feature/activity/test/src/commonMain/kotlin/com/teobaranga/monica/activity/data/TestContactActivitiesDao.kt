@@ -4,13 +4,13 @@ import com.teobaranga.monica.activity.data.di.ActivityDaoComponent
 import com.teobaranga.monica.contact.data.local.ContactEntity
 import com.teobaranga.monica.contact.data.local.ContactEntityAvatar
 import com.teobaranga.monica.core.data.sync.SyncStatus
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import kotlin.uuid.Uuid
 
 @Inject

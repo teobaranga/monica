@@ -47,6 +47,7 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.jetbrains.compose.gradlePlugin)
+    compileOnly(libs.metro.gradle.plugin)
 }
 
 tasks {
@@ -70,9 +71,9 @@ gradlePlugin {
             id = "monica.cmp"
             implementationClass = "ComposeMultiplatformConventionPlugin"
         }
-        register("kotlinInject") {
-            id = "monica.kotlin.inject"
-            implementationClass = "KotlinInjectConventionPlugin"
+        register("metro") {
+            id = "monica.metro"
+            implementationClass = "MetroConventionPlugin"
         }
         register("network") {
             id = "monica.network"

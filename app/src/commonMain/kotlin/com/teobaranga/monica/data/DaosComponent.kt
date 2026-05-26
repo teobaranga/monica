@@ -18,12 +18,14 @@ package com.teobaranga.monica.data
 
 import com.teobaranga.monica.data.user.UserDao
 import com.teobaranga.monica.photo.data.local.PhotoDao
-import me.tatarka.inject.annotations.Provides
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
 
 @ContributesTo(AppScope::class)
-interface DaosComponent {
+@BindingContainer
+object DaosComponent {
 
     @Provides
     fun providesUserDao(database: MonicaDatabase): UserDao = database.userDao()

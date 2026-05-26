@@ -3,6 +3,7 @@ package com.teobaranga.monica.contact.detail.section.activity
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.activity.data.ContactActivitiesResponse
 import com.teobaranga.monica.core.data.remote.MetaResponse
+import dev.zacsweers.metro.createGraph
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.test.testCoroutineScheduler
@@ -24,8 +25,8 @@ class ContactActivitiesViewModelTest : BehaviorSpec(
         isolationMode = IsolationMode.InstancePerRoot
         coroutineTestScope = true
 
-        val component = ActivityComponent::class.create()
-        val viewModel = component.activityListViewModel()(TEST_CONTACT_ID)
+        val component = createGraph<ActivityComponent>()
+        val viewModel = component.activityListViewModelFactory.create(TEST_CONTACT_ID)
         val activityApi = component.activityApi()
 
         Given("activities collected") {

@@ -1,8 +1,6 @@
-import com.teobaranga.monica.InjectHandler
-
 plugins {
     alias(libs.plugins.monica.kmp)
-    alias(libs.plugins.monica.kotlin.inject)
+    alias(libs.plugins.monica.metro)
     alias(libs.plugins.monica.network)
 }
 
@@ -17,11 +15,5 @@ kotlin {
                 implementation(project(":core:inject"))
             }
         }
-    }
-}
-
-monica {
-    inject {
-        injectIn = InjectHandler.Target.SEPARATE
     }
 }

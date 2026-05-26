@@ -1,9 +1,9 @@
 package com.teobaranga.monica.activity.data.di
 
 import com.teobaranga.monica.activity.data.ContactActivitiesDao
-import me.tatarka.inject.annotations.Provides
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
 
 @ContributesTo(AppScope::class)
 interface ActivityDaoComponent {

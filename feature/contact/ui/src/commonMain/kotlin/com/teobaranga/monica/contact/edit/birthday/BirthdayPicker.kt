@@ -20,12 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.contact.Birthday
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.datetime.todayMonthDay
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
@@ -38,9 +38,9 @@ internal fun BirthdayPicker(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-    viewModel: BirthdayPickerViewModel = injectedViewModel<BirthdayPickerViewModel, BirthdayPickerViewModel.Factory>(
-        creationCallback = { factory ->
-            factory(birthday)
+    viewModel: BirthdayPickerViewModel = assistedMetroViewModel<BirthdayPickerViewModel, BirthdayPickerViewModel.Factory>(
+        createViewModel = {
+            create(birthday)
         },
     ),
 ) {

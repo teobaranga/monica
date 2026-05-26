@@ -37,7 +37,6 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.teobaranga.kotlin.inject.viewmodel.runtime.compose.injectedViewModel
 import com.teobaranga.monica.account.Account
 import com.teobaranga.monica.contact.Contact
 import com.teobaranga.monica.contact.nav.ContactDetailRoute
@@ -55,11 +54,12 @@ import com.teobaranga.monica.ui.preview.contactAlice
 import com.teobaranga.monica.ui.preview.contactBob
 import com.teobaranga.monica.useravatar.UserAvatar
 import com.teobaranga.monica.useravatar.UserAvatarIconButton
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
 internal fun Contacts(
-    viewModel: ContactsViewModel = injectedViewModel(),
+    viewModel: ContactsViewModel = metroViewModel(),
 ) {
     val navigator = LocalNavigator.current
     val refreshState by viewModel.refreshState.collectAsStateWithLifecycle()

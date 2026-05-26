@@ -2,7 +2,7 @@ package com.teobaranga.monica.activity.data
 
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.core.data.sync.SyncStatus
-import me.tatarka.inject.annotations.Inject
+import dev.zacsweers.metro.Inject
 
 @Inject
 class ContactActivityNewSynchronizer(

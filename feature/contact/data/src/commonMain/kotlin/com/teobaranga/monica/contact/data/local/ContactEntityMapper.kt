@@ -3,7 +3,7 @@ package com.teobaranga.monica.contact.data.local
 import com.teobaranga.monica.contact.data.remote.ContactResponse
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.genders.data.GenderRepository
-import me.tatarka.inject.annotations.Inject
+import dev.zacsweers.metro.Inject
 
 @Inject
 class ContactEntityMapper(

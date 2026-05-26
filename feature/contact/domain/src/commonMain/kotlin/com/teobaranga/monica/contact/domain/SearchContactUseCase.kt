@@ -2,9 +2,9 @@ package com.teobaranga.monica.contact.domain
 
 import com.teobaranga.monica.contact.data.ContactRepository
 import com.teobaranga.monica.contact.data.local.ContactEntity
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class SearchContactUseCase(

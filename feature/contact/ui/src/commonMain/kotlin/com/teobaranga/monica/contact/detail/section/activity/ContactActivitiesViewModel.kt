@@ -2,23 +2,24 @@ package com.teobaranga.monica.contact.detail.section.activity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.activity.data.ContactActivitiesRepository
 import com.teobaranga.monica.activity.data.ContactActivityWithParticipants
 import com.teobaranga.monica.core.dispatcher.Dispatcher
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Assisted
-import me.tatarka.inject.annotations.AssistedFactory
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
 import kotlin.time.Duration.Companion.seconds
 
-@Inject
-@ContributesViewModel(AppScope::class, assistedFactory = ContactActivitiesViewModel.Factory::class)
+@AssistedInject
 class ContactActivitiesViewModel(
     contactActivitiesRepository: ContactActivitiesRepository,
     dispatcher: Dispatcher,
@@ -67,7 +68,9 @@ class ContactActivitiesViewModel(
     }
 
     @AssistedFactory
-    interface Factory {
-        operator fun invoke(contactId: Int): ContactActivitiesViewModel
+    @ManualViewModelAssistedFactoryKey
+    @ContributesIntoMap(AppScope::class)
+    interface Factory: ManualViewModelAssistedFactory {
+        fun create(contactId: Int): ContactActivitiesViewModel
     }
 }

@@ -5,9 +5,9 @@ import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.journal.data.local.JournalDao
 import com.teobaranga.monica.journal.data.remote.JournalApi
 import com.teobaranga.monica.journal.data.remote.JournalEntryCreateRequest
+import dev.zacsweers.metro.Inject
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class JournalEntryNewSynchronizer(

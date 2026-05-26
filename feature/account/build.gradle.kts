@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.monica.cmp)
-    alias(libs.plugins.monica.kotlin.inject)
+    alias(libs.plugins.monica.metro)
     alias(libs.plugins.monica.network)
 }
 

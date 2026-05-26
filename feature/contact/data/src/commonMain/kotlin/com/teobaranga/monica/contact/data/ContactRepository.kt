@@ -18,14 +18,14 @@ import com.teobaranga.monica.contact.data.remote.ContactApi
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.genders.domain.Gender
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import kotlin.time.Clock
 
 private const val PAGE_SIZE = 10
@@ -37,7 +37,7 @@ class ContactRepository(
     private val clock: Clock,
     private val contactApi: ContactApi,
     private val contactDao: ContactDao,
-    private val contactPagingSourceFactory: (orderBy: OrderBy) -> ContactPagingSource,
+    private val contactPagingSourceFactory: ContactPagingSource.Factory,
     private val contactNewSynchronizer: ContactNewSynchronizer,
     private val contactUpdateSynchronizer: ContactUpdateSynchronizer,
     private val contactDeleteSynchronizer: ContactDeleteSynchronizer,
@@ -65,7 +65,7 @@ class ContactRepository(
     ): Flow<PagingData<ContactEntity>> {
         val pagingSourceFactory = pagingSourceFactoryMap.getOrPut(orderBy) {
             InvalidatingPagingSourceFactory {
-                contactPagingSourceFactory(orderBy)
+                contactPagingSourceFactory.create(orderBy)
             }
         }
         return Pager(

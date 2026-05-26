@@ -1,13 +1,15 @@
 package com.teobaranga.monica.home
 
 import androidx.lifecycle.ViewModel
-import com.teobaranga.kotlin.inject.viewmodel.runtime.ContributesViewModel
 import com.teobaranga.monica.auth.AuthorizationRepository
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 
 @Inject
-@ContributesViewModel(AppScope::class)
+@ContributesIntoMap(AppScope::class)
+@ViewModelKey
 class HomeViewModel(
     authorizationRepository: AuthorizationRepository,
 ) : ViewModel() {

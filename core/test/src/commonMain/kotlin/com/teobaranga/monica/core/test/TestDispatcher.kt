@@ -2,10 +2,10 @@ package com.teobaranga.monica.core.test
 
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import com.teobaranga.monica.core.dispatcher.DispatcherImpl
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 
 @Inject
 @ContributesBinding(

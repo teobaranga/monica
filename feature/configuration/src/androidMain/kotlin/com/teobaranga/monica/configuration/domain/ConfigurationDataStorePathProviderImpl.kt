@@ -2,11 +2,11 @@ package com.teobaranga.monica.configuration.domain
 
 import android.content.Context
 import com.teobaranga.monica.core.inject.ApplicationContext
-import me.tatarka.inject.annotations.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import okio.Path
 import okio.Path.Companion.toPath
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 
 private const val CONFIGURATION_DATASTORE_FILE_NAME = "datastore/configuration.preferences_pb"
 

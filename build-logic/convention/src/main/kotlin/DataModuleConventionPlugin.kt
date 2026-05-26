@@ -14,9 +14,9 @@ class DataModuleConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply(libs.plugins.monica.kmp.get().pluginId)
-                // Used to contribute API classes to the DI graph
-                apply(libs.plugins.monica.kotlin.inject.get().pluginId)
+                apply(libs.plugins.monica.metro.get().pluginId)
                 apply(libs.plugins.monica.network.get().pluginId)
+                apply(libs.plugins.ksp.get().pluginId)
             }
 
             extensions.configure<KotlinMultiplatformExtension> {

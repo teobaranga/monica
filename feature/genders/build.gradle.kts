@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.monica.kmp)
-    alias(libs.plugins.monica.kotlin.inject)
+    alias(libs.plugins.monica.metro)
     alias(libs.plugins.monica.network)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {

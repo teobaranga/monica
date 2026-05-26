@@ -3,13 +3,14 @@ package com.teobaranga.monica.data
 import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ktor.apiResponseOf
 import com.teobaranga.monica.core.network.HttpRequestMaker
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.request.forms.submitForm
 import io.ktor.http.parameters
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 const val PARAM_CLIENT_ID = "client_id"
 const val PARAM_CLIENT_SECRET = "client_secret"
@@ -52,11 +53,16 @@ class TokenRequest(
     }
 }
 
+interface MonicaApi {
+    suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse>
+}
+
 @Inject
 @SingleIn(AppScope::class)
-class MonicaApi(private val httpRequestMaker: HttpRequestMaker) {
+@ContributesBinding(AppScope::class)
+class MonicaApiImpl(private val httpRequestMaker: HttpRequestMaker) : MonicaApi {
 
-    suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse> {
+    override suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse> {
         return httpRequestMaker.call {
             apiResponseOf {
                 submitForm(

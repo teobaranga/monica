@@ -1,15 +1,15 @@
-import com.teobaranga.monica.InjectHandler
 import com.teobaranga.monica.libs
 import com.teobaranga.monica.optInExperimentalCoroutinesApi
 
 plugins {
     alias(libs.plugins.monica.cmp)
-    alias(libs.plugins.monica.kotlin.inject)
+    alias(libs.plugins.monica.metro)
     alias(libs.plugins.monica.network)
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.detekt)
     alias(libs.plugins.room)
     alias(libs.plugins.sentry.kmp)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotest)
 }
 
@@ -112,10 +112,4 @@ room {
 
 detekt {
     autoCorrect = true
-}
-
-monica {
-    inject {
-        injectIn = InjectHandler.Target.SEPARATE
-    }
 }

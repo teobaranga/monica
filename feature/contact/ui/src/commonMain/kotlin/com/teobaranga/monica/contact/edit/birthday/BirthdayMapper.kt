@@ -3,12 +3,12 @@ package com.teobaranga.monica.contact.edit.birthday
 import com.teobaranga.monica.contact.Birthday
 import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
 import com.teobaranga.monica.core.datetime.MonthDay
+import dev.zacsweers.metro.Inject
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.yearsUntil
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class BirthdayMapper(

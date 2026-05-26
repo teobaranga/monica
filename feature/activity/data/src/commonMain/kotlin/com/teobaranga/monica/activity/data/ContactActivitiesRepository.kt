@@ -2,6 +2,9 @@ package com.teobaranga.monica.activity.data
 
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.dispatcher.Dispatcher
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
@@ -9,9 +12,6 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
-import me.tatarka.inject.annotations.Inject
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import kotlin.time.Clock
 import kotlin.uuid.Uuid
 
@@ -21,7 +21,7 @@ class ContactActivitiesRepository(
     private val dispatcher: Dispatcher,
     private val clock: Clock,
     private val contactActivitiesDao: ContactActivitiesDao,
-    private val contactActivitiesSynchronizerFactory: (contactId: Int) -> ContactActivitiesSynchronizer,
+    private val contactActivitiesSynchronizerFactory: ContactActivitiesSynchronizer.Factory,
     private val contactActivityNewSynchronizer: ContactActivityNewSynchronizer,
     private val contactActivityUpdateSynchronizer: ContactActivityUpdateSynchronizer,
     private val contactActivityDeletedSynchronizer: ContactActivityDeletedSynchronizer,
@@ -30,7 +30,7 @@ class ContactActivitiesRepository(
 
     suspend fun syncActivities(contactId: Int) {
         withContext(dispatcher.io) {
-            contactActivitiesSynchronizerFactory(contactId)
+            contactActivitiesSynchronizerFactory.create(contactId)
                 .sync()
         }
     }
