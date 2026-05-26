@@ -21,6 +21,19 @@ class MetroConventionPlugin : Plugin<Project> {
                         }
                     }
                 }
+
+                targets.all {
+                    compilations
+                        .matching { it.name.contains("test", ignoreCase = true) }
+                        .configureEach {
+                            compileTaskProvider.configure {
+                                compilerOptions {
+                                    // don't care about unused multibindings in tests
+                                    freeCompilerArgs.add("-Xwarning-level=SUSPICIOUS_UNUSED_MULTIBINDING:disabled")
+                                }
+                            }
+                        }
+                }
             }
             extensions.configure<MetroPluginExtension> {
                 @OptIn(RequiresIdeSupport::class)

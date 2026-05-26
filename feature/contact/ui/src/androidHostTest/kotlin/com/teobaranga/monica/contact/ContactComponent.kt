@@ -1,8 +1,6 @@
 package com.teobaranga.monica.contact
 
 import com.teobaranga.monica.activity.data.ActivityApi
-import com.teobaranga.monica.activity.data.MockActivityApiComponent
-import com.teobaranga.monica.contact.data.MockContactApiComponent
 import com.teobaranga.monica.contact.data.local.ContactDao
 import com.teobaranga.monica.contact.data.remote.ContactApi
 import com.teobaranga.monica.contact.edit.ContactEditViewModel
@@ -13,7 +11,7 @@ import dev.zacsweers.metro.SingleIn
 
 @DependencyGraph(AppScope::class)
 @SingleIn(AppScope::class)
-interface ContactComponent: GendersComponent, MockContactApiComponent, MockActivityApiComponent {
+interface ContactComponent : GendersComponent {
 
     val contactEditViewModelFactory: ContactEditViewModel.Factory
 

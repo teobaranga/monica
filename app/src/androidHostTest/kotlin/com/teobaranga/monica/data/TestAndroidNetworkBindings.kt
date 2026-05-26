@@ -1,7 +1,8 @@
 package com.teobaranga.monica.data
 
-import com.teobaranga.monica.core.network.AndroidNetworkComponent
+import com.teobaranga.monica.core.network.AndroidNetworkBindings
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
@@ -13,9 +14,10 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 
 @ContributesTo(
     scope = AppScope::class,
-    replaces = [AndroidNetworkComponent::class],
+    replaces = [AndroidNetworkBindings::class],
 )
-interface TestAndroidNetworkComponent {
+@BindingContainer
+object TestAndroidNetworkBindings {
 
     @Provides
     @SingleIn(AppScope::class)

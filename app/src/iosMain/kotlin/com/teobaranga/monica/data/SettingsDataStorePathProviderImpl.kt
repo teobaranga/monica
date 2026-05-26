@@ -15,7 +15,7 @@ private const val PREFERENCES_DATASTORE_FILE_NAME = "settings.preferences_pb"
 
 @Inject
 @ContributesBinding(AppScope::class)
-class SettingsDataStorePathProviderImpl() : SettingsDataStorePathProvider {
+class SettingsDataStorePathProviderImpl : SettingsDataStorePathProvider {
 
     @OptIn(ExperimentalForeignApi::class)
     override fun invoke(): Path {

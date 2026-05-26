@@ -2,6 +2,7 @@ package com.teobaranga.monica.core.network
 
 import com.teobaranga.monica.core.network.config.HttpClientConfigurator
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import io.ktor.client.HttpClient
@@ -10,7 +11,8 @@ import io.ktor.client.engine.okhttp.OkHttp
 lateinit var httpClient: HttpClient
 
 @ContributesTo(AppScope::class)
-interface AndroidNetworkComponent {
+@BindingContainer
+object AndroidNetworkBindings {
 
     @Provides
     fun provideHttpClient(
