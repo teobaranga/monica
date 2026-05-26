@@ -78,7 +78,7 @@ fun ActivityListScreen(
                     ContactActivitiesColumn(
                         modifier = Modifier
                             .padding(contentPadding),
-                        uiState = activitiesUiState as ContactActivitiesUiState.Loaded,
+                        uiState = uiState,
                         onActivityClick = { activityId ->
                             navigator.navigate(
                                 ContactActivityEditRoute(

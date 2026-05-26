@@ -15,8 +15,10 @@
     'monica.android.application',
     'monica.cmp',
     'monica.kmp',
-    'monica.kotlin.inject',
+    'monica.metro',
     'monica.network',
+    'monica.module.data',
+    'monica.module.test.fixture',
   ],
   packageRules: [
     {

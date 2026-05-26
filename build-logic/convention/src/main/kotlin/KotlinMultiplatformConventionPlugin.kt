@@ -102,7 +102,6 @@ private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatfo
     compilerOptions compilerOptions@{
         allWarningsAsErrors = warningsAsErrors.toBoolean()
         freeCompilerArgs.addAll(
-            "-Xcontext-parameters",
             "-Xexpect-actual-classes",
             "-opt-in=kotlin.uuid.ExperimentalUuidApi",
             "-opt-in=kotlin.time.ExperimentalTime",
