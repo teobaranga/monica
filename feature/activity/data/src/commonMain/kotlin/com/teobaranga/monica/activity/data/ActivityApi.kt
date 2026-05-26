@@ -8,19 +8,35 @@ import com.skydoves.sandwich.ktor.putApiResponse
 import com.teobaranga.monica.core.data.remote.DeleteResponse
 import com.teobaranga.monica.core.network.HttpRequestMaker
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 
-@Inject
-@SingleIn(AppScope::class)
-class ActivityApi(private val httpRequestMaker: HttpRequestMaker) {
-
+interface ActivityApi {
     suspend fun getContactActivities(
         id: Int,
         limit: Int? = null,
         page: Int? = null,
+    ): ApiResponse<ContactActivitiesResponse>
+
+    suspend fun createActivity(request: CreateActivityRequest): ApiResponse<CreateActivityResponse>
+
+    suspend fun updateActivity(id: Int, request: CreateActivityRequest): ApiResponse<CreateActivityResponse>
+
+    suspend fun deleteActivity(id: Int): ApiResponse<DeleteResponse>
+}
+
+@Inject
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class ActivityApiImpl(private val httpRequestMaker: HttpRequestMaker) : ActivityApi {
+
+    override suspend fun getContactActivities(
+        id: Int,
+        limit: Int?,
+        page: Int?,
     ): ApiResponse<ContactActivitiesResponse> {
         return httpRequestMaker.call {
             getApiResponse("api/contacts/$id/activities") {
@@ -30,7 +46,7 @@ class ActivityApi(private val httpRequestMaker: HttpRequestMaker) {
         }
     }
 
-    suspend fun createActivity(request: CreateActivityRequest): ApiResponse<CreateActivityResponse> {
+    override suspend fun createActivity(request: CreateActivityRequest): ApiResponse<CreateActivityResponse> {
         return httpRequestMaker.call {
             postApiResponse("api/activities") {
                 setBody(request)
@@ -38,7 +54,7 @@ class ActivityApi(private val httpRequestMaker: HttpRequestMaker) {
         }
     }
 
-    suspend fun updateActivity(id: Int, request: CreateActivityRequest): ApiResponse<CreateActivityResponse> {
+    override suspend fun updateActivity(id: Int, request: CreateActivityRequest): ApiResponse<CreateActivityResponse> {
         return httpRequestMaker.call {
             putApiResponse("api/activities/$id") {
                 setBody(request)
@@ -46,7 +62,7 @@ class ActivityApi(private val httpRequestMaker: HttpRequestMaker) {
         }
     }
 
-    suspend fun deleteActivity(id: Int): ApiResponse<DeleteResponse> {
+    override suspend fun deleteActivity(id: Int): ApiResponse<DeleteResponse> {
         return httpRequestMaker.call {
             deleteApiResponse("api/activities/$id")
         }

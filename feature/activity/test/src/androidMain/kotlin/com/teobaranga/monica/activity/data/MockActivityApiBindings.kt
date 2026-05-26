@@ -7,7 +7,7 @@ import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import io.mockk.mockk
 
-@ContributesTo(AppScope::class, replaces = [ActivityApi::class])
+@ContributesTo(AppScope::class, replaces = [ActivityApiImpl::class])
 @BindingContainer
 object MockActivityApiBindings {
 

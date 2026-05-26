@@ -4,6 +4,7 @@ import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.ktor.apiResponseOf
 import com.teobaranga.monica.core.network.HttpRequestMaker
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import io.ktor.client.request.forms.submitForm
@@ -52,11 +53,16 @@ class TokenRequest(
     }
 }
 
+interface MonicaApi {
+    suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse>
+}
+
 @Inject
 @SingleIn(AppScope::class)
-class MonicaApi(private val httpRequestMaker: HttpRequestMaker) {
+@ContributesBinding(AppScope::class)
+class MonicaApiImpl(private val httpRequestMaker: HttpRequestMaker) : MonicaApi {
 
-    suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse> {
+    override suspend fun getAccessToken(tokenRequest: TokenRequest): ApiResponse<TokenResponse> {
         return httpRequestMaker.call {
             apiResponseOf {
                 submitForm(

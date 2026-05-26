@@ -6,7 +6,7 @@ import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import io.mockk.mockk
 
-@ContributesTo(AppScope::class)
+@ContributesTo(AppScope::class, replaces = [GendersApiImpl::class])
 interface MockGenderApiComponent {
 
     @Provides

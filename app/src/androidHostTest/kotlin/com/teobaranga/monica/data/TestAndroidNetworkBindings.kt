@@ -14,7 +14,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 
 @ContributesTo(
     scope = AppScope::class,
-    replaces = [AndroidNetworkBindings::class],
+    replaces = [AndroidNetworkBindings::class, MonicaApiImpl::class],
 )
 @BindingContainer
 object TestAndroidNetworkBindings {
