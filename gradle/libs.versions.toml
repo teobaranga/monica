@@ -13,7 +13,7 @@ dependency-analysis = "3.13.0"
 detekt = "1.23.8"
 jetbrains-compose = "1.11.0"
 ksp = "2.3.8"
-kotlin = "2.3.21"
+kotlin = "2.4.0-RC"
 
 # Libraries
 browser = "1.10.0"
