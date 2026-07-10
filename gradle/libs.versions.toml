@@ -12,7 +12,7 @@ androidTools = "32.2.1"
 dependency-analysis = "3.16.1"
 detekt = "1.23.8"
 jetbrains-compose = "1.11.1"
-ksp = "2.3.9"
+ksp = "2.3.10"
 kotlin = "2.4.0"
 
 # Libraries
