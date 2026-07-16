@@ -10,18 +10,16 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.v2.runAndroidComposeUiTest
+import com.teobaranga.monica.RobolectricTest
 import io.kotest.matchers.shouldBe
 import kotlinx.datetime.LocalDate
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import java.util.Locale
 import java.util.TimeZone
 
-@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalTestApi::class)
-class DateButtonTest {
+class DateButtonTest : RobolectricTest() {
 
     @Test
     fun `Date is correct`() = runAndroidComposeUiTest<ComponentActivity> {

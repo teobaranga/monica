@@ -5,17 +5,15 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.v2.runAndroidComposeUiTest
+import com.teobaranga.monica.RobolectricTest
 import kotlinx.datetime.LocalDate
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import java.util.Locale
 import kotlin.uuid.Uuid
 
-@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalTestApi::class)
-class ContactActivityColumnTest {
+class ContactActivityColumnTest : RobolectricTest() {
 
     @Test
     fun `Date displays correctly`() = runAndroidComposeUiTest<ComponentActivity> {

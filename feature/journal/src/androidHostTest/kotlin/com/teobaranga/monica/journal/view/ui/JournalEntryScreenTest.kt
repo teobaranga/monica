@@ -12,6 +12,7 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavHostController
 import androidx.savedstate.serialization.encodeToSavedState
+import com.teobaranga.monica.RobolectricTest
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.test.testNow
 import com.teobaranga.monica.core.test.testTimeZone
@@ -32,14 +33,11 @@ import monica.feature.journal.generated.resources.journal_entry_empty_error
 import monica.feature.journal.generated.resources.journal_title_info_mandatory_title_bug
 import org.jetbrains.compose.resources.getString
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.time.Clock
 import kotlin.uuid.Uuid
 
-@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalTestApi::class)
-class JournalEntryScreenTest {
+class JournalEntryScreenTest : RobolectricTest() {
 
     private val localDateFormatter = LocalDateFormatter(
         locale = Locale.current,

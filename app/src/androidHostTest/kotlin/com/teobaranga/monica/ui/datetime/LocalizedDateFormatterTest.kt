@@ -3,22 +3,21 @@ package com.teobaranga.monica.ui.datetime
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.v2.runAndroidComposeUiTest
+import com.teobaranga.monica.RobolectricParameterizedTest
 import com.teobaranga.monica.core.ui.datetime.rememberLocalizedDateFormatter
 import kotlinx.datetime.LocalDate
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import java.util.Locale
 
-@RunWith(ParameterizedRobolectricTestRunner::class)
 @OptIn(ExperimentalTestApi::class)
 class LocalizedDateFormatterTest(
     private val locale: String,
     private val withYear: Boolean,
     private val expected: String,
-) {
+) : RobolectricParameterizedTest() {
     private val date = LocalDate.parse("2025-02-24")
 
     @Test
