@@ -7,6 +7,7 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.v2.runAndroidComposeUiTest
+import com.teobaranga.monica.RobolectricTest
 import com.teobaranga.monica.contact.Birthday
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.datetime.MonthDay
@@ -14,17 +15,14 @@ import com.teobaranga.monica.core.test.FixedClock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
 import kotlin.time.Instant
 
-@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalTestApi::class)
-class BirthdaySectionTest {
+class BirthdaySectionTest : RobolectricTest() {
 
     @Test
     fun `Given full birthday, date displays correctly`() = runAndroidComposeUiTest<ComponentActivity> {

@@ -1,3 +1,4 @@
+import com.teobaranga.monica.libs
 import com.teobaranga.monica.optInExperimentalCoroutinesApi
 
 plugins {
@@ -13,6 +14,8 @@ kotlin {
             dependencies {
                 implementation(libs.kotest.extensions.junitxml)
                 implementation(libs.kotest.extensions.htmlreporter)
+                implementation(libs.robolectric)
+                implementation(libs.junit)
             }
         }
         commonMain {

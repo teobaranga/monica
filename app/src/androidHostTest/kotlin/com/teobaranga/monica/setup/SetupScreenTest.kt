@@ -9,6 +9,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.v2.runAndroidComposeUiTest
 import androidx.navigation.NavHostController
+import com.teobaranga.monica.RobolectricTest
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.browser.PlatformWebBrowser
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
@@ -28,12 +29,9 @@ import monica.app.generated.resources.setup_sign_in
 import org.jetbrains.compose.resources.getString
 import org.junit.After
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalTestApi::class)
-class SetupScreenTest {
+class SetupScreenTest : RobolectricTest() {
 
     val component = createGraph<SetupComponent>()
     val navigator = mockk<NavHostController>()
