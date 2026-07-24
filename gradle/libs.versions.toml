@@ -5,8 +5,8 @@ targetSdk = "36"
 compileSdk = "37"
 
 # Included build
-androidGradlePlugin = "9.3.0"
-androidTools = "32.3.0"
+androidGradlePlugin = "9.3.1"
+androidTools = "32.3.1"
 
 # Plugins
 dependency-analysis = "3.17.0"
@@ -42,7 +42,7 @@ paging = "3.5.0"
 robolectric = "4.16.1"
 room = "2.8.4"
 sandwich = "2.3.0"
-sentry-android = "6.15.0"
+sentry-android = "6.16.0"
 sentry-kmp = "0.27.0"
 signum = "3.24.0"
 sqlite = "2.7.0"
