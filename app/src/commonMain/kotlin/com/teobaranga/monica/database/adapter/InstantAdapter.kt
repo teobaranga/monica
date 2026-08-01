@@ -1,6 +1,6 @@
 package com.teobaranga.monica.database.adapter
 
-import androidx.room.TypeConverter
+import androidx.room3.ColumnTypeConverter
 import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.parse
 import kotlin.jvm.JvmStatic
@@ -8,7 +8,7 @@ import kotlin.time.Instant
 
 object InstantAdapter {
 
-    @TypeConverter
+    @ColumnTypeConverter
     @JvmStatic
     fun to(value: String?): Instant? {
         return value?.let {
@@ -16,7 +16,7 @@ object InstantAdapter {
         }
     }
 
-    @TypeConverter
+    @ColumnTypeConverter
     @JvmStatic
     fun from(date: Instant?): String? {
         return date?.toString()

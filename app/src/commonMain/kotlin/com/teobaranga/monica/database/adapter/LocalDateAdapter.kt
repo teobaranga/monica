@@ -1,6 +1,6 @@
 package com.teobaranga.monica.database.adapter
 
-import androidx.room.TypeConverter
+import androidx.room3.ColumnTypeConverter
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -9,7 +9,7 @@ import kotlin.time.Instant
 
 object LocalDateAdapter {
 
-    @TypeConverter
+    @ColumnTypeConverter
     @JvmStatic
     fun toLocalDate(value: String?): LocalDate? {
         return value?.let {
@@ -21,7 +21,7 @@ object LocalDateAdapter {
         }
     }
 
-    @TypeConverter
+    @ColumnTypeConverter
     @JvmStatic
     fun fromLocalDate(date: LocalDate?): String? {
         return date?.toString()

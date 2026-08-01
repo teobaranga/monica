@@ -1,10 +1,10 @@
 package com.teobaranga.monica.data
 
-import androidx.room.ConstructedBy
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import androidx.room.RoomDatabaseConstructor
-import androidx.room.TypeConverters
+import androidx.room3.ColumnTypeConverters
+import androidx.room3.ConstructedBy
+import androidx.room3.Database
+import androidx.room3.RoomDatabase
+import androidx.room3.RoomDatabaseConstructor
 import com.teobaranga.monica.activity.data.ContactActivityCrossRef
 import com.teobaranga.monica.activity.data.ContactActivityEntity
 import com.teobaranga.monica.activity.data.di.ActivityTableOwner
@@ -39,7 +39,7 @@ import com.teobaranga.monica.photo.data.local.PhotoEntity
     ],
 )
 @ConstructedBy(MonicaDatabaseConstructor::class)
-@TypeConverters(
+@ColumnTypeConverters(
     InstantAdapter::class,
     LocalDateAdapter::class,
     UuidAdapter::class,

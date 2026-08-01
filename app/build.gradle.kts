@@ -106,7 +106,7 @@ dependencies {
     detektPlugins(libs.detekt.formatting)
 }
 
-room {
+room3 {
     schemaDirectory("$projectDir/schemas")
 }
 

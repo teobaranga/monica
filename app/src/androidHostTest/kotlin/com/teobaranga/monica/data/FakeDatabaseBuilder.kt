@@ -1,6 +1,6 @@
 package com.teobaranga.monica.data
 
-import androidx.room.RoomDatabase
+import androidx.room3.RoomDatabase
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides

@@ -1,10 +1,10 @@
 package com.teobaranga.monica.activity.data
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.RewriteQueriesToDropUnusedColumns
-import androidx.room.Transaction
-import androidx.room.Upsert
+import androidx.room3.Dao
+import androidx.room3.Query
+import androidx.room3.RewriteQueriesToDropUnusedColumns
+import androidx.room3.Transaction
+import androidx.room3.Upsert
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.Uuid

@@ -1,7 +1,7 @@
 package com.teobaranga.monica.account
 
-import androidx.room.RoomDatabase
+import androidx.room3.RoomDatabase
 
-actual fun RoomDatabase.clear() {
+actual suspend fun RoomDatabase.clear() {
     // TODO
 }

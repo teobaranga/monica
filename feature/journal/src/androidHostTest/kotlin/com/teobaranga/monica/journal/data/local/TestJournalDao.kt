@@ -1,6 +1,6 @@
 package com.teobaranga.monica.journal.data.local
 
-import androidx.room.RoomRawQuery
+import androidx.room3.RoomRawQuery
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.journal.di.JournalComponent
 import dev.zacsweers.metro.AppScope
