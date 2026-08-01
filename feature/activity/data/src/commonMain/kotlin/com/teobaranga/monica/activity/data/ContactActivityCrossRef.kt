@@ -1,7 +1,7 @@
 package com.teobaranga.monica.activity.data
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
+import androidx.room3.ColumnInfo
+import androidx.room3.Entity
 
 @Entity(
     tableName = "contact_activity_cross_refs",

@@ -1,6 +1,6 @@
 package com.teobaranga.monica.contact.data
 
-import androidx.room.RoomRawQuery
+import androidx.room3.RoomRawQuery
 import com.teobaranga.monica.contact.data.di.ContactDaoComponent
 import com.teobaranga.monica.contact.data.local.ContactDao
 import com.teobaranga.monica.contact.data.local.ContactEntity

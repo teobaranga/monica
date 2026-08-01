@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.RoomDatabase
+import androidx.room3.RoomDatabase
 import com.teobaranga.monica.account.settings.tokenStorage
 import com.teobaranga.monica.core.dispatcher.Dispatcher
 import dev.zacsweers.metro.AppScope
@@ -45,4 +45,4 @@ class AccountViewModel(
 /**
  * Clear all tables in the database.
  */
-expect fun RoomDatabase.clear()
+expect suspend fun RoomDatabase.clear()

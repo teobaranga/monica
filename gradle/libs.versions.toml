@@ -40,7 +40,7 @@ mockk = "1.14.11"
 okio = "3.18.1"
 paging = "3.5.0"
 robolectric = "4.16.1"
-room = "2.8.4"
+room = "3.0.1"
 sandwich = "2.4.0"
 sentry-android = "6.17.0"
 sentry-kmp = "0.27.0"
@@ -107,8 +107,8 @@ okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "paging" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room3", name = "room3-compiler", version.ref = "room" }
+room-runtime = { group = "androidx.room3", name = "room3-runtime", version.ref = "room" }
 sandwich = { group = "com.github.skydoves", name = "sandwich", version.ref = "sandwich" }
 sandwich-ktor = { group = "com.github.skydoves", name = "sandwich-ktor", version.ref = "sandwich" }
 signum-indispensable = { module = "at.asitplus.signum:indispensable", version.ref = "signum" }
@@ -138,6 +138,6 @@ android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
-room = { id = "androidx.room", version.ref = "room" }
+room = { id = "androidx.room3", version.ref = "room" }
 sentry-android = { id = "io.sentry.android.gradle", version.ref = "sentry-android" }
 sentry-kmp = { id = "io.sentry.kotlin.multiplatform.gradle", version.ref = "sentry-kmp" }

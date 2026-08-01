@@ -1,8 +1,8 @@
 package com.teobaranga.monica.contact.data.local
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room3.Embedded
+import androidx.room3.Entity
+import androidx.room3.PrimaryKey
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import kotlinx.datetime.LocalDate
 import kotlin.time.Instant

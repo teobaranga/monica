@@ -1,11 +1,11 @@
 package com.teobaranga.monica.journal.data.local
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.RawQuery
-import androidx.room.RoomRawQuery
-import androidx.room.Transaction
-import androidx.room.Upsert
+import androidx.room3.Dao
+import androidx.room3.Query
+import androidx.room3.RawQuery
+import androidx.room3.RoomRawQuery
+import androidx.room3.Transaction
+import androidx.room3.Upsert
 import com.teobaranga.monica.core.data.local.OrderBy
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import kotlinx.coroutines.flow.Flow

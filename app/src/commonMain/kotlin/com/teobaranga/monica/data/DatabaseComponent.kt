@@ -1,6 +1,6 @@
 package com.teobaranga.monica.data
 
-import androidx.room.RoomDatabase
+import androidx.room3.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.teobaranga.monica.activity.data.di.ActivityTableOwner
 import com.teobaranga.monica.component.tips.di.TipsTableOwner

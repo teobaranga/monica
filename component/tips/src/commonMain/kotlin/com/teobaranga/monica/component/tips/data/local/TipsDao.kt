@@ -1,8 +1,8 @@
 package com.teobaranga.monica.component.tips.data.local
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.Upsert
+import androidx.room3.Dao
+import androidx.room3.Query
+import androidx.room3.Upsert
 import com.teobaranga.monica.component.tips.TipEntity
 
 @Dao
