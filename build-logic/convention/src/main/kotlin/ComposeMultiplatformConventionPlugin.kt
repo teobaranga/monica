@@ -54,6 +54,9 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                                     // Robolectric only works with JUnit 4 but the regular unit tests run with JUnit 5
                                     implementation(libs.junit.vintage)
                                     implementation(libs.compose.ui.test.manifest)
+                                    // Needs explicit espresso 3.7.0+ until this is fixed in compose UI test:
+                                    // https://github.com/robolectric/robolectric/issues/11344
+                                    implementation(libs.espresso.core)
                                 }
                             }
                         }

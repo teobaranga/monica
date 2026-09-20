@@ -22,6 +22,7 @@ compose-placeholder = "1.0.12"
 compose-rules = "0.6.6"
 datastore = "1.2.1"
 desugar-jdk-libs = "2.1.5"
+espresso = "3.7.0"
 jetbrains-lifecycle-runtime-compose = "2.11.0"
 jetbrains-navigation = "2.9.2"
 junit = "4.13.2"
@@ -67,6 +68,7 @@ compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-mani
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso"}
 jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrains-compose" }
 jetbrains-compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrains-compose" }
 jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
