@@ -51,5 +51,11 @@ fun Project.configureUnitTests() {
         systemProperty("kotest.framework.classpath.scanning.config.disable", true)
         systemProperty("kotest.framework.classpath.scanning.autoscan.disable", true)
         systemProperty("kotest.framework.config.fqn", "com.teobaranga.monica.KotestConfig")
+
+        // Required by Robolectric 4.17+ on JDK 17+ for ApplicationSharedMemory emulation
+        // which reflects into jdk.internal.access.SharedSecrets (see robolectric/robolectric#11434).
+        jvmArgs(
+            "--add-exports=java.base/jdk.internal.access=ALL-UNNAMED",
+        )
     }
 }
