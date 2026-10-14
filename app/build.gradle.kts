@@ -1,5 +1,7 @@
+
 import com.teobaranga.monica.libs
 import com.teobaranga.monica.optInExperimentalCoroutinesApi
+import io.sentry.kotlin.multiplatform.gradle.AppleDependencyProvider
 
 plugins {
     alias(libs.plugins.monica.cmp)
@@ -112,4 +114,11 @@ room3 {
 
 detekt {
     autoCorrect = true
+}
+
+sentryKmp {
+    autoInstall {
+        // Sentry is installed through Xcode
+        apple.provider = AppleDependencyProvider.NONE
+    }
 }
