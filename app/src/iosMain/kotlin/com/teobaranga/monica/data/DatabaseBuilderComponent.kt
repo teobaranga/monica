@@ -4,6 +4,7 @@ import androidx.room3.Room
 import androidx.room3.RoomDatabase
 import androidx.sqlite.driver.NativeSQLiteDriver
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -14,7 +15,8 @@ import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
 @ContributesTo(AppScope::class)
-interface DatabaseBuilderComponent {
+@BindingContainer
+object DatabaseBuilderComponent {
 
     @OptIn(ExperimentalForeignApi::class)
     private fun documentDirectory(): String {

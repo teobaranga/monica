@@ -3,6 +3,7 @@ package com.teobaranga.monica.core.datetime.di
 import com.teobaranga.monica.core.datetime.MonthDay
 import com.teobaranga.monica.core.datetime.Year
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import kotlinx.datetime.LocalDate
@@ -12,7 +13,8 @@ import kotlin.time.Clock
 import kotlin.time.Instant
 
 @ContributesTo(AppScope::class)
-interface DateTimeComponent {
+@BindingContainer
+object DateTimeComponent {
 
     @Provides
     fun now(clock: Clock): Instant = clock.now()
