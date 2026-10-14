@@ -5,11 +5,13 @@ import androidx.room3.Room
 import androidx.room3.RoomDatabase
 import com.teobaranga.monica.core.inject.ApplicationContext
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 
 @ContributesTo(AppScope::class)
-interface AndroidDatabaseBuilderComponent {
+@BindingContainer
+object AndroidDatabaseBuilderComponent {
 
     @Provides
     fun providesMonicaDatabaseBuilder(@ApplicationContext context: Context): RoomDatabase.Builder<MonicaDatabase> {

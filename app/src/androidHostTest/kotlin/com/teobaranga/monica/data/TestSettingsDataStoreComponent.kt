@@ -3,6 +3,7 @@ package com.teobaranga.monica.data
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 
@@ -13,7 +14,8 @@ import dev.zacsweers.metro.Provides
     scope = AppScope::class,
     replaces = [SettingsDataStoreComponent::class],
 )
-interface TestSettingsDataStoreComponent {
+@BindingContainer
+object TestSettingsDataStoreComponent {
 
     @Provides
     fun dataStore(dataStore: TestDataStore): DataStore<Preferences> = dataStore

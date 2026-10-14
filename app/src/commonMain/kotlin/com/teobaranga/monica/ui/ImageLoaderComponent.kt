@@ -4,12 +4,14 @@ import coil3.ImageLoader
 import coil3.PlatformContext
 import com.teobaranga.monica.ui.avatar.UserAvatarFetcherFactory
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
 @ContributesTo(AppScope::class)
-interface ImageLoaderComponent {
+@BindingContainer
+object ImageLoaderComponent {
 
     @Provides
     @SingleIn(AppScope::class)

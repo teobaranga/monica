@@ -2,13 +2,15 @@ package com.teobaranga.monica.core.network
 
 import com.teobaranga.monica.core.network.config.HttpClientConfigurator
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
 
 @ContributesTo(AppScope::class)
-interface IosNetworkComponent {
+@BindingContainer
+object IosNetworkComponent {
 
     @Provides
     @SingleIn(AppScope::class)

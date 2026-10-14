@@ -10,6 +10,7 @@ import com.teobaranga.monica.contact.data.di.ContactTableOwner
 import com.teobaranga.monica.genders.di.GenderTableOwner
 import com.teobaranga.monica.journal.data.local.JournalDatabaseOwner
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
@@ -20,7 +21,8 @@ import kotlinx.coroutines.runBlocking
 internal const val DATABASE_NAME = "monica"
 
 @ContributesTo(AppScope::class)
-interface DatabaseComponent {
+@BindingContainer
+object DatabaseComponent {
 
     @Provides
     @SingleIn(AppScope::class)
