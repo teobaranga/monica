@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ForbiddenComment:InjectedWorkerFactory.kt:InjectedWorkerFactory$// TODO: implement a Hilt-like approach to generating this class</ID>
+    <ID>InjectDispatcher:AppLinksHandler.kt:AppLinksHandler$Default</ID>
+    <ID>InjectDispatcher:DatabaseComponent.kt:DatabaseComponent$IO</ID>
+    <ID>LongMethod:ContactsScreen.kt:@Composable private fun ContactsScreen</ID>
+    <ID>LongMethod:SetupScreen.kt:@Composable fun SetupScreen</ID>
+    <ID>LongParameterList:ContactsScreen.kt:@Composable private fun ContactsScreen</ID>
+    <ID>MaxLineLength:MonicaViewModelFactory.kt:MonicaViewModelFactory$override val manualAssistedFactoryProviders: Map&lt;KClass&lt;out ManualViewModelAssistedFactory&gt;, () -&gt; ManualViewModelAssistedFactory&gt;</ID>
+    <ID>ModifierMissing:MonicaApp.kt:@Composable fun MonicaApp</ID>
+    <ID>ModifierNotUsedAtRoot:SetupScreen.kt:modifier = modifier .fillMaxSize() .verticalScroll(scrollState) .systemBarsPadding() .imePadding()</ID>
+  </CurrentIssues>
+</SmellBaseline>

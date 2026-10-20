@@ -31,7 +31,7 @@ private const val PAGE_SIZE = 15
 @ContributesIntoMap(AppScope::class)
 @ViewModelKey
 class ContactsViewModel(
-    private val dispatcher: Dispatcher,
+    dispatcher: Dispatcher,
     userRepository: IUserRepository,
     contactRepository: ContactRepository,
     private val contactSynchronizer: ContactSynchronizer,

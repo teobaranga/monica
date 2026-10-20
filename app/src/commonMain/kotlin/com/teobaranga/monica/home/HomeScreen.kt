@@ -18,7 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -56,7 +56,7 @@ internal fun Home(
 ) {
     val navigator = LocalNavigator.current
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
-    LaunchedEffect(isLoggedIn) {
+    SideEffect(isLoggedIn) {
         if (isLoggedIn == false) {
             navigator.navigate(SetupRoute) {
                 popUpTo(HomeRoute) {

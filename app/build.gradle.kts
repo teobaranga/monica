@@ -105,7 +105,6 @@ dependencies {
     add("kspIosSimulatorArm64", libs.room.compiler)
 
     detektPlugins(libs.compose.rules)
-    detektPlugins(libs.detekt.formatting)
 }
 
 room3 {
@@ -114,6 +113,9 @@ room3 {
 
 detekt {
     autoCorrect = true
+    parallel = true
+    config.setFrom("../config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
 }
 
 sentryKmp {

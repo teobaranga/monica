@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -119,7 +120,7 @@ fun Setup(
 @Composable
 private fun RedirectEffect(isLoggedIn: Boolean?) {
     val navigator = LocalNavigator.current
-    LaunchedEffect(isLoggedIn) {
+    SideEffect(isLoggedIn) {
         if (isLoggedIn == true) {
             navigator.navigate(HomeRoute) {
                 popUpTo(SetupRoute) {
