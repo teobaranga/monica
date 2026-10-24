@@ -183,3 +183,45 @@ jobs:
       - name: Build Debug for iOS Simulator
         run: |
           xcodebuild build -project iosApp/iosApp.xcodeproj -scheme iosApp -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,OS=latest'
+
+  detekt-main:
+    name: Detekt
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup composite build caching
+        uses: actions/cache@v6
+        with:
+          path: |
+            build-logic/build
+            build-logic/convention/build
+          key: build-logic-${{ hashFiles('build-logic/*.kts', 'build-logic/convention/src/**', 'build-logic/convention/*.kts') }}
+
+      - name: Kotlin Native cache - restore and save
+        uses: actions/cache@v6
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-konan-${{ github.job }}
+
+      - name: Kotlin Native cache - restore only
+        uses: actions/cache/restore@v6
+        if: github.ref != 'refs/heads/main'
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ github.job }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-konan-${{ github.job }}
+
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          build-scan-publish: true
+          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+          build-scan-terms-of-use-agree: "yes"
+
+      - name: Run local tests
+        run: ./gradlew detektMain
