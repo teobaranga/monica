@@ -7,6 +7,7 @@ import coil3.fetch.FetchResult
 import coil3.fetch.Fetcher
 import coil3.fetch.SourceFetchResult
 import coil3.request.Options
+import com.teobaranga.monica.photo.data.local.PhotoEntity
 import com.teobaranga.monica.photo.data.local.PhotoRepository
 import com.teobaranga.monica.useravatar.UserAvatar
 import dev.zacsweers.metro.Inject
@@ -27,23 +28,9 @@ class UserAvatarFetcherFactory(
         private val data: UserAvatar,
         private val options: Options,
     ) : Fetcher {
+
         override suspend fun fetch(): FetchResult? {
-            val contactPhotos = photoRepository.getContactPhotos(data.contactId)
-                .first {
-                    it.avatarUrl == null || it.photos.isNotEmpty()
-                }
-
-            val avatarUrl = contactPhotos.avatarUrl
-            if (avatarUrl == null || contactPhotos.photos.isEmpty()) {
-                return null
-            }
-
-            val avatar = contactPhotos.photos
-                .first {
-                    it.fileName in avatarUrl
-                }
-
-            val byteString = avatar.data?.decodeBase64() ?: return null
+            val byteString = getContactAvatar()?.data?.decodeBase64() ?: return null
 
             val source = Buffer().apply {
                 write(byteString)
@@ -57,6 +44,23 @@ class UserAvatarFetcherFactory(
                 mimeType = null,
                 dataSource = DataSource.DISK,
             )
+        }
+
+        private suspend fun getContactAvatar(): PhotoEntity? {
+            val contactPhotos = photoRepository.getContactPhotos(data.contactId)
+                .first {
+                    it.avatarUrl == null || it.photos.isNotEmpty()
+                }
+
+            val avatarUrl = contactPhotos.avatarUrl
+            if (avatarUrl == null || contactPhotos.photos.isEmpty()) {
+                return null
+            }
+
+            return contactPhotos.photos
+                .first {
+                    it.fileName in avatarUrl
+                }
         }
     }
 

@@ -10,7 +10,7 @@ androidTools = "32.4.1"
 
 # Plugins
 dependency-analysis = "3.19.2"
-detekt = "1.23.8"
+detekt = "2.0.0-alpha.6"
 jetbrains-compose = "1.12.2"
 ksp = "2.3.12"
 kotlin = "2.4.21"
@@ -67,7 +67,6 @@ compose-rules = { group = "io.nlopez.compose.rules", name = "detekt", version.re
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
-detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso"}
 jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrains-compose" }
 jetbrains-compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrains-compose" }
@@ -131,7 +130,7 @@ monica-module-test-fixture = { id = "monica.module.test.fixture", version = "uns
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+detekt = { id = "dev.detekt", version.ref = "detekt" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
 kotest = { id = "io.kotest", version.ref = "kotest" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

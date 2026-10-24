@@ -49,7 +49,7 @@ class AndroidApiExceptionHandler(
         exception: CertPathValidatorException,
         request: suspend HttpClient.() -> ApiResponse<T>,
     ): ApiResponse<T>? {
-        val certificates = (exception.certPath?.certificates ?: emptyList())
+        val certificates = exception.certPath?.certificates.orEmpty()
             .filterIsInstance<X509Certificate>()
             .mapNotNull { certificate ->
                 certificate.toKmpCertificate()
