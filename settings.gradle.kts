@@ -85,6 +85,21 @@ kover {
     }
 }
 
+buildCache {
+    remote<HttpBuildCache> {
+        url = uri(providers.gradleProperty("silo.cache.url"))
+        // always push given trusted sources
+        isPush = true
+        credentials {
+            username = providers.gradleProperty("silo.cache.username").orNull
+            password = providers.gradleProperty("silo.cache.password").orNull
+        }
+    }
+    local {
+        isEnabled = true
+    }
+}
+
 rootProject.name = "Monica"
 include(":app")
 include(":core:account")
