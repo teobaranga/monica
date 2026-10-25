@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.sentry.kmp)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotest)
+    alias(libs.plugins.android.cache.fix)
 }
 
 kotlin {
