@@ -5,12 +5,12 @@ targetSdk = "36"
 compileSdk = "37"
 
 # Included build
-androidGradlePlugin = "9.4.1"
-androidTools = "32.4.1"
+androidGradlePlugin = "9.5.0"
+androidTools = "32.5.0"
 
 # Plugins
 android-cache-fix = "3.0.3"
-dependency-analysis = "3.19.2"
+dependency-analysis = "3.20.0"
 detekt = "2.0.0-alpha.6"
 jetbrains-compose = "1.12.2"
 ksp = "2.3.12"
