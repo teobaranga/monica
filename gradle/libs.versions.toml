@@ -13,7 +13,7 @@ android-cache-fix = "3.0.3"
 dependency-analysis = "3.20.0"
 detekt = "2.0.0-alpha.6"
 jetbrains-compose = "1.12.2"
-ksp = "2.3.12"
+ksp = "2.3.13"
 kotlin = "2.4.21"
 
 # Libraries
