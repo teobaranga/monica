@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Download release APK
         id: download-artifact
-        uses: dawidd6/action-download-artifact@v27
+        uses: dawidd6/action-download-artifact@v28
         with:
           workflow: push.yaml
           branch: main
