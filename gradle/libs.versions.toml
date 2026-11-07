@@ -5,8 +5,8 @@ targetSdk = "36"
 compileSdk = "37"
 
 # Included build
-androidGradlePlugin = "9.5.0"
-androidTools = "32.5.0"
+androidGradlePlugin = "9.5.1"
+androidTools = "32.5.1"
 
 # Plugins
 android-cache-fix = "3.0.3"
@@ -44,7 +44,7 @@ paging = "3.5.3"
 robolectric = "4.17"
 room = "3.0.3"
 sandwich = "2.4.0"
-sentry-android = "6.25.0"
+sentry-android = "6.26.0"
 sentry-kmp = "0.29.0"
 signum = "3.26.0"
 sqlite = "2.7.1"
