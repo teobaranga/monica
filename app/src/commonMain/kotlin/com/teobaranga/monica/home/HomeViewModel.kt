@@ -1,6 +1,7 @@
 package com.teobaranga.monica.home
 
 import androidx.lifecycle.ViewModel
+import androidx.savedstate.serialization.SavedStateConfiguration
 import com.teobaranga.monica.auth.AuthorizationRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
@@ -12,6 +13,7 @@ import dev.zacsweers.metrox.viewmodel.ViewModelKey
 @ViewModelKey
 class HomeViewModel(
     authorizationRepository: AuthorizationRepository,
+    val savedStateConfiguration: SavedStateConfiguration,
 ) : ViewModel() {
 
     val isLoggedIn = authorizationRepository.isLoggedIn

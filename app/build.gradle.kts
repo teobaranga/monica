@@ -59,6 +59,7 @@ kotlin {
                 implementation(project(":core:dispatcher"))
                 implementation(project(":core:inject"))
                 implementation(project(":core:network"))
+                implementation(project(":core:navigation"))
                 implementation(project(":core:ui"))
                 implementation(project(":component:user_avatar"))
                 implementation(project(":component:tips"))

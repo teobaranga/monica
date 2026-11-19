@@ -5,6 +5,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.savedstate.serialization.SavedStateConfiguration
 import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.certificate.detail.CertificateDetailsRoute
 import com.teobaranga.monica.certificate.list.CertificateListRoute
@@ -16,7 +17,6 @@ import com.teobaranga.monica.home.HomeScreen
 import com.teobaranga.monica.home.HomeViewModel
 import com.teobaranga.monica.home.topLevelRoutes
 import com.teobaranga.monica.navigation.MonicaNavigator
-import com.teobaranga.monica.navigation.MonicaSavedStateConfiguration
 import com.teobaranga.monica.navigation.rememberMonicaNavigationState
 import com.teobaranga.monica.setup.Setup
 import com.teobaranga.monica.ui.navigation.TopLevelRoute
@@ -32,7 +32,7 @@ fun MonicaApp(
         dynamicColor = false,
     ) {
         when (isLoggedIn) {
-            true -> LoggedInApp()
+            true -> LoggedInApp(savedStateConfiguration = viewModel.savedStateConfiguration)
             false -> Setup()
             else -> Unit
         }
@@ -40,9 +40,9 @@ fun MonicaApp(
 }
 
 @Composable
-private fun LoggedInApp() {
+private fun LoggedInApp(savedStateConfiguration: SavedStateConfiguration) {
     val navigationState = rememberMonicaNavigationState(
-        configuration = MonicaSavedStateConfiguration,
+        configuration = savedStateConfiguration,
         startRoute = DashboardRoute,
         topLevelRoutes = topLevelRoutes.map(TopLevelRoute::route),
     )

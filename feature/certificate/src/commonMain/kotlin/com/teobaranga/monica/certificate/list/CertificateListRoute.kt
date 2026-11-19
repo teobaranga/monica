@@ -6,7 +6,12 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.certificate.detail.CertificateDetailsRoute
+import com.teobaranga.monica.core.navigation.NavKeySerializer
+import com.teobaranga.monica.core.navigation.navKeySerializer
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.Inject
 import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import kotlinx.serialization.Serializable
 
@@ -20,6 +25,10 @@ data class CertificateListRoute(private val value: String) : NavKey {
     val certificateTrustStatus
         get() = CertificateTrustStatus.valueOf(value)
 }
+
+@Inject
+@ContributesIntoSet(AppScope::class)
+class CertificateListRouteSerializer : NavKeySerializer by navKeySerializer(CertificateListRoute.serializer())
 
 internal fun EntryProviderScope<NavKey>.certificateListScreen() {
     entry<CertificateListRoute> { route ->
