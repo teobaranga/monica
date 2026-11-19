@@ -7,11 +7,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.util.Consumer
-import androidx.navigation.compose.rememberNavController
 import com.teobaranga.monica.applinks.AppLinksHandler
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
-import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 import dev.zacsweers.metrox.viewmodel.MetroViewModelFactory
@@ -31,15 +29,11 @@ class MainActivity : ComponentActivity() {
         addOnNewIntentListener(intentListener)
 
         setContent {
-            val navController = rememberNavController()
             CompositionLocalProvider(
                 LocalMetroViewModelFactory provides getViewModelFactory(),
-                LocalNavigator provides navController,
                 LocalWebBrowser provides AndroidWebBrowser(this),
             ) {
-                MonicaApp(
-                    navController = navController,
-                )
+                MonicaApp()
             }
         }
     }

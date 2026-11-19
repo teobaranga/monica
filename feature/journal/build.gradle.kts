@@ -28,6 +28,7 @@ kotlin {
                 implementation(project(":core:dispatcher"))
                 implementation(project(":core:inject"))
                 implementation(project(":core:network"))
+                implementation(project(":core:navigation"))
                 implementation(project(":core:ui"))
                 implementation(project(":component:tips"))
                 implementation(project(":component:user_avatar"))
@@ -36,8 +37,6 @@ kotlin {
 
                 // Storage
                 implementation(libs.room.runtime)
-
-                implementation(libs.jetbrains.navigation)
 
                 implementation(libs.paging.compose)
             }

@@ -1,16 +1,30 @@
 package com.teobaranga.monica.journal.view
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
+import com.teobaranga.monica.core.navigation.NavKeySerializer
+import com.teobaranga.monica.core.navigation.navKeySerializer
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class JournalEntryRoute(
     val entryId: Int? = null,
-)
+) : NavKey
 
-fun NavGraphBuilder.journalEntry() {
-    composable<JournalEntryRoute> {
-        JournalEntry()
+@Inject
+@ContributesIntoSet(AppScope::class)
+class JournalEntryRouteSerializer : NavKeySerializer by navKeySerializer(JournalEntryRoute.serializer())
+
+fun EntryProviderScope<NavKey>.journalEntry() {
+    entry<JournalEntryRoute> { route ->
+        JournalEntry(
+            viewModel = assistedMetroViewModel<JournalEntryViewModel, JournalEntryViewModel.Factory> {
+                create(route.entryId)
+            },
+        )
     }
 }

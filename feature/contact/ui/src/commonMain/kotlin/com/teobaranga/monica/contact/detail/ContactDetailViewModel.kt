@@ -1,11 +1,7 @@
 package com.teobaranga.monica.contact.detail
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.navigation.toRoute
 import com.teobaranga.monica.contact.data.ContactRepository
 import com.teobaranga.monica.contact.data.local.ContactEntity
 import com.teobaranga.monica.contact.detail.section.ContactInfoContactSection
@@ -13,7 +9,6 @@ import com.teobaranga.monica.contact.detail.section.ContactInfoRelationshipsSect
 import com.teobaranga.monica.contact.detail.section.activity.ContactInfoActivitiesSection
 import com.teobaranga.monica.contact.detail.section.bio.ContactInfoBioSection
 import com.teobaranga.monica.contact.edit.birthday.BirthdayMapper
-import com.teobaranga.monica.contact.nav.ContactDetailRoute
 import com.teobaranga.monica.genders.data.GenderRepository
 import com.teobaranga.monica.useravatar.UserAvatar
 import dev.zacsweers.metro.AppScope
@@ -21,8 +16,8 @@ import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactory
-import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactoryKey
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
@@ -35,29 +30,27 @@ import kotlin.time.Duration.Companion.seconds
 class ContactDetailViewModel(
     contactRepository: ContactRepository,
     @Assisted
-    private val savedStateHandle: SavedStateHandle,
+    private val contactId: Int,
     private val genderRepository: GenderRepository,
     private val birthdayMapper: BirthdayMapper,
 ) : ViewModel() {
 
-    private val contactDetailRoute = savedStateHandle.toRoute<ContactDetailRoute>()
-
     private val _effects = MutableSharedFlow<ContactDetailEffect>()
     val effects = _effects.asSharedFlow()
 
-    val contact = contactRepository.getContact(contactDetailRoute.contactId)
+    val contact = contactRepository.getContact(contactId)
         .catch {
             // TODO this is not great, better handle when a contact is deleted
             _effects.emit(ContactDetailEffect.Deleted)
         }
         .mapLatest { contact ->
             ContactDetail(
-                id = contactDetailRoute.contactId,
+                id = contactId,
                 fullName = contact.getTitleName(),
                 infoSections = listOf(
                     ContactInfoBioSection(
                         userAvatar = UserAvatar(
-                            contactId = contactDetailRoute.contactId,
+                            contactId = contactId,
                             initials = contact.initials,
                             color = contact.avatar.color,
                             avatarUrl = contact.avatar.url,
@@ -73,7 +66,7 @@ class ContactDetailViewModel(
                         birthday = contact.birthdate?.let { birthdayMapper.toUi(it) },
                         gender = contact.genderId?.let { genderRepository.getById(it) }?.name,
                     ),
-                    ContactInfoActivitiesSection(contactDetailRoute.contactId),
+                    ContactInfoActivitiesSection(contactId),
                     ContactInfoContactSection,
                     ContactInfoRelationshipsSection,
                 ),
@@ -95,14 +88,9 @@ class ContactDetailViewModel(
     }
 
     @AssistedFactory
-    @ViewModelAssistedFactoryKey(ContactDetailViewModel::class)
+    @ManualViewModelAssistedFactoryKey
     @ContributesIntoMap(AppScope::class)
-    interface Factory: ViewModelAssistedFactory {
-
-        override fun create(extras: CreationExtras): ViewModel {
-            return create(extras.createSavedStateHandle())
-        }
-
-        fun create(@Assisted savedStateHandle: SavedStateHandle): ContactDetailViewModel
+    interface Factory: ManualViewModelAssistedFactory {
+        fun create(contactId: Int): ContactDetailViewModel
     }
 }

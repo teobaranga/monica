@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,10 +40,8 @@ import com.teobaranga.monica.applinks.AppLinksHandler
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.browser.PreviewPlatformWebBrowser
 import com.teobaranga.monica.core.ui.icon.MonicaLogo
-import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.data.PARAM_CODE
-import com.teobaranga.monica.home.HomeRoute
 import com.teobaranga.monica.util.compose.keyboardAsState
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -70,10 +67,7 @@ fun Setup(
 ) {
     val webBrowser = LocalWebBrowser.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
     var insecureSetupUrl by remember { mutableStateOf<String?>(null) }
-
-    RedirectEffect(isLoggedIn)
 
     LaunchedEffect(Unit) {
         viewModel.setupEvents
@@ -114,20 +108,6 @@ fun Setup(
                 webBrowser.open(it)
             },
         )
-    }
-}
-
-@Composable
-private fun RedirectEffect(isLoggedIn: Boolean?) {
-    val navigator = LocalNavigator.current
-    SideEffect(isLoggedIn) {
-        if (isLoggedIn == true) {
-            navigator.navigate(HomeRoute) {
-                popUpTo(SetupRoute) {
-                    inclusive = true
-                }
-            }
-        }
     }
 }
 

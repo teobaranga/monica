@@ -43,8 +43,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import com.teobaranga.monica.activity.nav.ContactActivityEditRoute
 import com.teobaranga.monica.core.datetime.LocalSystemClock
 import com.teobaranga.monica.core.ui.Zero
@@ -62,16 +62,20 @@ import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 
-fun NavGraphBuilder.contactActivityEdit() {
-    composable<ContactActivityEditRoute> {
-        EditContactActivity()
+fun EntryProviderScope<NavKey>.contactActivityEdit() {
+    entry<ContactActivityEditRoute> { route ->
+        EditContactActivity(
+            viewModel = assistedMetroViewModel<EditContactActivityViewModel, EditContactActivityViewModel.Factory> {
+                create(route.contactId, route.activityId)
+            }
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun EditContactActivity(
-    viewModel: EditContactActivityViewModel = assistedMetroViewModel<EditContactActivityViewModel>(),
+    viewModel: EditContactActivityViewModel,
 ) {
     val navigator = LocalNavigator.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

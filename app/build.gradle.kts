@@ -59,6 +59,7 @@ kotlin {
                 implementation(project(":core:dispatcher"))
                 implementation(project(":core:inject"))
                 implementation(project(":core:network"))
+                implementation(project(":core:navigation"))
                 implementation(project(":core:ui"))
                 implementation(project(":component:user_avatar"))
                 implementation(project(":component:tips"))
@@ -81,7 +82,9 @@ kotlin {
 
                 implementation(libs.coil)
 
-                implementation(libs.jetbrains.navigation)
+                implementation(libs.jetbrains.navigation3.ui)
+                implementation(libs.jetbrains.lifecycle.viewmodel.navigation3)
+                implementation(libs.jetbrains.savedstate.compose)
 
                 implementation(libs.paging.compose)
 

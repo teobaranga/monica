@@ -34,7 +34,7 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                             implementation(libs.jetbrains.compose.ui.backhandler)
                             implementation(libs.jetbrains.compose.ui.tooling.preview)
                             implementation(libs.jetbrains.lifecycle.runtime.compose)
-                            implementation(libs.jetbrains.navigation)
+                            implementation(libs.jetbrains.navigation3.ui)
                         }
                     }
                     all {

@@ -2,15 +2,10 @@ package com.teobaranga.monica.activity.edit.ui
 
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.navigation.toRoute
 import com.teobaranga.monica.activity.data.ContactActivitiesRepository
 import com.teobaranga.monica.activity.edit.domain.GetActivityUseCase
-import com.teobaranga.monica.activity.nav.ContactActivityEditRoute
 import com.teobaranga.monica.contact.data.ContactRepository
 import com.teobaranga.monica.contact.domain.SearchContactUseCase
 import com.teobaranga.monica.contact.userAvatar
@@ -19,8 +14,8 @@ import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactory
-import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactoryKey
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.debounce
@@ -37,7 +32,9 @@ import kotlin.time.Duration.Companion.seconds
 @AssistedInject
 class EditContactActivityViewModel(
     @Assisted
-    private val savedStateHandle: SavedStateHandle,
+    val contactId: Int?,
+    @Assisted
+    val activityId: Int?,
     private val getNowLocalDate: () -> LocalDate,
     private val contactRepository: ContactRepository,
     private val getActivity: GetActivityUseCase,
@@ -45,11 +42,6 @@ class EditContactActivityViewModel(
     private val contactActivitiesRepository: ContactActivitiesRepository,
     private val mapContactToActivityParticipant: MapContactToActivityParticipant,
 ) : ViewModel() {
-
-    private val contactActivityEditRoute = savedStateHandle.toRoute<ContactActivityEditRoute>()
-
-    val contactId = contactActivityEditRoute.contactId
-    val activityId = contactActivityEditRoute.activityId
 
     val uiState = flow {
         val uiState = EditContactActivityUiState.Loaded(
@@ -148,14 +140,9 @@ class EditContactActivityViewModel(
     }
 
     @AssistedFactory
-    @ViewModelAssistedFactoryKey(EditContactActivityViewModel::class)
+    @ManualViewModelAssistedFactoryKey
     @ContributesIntoMap(AppScope::class)
-    interface Factory: ViewModelAssistedFactory {
-
-        override fun create(extras: CreationExtras): ViewModel {
-            return create(extras.createSavedStateHandle())
-        }
-
-        fun create(@Assisted savedStateHandle: SavedStateHandle): EditContactActivityViewModel
+    interface Factory: ManualViewModelAssistedFactory {
+        fun create(contactId: Int?, activityId: Int?): EditContactActivityViewModel
     }
 }

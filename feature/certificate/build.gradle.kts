@@ -13,8 +13,9 @@ kotlin {
             dependencies {
                 implementation(project(":core:inject"))
                 implementation(project(":core:network"))
+                implementation(project(":core:navigation"))
                 implementation(project(":core:ui"))
-                implementation(libs.jetbrains.navigation)
+                implementation(libs.navigation3.runtime)
                 implementation(libs.kotlinx.serialization)
                 implementation(libs.okio)
                 implementation(libs.signum.indispensable)

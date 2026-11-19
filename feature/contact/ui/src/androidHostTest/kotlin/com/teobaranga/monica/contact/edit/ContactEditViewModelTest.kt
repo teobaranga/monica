@@ -1,7 +1,5 @@
 package com.teobaranga.monica.contact.edit
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.toRoute
 import app.cash.turbine.test
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.contact.Birthday
@@ -9,7 +7,6 @@ import com.teobaranga.monica.contact.ContactComponent
 import com.teobaranga.monica.contact.data.local.ContactEntityBirthdate
 import com.teobaranga.monica.contact.data.remote.ContactResponse
 import com.teobaranga.monica.contact.data.remote.SingleContactResponse
-import com.teobaranga.monica.contact.nav.ContactEditRoute
 import com.teobaranga.monica.contact.validContact
 import com.teobaranga.monica.core.data.remote.DeleteResponse
 import com.teobaranga.monica.core.data.sync.SyncStatus
@@ -23,7 +20,6 @@ import io.kotest.core.test.config.DefaultTestConfig
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -43,10 +39,10 @@ class ContactEditViewModelTest : BehaviorSpec(
         val contactDao = component.contactDao()
 
         Given("no contact id") {
-            val savedStateHandle = SavedStateHandle()
-            every { savedStateHandle.toRoute<ContactEditRoute>() } returns ContactEditRoute(contactId = null)
-
-            val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
+            val viewModel = component.contactEditViewModelFactory.create(
+                contactId = null,
+                contactName = null,
+            )
 
             Then("state is blank") {
 
@@ -86,10 +82,6 @@ class ContactEditViewModelTest : BehaviorSpec(
         }
 
         Given("valid contact id") {
-            val savedStateHandle = SavedStateHandle()
-            every { savedStateHandle.toRoute<ContactEditRoute>() } returns
-                ContactEditRoute(contactId = validContact.contactId)
-
             component.gendersDao().upsertGenders(listOf(genderMale, genderFemale))
 
             And("birthday is blank") {
@@ -97,7 +89,10 @@ class ContactEditViewModelTest : BehaviorSpec(
 
                 Then("state is loaded correctly") {
 
-                    val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
+                    val viewModel = component.contactEditViewModelFactory.create(
+                    contactId = validContact.contactId,
+                    contactName = null,
+                )
 
                     viewModel.uiState.test {
                         awaitItem() shouldBe ContactEditUiState.Loaded(
@@ -128,7 +123,10 @@ class ContactEditViewModelTest : BehaviorSpec(
 
                 Then("state is loaded correctly") {
 
-                    val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
+                    val viewModel = component.contactEditViewModelFactory.create(
+                    contactId = validContact.contactId,
+                    contactName = null,
+                )
 
                     viewModel.uiState.test {
                         awaitItem() shouldBe ContactEditUiState.Loaded(
@@ -159,7 +157,10 @@ class ContactEditViewModelTest : BehaviorSpec(
 
                 Then("state is loaded correctly") {
 
-                    val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
+                    val viewModel = component.contactEditViewModelFactory.create(
+                    contactId = validContact.contactId,
+                    contactName = null,
+                )
 
                     viewModel.uiState.test {
                         awaitItem() shouldBe ContactEditUiState.Loaded(
@@ -190,7 +191,10 @@ class ContactEditViewModelTest : BehaviorSpec(
 
                 Then("state is loaded correctly") {
 
-                    val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
+                    val viewModel = component.contactEditViewModelFactory.create(
+                    contactId = validContact.contactId,
+                    contactName = null,
+                )
 
                     viewModel.uiState.test {
                         awaitItem() shouldBe ContactEditUiState.Loaded(
@@ -211,7 +215,10 @@ class ContactEditViewModelTest : BehaviorSpec(
                 coEvery { contactApi.deleteContact(validContact.contactId) } returns
                     ApiResponse.exception(Throwable("Something went wrong"))
 
-                val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
+                val viewModel = component.contactEditViewModelFactory.create(
+                    contactId = validContact.contactId,
+                    contactName = null,
+                )
                 viewModel.uiState.first()
 
                 viewModel.onDelete()
@@ -228,7 +235,10 @@ class ContactEditViewModelTest : BehaviorSpec(
                     DeleteResponse(deleted = true, id = validContact.contactId)
                 }
 
-                val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
+                val viewModel = component.contactEditViewModelFactory.create(
+                    contactId = validContact.contactId,
+                    contactName = null,
+                )
                 viewModel.uiState.first()
 
                 viewModel.onDelete()
@@ -245,7 +255,10 @@ class ContactEditViewModelTest : BehaviorSpec(
                 coEvery { contactApi.updateContact(validContact.contactId, any()) } returns
                     ApiResponse.exception(Throwable("Something went wrong"))
 
-                val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
+                val viewModel = component.contactEditViewModelFactory.create(
+                    contactId = validContact.contactId,
+                    contactName = null,
+                )
                 viewModel.uiState.first()
 
                 viewModel.onSave()
@@ -279,7 +292,10 @@ class ContactEditViewModelTest : BehaviorSpec(
                         )
                     }
 
-                val viewModel = component.contactEditViewModelFactory.create(savedStateHandle)
+                val viewModel = component.contactEditViewModelFactory.create(
+                    contactId = validContact.contactId,
+                    contactName = null,
+                )
                 viewModel.uiState.first()
 
                 viewModel.onSave()

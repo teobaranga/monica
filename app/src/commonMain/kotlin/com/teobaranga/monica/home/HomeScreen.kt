@@ -1,7 +1,6 @@
 package com.teobaranga.monica.home
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,30 +17,30 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
 import com.teobaranga.monica.contacts.ContactsRoute
+import com.teobaranga.monica.contacts.contacts
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.dashboard.DashboardRoute
+import com.teobaranga.monica.dashboard.dashboard
 import com.teobaranga.monica.journal.list.JournalEntriesRoute
-import com.teobaranga.monica.setup.SetupRoute
+import com.teobaranga.monica.journal.list.journalEntries
+import com.teobaranga.monica.navigation.MonicaNavDisplay
+import com.teobaranga.monica.navigation.MonicaNavigationState
+import com.teobaranga.monica.navigation.MonicaNavigator
 import com.teobaranga.monica.ui.navigation.TopLevelRoute
 import com.teobaranga.monica.util.compose.thenIf
-import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 val topLevelRoutes = listOf(
     TopLevelRoute("Dashboard", DashboardRoute, Icons.Default.Dashboard),
@@ -50,82 +49,54 @@ val topLevelRoutes = listOf(
 )
 
 @Composable
-internal fun Home(
+fun HomeScreen(
+    navigationState: MonicaNavigationState,
+    entryProvider: (NavKey) -> NavEntry<NavKey>,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = metroViewModel(),
 ) {
     val navigator = LocalNavigator.current
-    val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
-    SideEffect(isLoggedIn) {
-        if (isLoggedIn == false) {
-            navigator.navigate(SetupRoute) {
-                popUpTo(HomeRoute) {
-                    inclusive = true
-                }
-            }
-        }
+    val topLevelContentKeys = remember(entryProvider) {
+        topLevelRoutes.map { topLevelRoute -> entryProvider(topLevelRoute.route).contentKey }.toSet()
     }
-
-    if (isLoggedIn == true) {
-        HomeScreen(
-            modifier = modifier,
-        )
-    } else {
-        // TODO Replace with Loading screen
-        Box(
-            modifier = Modifier.fillMaxSize(),
-        )
-    }
-}
-
-@Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
+    val isTopLevelDestination = navigationState.currentBackStack.size == 1
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentDestination = navBackStackEntry?.destination
-            val isVisible = topLevelRoutes.any { currentDestination?.hasRoute(it.route::class) == true }
             HomeNavigationBar(
                 modifier = Modifier
                     .animateContentSize()
-                    .thenIf(!isVisible) {
+                    .thenIf(!isTopLevelDestination) {
                         height(0.dp)
                     },
-                navController = navController,
+                selectedRoute = navigationState.topLevelRoute,
+                onNavigate = navigator::navigate,
             )
         },
         contentWindowInsets = WindowInsets.Zero,
     ) { contentPadding ->
         if (!LocalInspectionMode.current) {
-            CompositionLocalProvider(
-                LocalNavigator provides navController,
-            ) {
-                NavHost(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(contentPadding)
-                        .consumeWindowInsets(contentPadding),
-                    navController = navController,
-                    startDestination = topLevelRoutes[0].route,
-                    builder = HomeNavGraphBuilder,
-                )
-            }
+            MonicaNavDisplay(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding)
+                    .consumeWindowInsets(contentPadding),
+                entries = navigationState.toDecoratedEntries(entryProvider),
+                topLevelContentKeys = topLevelContentKeys,
+                onBack = navigator::popBackStack,
+            )
         }
     }
 }
 
 @Composable
 fun HomeNavigationBar(
-    navController: NavController,
+    selectedRoute: NavKey,
+    onNavigate: (NavKey) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavigationBar(
         modifier = modifier,
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
         topLevelRoutes.forEach { topLevelRoute ->
             NavigationBarItem(
                 icon = {
@@ -139,24 +110,10 @@ fun HomeNavigationBar(
                         text = topLevelRoute.name,
                     )
                 },
-                selected = currentDestination?.hierarchy?.any { navDestination ->
-                    navDestination.hasRoute(topLevelRoute.route::class)
-                } == true,
+                selected = topLevelRoute.route == selectedRoute,
                 onClick = {
-                    navController.navigate(topLevelRoute.route) {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        // on the back stack as users select items
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
-                        launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
-                        restoreState = true
-                    }
-                }
+                    onNavigate(topLevelRoute.route)
+                },
             )
         }
     }
@@ -166,6 +123,30 @@ fun HomeNavigationBar(
 @Composable
 private fun PreviewHomeScreen() {
     MonicaTheme {
-        HomeScreen()
+        val navigationState = remember {
+            MonicaNavigationState(
+                startRoute = DashboardRoute,
+                topLevelRoute = mutableStateOf(DashboardRoute),
+                backStacks = topLevelRoutes.associate { topLevelRoute ->
+                    topLevelRoute.route to NavBackStack(topLevelRoute.route)
+                },
+            )
+        }
+        CompositionLocalProvider(
+            LocalNavigator provides remember(navigationState) {
+                MonicaNavigator(navigationState)
+            },
+        ) {
+            HomeScreen(
+                navigationState = navigationState,
+                entryProvider = remember {
+                    entryProvider {
+                        dashboard()
+                        contacts()
+                        journalEntries()
+                    }
+                },
+            )
+        }
     }
 }
