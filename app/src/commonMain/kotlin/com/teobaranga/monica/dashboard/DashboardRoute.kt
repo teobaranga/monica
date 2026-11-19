@@ -1,14 +1,14 @@
 package com.teobaranga.monica.dashboard
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-object DashboardRoute
+object DashboardRoute : NavKey
 
-fun NavGraphBuilder.dashboard() {
-    composable<DashboardRoute> {
+fun EntryProviderScope<NavKey>.dashboard() {
+    entry<DashboardRoute> {
         Dashboard()
     }
 }

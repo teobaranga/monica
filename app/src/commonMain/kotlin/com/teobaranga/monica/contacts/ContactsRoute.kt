@@ -1,15 +1,15 @@
 package com.teobaranga.monica.contacts
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import com.teobaranga.monica.contacts.list.Contacts
 import kotlinx.serialization.Serializable
 
 @Serializable
-object ContactsRoute
+object ContactsRoute : NavKey
 
-fun NavGraphBuilder.contacts() {
-    composable<ContactsRoute> {
+fun EntryProviderScope<NavKey>.contacts() {
+    entry<ContactsRoute> {
         Contacts()
     }
 }

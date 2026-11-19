@@ -1,11 +1,7 @@
 package com.teobaranga.monica.certificate.detail
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.navigation.toRoute
 import com.teobaranga.monica.certificate.data.CertificateRepository
 import com.teobaranga.monica.certificate.data.CommonCertificate
 import com.teobaranga.monica.core.inject.ApplicationContext
@@ -14,8 +10,8 @@ import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactory
-import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactoryKey
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -29,14 +25,14 @@ import kotlin.time.Duration.Companion.seconds
 @AssistedInject
 class CertificateDetailsViewModel(
     @Assisted
-    private val savedStateHandle: SavedStateHandle,
+    sha256HashHex: String,
     @param:ApplicationContext
     private val appScope: CoroutineScope,
     private val certificateRepository: CertificateRepository,
     private val certificateDetailsUiStateMapper: CertificateDetailsUiStateMapper,
 ) : ViewModel() {
 
-    private val sha256Hash = savedStateHandle.toRoute<CertificateDetailsRoute>().sha256Hash.decodeHex()
+    private val sha256Hash = sha256HashHex.decodeHex()
 
     val certificateDetails = combine(
         certificateRepository.untrustedCertificates,
@@ -64,14 +60,9 @@ class CertificateDetailsViewModel(
     }
 
     @AssistedFactory
-    @ViewModelAssistedFactoryKey(CertificateDetailsViewModel::class)
+    @ManualViewModelAssistedFactoryKey
     @ContributesIntoMap(AppScope::class)
-    interface Factory: ViewModelAssistedFactory {
-
-        override fun create(extras: CreationExtras): ViewModel {
-            return create(extras.createSavedStateHandle())
-        }
-
-        fun create(@Assisted savedStateHandle: SavedStateHandle): CertificateDetailsViewModel
+    interface Factory: ManualViewModelAssistedFactory {
+        fun create(sha256HashHex: String): CertificateDetailsViewModel
     }
 }

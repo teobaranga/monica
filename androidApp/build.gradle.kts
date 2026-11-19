@@ -103,7 +103,6 @@ dependencies {
     implementation(libs.work)
     implementation(libs.room.runtime)
     implementation(libs.kotlinx.datetime)
-    implementation(libs.jetbrains.navigation)
     implementation(libs.paging.common)
 
     implementation(libs.metrox.viewmodel)

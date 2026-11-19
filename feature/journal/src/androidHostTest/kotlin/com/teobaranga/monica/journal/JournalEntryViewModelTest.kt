@@ -1,7 +1,5 @@
 package com.teobaranga.monica.journal
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.toRoute
 import app.cash.turbine.test
 import com.skydoves.sandwich.ApiResponse
 import com.teobaranga.monica.core.test.testNow
@@ -9,7 +7,6 @@ import com.teobaranga.monica.core.test.testTimeZone
 import com.teobaranga.monica.journal.data.JournalTips
 import com.teobaranga.monica.journal.data.remote.JournalEntryCreateRequest
 import com.teobaranga.monica.journal.data.remote.JournalEntryResponse
-import com.teobaranga.monica.journal.view.JournalEntryRoute
 import com.teobaranga.monica.journal.view.ui.JournalEntryError
 import com.teobaranga.monica.journal.view.ui.JournalEntryUiState
 import dev.zacsweers.metro.createGraph
@@ -18,7 +15,6 @@ import io.kotest.core.test.config.DefaultTestConfig
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -33,10 +29,7 @@ class JournalEntryViewModelTest : BehaviorSpec(
         val dao = component.dao()
 
         Given("no entry id") {
-            val savedStateHandle = SavedStateHandle()
-            every { savedStateHandle.toRoute<JournalEntryRoute>() } returns JournalEntryRoute(entryId = null)
-
-            val viewModel = component.journalEntryViewModelFactory.create(savedStateHandle)
+            val viewModel = component.journalEntryViewModelFactory.create(entryId = null)
 
             Then("state is blank") {
 
@@ -92,15 +85,12 @@ class JournalEntryViewModelTest : BehaviorSpec(
         }
 
         Given("valid entry id") {
-            val savedStateHandle = SavedStateHandle()
-            every { savedStateHandle.toRoute<JournalEntryRoute>() } returns
-                JournalEntryRoute(entryId = validJournalEntry.id)
 
             dao.upsertJournalEntry(validJournalEntry)
 
             Then("state is loaded correctly") {
 
-                val viewModel = component.journalEntryViewModelFactory.create(savedStateHandle)
+                val viewModel = component.journalEntryViewModelFactory.create(entryId = validJournalEntry.id)
 
                 viewModel.uiState.test {
                     awaitItem() shouldBe JournalEntryUiState.Loaded(
@@ -133,7 +123,7 @@ class JournalEntryViewModelTest : BehaviorSpec(
                     )
                 }
 
-                val viewModel = component.journalEntryViewModelFactory.create(savedStateHandle)
+                val viewModel = component.journalEntryViewModelFactory.create(entryId = validJournalEntry.id)
                 val uiState = viewModel.uiState.first() as JournalEntryUiState.Loaded
                 uiState.date = testDate
 

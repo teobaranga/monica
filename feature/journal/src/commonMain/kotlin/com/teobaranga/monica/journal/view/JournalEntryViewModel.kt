@@ -1,12 +1,8 @@
 package com.teobaranga.monica.journal.view
 
 import androidx.compose.runtime.snapshotFlow
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.navigation.toRoute
 import com.teobaranga.monica.component.tips.TipsRepository
 import com.teobaranga.monica.journal.data.JournalRepository
 import com.teobaranga.monica.journal.data.JournalTips
@@ -17,8 +13,8 @@ import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactory
-import dev.zacsweers.metrox.viewmodel.ViewModelAssistedFactoryKey
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -35,19 +31,17 @@ import kotlinx.datetime.LocalDate
 @AssistedInject
 class JournalEntryViewModel(
     @Assisted
-    private val savedStateHandle: SavedStateHandle,
+    val entryId: Int?,
     private val journalRepository: JournalRepository,
     private val getNowLocalDate: () -> LocalDate,
     private val tipsRepository: TipsRepository,
 ) : ViewModel() {
 
-    val journalEntryRoute = savedStateHandle.toRoute<JournalEntryRoute>()
-
     val uiState = flow<JournalEntryUiState> {
-        val entry = if (journalEntryRoute.entryId == null) {
+        val entry = if (entryId == null) {
             null
         } else {
-            journalRepository.getJournalEntry(journalEntryRoute.entryId).firstOrNull()
+            journalRepository.getJournalEntry(entryId).firstOrNull()
         }
         val uiState = if (entry == null) {
             getEmptyState()
@@ -92,7 +86,7 @@ class JournalEntryViewModel(
                 return@launch
             }
             journalRepository.upsertJournalEntry(
-                entryId = journalEntryRoute.entryId,
+                entryId = entryId,
                 title = uiState.title.text.toString().takeUnless { it.isBlank() },
                 post = uiState.post.text.toString(),
                 date = uiState.date,
@@ -102,11 +96,11 @@ class JournalEntryViewModel(
     }
 
     fun onDelete() {
-        if (journalEntryRoute.entryId == null) {
+        if (entryId == null) {
             return
         }
         viewModelScope.launch {
-            journalRepository.deleteJournalEntry(journalEntryRoute.entryId)
+            journalRepository.deleteJournalEntry(entryId)
             _effects.emit(JournalEntryEffect.Back)
         }
     }
@@ -137,14 +131,9 @@ class JournalEntryViewModel(
     }
 
     @AssistedFactory
-    @ViewModelAssistedFactoryKey(JournalEntryViewModel::class)
+    @ManualViewModelAssistedFactoryKey
     @ContributesIntoMap(AppScope::class)
-    interface Factory: ViewModelAssistedFactory {
-
-        override fun create(extras: CreationExtras): ViewModel {
-            return create(extras.createSavedStateHandle())
-        }
-
-        fun create(@Assisted savedStateHandle: SavedStateHandle): JournalEntryViewModel
+    interface Factory: ManualViewModelAssistedFactory {
+        fun create(entryId: Int?): JournalEntryViewModel
     }
 }

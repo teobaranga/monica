@@ -8,11 +8,9 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.v2.runAndroidComposeUiTest
-import androidx.navigation.NavHostController
 import com.teobaranga.monica.RobolectricTest
 import com.teobaranga.monica.browser.LocalWebBrowser
 import com.teobaranga.monica.browser.PlatformWebBrowser
-import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import dev.zacsweers.metro.createGraph
 import io.ktor.http.encodeURLParameter
 import io.mockk.every
@@ -34,7 +32,6 @@ import org.junit.Test
 class SetupScreenTest : RobolectricTest() {
 
     val component = createGraph<SetupComponent>()
-    val navigator = mockk<NavHostController>()
     val webBrowser = mockk<PlatformWebBrowser>()
 
     @After
@@ -48,7 +45,6 @@ class SetupScreenTest : RobolectricTest() {
 
         setContent {
             CompositionLocalProvider(
-                LocalNavigator provides navigator,
                 LocalWebBrowser provides webBrowser,
             ) {
                 Setup(
@@ -84,7 +80,6 @@ class SetupScreenTest : RobolectricTest() {
 
         setContent {
             CompositionLocalProvider(
-                LocalNavigator provides navigator,
                 LocalWebBrowser provides webBrowser,
             ) {
                 Setup(

@@ -1,14 +1,14 @@
 package com.teobaranga.monica.journal.list
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-object JournalEntriesRoute
+object JournalEntriesRoute : NavKey
 
-fun NavGraphBuilder.journalEntries() {
-    composable<JournalEntriesRoute> {
+fun EntryProviderScope<NavKey>.journalEntries() {
+    entry<JournalEntriesRoute> {
         JournalEntryList()
     }
 }

@@ -1,10 +1,11 @@
 package com.teobaranga.monica.certificate.nav
 
-import androidx.navigation.NavGraphBuilder
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import com.teobaranga.monica.certificate.detail.certificateDetailsScreen
 import com.teobaranga.monica.certificate.list.certificateListScreen
 
-fun NavGraphBuilder.certificateListAndDetails() {
+fun EntryProviderScope<NavKey>.certificateListAndDetails() {
     certificateListScreen()
     certificateDetailsScreen()
 }

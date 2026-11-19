@@ -13,12 +13,11 @@ import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.journal.view.ui.JournalEntryScreen
 import com.teobaranga.monica.journal.view.ui.JournalEntryTopAppBar
 import com.teobaranga.monica.journal.view.ui.JournalEntryUiState
-import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun JournalEntry(
-    viewModel: JournalEntryViewModel = assistedMetroViewModel<JournalEntryViewModel>(),
+    viewModel: JournalEntryViewModel,
 ) {
     val navigator = LocalNavigator.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -43,7 +42,7 @@ internal fun JournalEntry(
                         navigator.popBackStack()
                     }
                 },
-                onDelete = if (viewModel.journalEntryRoute.entryId != null) {
+                onDelete = if (viewModel.entryId != null) {
                     viewModel::onDelete
                 } else {
                     null

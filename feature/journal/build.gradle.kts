@@ -37,8 +37,6 @@ kotlin {
                 // Storage
                 implementation(libs.room.runtime)
 
-                implementation(libs.jetbrains.navigation)
-
                 implementation(libs.paging.compose)
             }
         }

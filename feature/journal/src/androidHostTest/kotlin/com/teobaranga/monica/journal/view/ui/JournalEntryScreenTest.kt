@@ -9,9 +9,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.v2.runAndroidComposeUiTest
 import androidx.compose.ui.text.intl.Locale
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.NavHostController
-import androidx.savedstate.serialization.encodeToSavedState
 import com.teobaranga.monica.RobolectricTest
 import com.teobaranga.monica.core.data.sync.SyncStatus
 import com.teobaranga.monica.core.test.testNow
@@ -20,10 +17,10 @@ import com.teobaranga.monica.core.ui.CoreRes
 import com.teobaranga.monica.core.ui.datetime.DateFormatStyle
 import com.teobaranga.monica.core.ui.datetime.LocalDateFormatter
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
+import com.teobaranga.monica.core.ui.navigation.Navigator
 import com.teobaranga.monica.journal.TestJournalComponent
 import com.teobaranga.monica.journal.data.local.JournalEntryEntity
 import com.teobaranga.monica.journal.view.JournalEntry
-import com.teobaranga.monica.journal.view.JournalEntryRoute
 import dev.zacsweers.metro.createGraph
 import io.mockk.mockk
 import kotlinx.datetime.TimeZone
@@ -47,8 +44,7 @@ class JournalEntryScreenTest : RobolectricTest() {
     )
 
     val component = createGraph<TestJournalComponent>()
-    val savedStateHandle = SavedStateHandle()
-    val navigator = mockk<NavHostController>()
+    val navigator = mockk<Navigator>()
 
     @Test
     fun `Given new entry, When loaded, Then UI is correct`() = runAndroidComposeUiTest<ComponentActivity> {
@@ -57,7 +53,7 @@ class JournalEntryScreenTest : RobolectricTest() {
                 LocalNavigator provides navigator,
             ) {
                 JournalEntry(
-                    viewModel = component.journalEntryViewModelFactory.create(savedStateHandle),
+                    viewModel = component.journalEntryViewModelFactory.create(entryId = null),
                 )
             }
         }
@@ -95,15 +91,12 @@ class JournalEntryScreenTest : RobolectricTest() {
             )
         )
 
-        val savedState = encodeToSavedState(JournalEntryRoute(entryId = 1))
-        val savedStateHandle = SavedStateHandle.createHandle(savedState, savedState)
-
         setContent {
             CompositionLocalProvider(
                 LocalNavigator provides navigator,
             ) {
                 JournalEntry(
-                    viewModel = component.journalEntryViewModelFactory.create(savedStateHandle),
+                    viewModel = component.journalEntryViewModelFactory.create(entryId = 1),
                 )
             }
         }
@@ -137,7 +130,7 @@ class JournalEntryScreenTest : RobolectricTest() {
                 LocalNavigator provides navigator,
             ) {
                 JournalEntry(
-                    viewModel = component.journalEntryViewModelFactory.create(savedStateHandle),
+                    viewModel = component.journalEntryViewModelFactory.create(entryId = null),
                 )
             }
         }
@@ -157,7 +150,7 @@ class JournalEntryScreenTest : RobolectricTest() {
                     LocalNavigator provides navigator,
                 ) {
                     JournalEntry(
-                        viewModel = component.journalEntryViewModelFactory.create(savedStateHandle),
+                        viewModel = component.journalEntryViewModelFactory.create(entryId = null),
                     )
                 }
             }

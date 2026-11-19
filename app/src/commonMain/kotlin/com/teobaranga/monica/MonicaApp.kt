@@ -1,31 +1,69 @@
 package com.teobaranga.monica
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teobaranga.monica.certificate.data.CertificateTrustStatus
+import com.teobaranga.monica.certificate.detail.CertificateDetailsRoute
+import com.teobaranga.monica.certificate.list.CertificateListRoute
 import com.teobaranga.monica.certificate.popup.UntrustedCertificatePopup
+import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
-import com.teobaranga.monica.home.HomeRoute
+import com.teobaranga.monica.dashboard.DashboardRoute
+import com.teobaranga.monica.home.HomeScreen
+import com.teobaranga.monica.home.HomeViewModel
+import com.teobaranga.monica.home.topLevelRoutes
+import com.teobaranga.monica.navigation.MonicaNavigator
+import com.teobaranga.monica.navigation.MonicaSavedStateConfiguration
+import com.teobaranga.monica.navigation.rememberMonicaNavigationState
+import com.teobaranga.monica.setup.Setup
+import com.teobaranga.monica.ui.navigation.TopLevelRoute
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 @Composable
 fun MonicaApp(
-    navController: NavHostController,
+    viewModel: HomeViewModel = metroViewModel(),
 ) {
+    val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
+
     MonicaTheme(
         dynamicColor = false,
     ) {
-        NavHost(
-            modifier = Modifier
-                .fillMaxSize(),
-            navController = navController,
-            startDestination = HomeRoute,
-            builder = RootNavGraphBuilder,
+        when (isLoggedIn) {
+            true -> LoggedInApp()
+            false -> Setup()
+            else -> Unit
+        }
+    }
+}
+
+@Composable
+private fun LoggedInApp() {
+    val navigationState = rememberMonicaNavigationState(
+        configuration = MonicaSavedStateConfiguration,
+        startRoute = DashboardRoute,
+        topLevelRoutes = topLevelRoutes.map(TopLevelRoute::route),
+    )
+    val navigator = remember(navigationState) {
+        MonicaNavigator(navigationState)
+    }
+    val currentRoute = navigationState.currentBackStack.last()
+
+    CompositionLocalProvider(
+        LocalNavigator provides navigator,
+    ) {
+        HomeScreen(
+            navigationState = navigationState,
         )
 
         UntrustedCertificatePopup(
-            navHostController = navController,
+            isViewingCertificates = currentRoute is CertificateListRoute ||
+                currentRoute is CertificateDetailsRoute,
+            onViewDetails = {
+                navigator.navigate(CertificateListRoute(CertificateTrustStatus.UNTRUSTED))
+            },
         )
     }
 }
