@@ -73,6 +73,7 @@ dependencies {
     implementation(project(":core:datetime"))
     implementation(project(":core:dispatcher"))
     implementation(project(":core:inject"))
+    implementation(project(":core:navigation"))
     implementation(project(":core:network"))
     implementation(project(":core:ui"))
 

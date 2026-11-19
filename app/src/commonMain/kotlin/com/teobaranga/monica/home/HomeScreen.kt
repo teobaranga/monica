@@ -24,17 +24,21 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
 import com.teobaranga.monica.contacts.ContactsRoute
+import com.teobaranga.monica.contacts.contacts
 import com.teobaranga.monica.core.ui.Zero
 import com.teobaranga.monica.core.ui.navigation.LocalNavigator
 import com.teobaranga.monica.core.ui.theme.MonicaTheme
 import com.teobaranga.monica.dashboard.DashboardRoute
+import com.teobaranga.monica.dashboard.dashboard
 import com.teobaranga.monica.journal.list.JournalEntriesRoute
+import com.teobaranga.monica.journal.list.journalEntries
 import com.teobaranga.monica.navigation.MonicaNavDisplay
 import com.teobaranga.monica.navigation.MonicaNavigationState
 import com.teobaranga.monica.navigation.MonicaNavigator
-import com.teobaranga.monica.navigation.monicaEntryProvider
 import com.teobaranga.monica.ui.navigation.TopLevelRoute
 import com.teobaranga.monica.util.compose.thenIf
 
@@ -47,12 +51,10 @@ val topLevelRoutes = listOf(
 @Composable
 fun HomeScreen(
     navigationState: MonicaNavigationState,
+    entryProvider: (NavKey) -> NavEntry<NavKey>,
     modifier: Modifier = Modifier,
 ) {
     val navigator = LocalNavigator.current
-    val entryProvider = remember {
-        monicaEntryProvider()
-    }
     val topLevelContentKeys = remember(entryProvider) {
         topLevelRoutes.map { topLevelRoute -> entryProvider(topLevelRoute.route).contentKey }.toSet()
     }
@@ -137,6 +139,13 @@ private fun PreviewHomeScreen() {
         ) {
             HomeScreen(
                 navigationState = navigationState,
+                entryProvider = remember {
+                    entryProvider {
+                        dashboard()
+                        contacts()
+                        journalEntries()
+                    }
+                },
             )
         }
     }

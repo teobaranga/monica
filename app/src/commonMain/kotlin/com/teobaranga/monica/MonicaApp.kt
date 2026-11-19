@@ -5,6 +5,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavKey
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.certificate.detail.CertificateDetailsRoute
@@ -32,7 +34,10 @@ fun MonicaApp(
         dynamicColor = false,
     ) {
         when (isLoggedIn) {
-            true -> LoggedInApp(savedStateConfiguration = viewModel.savedStateConfiguration)
+            true -> LoggedInApp(
+                savedStateConfiguration = viewModel.savedStateConfiguration,
+                entryProvider = viewModel.entryProvider,
+            )
             false -> Setup()
             else -> Unit
         }
@@ -40,7 +45,10 @@ fun MonicaApp(
 }
 
 @Composable
-private fun LoggedInApp(savedStateConfiguration: SavedStateConfiguration) {
+private fun LoggedInApp(
+    savedStateConfiguration: SavedStateConfiguration,
+    entryProvider: (NavKey) -> NavEntry<NavKey>,
+) {
     val navigationState = rememberMonicaNavigationState(
         configuration = savedStateConfiguration,
         startRoute = DashboardRoute,
@@ -56,6 +64,7 @@ private fun LoggedInApp(savedStateConfiguration: SavedStateConfiguration) {
     ) {
         HomeScreen(
             navigationState = navigationState,
+            entryProvider = entryProvider,
         )
 
         UntrustedCertificatePopup(
