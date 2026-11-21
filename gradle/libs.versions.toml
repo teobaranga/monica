@@ -5,8 +5,8 @@ targetSdk = "36"
 compileSdk = "37"
 
 # Included build
-androidGradlePlugin = "9.5.1"
-androidTools = "32.5.1"
+androidGradlePlugin = "9.5.2"
+androidTools = "32.5.2"
 
 # Plugins
 android-cache-fix = "3.0.3"
@@ -26,7 +26,7 @@ desugar-jdk-libs = "2.1.5"
 espresso = "3.7.0"
 jetbrains-lifecycle-runtime-compose = "2.11.0"
 multiplatform-nav3 = "1.2.0"
-androidx-navigation3 = "1.2.1"
+androidx-navigation3 = "1.2.2"
 jetbrains-savedstate = "1.4.0"
 junit = "4.13.2"
 junit-vintage = "6.1.3"
