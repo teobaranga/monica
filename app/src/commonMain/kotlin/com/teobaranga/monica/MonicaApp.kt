@@ -8,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.savedstate.serialization.SavedStateConfiguration
+import coil3.compose.setSingletonImageLoaderFactory
 import com.teobaranga.monica.certificate.data.CertificateTrustStatus
 import com.teobaranga.monica.certificate.detail.CertificateDetailsRoute
 import com.teobaranga.monica.certificate.list.CertificateListRoute
@@ -29,6 +30,10 @@ fun MonicaApp(
     viewModel: HomeViewModel = metroViewModel(),
 ) {
     val isLoggedIn by viewModel.isLoggedIn.collectAsStateWithLifecycle()
+
+    setSingletonImageLoaderFactory {
+        viewModel.imageLoader
+    }
 
     MonicaTheme(
         dynamicColor = false,
