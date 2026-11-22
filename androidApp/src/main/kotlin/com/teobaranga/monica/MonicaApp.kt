@@ -2,9 +2,6 @@ package com.teobaranga.monica
 
 import android.app.Application
 import androidx.work.Configuration
-import coil3.ImageLoader
-import coil3.PlatformContext
-import coil3.SingletonImageLoader
 import com.diamondedge.logging.KmLogging
 import com.teobaranga.monica.core.inject.ScopedViewModelFactoryProvider
 import com.teobaranga.monica.di.AppComponent
@@ -16,10 +13,8 @@ import kotlin.reflect.KClass
 
 class MonicaApp :
     Application(),
-    SingletonImageLoader.Factory,
     Configuration.Provider,
     ScopedViewModelFactoryProvider {
-
 
     /**
      * DI component for the entire app. Should not be publicly exposed because this class is not available
@@ -37,10 +32,6 @@ class MonicaApp :
         KmLogging.setLoggers(*appComponent.loggers.toTypedArray())
 
         appComponent.workScheduler.schedule(SYNC_WORKER_WORK_NAME)
-    }
-
-    override fun newImageLoader(context: PlatformContext): ImageLoader {
-        return appComponent.imageLoader
     }
 
     override val workManagerConfiguration: Configuration

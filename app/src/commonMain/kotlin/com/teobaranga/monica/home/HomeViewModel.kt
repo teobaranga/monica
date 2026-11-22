@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.savedstate.serialization.SavedStateConfiguration
+import coil3.ImageLoader
 import com.teobaranga.monica.auth.AuthorizationRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
@@ -15,6 +16,7 @@ import dev.zacsweers.metrox.viewmodel.ViewModelKey
 @ViewModelKey
 class HomeViewModel(
     authorizationRepository: AuthorizationRepository,
+    val imageLoader: ImageLoader,
     val savedStateConfiguration: SavedStateConfiguration,
     val entryProvider: (NavKey) -> NavEntry<NavKey>,
 ) : ViewModel() {
