@@ -1,3 +1,4 @@
-TEAM_ID=
 BUNDLE_ID=com.teobaranga.monica.Monica
 APP_NAME=Monica
+
+#include? "Local.xcconfig"
