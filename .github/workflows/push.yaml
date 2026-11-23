@@ -21,6 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Set up JDK 25
+        uses: actions/setup-java@v6
+        with:
+          distribution: jetbrains
+          java-version: '25'
+          cache-jdk: true
+
       - name: Setup composite build caching
         uses: actions/cache@v6
         with:
@@ -80,6 +87,13 @@ jobs:
     runs-on: xcode-27
     steps:
       - uses: actions/checkout@v7
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v6
+        with:
+          distribution: jetbrains
+          java-version: '25'
+          cache-jdk: true
 
       - name: Setup composite build caching
         uses: actions/cache@v6
@@ -155,6 +169,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Set up JDK 25
+        uses: actions/setup-java@v6
+        with:
+          distribution: jetbrains
+          java-version: '25'
+          cache-jdk: true
+
       - name: Setup composite build caching
         uses: actions/cache@v6
         with:
@@ -197,6 +218,13 @@ jobs:
     runs-on: xcode-27
     steps:
       - uses: actions/checkout@v7
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v6
+        with:
+          distribution: jetbrains
+          java-version: '25'
+          cache-jdk: true
 
       - name: Setup composite build caching
         uses: actions/cache@v6
