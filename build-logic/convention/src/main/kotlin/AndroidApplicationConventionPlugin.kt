@@ -23,6 +23,9 @@ import com.teobaranga.monica.coreLibraryDesugaring
 import com.teobaranga.monica.libs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
@@ -37,6 +40,13 @@ class AndroidApplicationConventionPlugin : MonicaPlugin() {
                 apply(libs.plugins.androidApplication.get().pluginId)
             }
 
+            extensions.configure<JavaPluginExtension> {
+                toolchain {
+                    languageVersion.set(JavaLanguageVersion.of(25))
+                    vendor.set(JvmVendorSpec.JETBRAINS)
+                }
+            }
+
             extensions.configure<ApplicationExtension> {
                 compileSdk = libs.versions.compileSdk.get().toInt()
 
@@ -48,8 +58,8 @@ class AndroidApplicationConventionPlugin : MonicaPlugin() {
                 compileOptions {
                     // Java 11+ APIs available through desugaring
                     // https://developer.android.com/studio/write/java11-default-support-table
-                    sourceCompatibility = JavaVersion.VERSION_21
-                    targetCompatibility = JavaVersion.VERSION_21
+                    sourceCompatibility = JavaVersion.VERSION_25
+                    targetCompatibility = JavaVersion.VERSION_25
                     isCoreLibraryDesugaringEnabled = true
                 }
 

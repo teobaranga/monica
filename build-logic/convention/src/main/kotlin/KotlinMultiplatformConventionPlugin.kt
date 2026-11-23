@@ -3,6 +3,8 @@ import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.teobaranga.monica.configureUnitTests
 import com.teobaranga.monica.libs
 import org.gradle.api.Project
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -32,12 +34,17 @@ class KotlinMultiplatformConventionPlugin : MonicaPlugin() {
 
 private fun Project.configureKotlinMultiplatform() = configure<KotlinMultiplatformExtension> {
 
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+        vendor.set(JvmVendorSpec.JETBRAINS)
+    }
+
     configure<KotlinMultiplatformAndroidLibraryTarget> {
         compileSdk = libs.versions.compileSdk.get().toInt()
         minSdk = libs.versions.minSdk.get().toInt()
 
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_25)
         }
     }
 
